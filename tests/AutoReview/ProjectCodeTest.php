@@ -1066,7 +1066,7 @@ final class ProjectCodeTest extends TestCase
                 }
             }
             if (!$foundInDuplicates) {
-                $alreadyFoundCases[$candidateKey] = $candidateData;
+                $alreadyFoundCases[$candidateKey] = $serializedCandidateData;
             }
         }
 
@@ -1329,6 +1329,17 @@ final class ProjectCodeTest extends TestCase
                 $serialized[$key] = 'Closure#'.spl_object_id($value);
             } elseif ($value instanceof \SplFileInfo) {
                 $serialized[$key] = 'SplFileInfo('.$value->getPathname().')';
+            } elseif (\is_object($value)) {
+                // An object may hold a closure somewhere in its graph: an Error keeps the
+                // Throwable it was created from, and with zend.exception_ignore_args=Off
+                // - the default of php.ini-development - that exception's trace keeps the
+                // arguments of every frame. serialize() refuses those, so fall back to a
+                // printable representation, which is stable enough to compare cases.
+                try {
+                    $serialized[$key] = serialize($value);
+                } catch (\Exception $e) {
+                    $serialized[$key] = print_r($value, true);
+                }
             } else {
                 $serialized[$key] = $value;
             }
