@@ -754,6 +754,61 @@ use Baz;
 /*baz*/',
         ];
 
+        yield 'with_quoted_matches_in_comments' => [
+            <<<'EOF'
+                <?php
+
+                namespace Foo;
+
+                use Vendor\ServerRequestInterface;
+
+                /**
+                 * Structure (array):
+                 *
+                 * "content" => [
+                 *     "title" => "Content",
+                 *     "icon" => "<img...>",
+                 * ],
+                 */
+                final class Bar
+                {
+                    public function baz(ServerRequestInterface $request) {}
+                }
+
+                EOF,
+            <<<'EOF'
+                <?php
+
+                namespace Foo;
+
+                use Vendor\Icon;
+                use Vendor\ServerRequestInterface;
+
+                /**
+                 * Structure (array):
+                 *
+                 * "content" => [
+                 *     "title" => "Content",
+                 *     "icon" => "<img...>",
+                 * ],
+                 */
+                final class Bar
+                {
+                    public function baz(ServerRequestInterface $request) {}
+                }
+
+                EOF,
+        ];
+
+        yield 'with_single_quoted_matches_in_comments' => [
+            "<?php\n\n// 'foo'\n",
+            "<?php\nuse Foo;\n\n// 'foo'\n",
+        ];
+
+        yield 'with_partially_quoted_matches_in_comments' => [
+            "<?php\nuse Foo;\nuse Bar;\n\n// Foo bar, \"Foo\" Bar\n",
+        ];
+
         yield 'with_same_namespace_import_and_unused_import' => [
             <<<'EOF'
                 <?php
