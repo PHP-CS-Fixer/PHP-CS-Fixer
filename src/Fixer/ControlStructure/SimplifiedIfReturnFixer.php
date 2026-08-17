@@ -81,10 +81,6 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
                 continue;
             }
 
-            if ($match['indices'][0] !== $firstCandidateIndex) {
-                continue;
-            }
-
             $indicesToClear = $match['indices'];
             array_pop($indicesToClear); // Preserve last semicolon
             rsort($indicesToClear);
