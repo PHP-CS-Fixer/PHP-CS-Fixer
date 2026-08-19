@@ -3,6 +3,14 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.20
+----------------------
+
+* fix: `PsrAutoloadingFixer` - do not throw when the file cannot be resolved on disk (#9762)
+* refactor: Transformers - move looping over tokens directly into each transformer individually (#9782)
+* test: drop `mikey179/vfsstream` (#9787)
+* test: NoUnusedImportsFixerTest - add new cases around quoted values (#9784)
+
 Changelog for v3.95.19
 ----------------------
 
