@@ -66,5 +66,5 @@ interface TransformerInterface
     /**
      * Process Token to transform it into custom token when needed.
      */
-    public function process(Tokens $tokens, Token $token, int $index): void;
+    public function process(Tokens $tokens): void;
 }

@@ -42,7 +42,7 @@ final class TypeAlternationTransformer extends AbstractTypeTransformer
         return 7_01_00;
     }
 
-    public function process(Tokens $tokens, Token $token, int $index): void
+    public function processToken(Tokens $tokens, Token $token, int $index): void
     {
         $this->doProcess($tokens, $index, '|');
     }

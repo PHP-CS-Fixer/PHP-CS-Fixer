@@ -106,9 +106,7 @@ abstract class AbstractTransformerTestCase extends TestCase
         Tokens::clearCache();
         $tokens = Tokens::fromCode('<?php ');
 
-        foreach ($tokens as $index => $token) {
-            $this->transformer->process($tokens, $token, $index);
-        }
+        $this->transformer->process($tokens);
 
         self::assertFalse($tokens->isChanged());
     }
