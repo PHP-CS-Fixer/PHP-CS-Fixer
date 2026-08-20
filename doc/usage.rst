@@ -172,7 +172,9 @@ tool usable as a step of a formatting pipeline, for example for format-on-save i
 Everything the tool has to say about the run (the "about" line, the loaded config, the errors) goes to standard error,
 so standard output holds the file and nothing else. When there is nothing to fix, the input is passed through unchanged.
 
-Using ``--format=raw`` for any input other than standard input raises an error.
+The ``raw`` format is already the default one for standard input when ``PHP_CS_FIXER_FUTURE_MODE`` is enabled, and it
+will become the default one for standard input in the next MAJOR release. An explicitly passed ``--format`` is always
+respected. Using ``--format=raw`` for any input other than standard input raises an error.
 
 The ``check`` command
 ---------------------

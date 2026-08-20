@@ -182,6 +182,9 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
                 <info>$ php %command.full_name% --format=raw - < foo.php</info>
 
+            The `raw` format is the default one for STDIN when `PHP_CS_FIXER_FUTURE_MODE` is enabled, and it will
+            become the default one for STDIN in the next MAJOR release.
+
             Finally, if you don't need BC kept on CLI level, you might use `PHP_CS_FIXER_FUTURE_MODE` to start using options that
             would be default in next MAJOR release and to forbid using deprecated configuration:
 
