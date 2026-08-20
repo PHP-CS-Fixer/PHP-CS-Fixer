@@ -65,6 +65,8 @@ final class Transformers
         foreach ($this->items as $transformer) {
             $transformer->process($tokens);
         }
+
+        $tokens->clearEmptyTokens();
     }
 
     /**
