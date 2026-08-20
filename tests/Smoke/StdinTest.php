@@ -81,6 +81,54 @@ final class StdinTest extends AbstractSmokeTestCase
         );
     }
 
+    public function testFixingStdinWithRawFormat(): void
+    {
+        $cwd = __DIR__.'/../..';
+
+        $command = 'php php-cs-fixer fix --sequential --rules=@PSR2 --using-cache=no --config=- --format=raw -';
+        $inputFile = 'tests/Fixtures/Integration/set/@PSR2.test-in.php';
+        $expectedFile = 'tests/Fixtures/Integration/set/@PSR2.test-out.php';
+
+        $result = CommandExecutor::create("{$command} < {$inputFile}", $cwd)->getResult(false);
+
+        self::assertSame(
+            file_get_contents(realpath($cwd).'/'.$expectedFile),
+            $result->getOutput(),
+        );
+    }
+
+    public function testFixingAlreadyFixedStdinWithRawFormat(): void
+    {
+        $cwd = __DIR__.'/../..';
+
+        $command = 'php php-cs-fixer fix --sequential --rules=@PSR2 --using-cache=no --config=- --format=raw -';
+        $inputFile = 'tests/Fixtures/Integration/set/@PSR2.test-out.php';
+
+        $result = CommandExecutor::create("{$command} < {$inputFile}", $cwd)->getResult(false);
+
+        self::assertSame(0, $result->getCode());
+        self::assertSame(
+            file_get_contents(realpath($cwd).'/'.$inputFile),
+            $result->getOutput(),
+        );
+    }
+
+    public function testRawFormatIsRejectedForRegularPath(): void
+    {
+        $cwd = __DIR__.'/../..';
+
+        $result = CommandExecutor::create(
+            'php php-cs-fixer fix --sequential --rules=@PSR2 --using-cache=no --config=- --format=raw --dry-run tests/Fixtures/Integration/set/@PSR2.test-in.php',
+            $cwd,
+        )->getResult(false);
+
+        self::assertSame(16, $result->getCode());
+        self::assertStringContainsString(
+            'The format "raw" is available only when the input is read from STDIN.',
+            $result->getError(),
+        );
+    }
+
     private function unifyFooter(string $output): string
     {
         return Preg::replace(

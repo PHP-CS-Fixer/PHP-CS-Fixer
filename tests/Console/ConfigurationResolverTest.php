@@ -25,6 +25,7 @@ use PhpCsFixer\Console\Output\Progress\ProgressOutputType;
 use PhpCsFixer\Console\Report\FixReport\CheckstyleReporter;
 use PhpCsFixer\Console\Report\FixReport\GitlabReporter;
 use PhpCsFixer\Console\Report\FixReport\JsonReporter;
+use PhpCsFixer\Console\Report\FixReport\RawReporter;
 use PhpCsFixer\Console\Report\FixReport\TextReporter;
 use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Differ\UnifiedDiffer;
@@ -311,7 +312,7 @@ final class ConfigurationResolverTest extends TestCase
     public function testResolveConfigFileChooseFileWithInvalidFormat(): void
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessageMatches('/^The format "xls" is not defined, supported are "checkstyle", "gitlab", "json", "junit", "txt" and "xml"\.$/');
+        $this->expectExceptionMessageMatches('/^The format "xls" is not defined, supported are "checkstyle", "gitlab", "json", "junit", "raw", "txt" and "xml"\.$/');
 
         $dirBase = self::getFixtureDir();
 
@@ -1581,6 +1582,30 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
             ['AI_AGENT' => 'true'],
         ];
     }
+
+    public function testGetReporterForRawFormatOnStdIn(): void
+    {
+        $resolver = $this->createConfigurationResolver([
+            'format' => 'raw',
+            'path' => ['-'],
+        ]);
+
+        self::assertInstanceOf(RawReporter::class, $resolver->getReporter());
+    }
+
+    public function testGetReporterForRawFormatOnRegularPath(): void
+    {
+        $resolver = $this->createConfigurationResolver([
+            'format' => 'raw',
+            'path' => [__FILE__],
+        ]);
+
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('The format "raw" is available only when the input is read from STDIN.');
+
+        $resolver->getReporter();
+    }
+
 
     /**
      * @param non-empty-string $path
