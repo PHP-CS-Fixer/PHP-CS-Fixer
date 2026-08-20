@@ -151,9 +151,14 @@ final class RunnerTest extends TestCase
             $writeStdinContent($originalStdinContent);
         }
 
+        // Runner keys the result on Directory::getRelativePathTo, which rewrites
+        // every separator to DIRECTORY_SEPARATOR, so the stdin pseudo-path comes
+        // back as `php:\\stdin` on Windows.
+        $expectedPath = str_replace('/', \DIRECTORY_SEPARATOR, 'php://stdin');
+
         self::assertSame(
             [
-                'php://stdin' => [
+                $expectedPath => [
                     'appliedFixers' => ['cast_spaces'],
                     'diff' => '',
                     'newContent' => "<?php \$a = (int) \$b;\n",
