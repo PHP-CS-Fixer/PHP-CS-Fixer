@@ -683,6 +683,13 @@ final class ConfigurationResolver
 
             $this->format = $parts[0];
 
+            // @TODO v4: make `raw` the default for STDIN unconditionally and drop the future mode condition
+            if (null === $this->options['format'] && $this->isStdIn() && Future::isFutureModeEnabled()) {
+                $this->format = 'raw';
+
+                return $this->format;
+            }
+
             if ('@auto' === $this->format) {
                 if (filter_var(getenv('GITLAB_CI'), \FILTER_VALIDATE_BOOL)) {
                     $this->format = 'gitlab';

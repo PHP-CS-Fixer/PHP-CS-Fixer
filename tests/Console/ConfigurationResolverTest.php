@@ -1606,6 +1606,45 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         $resolver->getReporter();
     }
 
+    public function testGetReporterForStdInWithoutFutureMode(): void
+    {
+        $resolver = $this->createConfigurationResolver([
+            'path' => ['-'],
+        ]);
+
+        self::assertInstanceOf(TextReporter::class, $resolver->getReporter());
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    #[RunInSeparateProcess]
+    public function testGetReporterForStdInWithFutureMode(): void
+    {
+        putenv('PHP_CS_FIXER_FUTURE_MODE=1');
+
+        $resolver = $this->createConfigurationResolver([
+            'path' => ['-'],
+        ]);
+
+        self::assertInstanceOf(RawReporter::class, $resolver->getReporter());
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    #[RunInSeparateProcess]
+    public function testGetReporterForStdInWithFutureModeAndExplicitFormat(): void
+    {
+        putenv('PHP_CS_FIXER_FUTURE_MODE=1');
+
+        $resolver = $this->createConfigurationResolver([
+            'format' => 'txt',
+            'path' => ['-'],
+        ]);
+
+        self::assertInstanceOf(TextReporter::class, $resolver->getReporter());
+    }
 
     /**
      * @param non-empty-string $path
