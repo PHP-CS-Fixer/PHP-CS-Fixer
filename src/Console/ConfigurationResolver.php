@@ -462,6 +462,10 @@ final class ConfigurationResolver
 
             $format = $this->resolveFormat();
 
+            if ('raw' === $format && !$this->isStdIn()) {
+                throw new InvalidConfigurationException('The format "raw" is available only when the input is read from STDIN.');
+            }
+
             try {
                 $this->reporter = $reporterFactory->getReporter($format);
             } catch (\UnexpectedValueException $e) {

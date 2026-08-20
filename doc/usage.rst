@@ -58,7 +58,7 @@ which will use the intersection of the paths from the config file and from the a
 
     php php-cs-fixer.phar fix --path-mode=intersection /path/to/dir
 
-The ``--format`` option for the output format. Supported formats are ``@auto`` (default one on v4+), ``txt`` (default one on v3), ``checkstyle``, ``gitlab``, ``json``, ``junit`` and ``xml``.
+The ``--format`` option for the output format. Supported formats are ``@auto`` (default one on v4+), ``txt`` (default one on v3), ``checkstyle``, ``gitlab``, ``json``, ``junit``, ``raw`` and ``xml``.
 
 * ``@auto`` aims to auto-select best reporter for given CI or local execution (resolution into best format is outside of BC promise and is future-ready)
 
@@ -66,6 +66,7 @@ The ``--format`` option for the output format. Supported formats are ``@auto`` (
   * best fit for the AI agent (currently: ``json``) when running in an AI agent (for example, when the ``AI_AGENT`` environment variable, or another popular one, is set), unless running in GitLab CI
 
 * ``@auto,{format}`` takes ``@auto`` under CI, and {format} otherwise
+* ``raw`` prints the resulting file instead of a report about it. It is described in `Reading from standard input`_ and is available for STDIN only, using it for any other input raises an error.
 
 Agent detection only applies when the format is resolved automatically (``@auto``); an explicitly selected format (for example, ``--format=txt``) is never overridden. When both GitLab CI and an AI agent are detected, GitLab CI takes precedence and the format resolves to ``gitlab``.
 
@@ -128,12 +129,7 @@ If the option is not provided, it defaults to ``bar`` unless a config file that 
 
     php php-cs-fixer.phar fix --verbose --show-progress=dots
 
-The command can also read from standard input, in which case it won't
-automatically fix anything:
-
-.. code-block:: console
-
-    cat foo.php | php php-cs-fixer.phar fix --diff -
+The command can also read from standard input, which is described in `Reading from standard input`_.
 
 Finally, if you don't need BC kept on CLI level, you might use ``PHP_CS_FIXER_FUTURE_MODE`` to start using options that
 would be default in next MAJOR release and to forbid using deprecated configuration:
@@ -151,6 +147,32 @@ fixed but without actually modifying them:
 
 By using ``--using-cache`` option with ``yes`` or ``no`` you can set if the caching
 mechanism should be used.
+
+Reading from standard input
+---------------------------
+
+The command can also read the analysed file from standard input, by passing ``-`` as the path:
+
+.. code-block:: console
+
+    php php-cs-fixer.phar fix --diff - < src/WordMatcher.php
+    cat src/WordMatcher.php | php php-cs-fixer.phar fix --diff -
+
+The file provided on standard input cannot be written to, so the analysis is always performed as if ``--dry-run``
+was passed. The outcome is therefore available in the report only, and the exit code follows the rules of the dry run.
+Config file discovery starts in the current working directory, as there is no path to derive it from.
+
+By using ``--format=raw`` the fixed file is printed to standard output instead of a report about it. That makes the
+tool usable as a step of a formatting pipeline, for example for format-on-save in an editor:
+
+.. code-block:: console
+
+    php php-cs-fixer.phar fix --format=raw - < src/WordMatcher.php
+
+Everything the tool has to say about the run (the "about" line, the loaded config, the errors) goes to standard error,
+so standard output holds the file and nothing else. When there is nothing to fix, the input is passed through unchanged.
+
+Using ``--format=raw`` for any input other than standard input raises an error.
 
 The ``check`` command
 ---------------------
