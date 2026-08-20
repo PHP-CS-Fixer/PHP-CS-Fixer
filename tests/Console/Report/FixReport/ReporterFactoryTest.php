@@ -52,7 +52,7 @@ final class ReporterFactoryTest extends TestCase
 
         $builder->registerBuiltInReporters();
         self::assertSame(
-            ['checkstyle', 'gitlab', 'json', 'junit', 'txt', 'xml'],
+            ['checkstyle', 'gitlab', 'json', 'junit', 'raw', 'txt', 'xml'],
             $builder->getFormats(),
         );
     }
