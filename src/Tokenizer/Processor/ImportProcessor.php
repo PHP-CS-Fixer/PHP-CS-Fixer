@@ -91,21 +91,21 @@ final class ImportProcessor
      */
     public static function tokenizeName(string $name): array
     {
-        $parts = explode('\\', $name);
-        $newTokens = [];
+        $tokens = [];
 
-        if ('' === $parts[0]) {
-            $newTokens[] = new Token([\T_NS_SEPARATOR, '\\']);
-            array_shift($parts);
+        if ('\\' === $name[0]) {
+            $tokens[] = new Token([\T_NS_SEPARATOR, '\\']);
+            $name = substr($name, 1);
         }
 
-        foreach ($parts as $part) {
-            $newTokens[] = new Token([\T_STRING, $part]);
-            $newTokens[] = new Token([\T_NS_SEPARATOR, '\\']);
+        foreach (explode('\\', $name) as $i => $part) {
+            if ($i > 0) {
+                $tokens[] = new Token([\T_NS_SEPARATOR, '\\']);
+            }
+
+            $tokens[] = new Token([\T_STRING, $part]);
         }
 
-        array_pop($newTokens);
-
-        return $newTokens;
+        return $tokens;
     }
 }

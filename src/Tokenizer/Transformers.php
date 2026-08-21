@@ -69,6 +69,8 @@ final class Transformers
 
             $transformer->process($tokens);
         }
+
+        $tokens->clearEmptyTokens();
     }
 
     /**
