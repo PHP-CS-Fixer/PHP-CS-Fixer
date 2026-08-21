@@ -63,6 +63,10 @@ final class Transformers
     public function transform(Tokens $tokens): void
     {
         foreach ($this->items as $transformer) {
+            if (!$transformer->isCandidate($tokens)) {
+                continue;
+            }
+
             $transformer->process($tokens);
         }
     }

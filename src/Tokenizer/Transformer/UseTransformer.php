@@ -46,6 +46,11 @@ final class UseTransformer extends AbstractTransformer
         return 5_03_00;
     }
 
+    public function isCandidate(Tokens $tokens): bool
+    {
+        return $tokens->isTokenKindFound(\T_USE);
+    }
+
     public function processToken(Tokens $tokens, Token $token, int $index): void
     {
         if ($token->isGivenKind(\T_USE) && $this->isUseForLambda($tokens, $index)) {

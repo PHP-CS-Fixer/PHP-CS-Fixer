@@ -34,6 +34,11 @@ final class WhitespacyCommentTransformer extends AbstractTransformer
         return 5_00_00;
     }
 
+    public function isCandidate(Tokens $tokens): bool
+    {
+        return $tokens->isAnyTokenKindsFound([\T_COMMENT, \T_DOC_COMMENT]);
+    }
+
     public function processToken(Tokens $tokens, Token $token, int $index): void
     {
         if (!$token->isComment()) {
