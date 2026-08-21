@@ -21,21 +21,20 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class FooTransformer extends AbstractTransformer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getRequiredPhpVersionId(): int
     {
         return 50000;
+    }
+
+    public function isCandidate(Tokens $tokens): bool
+    {
+        return true;
     }
 
     public function processToken(Tokens $tokens, Token $token, int $index): void
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCustomTokens(): array
     {
         return [];
