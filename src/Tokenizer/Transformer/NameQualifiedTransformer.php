@@ -21,7 +21,7 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * Transform NAME_QUALIFIED, T_NAME_FULLY_QUALIFIED and T_NAME_RELATIVE into T_NAMESPACE T_NS_SEPARATOR T_STRING.
+ * Transform T_NAME_QUALIFIED, T_NAME_FULLY_QUALIFIED and T_NAME_RELATIVE into T_NAMESPACE T_NS_SEPARATOR T_STRING.
  *
  * @internal
  *
@@ -41,7 +41,7 @@ final class NameQualifiedTransformer extends AbstractTransformer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return true;
+        return $tokens->isAnyTokenKindsFound([FCT::T_NAME_QUALIFIED, FCT::T_NAME_FULLY_QUALIFIED, FCT::T_NAME_RELATIVE]);
     }
 
     public function processToken(Tokens $tokens, Token $token, int $index): void
