@@ -91,7 +91,6 @@ final class ImportProcessor
      */
     public static function tokenizeName(string $name): array
     {
-        $newTokens = [];
         $tokens = [];
 
         if ('\\' === $name[0]) {
