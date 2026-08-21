@@ -41,7 +41,7 @@ final class NamedArgumentTransformer extends AbstractTransformer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([\T_STRING]);
+        return $tokens->isAllTokenKindsFound([\T_STRING, ':']);
     }
 
     public function processToken(Tokens $tokens, Token $token, int $index): void
