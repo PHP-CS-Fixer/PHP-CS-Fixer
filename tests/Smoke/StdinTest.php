@@ -113,6 +113,21 @@ final class StdinTest extends AbstractSmokeTestCase
         );
     }
 
+    public function testFixingStdinWithRawFormatIsNotDecorated(): void
+    {
+        $cwd = __DIR__.'/../..';
+
+        $input = "<?php\n\n\$a = '<comment>text</comment>';\n";
+
+        $result = CommandExecutor::create(
+            'printf %s '.escapeshellarg($input)
+                .' | php php-cs-fixer fix --sequential --rules=@PSR2 --using-cache=no --config=- --format=raw --ansi -',
+            $cwd,
+        )->getResult(false);
+
+        self::assertSame($input, $result->getOutput());
+    }
+
     public function testRawFormatIsRejectedForRegularPath(): void
     {
         $cwd = __DIR__.'/../..';
