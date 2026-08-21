@@ -39,6 +39,11 @@ final class NameQualifiedTransformer extends AbstractTransformer
         return 8_00_00;
     }
 
+    public function isCandidate(Tokens $tokens): bool
+    {
+        return true;
+    }
+
     public function processToken(Tokens $tokens, Token $token, int $index): void
     {
         if ($token->isGivenKind([FCT::T_NAME_QUALIFIED, FCT::T_NAME_FULLY_QUALIFIED])) {
