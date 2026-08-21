@@ -66,7 +66,7 @@ final class NullableTypeTransformer extends AbstractTransformer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return true;
+        return $tokens->isTokenKindFound('?');
     }
 
     public function processToken(Tokens $tokens, Token $token, int $index): void
