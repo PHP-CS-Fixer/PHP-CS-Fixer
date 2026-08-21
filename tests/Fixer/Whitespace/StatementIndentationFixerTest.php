@@ -1517,6 +1517,23 @@ $foo = [
                 PHP,
         ];
 
+        yield 'multiline ternary operator as class constant default value' => [
+            '<?php
+class Foo
+{
+    const BAR = BAZ
+        ? 1
+        : 2;
+}',
+            '<?php
+class Foo
+{
+    const BAR = BAZ
+        ? 1
+    : 2;
+}',
+        ];
+
         yield 'braceless if with return' => [
             <<<'PHP'
                 <?php
