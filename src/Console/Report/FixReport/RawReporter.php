@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\Console\Report\FixReport;
 
 use PhpCsFixer\FileReader;
-use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
  * Reporter that prints the resulting file instead of a report about it.
@@ -32,6 +31,11 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
  */
 final class RawReporter implements ReporterInterface
 {
+    /**
+     * Path under which the file read from STDIN is reported.
+     */
+    private const STDIN_PATH = 'php://stdin';
+
     public function getFormat(): string
     {
         return 'raw';
@@ -39,19 +43,27 @@ final class RawReporter implements ReporterInterface
 
     public function generate(ReportSummary $reportSummary): string
     {
-        $content = null;
+        $changed = $reportSummary->getChanged();
+        $unexpectedPaths = array_diff(array_keys($changed), [self::STDIN_PATH]);
 
-        foreach ($reportSummary->getChanged() as $fixResult) {
-            if (isset($fixResult['newContent'])) {
-                $content = $fixResult['newContent'];
-
-                break;
-            }
+        if ([] !== $unexpectedPaths) {
+            throw new \LogicException(\sprintf(
+                'Format "raw" is available for STDIN only, got a fix result for "%s".',
+                implode('", "', $unexpectedPaths),
+            ));
         }
 
-        // Nothing was fixed, so the input already follows the rules and has to be passed through as it was provided.
-        $content ??= FileReader::createSingleton()->read('php://stdin');
+        $fixResult = $changed[self::STDIN_PATH] ?? null;
 
-        return $reportSummary->isDecoratedOutput() ? OutputFormatter::escape($content) : $content;
+        if (null === $fixResult) {
+            // Nothing was fixed, so there is no fix result and the input is passed through as it was provided.
+            return FileReader::createSingleton()->read(self::STDIN_PATH);
+        }
+
+        if (!isset($fixResult['newContent'])) {
+            throw new \LogicException('Fix result for STDIN does not carry the fixed content.');
+        }
+
+        return $fixResult['newContent'];
     }
 }

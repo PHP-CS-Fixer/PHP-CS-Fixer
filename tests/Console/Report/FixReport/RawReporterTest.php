@@ -32,18 +32,13 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(RawReporter::class)]
 final class RawReporterTest extends TestCase
 {
-    private ?string $originalStdinContent = null;
+    private const OLD_CONTENT = "<?php \$a = (int)\$b;\n";
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->originalStdinContent = self::readStdinContentOfFileReader();
-    }
+    private const NEW_CONTENT = "<?php \$a = (int) \$b;\n";
 
     protected function tearDown(): void
     {
-        self::writeStdinContentOfFileReader($this->originalStdinContent);
+        self::writeStdinContentOfFileReader(null);
 
         parent::tearDown();
     }
@@ -55,15 +50,15 @@ final class RawReporterTest extends TestCase
 
     public function testGenerateForFixedFile(): void
     {
-        self::writeStdinContentOfFileReader("<?php \$a = (int)\$b;\n");
+        self::writeStdinContentOfFileReader(self::OLD_CONTENT);
 
         self::assertSame(
-            "<?php \$a = (int) \$b;\n",
+            self::NEW_CONTENT,
             (new RawReporter())->generate(self::createReportSummary([
                 'php://stdin' => [
                     'appliedFixers' => ['cast_spaces'],
-                    'diff' => '',
-                    'newContent' => "<?php \$a = (int) \$b;\n",
+                    'diff' => self::createDiff(),
+                    'newContent' => self::NEW_CONTENT,
                 ],
             ])),
         );
@@ -71,43 +66,61 @@ final class RawReporterTest extends TestCase
 
     public function testGenerateForFileThatWasNotFixed(): void
     {
-        self::writeStdinContentOfFileReader("<?php \$a = (int) \$b;\n");
+        self::writeStdinContentOfFileReader(self::NEW_CONTENT);
 
         self::assertSame(
-            "<?php \$a = (int) \$b;\n",
+            self::NEW_CONTENT,
             (new RawReporter())->generate(self::createReportSummary([])),
         );
     }
 
-    public function testGenerateForFixResultWithoutContent(): void
+    public function testGenerateForDecoratedOutputIsNotEscaped(): void
     {
-        self::writeStdinContentOfFileReader("<?php \$a = (int)\$b;\n");
+        self::writeStdinContentOfFileReader("<?php \$a = '<foo>';\n");
 
         self::assertSame(
-            "<?php \$a = (int)\$b;\n",
-            (new RawReporter())->generate(self::createReportSummary([
-                'someFile.php' => [
-                    'appliedFixers' => ['cast_spaces'],
-                    'diff' => '',
-                ],
-            ])),
+            "<?php \$a = '<foo>';\n",
+            (new RawReporter())->generate(self::createReportSummary([], true)),
         );
     }
 
-    public function testGenerateForDecoratedOutput(): void
+    public function testGenerateThrowsForPathOtherThanStdin(): void
     {
-        self::writeStdinContentOfFileReader('');
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Format "raw" is available for STDIN only, got a fix result for "someFile.php".');
 
-        self::assertSame(
-            "\\<?php \$a = 1;\n",
-            (new RawReporter())->generate(self::createReportSummary([
-                'php://stdin' => [
-                    'appliedFixers' => ['no_extra_blank_lines'],
-                    'diff' => '',
-                    'newContent' => "<?php \$a = 1;\n",
-                ],
-            ], true)),
-        );
+        (new RawReporter())->generate(self::createReportSummary([
+            'someFile.php' => [
+                'appliedFixers' => ['cast_spaces'],
+                'diff' => self::createDiff(),
+                'newContent' => self::NEW_CONTENT,
+            ],
+        ]));
+    }
+
+    public function testGenerateThrowsForFixResultWithoutNewContent(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Fix result for STDIN does not carry the fixed content.');
+
+        (new RawReporter())->generate(self::createReportSummary([
+            'php://stdin' => [
+                'appliedFixers' => ['cast_spaces'],
+                'diff' => self::createDiff(),
+            ],
+        ]));
+    }
+
+    private static function createDiff(): string
+    {
+        return <<<'DIFF'
+            --- php://stdin
+            +++ php://stdin
+            @@ -1 +1 @@
+            -<?php $a = (int)$b;
+            +<?php $a = (int) $b;
+
+            DIFF;
     }
 
     /**
@@ -124,15 +137,6 @@ final class RawReporterTest extends TestCase
             true,
             $isDecoratedOutput,
         );
-    }
-
-    private static function readStdinContentOfFileReader(): ?string
-    {
-        return \Closure::bind(
-            static fn (FileReader $reader): ?string => $reader->stdinContent,
-            null,
-            FileReader::class,
-        )(FileReader::createSingleton());
     }
 
     private static function writeStdinContentOfFileReader(?string $content): void

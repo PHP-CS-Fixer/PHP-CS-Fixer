@@ -277,6 +277,10 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
         $reporter = $resolver->getReporter();
 
+        // The `raw` report is the analysed file itself and is meant to be piped, so it is never decorated,
+        // no matter what the output says. Decoration of STDERR is not affected.
+        $isReportDecorated = $output->isDecorated() && 'raw' !== $reporter->getFormat();
+
         $stdErr = $output instanceof ConsoleOutputInterface
             ? $output->getErrorOutput()
             : ('txt' === $reporter->getFormat() ? $output : null);
@@ -423,10 +427,10 @@ use Symfony\Component\Stopwatch\Stopwatch;
             memory_get_peak_usage(true) + $runner->getWorkersMemoryUsage(),
             OutputInterface::VERBOSITY_VERBOSE <= $verbosity,
             $resolver->isDryRun(),
-            $output->isDecorated(),
+            $isReportDecorated,
         );
 
-        $output->isDecorated()
+        $isReportDecorated
             ? $output->write($reporter->generate($reportSummary))
             : $output->write($reporter->generate($reportSummary), false, OutputInterface::OUTPUT_RAW);
 
