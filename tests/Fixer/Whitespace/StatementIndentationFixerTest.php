@@ -1538,6 +1538,56 @@ $foo = [
                 PHP,
         ];
 
+        yield 'multiline nested ternary operator in class constant' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    const BAR = A
+                        ? B
+                        ? C
+                        ? D
+                        : E
+                        : F
+                        : G;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    const BAR = A
+                    ? B
+                        ? C
+                            ? D
+                            : E
+                        : F
+                    : G;
+                }
+                PHP,
+        ];
+
+        yield 'multiline ternary operator in class constant with indentation to adjust' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    const BAR = A
+                        ? B
+                        : C;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    const BAR = A
+                                ? B
+                    : C;
+                }
+                PHP,
+        ];
+
         yield 'braceless if with return' => [
             <<<'PHP'
                 <?php
