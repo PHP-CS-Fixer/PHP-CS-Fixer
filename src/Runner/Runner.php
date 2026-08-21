@@ -539,8 +539,13 @@ final class Runner
             Tokens::clearCache();
 
             if (null !== $fixInfo) {
-                $relativePath = $this->directory->getRelativePathTo($file->__toString());
-                $changed[$relativePath] = $fixInfo;
+                // `php://stdin` is a stream URI, not a filesystem path, so it must not be run through
+                // path normalisation, which would report it as `php:\stdin` on Windows.
+                $path = $file instanceof StdinFileInfo
+                    ? $file->getRealPath()
+                    : $this->directory->getRelativePathTo($file->__toString());
+
+                $changed[$path] = $fixInfo;
 
                 if ($this->stopOnViolation) {
                     break;
