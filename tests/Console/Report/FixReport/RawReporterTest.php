@@ -36,6 +36,15 @@ final class RawReporterTest extends TestCase
 
     private const NEW_CONTENT = "<?php \$a = (int) \$b;\n";
 
+    private const DIFF = <<<'DIFF'
+        --- php://stdin
+        +++ php://stdin
+        @@ -1 +1 @@
+        -<?php $a = (int)$b;
+        +<?php $a = (int) $b;
+
+        DIFF;
+
     protected function tearDown(): void
     {
         self::writeStdinContentOfFileReader(null);
@@ -57,7 +66,7 @@ final class RawReporterTest extends TestCase
             (new RawReporter())->generate(self::createReportSummary([
                 'php://stdin' => [
                     'appliedFixers' => ['cast_spaces'],
-                    'diff' => self::createDiff(),
+                    'diff' => self::DIFF,
                     'newContent' => self::NEW_CONTENT,
                 ],
             ])),
@@ -74,7 +83,13 @@ final class RawReporterTest extends TestCase
         );
     }
 
-    public function testGenerateForDecoratedOutputIsNotEscaped(): void
+    /**
+     * `FixCommand` builds the `ReportSummary` with `$isDecoratedOutput` already forced to `false` for
+     * this format, so the reporter is not expected to see a decorated summary in production. This
+     * asserts the reporter does not escape on its own even when handed one, so the guarantee that
+     * STDOUT holds the file byte for byte does not rest on that single call site.
+     */
+    public function testGenerateDoesNotEscapeEvenWhenSummaryClaimsDecoratedOutput(): void
     {
         self::writeStdinContentOfFileReader("<?php \$a = '<foo>';\n");
 
@@ -92,7 +107,7 @@ final class RawReporterTest extends TestCase
         (new RawReporter())->generate(self::createReportSummary([
             'someFile.php' => [
                 'appliedFixers' => ['cast_spaces'],
-                'diff' => self::createDiff(),
+                'diff' => self::DIFF,
                 'newContent' => self::NEW_CONTENT,
             ],
         ]));
@@ -106,21 +121,9 @@ final class RawReporterTest extends TestCase
         (new RawReporter())->generate(self::createReportSummary([
             'php://stdin' => [
                 'appliedFixers' => ['cast_spaces'],
-                'diff' => self::createDiff(),
+                'diff' => self::DIFF,
             ],
         ]));
-    }
-
-    private static function createDiff(): string
-    {
-        return <<<'DIFF'
-            --- php://stdin
-            +++ php://stdin
-            @@ -1 +1 @@
-            -<?php $a = (int)$b;
-            +<?php $a = (int) $b;
-
-            DIFF;
     }
 
     /**
