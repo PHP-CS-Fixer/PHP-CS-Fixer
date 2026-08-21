@@ -154,6 +154,7 @@ abstract class AbstractTransformerTestCase extends TestCase
                 self::assertTrue('' === $modification || \is_int($modification));
 
                 if ('' === $modification) {
+                    // in case transformer removed the token (permanently or temporarily to replace it via slice insertion later)
                     continue;
                 }
 
