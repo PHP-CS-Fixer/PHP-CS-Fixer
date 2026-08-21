@@ -49,11 +49,6 @@ abstract class AbstractTransformer implements TransformerInterface
         }
     }
 
-    public function isCandidate(Tokens $tokens): bool
-    {
-        return true;
-    }
-
     abstract public function getCustomTokens(): array;
 
     // @deprecated override `process(Tokens $tokens)` instead
