@@ -304,8 +304,40 @@ jobs:
           PHP_CS_FIXER_FUTURE_MODE: 1
         run: php php-cs-fixer check --diff -vvv --config .php-cs-fixer.php-lowest.php
 
+  bench:
+    needs: setup
+    continue-on-error: ${{ matrix.allow-to-fail == 'yes' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - operating-system: ubuntu-24.04
+            php-version: ${{ needs.setup.outputs.PHP_MAX }}
+
+    name: Benchmark PHP ${{ matrix.php-version }}
+
+    runs-on: ${{ matrix.operating-system }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Add PHPBench
+        run: |
+          composer require --dev --no-update phpbench/phpbench:^1.7
+
+      - name: Setup PHP with Composer deps
+        uses: ./.github/composite-actions/setup-php-with-composer-deps
+        with:
+          os: ${{ runner.os }}
+          php: ${{ matrix.php-version }}
+
+      - name: Run individual rules
+        run: |
+          ./vendor/bin/phpbench run --report="aggregate-preview"
+
   releasable:
-    needs: [setup, tests]
+    needs: [setup, tests, bench]
     if: always()
     name: Releasable checks
 
