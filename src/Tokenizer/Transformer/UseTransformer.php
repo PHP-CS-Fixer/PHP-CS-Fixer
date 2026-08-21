@@ -33,8 +33,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class UseTransformer extends AbstractTransformer
 {
-    private const CLASS_TYPES = [\T_TRAIT, FCT::T_ENUM];
-
     public function getPriority(): int
     {
         // Should run after CurlyBraceTransformer and before TypeColonTransformer
@@ -48,7 +46,9 @@ final class UseTransformer extends AbstractTransformer
 
     public function processToken(Tokens $tokens, Token $token, int $index): void
     {
-        if ($token->isGivenKind(\T_USE) && $this->isUseForLambda($tokens, $index)) {
+        $id = $token->getId();
+
+        if (\T_USE === $id && $this->isUseForLambda($tokens, $index)) {
             $tokens[$index] = new Token([CT::T_USE_LAMBDA, $token->getContent()]);
 
             return;
@@ -57,11 +57,11 @@ final class UseTransformer extends AbstractTransformer
         // Only search inside class/trait body for `T_USE` for traits.
         // Cannot import traits inside interfaces or anywhere else
 
-        if ($token->isGivenKind(\T_CLASS)) {
+        if (\T_CLASS === $id) {
             if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(\T_DOUBLE_COLON)) {
                 return;
             }
-        } elseif (!$token->isGivenKind(self::CLASS_TYPES)) {
+        } elseif (\T_TRAIT !== $id && FCT::T_ENUM !== $id) {
             return;
         }
 
@@ -71,7 +71,7 @@ final class UseTransformer extends AbstractTransformer
         while ($index < $innerLimit) {
             $token = $tokens[++$index];
 
-            if (!$token->isGivenKind(\T_USE)) {
+            if (\T_USE !== $token->getId()) {
                 continue;
             }
 
