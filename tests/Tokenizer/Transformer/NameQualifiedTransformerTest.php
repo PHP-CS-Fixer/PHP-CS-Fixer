@@ -59,6 +59,8 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
 
         $this->transformer->process($tokens);
 
+        $tokens->clearEmptyTokens();
+
         self::assertTokens($expectedTokens, $tokens);
 
         if (null === $input) {

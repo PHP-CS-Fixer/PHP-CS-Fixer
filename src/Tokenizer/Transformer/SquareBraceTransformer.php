@@ -48,6 +48,11 @@ final class SquareBraceTransformer extends AbstractTransformer
         return 5_00_00;
     }
 
+    public function isCandidate(Tokens $tokens): bool
+    {
+        return $tokens->isTokenKindFound('[');
+    }
+
     public function processToken(Tokens $tokens, Token $token, int $index): void
     {
         if ($this->isArrayDestructing($tokens, $index)) {

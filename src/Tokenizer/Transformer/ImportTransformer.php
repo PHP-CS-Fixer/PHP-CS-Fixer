@@ -45,6 +45,11 @@ final class ImportTransformer extends AbstractTransformer
         return 5_06_00;
     }
 
+    public function isCandidate(Tokens $tokens): bool
+    {
+        return $tokens->isAnyTokenKindsFound([\T_CONST, \T_FUNCTION]);
+    }
+
     public function processToken(Tokens $tokens, Token $token, int $index): void
     {
         if (!$token->isGivenKind([\T_CONST, \T_FUNCTION])) {

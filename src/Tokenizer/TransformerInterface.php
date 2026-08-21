@@ -64,6 +64,13 @@ interface TransformerInterface
     public function getRequiredPhpVersionId(): int;
 
     /**
+     * Returns whether this transformer should act upon this token collection.
+     *
+     * @see FixerInterface::isCandidate()
+     */
+    public function isCandidate(Tokens $tokens): bool;
+
+    /**
      * Process Token to transform it into custom token when needed.
      */
     public function process(Tokens $tokens): void;

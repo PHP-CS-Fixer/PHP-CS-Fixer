@@ -151,7 +151,13 @@ abstract class AbstractTransformerTestCase extends TestCase
 
         foreach ($tokens->observedModificationsPerTransformer as $appliedTransformerName => $modificationsOfTransformer) {
             foreach ($modificationsOfTransformer as $modification) {
-                self::assertIsInt($modification);
+                self::assertTrue('' === $modification || \is_int($modification));
+
+                if ('' === $modification) {
+                    // in case transformer removed the token (permanently or temporarily to replace it via slice insertion later)
+                    continue;
+                }
+
                 $customTokenName = Token::getNameForId($modification);
 
                 if ($appliedTransformerName === $transformerName) {

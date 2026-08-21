@@ -3,6 +3,15 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.21
+----------------------
+
+* fix: `StatementIndentationFixer` - do not treat ternary colon as block start (#9795)
+* perf: Introduce new candidate check for transformers (#9770)
+* perf: Optimize `NameQualifiedTransformer` token insertion (#9759)
+* CI: add BC check (#9791)
+* deps: upgrade dev-tools (#9793)
+
 Changelog for v3.95.20
 ----------------------
 
