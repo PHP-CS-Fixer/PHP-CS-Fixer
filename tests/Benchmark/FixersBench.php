@@ -118,7 +118,7 @@ final class FixersBench
      *
      * @Iterations(3)
      */
-    public function benchRunSingleRule(array $params): void
+    public function benchSingleRule(array $params): void
     {
         $this->runner->fix();
     }
