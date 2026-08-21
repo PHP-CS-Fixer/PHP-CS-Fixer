@@ -66,7 +66,7 @@ The ``--format`` option for the output format. Supported formats are ``@auto`` (
   * best fit for the AI agent (currently: ``json``) when running in an AI agent (for example, when the ``AI_AGENT`` environment variable, or another popular one, is set), unless running in GitLab CI
 
 * ``@auto,{format}`` takes ``@auto`` under CI, and {format} otherwise
-* ``raw`` prints the resulting file instead of a report about it. It is described in `Reading from standard input`_ and is available for STDIN only, using it for any other input raises an error.
+* ``raw`` prints the resulting file instead of a report about it. It is described in `Reading from standard input`_ and is available for STDIN only, using it for any other input raises an error. Automatically selected for STDIN input when ``PHP_CS_FIXER_FUTURE_MODE=1``.
 
 Agent detection only applies when the format is resolved automatically (``@auto``); an explicitly selected format (for example, ``--format=txt``) is never overridden. When both GitLab CI and an AI agent are detected, GitLab CI takes precedence and the format resolves to ``gitlab``.
 
@@ -162,19 +162,24 @@ The file provided on standard input cannot be written to, so the analysis is alw
 was passed. The outcome is therefore available in the report only, and the exit code follows the rules of the dry run.
 Config file discovery starts in the current working directory, as there is no path to derive it from.
 
-By using ``--format=raw`` the fixed file is printed to standard output instead of a report about it. That makes the
-tool usable as a step of a formatting pipeline, for example for format-on-save in an editor:
+Output formats with STDIN:
+
+* Use ``--format=raw`` to output the fixed file content directly to stdout (useful for piping or redirecting,
+  autoselected when using STDIN with ``PHP_CS_FIXER_FUTURE_MODE=1``)
+* Use ``--format=txt --diff`` to see a diff of what changes would be applied
+
+The ``raw`` format makes the tool usable as a step of a formatting pipeline, for example for format-on-save in an
+editor:
 
 .. code-block:: console
 
     php php-cs-fixer.phar fix --format=raw - < src/WordMatcher.php
 
-Everything the tool has to say about the run (the "about" line, the loaded config, the errors) goes to standard error,
-so standard output holds the file and nothing else. When there is nothing to fix, the input is passed through unchanged.
+Everything the tool has to say about the run (the "about" line, the loaded config, the errors) goes to standard error (stderr),
+so standard output (stdout) holds the file and nothing else. When there is nothing to fix, the input is passed through unchanged.
 
-The ``raw`` format is already the default one for standard input when ``PHP_CS_FIXER_FUTURE_MODE`` is enabled, and it
-will become the default one for standard input in the next MAJOR release. An explicitly passed ``--format`` is always
-respected. Using ``--format=raw`` for any input other than standard input raises an error.
+The ``raw`` format will become the default one for standard input in the next MAJOR release. An explicitly passed
+``--format`` is always respected. Using ``--format=raw`` for any input other than standard input raises an error.
 
 The ``check`` command
 ---------------------
