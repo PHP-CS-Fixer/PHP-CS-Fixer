@@ -1,0 +1,22 @@
+--TEST--
+Integration of fixers: no_line_break_near_binary_operator,method_argument_space.
+--RULESET--
+{"no_line_break_near_binary_operator": true, "method_argument_space": true}
+--EXPECT--
+<?php
+$value = [
+    1 => array_merge(
+        $array1,
+        $array2
+    )
+];
+
+--INPUT--
+<?php
+$value = [
+    1 =>
+        array_merge(
+            $array1,
+            $array2
+        )
+];
