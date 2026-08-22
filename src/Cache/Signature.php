@@ -43,9 +43,15 @@ final class Signature implements SignatureInterface
     private string $ruleCustomisationPolicyVersion;
 
     /**
-     * @param array<string, array<string, mixed>|bool> $rules
+     * @var array<string, string>
      */
-    public function __construct(string $phpVersion, string $fixerVersion, string $indent, string $lineEnding, array $rules, string $ruleCustomisationPolicyVersion)
+    private array $extraFingerprints;
+
+    /**
+     * @param array<string, array<string, mixed>|bool> $rules
+     * @param array<string, string>                    $extraFingerprints
+     */
+    public function __construct(string $phpVersion, string $fixerVersion, string $indent, string $lineEnding, array $rules, string $ruleCustomisationPolicyVersion, array $extraFingerprints = [])
     {
         $this->phpVersion = $phpVersion;
         $this->fixerVersion = $fixerVersion;
@@ -53,6 +59,7 @@ final class Signature implements SignatureInterface
         $this->lineEnding = $lineEnding;
         $this->rules = self::makeJsonEncodable($rules);
         $this->ruleCustomisationPolicyVersion = $ruleCustomisationPolicyVersion;
+        $this->extraFingerprints = $extraFingerprints;
     }
 
     public function getPhpVersion(): string
@@ -85,6 +92,11 @@ final class Signature implements SignatureInterface
         return $this->ruleCustomisationPolicyVersion;
     }
 
+    public function getExtraFingerprints(): array
+    {
+        return $this->extraFingerprints;
+    }
+
     public function equals(SignatureInterface $signature): bool
     {
         return $this->phpVersion === $signature->getPhpVersion()
@@ -92,7 +104,8 @@ final class Signature implements SignatureInterface
             && $this->indent === $signature->getIndent()
             && $this->lineEnding === $signature->getLineEnding()
             && $this->rules === $signature->getRules()
-            && $this->ruleCustomisationPolicyVersion === $signature->getRuleCustomisationPolicyVersion();
+            && $this->ruleCustomisationPolicyVersion === $signature->getRuleCustomisationPolicyVersion()
+            && $this->extraFingerprints === $signature->getExtraFingerprints();
     }
 
     /**
