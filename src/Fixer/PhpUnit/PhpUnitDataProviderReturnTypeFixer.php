@@ -71,7 +71,7 @@ final class PhpUnitDataProviderReturnTypeFixer extends AbstractPhpUnitFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before ReturnToYieldFromFixer, ReturnTypeDeclarationFixer.
+     * Must run before ColonSpaceFixer, ReturnToYieldFromFixer.
      * Must run after CleanNamespaceFixer.
      */
     public function getPriority(): int
