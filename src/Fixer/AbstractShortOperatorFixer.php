@@ -63,6 +63,10 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
 
             // check if "assign" and "before" the operator are (functionally) the same
 
+            if (!$this->isAssignTargetCandidate($tokens, $assignRange)) {
+                continue;
+            }
+
             if (RangeAnalyzer::rangeEqualsRange($tokens, $assignRange, $beforeRange)) {
                 $this->shortenOperation($tokens, $equalsIndex, $index, $assignRange, $beforeRange);
 
@@ -82,6 +86,16 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
 
             $this->shortenOperation($tokens, $equalsIndex, $index, $assignRange, $afterRange);
         }
+    }
+
+    /**
+     * Whether the assignment target may be rewritten into a shorthand operation.
+     *
+     * @param array{start: int, end: int} $assignRange
+     */
+    protected function isAssignTargetCandidate(Tokens $tokens, array $assignRange): bool
+    {
+        return true;
     }
 
     abstract protected function getReplacementToken(Token $token): Token;

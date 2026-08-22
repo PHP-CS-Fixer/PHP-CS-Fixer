@@ -45,7 +45,7 @@ final class SymfonyRiskySet extends AbstractRuleSetDefinition
             'implode_call' => true,
             'is_null' => true,
             'logical_operators' => true,
-            'long_to_shorthand_operator' => true,
+            'long_to_shorthand_operator_for_complex_targets' => true,
             'modern_serialization_methods' => true,
             'modernize_strpos' => true,
             'modernize_types_casting' => true,
