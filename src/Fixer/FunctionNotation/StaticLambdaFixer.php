@@ -126,7 +126,7 @@ final class StaticLambdaFixer extends AbstractFixer
      * Returns 'true' if the lambda itself, wrapped in parentheses, is the direct subject
      * of a '->bindTo(...)' or '->call(...)' invocation: making such a lambda static would
      * produce "Cannot bind an instance to a static closure" (deprecated in PHP 8.5).
-     * 
+     *
      * @see https://wiki.php.net/rfc/deprecations_php_8_5#deprecate_closure_binding_issues
      */
     private function isDirectSubjectOfBinding(Tokens $tokens, int $lambdaIndex, int $lambdaEndIndex): bool
