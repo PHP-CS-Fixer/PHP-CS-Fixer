@@ -3,6 +3,14 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.22
+----------------------
+
+* fix: `StaticLambdaFixer` - do not make a lambda static when it is the direct subject of bindTo() or call() (#9802)
+* chore: Implement PHPStan `Preg::replaceCallback()` extension (#9799)
+* chore: `Utils` - fix `stableSort()` and `sortFixers()` template types, remove `@phpstan-ignore` suppressions (#9798)
+* deps: bump phpstan/phpstan from 2.2.8 to 2.2.9 (#9797)
+
 Changelog for v3.95.21
 ----------------------
 
