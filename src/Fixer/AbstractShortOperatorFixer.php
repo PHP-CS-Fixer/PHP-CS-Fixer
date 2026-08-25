@@ -93,10 +93,7 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
      *
      * @param array{start: int, end: int} $assignRange
      */
-    protected function isAssignTargetCandidate(Tokens $tokens, array $assignRange): bool
-    {
-        return true;
-    }
+    abstract protected function isAssignTargetCandidate(Tokens $tokens, array $assignRange): bool;
 
     abstract protected function getReplacementToken(Token $token): Token;
 
