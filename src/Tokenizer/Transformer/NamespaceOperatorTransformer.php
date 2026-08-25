@@ -35,7 +35,12 @@ final class NamespaceOperatorTransformer extends AbstractTransformer
         return 5_03_00;
     }
 
-    public function process(Tokens $tokens, Token $token, int $index): void
+    public function isCandidate(Tokens $tokens): bool
+    {
+        return $tokens->isTokenKindFound(\T_NAMESPACE);
+    }
+
+    public function processToken(Tokens $tokens, Token $token, int $index): void
     {
         if (!$token->isGivenKind(\T_NAMESPACE)) {
             return;

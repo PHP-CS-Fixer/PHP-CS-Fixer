@@ -39,7 +39,12 @@ final class AttributeTransformer extends AbstractTransformer
         return 8_00_00;
     }
 
-    public function process(Tokens $tokens, Token $token, int $index): void
+    public function isCandidate(Tokens $tokens): bool
+    {
+        return $tokens->isTokenKindFound(\T_ATTRIBUTE);
+    }
+
+    public function processToken(Tokens $tokens, Token $token, int $index): void
     {
         if (!$tokens[$index]->isGivenKind(\T_ATTRIBUTE)) {
             return;
