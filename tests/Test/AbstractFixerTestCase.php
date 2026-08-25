@@ -26,10 +26,7 @@ use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
-use PhpCsFixer\Linter\CachingLinter;
-use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
-use PhpCsFixer\Linter\ProcessLinter;
 use PhpCsFixer\PhpunitConstraintIsIdenticalString\Constraint\IsIdenticalString;
 use PhpCsFixer\Preg;
 use PhpCsFixer\StdinFileInfo;
@@ -57,6 +54,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 abstract class AbstractFixerTestCase extends TestCase
 {
     use AssertTokensTrait;
+    use LinterProviderTrait;
 
     /**
      * do not modify this structure without prior discussion.
@@ -526,7 +524,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
             self::assertSameSize(
                 $tokens,
-                array_unique(array_map(static fn (Token $token): string => spl_object_hash($token), $tokens->toArray())),
+                array_unique(array_map(static fn (Token $token): int => spl_object_id($token), $tokens->toArray())),
                 'Token items inside Tokens collection must be unique.',
             );
 
@@ -582,21 +580,6 @@ abstract class AbstractFixerTestCase extends TestCase
         }
 
         return new \ReflectionClass($this->fixer);
-    }
-
-    private function getLinter(): LinterInterface
-    {
-        static $linter = null;
-
-        if (null === $linter) {
-            $linter = new CachingLinter(
-                filter_var(getenv('PHP_CS_FIXER_FAST_LINT_TEST_CASES'), \FILTER_VALIDATE_BOOLEAN)
-                    ? new Linter()
-                    : new ProcessLinter(),
-            );
-        }
-
-        return $linter;
     }
 
     private static function assertValidDescription(string $fixerName, string $descriptionType, string $description): void

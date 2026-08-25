@@ -15,6 +15,9 @@ inputs:
     description: tools
     required: false
     default: none
+  extensions:
+    description: PHP extensions
+    required: false
   composer-flags:
     description: Composer flags
     required: false
@@ -50,6 +53,7 @@ runs:
         version: ${{ inputs.php }}
         coverage: ${{ steps.setup-php-resolve-coverage.outputs.result }}
         tools: ${{ steps.setup-php-resolve-tools.outputs.result }}, ${{ inputs.tools }}
+        extensions: ${{ inputs.extensions }}
 
     - name: Configure Symfony Flex
       if: inputs.composer-flex-with-symfony-version

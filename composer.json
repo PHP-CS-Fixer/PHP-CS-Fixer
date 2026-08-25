@@ -52,7 +52,6 @@
         "infection/infection": "^0.32.7",
         "justinrainbow/json-schema": "^6.10.0",
         "keradus/cli-executor": "^2.3",
-        "mikey179/vfsstream": "^1.6.12",
         "php-coveralls/php-coveralls": "^2.9.1",
         "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.8",
         "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.8",

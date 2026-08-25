@@ -14,10 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Console\Command;
 
-use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamDirectory;
-use org\bovigo\vfs\vfsStreamException;
-use org\bovigo\vfs\vfsStreamWrapper;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\SelfUpdateCommand;
 use PhpCsFixer\Console\SelfUpdate\GithubClientInterface;
@@ -25,12 +21,14 @@ use PhpCsFixer\Console\SelfUpdate\NewVersionChecker;
 use PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface;
 use PhpCsFixer\PharCheckerInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfoInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @internal
@@ -42,31 +40,25 @@ use Symfony\Component\Console\Tester\CommandTester;
 #[CoversClass(SelfUpdateCommand::class)]
 final class SelfUpdateCommandTest extends TestCase
 {
-    private ?vfsStreamDirectory $root = null;
+    private string $directory;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->root = vfsStream::setup();
+        $this->directory = TestCaseUtils::createTemporaryDirectory();
 
         file_put_contents($this->getToolPath(), 'Current PHP CS Fixer.');
 
-        file_put_contents($this->root->url().'/'.self::getNewMinorReleaseVersion().'.phar', 'New minor version of PHP CS Fixer.');
-        file_put_contents($this->root->url().'/'.self::getNewMajorReleaseVersion().'.phar', 'New major version of PHP CS Fixer.');
+        file_put_contents($this->directory.'/'.self::getNewMinorReleaseVersion().'.phar', 'New minor version of PHP CS Fixer.');
+        file_put_contents($this->directory.'/'.self::getNewMajorReleaseVersion().'.phar', 'New major version of PHP CS Fixer.');
     }
 
     protected function tearDown(): void
     {
+        (new Filesystem())->remove($this->directory);
+
         parent::tearDown();
-
-        $this->root = null;
-
-        try {
-            vfsStreamWrapper::unregister();
-        } catch (vfsStreamException $exception) {
-            // ignored
-        }
     }
 
     /**
@@ -388,11 +380,11 @@ final class SelfUpdateCommandTest extends TestCase
 
     private function createToolInfoDouble(bool $isInstalledAsPhar = true): ToolInfoInterface
     {
-        return new class($this->root, $isInstalledAsPhar) implements ToolInfoInterface {
-            private vfsStreamDirectory $directory;
+        return new class($this->directory, $isInstalledAsPhar) implements ToolInfoInterface {
+            private string $directory;
             private bool $isInstalledAsPhar;
 
-            public function __construct(vfsStreamDirectory $directory, bool $isInstalledAsPhar)
+            public function __construct(string $directory, bool $isInstalledAsPhar)
             {
                 $this->directory = $directory;
                 $this->isInstalledAsPhar = $isInstalledAsPhar;
@@ -430,14 +422,14 @@ final class SelfUpdateCommandTest extends TestCase
 
             public function getPharDownloadUri(string $version): string
             {
-                return \sprintf('%s/%s.phar', $this->directory->url(), $version);
+                return \sprintf('%s/%s.phar', $this->directory, $version);
             }
         };
     }
 
     private function getToolPath(): string
     {
-        return "{$this->root->url()}/php-cs-fixer";
+        return "{$this->directory}/php-cs-fixer";
     }
 
     private static function getCurrentMajorVersion(): int

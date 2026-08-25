@@ -3,6 +3,55 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.22
+----------------------
+
+* fix: `StaticLambdaFixer` - do not make a lambda static when it is the direct subject of bindTo() or call() (#9802)
+* chore: Implement PHPStan `Preg::replaceCallback()` extension (#9799)
+* chore: `Utils` - fix `stableSort()` and `sortFixers()` template types, remove `@phpstan-ignore` suppressions (#9798)
+* deps: bump phpstan/phpstan from 2.2.8 to 2.2.9 (#9797)
+
+Changelog for v3.95.21
+----------------------
+
+* fix: `StatementIndentationFixer` - do not treat ternary colon as block start (#9795)
+* perf: Introduce new candidate check for transformers (#9770)
+* perf: Optimize `NameQualifiedTransformer` token insertion (#9759)
+* CI: add BC check (#9791)
+* deps: upgrade dev-tools (#9793)
+
+Changelog for v3.95.20
+----------------------
+
+* fix: `PsrAutoloadingFixer` - do not throw when the file cannot be resolved on disk (#9762)
+* refactor: Transformers - move looping over tokens directly into each transformer individually (#9782)
+* test: drop `mikey179/vfsstream` (#9787)
+* test: NoUnusedImportsFixerTest - add new cases around quoted values (#9784)
+
+Changelog for v3.95.19
+----------------------
+
+* fix: binary_operator_spaces alignment for nested single-line arrays in multiline array (#9654)
+* fix: `ClassDefinitionFixer` - keep multiline constructor args when anonymous class has both `extends` and `implements` (#9625)
+* fix: `SelfStaticAccessorFixer` - do not stop fixing a class after a `static` return type (#9774)
+* chore: Fix incorrect URL in CommentsAnalyzer.php docblock (#9772)
+* chore: `Runner` - ignore coverage of non-deterministic parallel branches (#9785)
+* CI: fix using `PHP_CS_FIXER_FAST_LINT_TEST_CASES` (#9783)
+* deps: bump phpstan/phpstan from 2.2.7 to 2.2.8 in /dev-tools in the phpstan group (#9779)
+* deps: bump squizlabs/php_codesniffer from 4.0.1 to 4.0.4 in /dev-tools (#9768)
+* deps: bump the all group across 1 directory with 2 updates (#9767)
+* test: introduce `TestCaseUtils::createTemporaryDirectory()` helper (#9788)
+* test: ProjectCodeTest - restore the duplicate check in data providers (#9761)
+* test: `AbstractFixerTestCase` - use `spl_object_id()` to fix PHP 8.6 deprecations (#9786)
+
+Changelog for v3.95.18
+----------------------
+
+* CI: attach provenance and SBOM attestations to the released image (#9751)
+* deps: bump the phpstan group in /dev-tools with 2 updates (#9748)
+* deps: update dev-tools (#9754)
+* perf: Limit token search in `simplified_if_return` (#9747)
+
 Changelog for v3.95.17
 ----------------------
 
