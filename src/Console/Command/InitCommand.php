@@ -191,6 +191,15 @@ final class InitCommand extends Command
             array_unique(array_filter($sets, static fn ($item) => 'none' !== $item)),
         );
 
+        $io->note([
+            'By default, PHP CS Fixer will looks for `*.php` files excluding `./vendor/` dir.',
+        ]);
+        $useDefaultFinder = 'yes' === $io->choice(
+            'Do you want to rely on default file finder, or do you want to customize it?',
+            ['yes' => 'default', 'no' => 'customizable'],
+            'yes',
+        );
+
         $readResult = @file_get_contents(__DIR__.'/../../../resources/.php-cs-fixer.dist.php.template');
         if (false === $readResult) {
             throw new IOException('Failed to read template file.');
@@ -200,6 +209,7 @@ final class InitCommand extends Command
             [
                 '/*{{ IS_RISKY_ALLOWED }}*/',
                 '/*{{ RULES }}*/',
+                '/*{{ CUSTOMIZABLE_FINDER }}*/',
             ],
             [
                 $isRiskyAllowed ? 'true' : 'false',
@@ -210,6 +220,17 @@ final class InitCommand extends Command
                         $rules,
                     ),
                 )."\n    ]",
+                $useDefaultFinder
+                    ? ''
+                    : "// 💡 additional files, eg bin entry file
+            // ->append([__DIR__.'/bin-entry-file'])
+            // 💡 folders to exclude, if any
+            // ->exclude([/* ... */])
+            // 💡 path patterns to exclude, if any
+            // ->notPath([/* ... */])
+            // 💡 extra configs
+            // ->ignoreDotFiles(false) // true by default in v3, false in v4 or future mode
+            // ->ignoreVCS(true) // true by default",
             ],
             $readResult,
         );
