@@ -104,6 +104,11 @@ class Dto
 ',
         ];
 
+        yield 'closure with use clause' => [
+            "<?php\n\$bar = function () use (\$baz): ?int {};\n",
+            "<?php\n\$bar = function () use (\$baz): int|null {};\n",
+        ];
+
         yield 'skips more than two atomic types' => [
             "<?php\nstatic fn (int|null|string \$bar): bool => true;\n",
         ];
@@ -181,6 +186,11 @@ class Dto
     public ?int $count;
 }
 ',
+        ];
+
+        yield 'closure with use clause' => [
+            "<?php\n\$bar = function () use (\$baz): null|int {};\n",
+            "<?php\n\$bar = function () use (\$baz): ?int {};\n",
         ];
 
         yield 'space after ?' => [
