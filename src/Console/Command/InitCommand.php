@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Console\Command;
 
 use PhpCsFixer\Console\Application;
+use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\RuleSet\Sets\AutoRiskySet;
@@ -60,13 +61,13 @@ final class InitCommand extends Command
 
         $io = new SymfonyStyle($input, $stdErr);
 
-        $io->warning('This command is experimental');
-
         if (file_exists(self::FIXER_FILENAME)) {
             $io->error(\sprintf('Configuration file `%s` already exists.', self::FIXER_FILENAME));
 
             return Command::FAILURE;
         }
+
+        $io->warning('This command is experimental');
 
         $io->note([
             'While we start, we must tell you that we put our diligence to NOT change the meaning of your codebase.',
@@ -98,12 +99,26 @@ final class InitCommand extends Command
         };
         $setsBehindAutoSet = $generateSetsBehindAutoSet();
 
+        $formatReference = static function (string $text): string {
+            $text = Preg::replace(
+                '/``(.+?)``/',
+                '<fg=blue>$1</>',
+                $text,
+            );
+
+            return Preg::replace(
+                '/`(.+?) <(.+?)>`_/',
+                '<href=$2;fg=bright-blue;options=underscore>$1 ($2)</>',
+                $text,
+            );
+        };
+
         $io->listing(
             array_map(
                 static fn (RuleSetDefinitionInterface $item): string => \sprintf(
                     '<fg=blue>`%s`</> - %s',
                     $item->getName(),
-                    $item->getDescription(),
+                    $formatReference($item->getDescription()),
                 ),
                 array_map(
                     static fn (string $name): RuleSetDefinitionInterface => $setsByName[$name], // @phpstan-ignore-line offsetAccess.notFound
@@ -158,7 +173,7 @@ final class InitCommand extends Command
             array_combine(
                 $extraSets,
                 array_map(
-                    static fn (string $item): string => $setsByName[$item]->getDescription(), // @phpstan-ignore-line offsetAccess.notFound
+                    static fn (string $item): string => $formatReference($setsByName[$item]->getDescription()), // @phpstan-ignore-line offsetAccess.notFound
                     $extraSets,
                 ),
             ) + ['none' => 'none'],
