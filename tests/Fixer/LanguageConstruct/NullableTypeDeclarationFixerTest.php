@@ -188,6 +188,11 @@ class Dto
 ',
         ];
 
+        yield 'closure with use clause' => [
+            "<?php\n\$bar = function () use (\$baz): null|int {};\n",
+            "<?php\n\$bar = function () use (\$baz): ?int {};\n",
+        ];
+
         yield 'space after ?' => [
             '<?php
 class Foo

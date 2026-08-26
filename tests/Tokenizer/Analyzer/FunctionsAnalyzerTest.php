@@ -766,6 +766,16 @@ class(){};
 
         yield ['<?php function($a): /* not sure if really an array */array {};', 1, new TypeAnalysis('array', 8, 8)];
 
+        yield ['<?php function() use ($a) {};', 1, null];
+
+        yield ['<?php function($a) use ($b): array {};', 1, new TypeAnalysis('array', 13, 13)];
+
+        yield ['<?php function($a) use (&$b): array {};', 1, new TypeAnalysis('array', 14, 14)];
+
+        yield ['<?php function($a) use ($b, $c): \Foo\Bar {};', 1, new TypeAnalysis('\Foo\Bar', 16, 19)];
+
+        yield ['<?php function($a) use ($b): /* not sure if really an array */array {};', 1, new TypeAnalysis('array', 14, 14)];
+
         yield ['<?php fn() => null;', 1, null];
 
         yield ['<?php fn(array $a) => null;', 1, null];
@@ -775,16 +785,6 @@ class(){};
         yield ['<?php fn($a): \Foo\Bar => null;', 1, new TypeAnalysis('\Foo\Bar', 7, 10)];
 
         yield ['<?php fn($a): /* not sure if really an array */array => null;', 1, new TypeAnalysis('array', 8, 8)];
-
-        yield ['<?php function() use ($a) {};', 1, null];
-
-        yield ['<?php function($b) use ($a): array {};', 1, new TypeAnalysis('array', 13, 13)];
-
-        yield ['<?php function($b) use (&$a): array {};', 1, new TypeAnalysis('array', 14, 14)];
-
-        yield ['<?php function($c) use ($a, $b): \Foo\Bar {};', 1, new TypeAnalysis('\Foo\Bar', 16, 19)];
-
-        yield ['<?php function($c) use ($a): /* not sure if really an array */array {};', 1, new TypeAnalysis('array', 14, 14)];
     }
 
     /**
