@@ -44,34 +44,39 @@ final class NameQualifiedTransformer extends AbstractTransformer
         return $tokens->isAnyTokenKindsFound([FCT::T_NAME_QUALIFIED, FCT::T_NAME_FULLY_QUALIFIED, FCT::T_NAME_RELATIVE]);
     }
 
-    public function processToken(Tokens $tokens, Token $token, int $index): void
+    public function process(Tokens $tokens): void
     {
-        if ($token->isGivenKind([FCT::T_NAME_QUALIFIED, FCT::T_NAME_FULLY_QUALIFIED])) {
-            $this->transformQualified($tokens, $token, $index);
-        } elseif ($token->isGivenKind(FCT::T_NAME_RELATIVE)) {
-            $this->transformRelative($tokens, $token, $index);
+        $slices = [];
+
+        foreach ($tokens as $index => $token) {
+            $id = $token->getId();
+
+            if (
+                FCT::T_NAME_QUALIFIED !== $id
+                && FCT::T_NAME_FULLY_QUALIFIED !== $id
+                && FCT::T_NAME_RELATIVE !== $id
+            ) {
+                continue;
+            }
+
+            $content = $token->getContent();
+            \assert('' !== $content);
+
+            $newTokens = ImportProcessor::tokenizeName($content);
+
+            if (FCT::T_NAME_RELATIVE === $id) {
+                $newTokens[0] = new Token([\T_NAMESPACE, 'namespace']);
+            }
+
+            $slices[$index] = $newTokens;
+            $tokens->clearAt($index);
         }
+
+        $tokens->insertSlices($slices);
     }
 
     public function getCustomTokens(): array
     {
         return [];
-    }
-
-    private function transformQualified(Tokens $tokens, Token $token, int $index): void
-    {
-        \assert('' !== $token->getContent());
-        $newTokens = ImportProcessor::tokenizeName($token->getContent());
-
-        $tokens->overrideRange($index, $index, $newTokens);
-    }
-
-    private function transformRelative(Tokens $tokens, Token $token, int $index): void
-    {
-        \assert('' !== $token->getContent());
-        $newTokens = ImportProcessor::tokenizeName($token->getContent());
-        $newTokens[0] = new Token([\T_NAMESPACE, 'namespace']);
-
-        $tokens->overrideRange($index, $index, $newTokens);
     }
 }

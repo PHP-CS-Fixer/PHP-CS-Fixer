@@ -64,6 +64,8 @@ final class TokensWithObservedTransformers extends Tokens
             $transformer->process($this);
         }
 
+        $this->clearEmptyTokens();
+
         $this->currentTransformer = null;
     }
 

@@ -3,6 +3,28 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.23
+----------------------
+
+* fix: `FunctionsAnalyzer` - detect return type of a closure with a `use` clause (#9806)
+
+Changelog for v3.95.22
+----------------------
+
+* fix: `StaticLambdaFixer` - do not make a lambda static when it is the direct subject of bindTo() or call() (#9802)
+* chore: Implement PHPStan `Preg::replaceCallback()` extension (#9799)
+* chore: `Utils` - fix `stableSort()` and `sortFixers()` template types, remove `@phpstan-ignore` suppressions (#9798)
+* deps: bump phpstan/phpstan from 2.2.8 to 2.2.9 (#9797)
+
+Changelog for v3.95.21
+----------------------
+
+* fix: `StatementIndentationFixer` - do not treat ternary colon as block start (#9795)
+* perf: Introduce new candidate check for transformers (#9770)
+* perf: Optimize `NameQualifiedTransformer` token insertion (#9759)
+* CI: add BC check (#9791)
+* deps: upgrade dev-tools (#9793)
+
 Changelog for v3.95.20
 ----------------------
 

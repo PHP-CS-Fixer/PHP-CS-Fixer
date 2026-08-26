@@ -325,6 +325,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
             if ($isPropertyStart || $token->isGivenKind(self::BLOCK_SIGNATURE_FIRST_TOKENS)) {
                 $lastWhitespaceIndex = null;
                 $closingParenthesisIndex = null;
+                $ternaryLevel = 0;
 
                 for ($endIndex = $index + 1, $max = \count($tokens); $endIndex < $max; ++$endIndex) {
                     $endToken = $tokens[$endIndex];
@@ -346,7 +347,19 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                         break;
                     }
 
+                    if ($endToken->equals('?')) {
+                        ++$ternaryLevel;
+
+                        continue;
+                    }
+
                     if ($endToken->equals(':')) {
+                        if ($ternaryLevel > 0) {
+                            --$ternaryLevel;
+
+                            continue;
+                        }
+
                         if ($token->isGivenKind([\T_CASE, \T_DEFAULT])) {
                             $caseBlockStarts[$endIndex] = $index;
                         } else {

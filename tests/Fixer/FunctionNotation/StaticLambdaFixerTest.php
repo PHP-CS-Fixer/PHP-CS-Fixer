@@ -45,6 +45,28 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
      */
     public static function provideFixCases(): iterable
     {
+        yield 'do not fix a lambda that is the direct subject of bindTo' => [
+            '<?php $a = (function () { return 1; })->bindTo(new stdClass());',
+        ];
+
+        yield 'do not fix an arrow function that is the direct subject of bindTo (immediately invoked)' => [
+            '<?php $foobar = new Foobar(); echo (fn () => $foobar->sayHello())->bindTo(null, Foobar::class)();',
+        ];
+
+        yield 'do not fix a lambda that is the direct subject of call' => [
+            '<?php $b = (function () { return $x; })->call(new stdClass());',
+        ];
+
+        yield 'fix a lambda argument of a call whose return value is bound' => [
+            '<?php echo foo(static function () { return 1; })->bindTo(new stdClass());',
+            '<?php echo foo(function () { return 1; })->bindTo(new stdClass());',
+        ];
+
+        yield 'fix an immediately invoked lambda' => [
+            '<?php echo (static function () { return 1; })();',
+            '<?php echo (function () { return 1; })();',
+        ];
+
         yield 'sample' => [
             "<?php\n\$a = static function () use (\$b)\n{   echo \$b;\n};",
             "<?php\n\$a = function () use (\$b)\n{   echo \$b;\n};",
