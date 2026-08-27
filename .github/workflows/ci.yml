@@ -332,7 +332,7 @@ jobs:
           os: ${{ runner.os }}
           php: ${{ matrix.php-version }}
 
-      - name: Run individual rules
+      - name: Run benchmark tests
         run: |
           ./vendor/bin/phpbench run --report="aggregate-preview"
 
