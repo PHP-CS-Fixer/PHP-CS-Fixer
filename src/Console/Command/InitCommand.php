@@ -15,15 +15,18 @@ declare(strict_types=1);
 namespace PhpCsFixer\Console\Command;
 
 use PhpCsFixer\Console\Application;
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixer;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
+use PhpCsFixer\RuleSet\Sets\AutoPHPUnitMigrationRiskySet;
 use PhpCsFixer\RuleSet\Sets\AutoRiskySet;
 use PhpCsFixer\RuleSet\Sets\AutoSet;
 use PhpCsFixer\RuleSet\Sets\PhpCsFixerRiskySet;
 use PhpCsFixer\RuleSet\Sets\PhpCsFixerSet;
 use PhpCsFixer\RuleSet\Sets\SymfonyRiskySet;
 use PhpCsFixer\RuleSet\Sets\SymfonySet;
+use PhpCsFixer\Utils;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -122,6 +125,7 @@ final class InitCommand extends Command
             ),
         );
 
+        /** @var array<string, array<string, mixed>|bool> $rules */
         $rules = [];
 
         $useAutoSet = 'yes' === $io->choice(
@@ -131,9 +135,9 @@ final class InitCommand extends Command
         );
 
         if ($useAutoSet) {
-            $rules[] = $setAuto->getName();
+            $rules[$setAuto->getName()] = true;
             if ($isRiskyAllowed) {
-                $rules[] = $setAutoRisky->getName();
+                $rules[$setAutoRisky->getName()] = true;
             }
         }
 
@@ -181,10 +185,14 @@ final class InitCommand extends Command
             $sets = [$sets];
         }
 
-        $rules = array_merge(
-            $rules,
-            array_unique(array_filter($sets, static fn ($item) => 'none' !== $item)),
-        );
+        foreach (array_filter($sets, static fn ($item) => 'none' !== $item) as $set) {
+            $rules[$set] = true;
+        }
+
+        $phpUnitCallType = $this->askForPhpUnitCallType($io, $setsBehindAutoSet);
+        if (null !== $phpUnitCallType) {
+            $rules[(new PhpUnitTestCaseStaticMethodCallsFixer())->getName()] = ['call_type' => $phpUnitCallType];
+        }
 
         $io->note([
             'By default, PHP CS Fixer will looks for `*.php` files excluding `./vendor/` dir.',
@@ -211,7 +219,8 @@ final class InitCommand extends Command
                 "[\n".implode(
                     ",\n",
                     array_map(
-                        static fn ($item) => "        '{$item}' => true",
+                        static fn (string $name, $configuration): string => \sprintf("        '%s' => %s", $name, Utils::toString($configuration)),
+                        array_keys($rules),
                         $rules,
                     ),
                 )."\n    ]",
@@ -252,5 +261,37 @@ final class InitCommand extends Command
             '<href=$2;fg=bright-blue;options=underscore>$1 ($2)</>',
             $text,
         );
+    }
+
+    /**
+     * The `php_unit_test_case_static_method_calls` rule is not part of any automatic set, as there is no wide alignment
+     * on the call type to use. Yet the choice is worth making explicitly, so let's ask for it instead of leaving the
+     * rule undiscovered.
+     *
+     * @param array<string> $setsBehindAutoSet
+     *
+     * @return null|string the call type to enforce, or `null` to not enforce any
+     */
+    private function askForPhpUnitCallType(SymfonyStyle $io, array $setsBehindAutoSet): ?string
+    {
+        // the rule is risky, so offer it only when the risky PHPUnit migration set is on the table
+        if (!\in_array((new AutoPHPUnitMigrationRiskySet())->getName(), $setsBehindAutoSet, true)) {
+            return null;
+        }
+
+        $io->note('PHPUnit methods can be called on the instance or statically. You can decide on your preference.');
+
+        $callType = $io->choice(
+            'Which call type do you use for PHPUnit methods?',
+            [
+                'this' => '`$this->assertSame()`',
+                'self' => '`self::assertSame()`',
+                'static' => '`static::assertSame()`',
+                'none' => 'none - do not enforce any',
+            ],
+            'none',
+        );
+
+        return 'none' === $callType ? null : $callType;
     }
 }
