@@ -268,7 +268,7 @@ final class InitCommand extends Command
      * on the call type to use. Yet the choice is worth making explicitly, so let's ask for it instead of leaving the
      * rule undiscovered.
      *
-     * @param array<string> $setsBehindAutoSet
+     * @param array<int, string> $setsBehindAutoSet
      *
      * @return null|string the call type to enforce, or `null` to not enforce any
      */
