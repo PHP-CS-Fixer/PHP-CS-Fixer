@@ -292,7 +292,7 @@ final class InitCommand extends Command
                     '<fg=blue>`%s`</> - %s %s',
                     $entry['name'],
                     self::formatReference($entry['description']),
-                    $entry['exists'] ? '(already present)' : '(will be added)',
+                    true === $entry['exists'] ? '(already present)' : '(will be added)',
                 ),
                 $entries,
             ),
