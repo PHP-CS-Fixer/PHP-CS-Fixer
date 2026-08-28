@@ -74,6 +74,17 @@ final class PhpdocMultiLineThrowsFixer extends AbstractFixer implements Configur
         return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run before PhpdocAlignFixer.
+     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
+     */
+    public function getPriority(): int
+    {
+        return 10;
+    }
+
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
