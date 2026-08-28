@@ -61,14 +61,23 @@ final class InitCommand extends Command
 
         $io = new SymfonyStyle($input, $stdErr);
 
+        $io->warning('This command is experimental');
+
         if (file_exists(self::FIXER_FILENAME)) {
             $io->error(\sprintf('Configuration file `%s` already exists.', self::FIXER_FILENAME));
 
             return Command::FAILURE;
         }
 
-        $io->warning('This command is experimental');
+        $configurationFileContent = $this->prepareConfigurationFileContent($io);
+        $this->writeFile(self::FIXER_FILENAME, $configurationFileContent);
+        $io->success(\sprintf('Configuration file created successfully as `%s`.', self::FIXER_FILENAME));
 
+        return Command::SUCCESS;
+    }
+
+    private function prepareConfigurationFileContent(SymfonyStyle $io): string
+    {
         $io->note([
             'While we start, we must tell you that we put our diligence to NOT change the meaning of your codebase.',
             'Yet, some of the rules are explicitly _risky_ to apply. A rule is _risky_ if it could change code behaviour, e.g. transforming `==` into `===` or removal of trailing whitespaces within multiline strings.',
@@ -99,26 +108,12 @@ final class InitCommand extends Command
         };
         $setsBehindAutoSet = $generateSetsBehindAutoSet();
 
-        $formatReference = static function (string $text): string {
-            $text = Preg::replace(
-                '/``(.+?)``/',
-                '<fg=blue>$1</>',
-                $text,
-            );
-
-            return Preg::replace(
-                '/`(.+?) <(.+?)>`_/',
-                '<href=$2;fg=bright-blue;options=underscore>$1 ($2)</>',
-                $text,
-            );
-        };
-
         $io->listing(
             array_map(
                 static fn (RuleSetDefinitionInterface $item): string => \sprintf(
                     '<fg=blue>`%s`</> - %s',
                     $item->getName(),
-                    $formatReference($item->getDescription()),
+                    self::formatReference($item->getDescription()),
                 ),
                 array_map(
                     static fn (string $name): RuleSetDefinitionInterface => $setsByName[$name], // @phpstan-ignore-line offsetAccess.notFound
@@ -173,7 +168,7 @@ final class InitCommand extends Command
             array_combine(
                 $extraSets,
                 array_map(
-                    static fn (string $item): string => $formatReference($setsByName[$item]->getDescription()), // @phpstan-ignore-line offsetAccess.notFound
+                    static fn (string $item): string => self::formatReference($setsByName[$item]->getDescription()), // @phpstan-ignore-line offsetAccess.notFound
                     $extraSets,
                 ),
             ) + ['none' => 'none'],
@@ -205,7 +200,7 @@ final class InitCommand extends Command
             throw new IOException('Failed to read template file.');
         }
 
-        $content = str_replace(
+        return str_replace(
             [
                 '/*{{ IS_RISKY_ALLOWED }}*/',
                 '/*{{ RULES }}*/',
@@ -234,14 +229,28 @@ final class InitCommand extends Command
             ],
             $readResult,
         );
+    }
 
-        $writeResult = @file_put_contents(self::FIXER_FILENAME, $content);
-        if (false === $writeResult) {
-            throw new IOException(\sprintf('Failed to write file "%s".', self::FIXER_FILENAME));
+    private function writeFile(string $filename, string $content): void
+    {
+        $result = @file_put_contents($filename, $content);
+        if (false === $result) {
+            throw new IOException(\sprintf('Failed to write file "%s".', $filename));
         }
+    }
 
-        $io->success(\sprintf('Configuration file created successfully as `%s`.', self::FIXER_FILENAME));
+    private static function formatReference(string $text): string
+    {
+        $text = Preg::replace(
+            '/``(.+?)``/',
+            '<fg=blue>$1</>',
+            $text,
+        );
 
-        return Command::SUCCESS;
+        return Preg::replace(
+            '/`(.+?) <(.+?)>`_/',
+            '<href=$2;fg=bright-blue;options=underscore>$1 ($2)</>',
+            $text,
+        );
     }
 }
