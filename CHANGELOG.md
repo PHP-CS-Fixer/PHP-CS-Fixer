@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.23
+----------------------
+
+* fix: `FunctionsAnalyzer` - detect return type of a closure with a `use` clause (#9806)
+
 Changelog for v3.95.22
 ----------------------
 

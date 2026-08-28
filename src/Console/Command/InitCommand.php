@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Console\Command;
 
 use PhpCsFixer\Console\Application;
+use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\RuleSet\Sets\AutoRiskySet;
@@ -60,13 +61,13 @@ final class InitCommand extends Command
 
         $io = new SymfonyStyle($input, $stdErr);
 
-        $io->warning('This command is experimental');
-
         if (file_exists(self::FIXER_FILENAME)) {
             $io->error(\sprintf('Configuration file `%s` already exists.', self::FIXER_FILENAME));
 
             return Command::FAILURE;
         }
+
+        $io->warning('This command is experimental');
 
         $io->note([
             'While we start, we must tell you that we put our diligence to NOT change the meaning of your codebase.',
@@ -85,7 +86,7 @@ final class InitCommand extends Command
         $setAutoRisky = new AutoRiskySet();
         $setAutoWithOptionalRiskySetNamesTextual = $isRiskyAllowed ? '`@auto`/`@auto:risky`' : '`@auto`';
 
-        $io->note("We recommend usage of {$setAutoWithOptionalRiskySetNamesTextual} rulesets. They take insights from your existing `composer.json` to configure project the best:");
+        $io->note("We recommend usage of {$setAutoWithOptionalRiskySetNamesTextual} rulesets. They take insights from your existing `composer.json` to configure project the best. For your current setup, that would mean:");
 
         $generateSetsBehindAutoSet = static function () use ($setAuto, $setAutoRisky, $isRiskyAllowed): array {
             $sets = array_merge(
@@ -98,12 +99,26 @@ final class InitCommand extends Command
         };
         $setsBehindAutoSet = $generateSetsBehindAutoSet();
 
+        $formatReference = static function (string $text): string {
+            $text = Preg::replace(
+                '/``(.+?)``/',
+                '<fg=blue>$1</>',
+                $text,
+            );
+
+            return Preg::replace(
+                '/`(.+?) <(.+?)>`_/',
+                '<href=$2;fg=bright-blue;options=underscore>$1 ($2)</>',
+                $text,
+            );
+        };
+
         $io->listing(
             array_map(
                 static fn (RuleSetDefinitionInterface $item): string => \sprintf(
                     '<fg=blue>`%s`</> - %s',
                     $item->getName(),
-                    $item->getDescription(),
+                    $formatReference($item->getDescription()),
                 ),
                 array_map(
                     static fn (string $name): RuleSetDefinitionInterface => $setsByName[$name], // @phpstan-ignore-line offsetAccess.notFound
@@ -158,7 +173,7 @@ final class InitCommand extends Command
             array_combine(
                 $extraSets,
                 array_map(
-                    static fn (string $item): string => $setsByName[$item]->getDescription(), // @phpstan-ignore-line offsetAccess.notFound
+                    static fn (string $item): string => $formatReference($setsByName[$item]->getDescription()), // @phpstan-ignore-line offsetAccess.notFound
                     $extraSets,
                 ),
             ) + ['none' => 'none'],
@@ -176,6 +191,15 @@ final class InitCommand extends Command
             array_unique(array_filter($sets, static fn ($item) => 'none' !== $item)),
         );
 
+        $io->note([
+            'By default, PHP CS Fixer will looks for `*.php` files excluding `./vendor/` dir.',
+        ]);
+        $useDefaultFinder = 'yes' === $io->choice(
+            'Do you want to rely on default file finder, or do you want to customize it?',
+            ['yes' => 'default', 'no' => 'customizable'],
+            'yes',
+        );
+
         $readResult = @file_get_contents(__DIR__.'/../../../resources/.php-cs-fixer.dist.php.template');
         if (false === $readResult) {
             throw new IOException('Failed to read template file.');
@@ -185,6 +209,7 @@ final class InitCommand extends Command
             [
                 '/*{{ IS_RISKY_ALLOWED }}*/',
                 '/*{{ RULES }}*/',
+                '/*{{ CUSTOMIZABLE_FINDER }}*/',
             ],
             [
                 $isRiskyAllowed ? 'true' : 'false',
@@ -195,6 +220,17 @@ final class InitCommand extends Command
                         $rules,
                     ),
                 )."\n    ]",
+                $useDefaultFinder
+                    ? ''
+                    : "// 💡 additional files, eg bin entry file
+            // ->append([__DIR__.'/bin-entry-file'])
+            // 💡 folders to exclude, if any
+            // ->exclude([/* ... */])
+            // 💡 path patterns to exclude, if any
+            // ->notPath([/* ... */])
+            // 💡 extra configs
+            // ->ignoreDotFiles(false) // true by default in v3, false in v4 or future mode
+            // ->ignoreVCS(true) // true by default",
             ],
             $readResult,
         );
