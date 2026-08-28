@@ -76,6 +76,8 @@ final class InitCommand extends Command
 
         if (file_exists(self::FIXER_FILENAME)) {
             $io->note(\sprintf('Configuration file `%s` already exists. Skipping.', self::FIXER_FILENAME));
+
+            return;
         }
 
         $configurationFileContent = $this->prepareConfigurationFileContent($io);
