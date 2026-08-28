@@ -63,17 +63,22 @@ final class InitCommand extends Command
 
         $io->warning('This command is experimental');
 
-        if (file_exists(self::FIXER_FILENAME)) {
-            $io->error(\sprintf('Configuration file `%s` already exists.', self::FIXER_FILENAME));
+        $this->handleConfigurationFile($io);
 
-            return Command::FAILURE;
+        return Command::SUCCESS;
+    }
+
+    private function handleConfigurationFile(SymfonyStyle $io): void
+    {
+        $io->title('⚙️ Configuring PHP CS Fixer');
+
+        if (file_exists(self::FIXER_FILENAME)) {
+            $io->note(\sprintf('Configuration file `%s` already exists. Skipping.', self::FIXER_FILENAME));
         }
 
         $configurationFileContent = $this->prepareConfigurationFileContent($io);
         $this->writeFile(self::FIXER_FILENAME, $configurationFileContent);
         $io->success(\sprintf('Configuration file created as `%s`.', self::FIXER_FILENAME));
-
-        return Command::SUCCESS;
     }
 
     private function prepareConfigurationFileContent(SymfonyStyle $io): string
