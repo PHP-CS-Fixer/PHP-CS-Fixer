@@ -71,7 +71,7 @@ final class InitCommand extends Command
 
         $configurationFileContent = $this->prepareConfigurationFileContent($io);
         $this->writeFile(self::FIXER_FILENAME, $configurationFileContent);
-        $io->success(\sprintf('Configuration file created successfully as `%s`.', self::FIXER_FILENAME));
+        $io->success(\sprintf('Configuration file created as `%s`.', self::FIXER_FILENAME));
 
         return Command::SUCCESS;
     }
