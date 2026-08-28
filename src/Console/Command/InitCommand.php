@@ -61,14 +61,23 @@ final class InitCommand extends Command
 
         $io = new SymfonyStyle($input, $stdErr);
 
+        $io->warning('This command is experimental');
+
         if (file_exists(self::FIXER_FILENAME)) {
             $io->error(\sprintf('Configuration file `%s` already exists.', self::FIXER_FILENAME));
 
             return Command::FAILURE;
         }
 
-        $io->warning('This command is experimental');
+        $configurationFileContent = $this->prepareConfigurationFileContent($io);
+        $this->writeFile(self::FIXER_FILENAME, $configurationFileContent);
+        $io->success(\sprintf('Configuration file created successfully as `%s`.', self::FIXER_FILENAME));
 
+        return Command::SUCCESS;
+    }
+
+    private function prepareConfigurationFileContent(SymfonyStyle $io): string
+    {
         $io->note([
             'While we start, we must tell you that we put our diligence to NOT change the meaning of your codebase.',
             'Yet, some of the rules are explicitly _risky_ to apply. A rule is _risky_ if it could change code behaviour, e.g. transforming `==` into `===` or removal of trailing whitespaces within multiline strings.',
@@ -205,7 +214,7 @@ final class InitCommand extends Command
             throw new IOException('Failed to read template file.');
         }
 
-        $content = str_replace(
+        return str_replace(
             [
                 '/*{{ IS_RISKY_ALLOWED }}*/',
                 '/*{{ RULES }}*/',
@@ -234,14 +243,13 @@ final class InitCommand extends Command
             ],
             $readResult,
         );
+    }
 
-        $writeResult = @file_put_contents(self::FIXER_FILENAME, $content);
+    private function writeFile(string $filename, string $content): void
+    {
+        $writeResult = @file_put_contents($filename, $content);
         if (false === $writeResult) {
-            throw new IOException(\sprintf('Failed to write file "%s".', self::FIXER_FILENAME));
+            throw new IOException(\sprintf('Failed to write file "%s".', $filename));
         }
-
-        $io->success(\sprintf('Configuration file created successfully as `%s`.', self::FIXER_FILENAME));
-
-        return Command::SUCCESS;
     }
 }
