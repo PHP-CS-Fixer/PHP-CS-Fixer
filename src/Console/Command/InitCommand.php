@@ -75,14 +75,15 @@ final class InitCommand extends Command
         $io->title('⚙️ Configuring PHP CS Fixer');
 
         if (file_exists(self::FIXER_FILENAME)) {
-            $io->note(\sprintf('Configuration file `%s` already exists. Skipping.', self::FIXER_FILENAME));
+            $io->info(\sprintf('Configuration file `%s` already exists. Skipping.', self::FIXER_FILENAME));
 
             return;
         }
 
         $configurationFileContent = $this->prepareConfigurationFileContent($io);
         $this->writeFile(self::FIXER_FILENAME, $configurationFileContent);
-        $io->success(\sprintf('Configuration file created as `%s`.', self::FIXER_FILENAME));
+
+        $io->success(\sprintf('Configuration file `%s`created.', self::FIXER_FILENAME));
     }
 
     private function handleGitIgnore(SymfonyStyle $io): void
@@ -92,15 +93,15 @@ final class InitCommand extends Command
         $gitignoreFileExists = file_exists(self::GITIGNORE_FILENAME);
         $gitignoreFileContent = $this->prepareGitIgnoreContent($io, true === $gitignoreFileExists ? $this->readFile(self::GITIGNORE_FILENAME) : '');
 
-        if (null !== $gitignoreFileContent) {
-            $this->writeFile(self::GITIGNORE_FILENAME, $gitignoreFileContent);
+        if (null === $gitignoreFileContent) {
+            $io->info(\sprintf('Git file `%s` %s.', self::GITIGNORE_FILENAME, 'is already up to recommendations'));
+
+            return;
         }
 
-        $io->success(\sprintf(
-            '%s file %s.',
-            self::GITIGNORE_FILENAME,
-            null !== $gitignoreFileContent ? ($gitignoreFileExists ? 'updated' : 'created') : 'already up to recommendations',
-        ));
+        $this->writeFile(self::GITIGNORE_FILENAME, $gitignoreFileContent);
+
+        $io->success(\sprintf('Git file `%s` %s.', self::GITIGNORE_FILENAME, 'is already up to recommendations'));
     }
 
     private function prepareConfigurationFileContent(SymfonyStyle $io): string
