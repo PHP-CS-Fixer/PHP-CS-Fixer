@@ -101,6 +101,10 @@ final class PhpdocMultiLineThrowsFixer extends AbstractFixer implements Configur
             }
 
             if ('union' === $this->configuration['format']) {
+                if (\count($candidates) < 2) {
+                    continue;
+                }
+
                 $typeStrings = [];
                 foreach ($candidates as $candidate) {
                     $candidateType = $candidate->getTypeExpression();
