@@ -86,11 +86,14 @@ final class InitCommand extends Command
     private function handleGitIgnore(SymfonyStyle $io): void
     {
         $io->title('⚙️ Polishing GIT integration');
+
         $gitignoreFileExists = file_exists(self::GITIGNORE_FILENAME);
         $gitignoreFileContent = $this->prepareGitIgnoreContent($io, true === $gitignoreFileExists ? $this->readFile(self::GITIGNORE_FILENAME) : '');
+
         if (null !== $gitignoreFileContent) {
             $this->writeFile(self::GITIGNORE_FILENAME, $gitignoreFileContent);
         }
+
         $io->success(\sprintf(
             '%s file %s.',
             self::GITIGNORE_FILENAME,
@@ -105,6 +108,7 @@ final class InitCommand extends Command
             'Yet, some of the rules are explicitly _risky_ to apply. A rule is _risky_ if it could change code behaviour, e.g. transforming `==` into `===` or removal of trailing whitespaces within multiline strings.',
             'Such rules are improving your codebase even further, yet you shall always review changes proposed by _risky_ rules carefully.',
         ]);
+
         $isRiskyAllowed = 'yes' === $io->choice(
             'Do you want to enable _risky_ rules?',
             ['yes', 'no'],
