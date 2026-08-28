@@ -122,7 +122,7 @@ final class PhpdocMultiLineThrowsFixer extends AbstractFixer implements Configur
             } elseif ('multi' === $this->configuration['format']) {
                 foreach ($candidates as $candidate) {
                     $candidateType = $candidate->getTypeExpression();
-                    if ($candidateType->isIntersectionType()) {
+                    if ($candidateType->isIntersectionType() || \count($candidateType->getTypes()) < 2) {
                         continue;
                     }
 
