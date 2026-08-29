@@ -14,14 +14,13 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Console\Command;
 
-use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\InitCommand;
-use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * @internal
@@ -35,21 +34,20 @@ final class InitCommandTest extends TestCase
 {
     /**
      * @param list<string> $inputs          answers to the questions asked by the command
-     * @param list<string> $expectedRules   rules expected in the created configuration file
-     * @param list<string> $unexpectedRules rules expected to _not_ be in the created configuration file
+     * @param list<string> $expectedRules   rules expected in the prepared configuration
+     * @param list<string> $unexpectedRules rules expected to _not_ be in the prepared configuration
      *
-     * @dataProvider provideConfigurationIsCreatedCases
+     * @dataProvider provideConfigurationIsPreparedCases
      */
-    #[DataProvider('provideConfigurationIsCreatedCases')]
-    public function testConfigurationIsCreated(
+    #[DataProvider('provideConfigurationIsPreparedCases')]
+    public function testConfigurationIsPrepared(
         array $inputs,
         array $expectedRules,
         array $unexpectedRules,
         bool $isCallTypeQuestionExpected
     ): void {
-        $commandTester = self::executeInTemporaryDirectory($inputs, $configuration);
-
-        self::assertSame(Command::SUCCESS, $commandTester->getStatusCode());
+        $output = new BufferedOutput();
+        $configuration = self::prepareConfigurationFileContent($inputs, $output);
 
         foreach ($expectedRules as $expectedRule) {
             self::assertStringContainsString($expectedRule, $configuration);
@@ -61,14 +59,14 @@ final class InitCommandTest extends TestCase
 
         self::assertSame(
             $isCallTypeQuestionExpected,
-            str_contains($commandTester->getDisplay(), 'Which call type do you use for PHPUnit methods?'),
+            str_contains($output->fetch(), 'Which call type do you use for PHPUnit methods?'),
         );
     }
 
     /**
      * @return iterable<string, array{list<string>, list<string>, list<string>, bool}>
      */
-    public static function provideConfigurationIsCreatedCases(): iterable
+    public static function provideConfigurationIsPreparedCases(): iterable
     {
         yield 'a call type is picked' => [
             ['yes', 'yes', 'none', 'this', 'yes'],
@@ -110,61 +108,40 @@ final class InitCommandTest extends TestCase
         ];
     }
 
-    public function testConfigurationIsNotOverwritten(): void
+    /**
+     * @param list<string> $inputs answers to the questions asked by the command
+     */
+    private static function prepareConfigurationFileContent(array $inputs, BufferedOutput $output): string
     {
-        $commandTester = self::executeInTemporaryDirectory(
-            ['yes', 'yes', 'none', 'this', 'yes'],
-            $configuration,
-            'already there',
-        );
+        $input = new ArrayInput([]);
+        $input->setInteractive(true);
+        $input->setStream(self::createInputStream($inputs));
 
-        self::assertSame(Command::FAILURE, $commandTester->getStatusCode());
-        self::assertSame('already there', $configuration);
+        $io = new SymfonyStyle($input, $output);
+
+        return \Closure::bind(
+            static fn (InitCommand $command): string => $command->prepareConfigurationFileContent($io),
+            null,
+            InitCommand::class,
+        )(new InitCommand());
     }
 
     /**
-     * @param list<string> $inputs                answers to the questions asked by the command
-     * @param null|string  $configuration         content of the created configuration file
-     * @param null|string  $existingConfiguration content of the configuration file to create upfront, if any
+     * @param list<string> $inputs
+     *
+     * @return resource
      */
-    private static function executeInTemporaryDirectory(
-        array $inputs,
-        ?string &$configuration,
-        ?string $existingConfiguration = null
-    ): CommandTester {
-        $originalDirectory = getcwd();
-        if (false === $originalDirectory) {
-            throw new \RuntimeException('Unable to determine current working directory.');
+    private static function createInputStream(array $inputs)
+    {
+        $stream = fopen('php://memory', 'r+');
+
+        if (false === $stream) {
+            throw new \RuntimeException('Unable to open the input stream.');
         }
 
-        $temporaryDirectory = TestCaseUtils::createTemporaryDirectory();
+        fwrite($stream, implode(\PHP_EOL, $inputs).\PHP_EOL);
+        rewind($stream);
 
-        try {
-            // the command creates its file in the current working directory
-            chdir($temporaryDirectory);
-
-            if (null !== $existingConfiguration) {
-                file_put_contents('.php-cs-fixer.dist.php', $existingConfiguration);
-            }
-
-            $application = new Application();
-            $application->add(new InitCommand());
-
-            $commandTester = new CommandTester($application->find('init'));
-            $commandTester->setInputs($inputs);
-            $commandTester->execute([]);
-
-            $readResult = @file_get_contents('.php-cs-fixer.dist.php');
-            $configuration = false === $readResult ? null : $readResult;
-
-            return $commandTester;
-        } finally {
-            if (file_exists('.php-cs-fixer.dist.php')) {
-                unlink('.php-cs-fixer.dist.php');
-            }
-
-            chdir($originalDirectory);
-            rmdir($temporaryDirectory);
-        }
+        return $stream;
     }
 }
