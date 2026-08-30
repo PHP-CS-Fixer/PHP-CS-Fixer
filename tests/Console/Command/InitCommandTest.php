@@ -100,6 +100,23 @@ final class InitCommandTest extends TestCase
             true,
         ];
 
+        yield 'an extra ruleset is picked without the automatic ones 1' => [
+            ['yes', 'no', '@autoPHPUnitMigration:risky', 'this', 'yes'],
+            [
+                "'@autoPHPUnitMigration:risky' => true",
+                "'php_unit_test_case_static_method_calls' => ['call_type' => 'this']",
+            ],
+            [],
+            true,
+        ];
+
+        yield 'an extra ruleset is picked without the automatic ones 2' => [
+            ['yes', 'no', '@Symfony', 'yes'],
+            ["'@Symfony' => true"],
+            ['php_unit_test_case_static_method_calls', "'@auto:risky'"],
+            false,
+        ];
+
         yield 'risky rules are not allowed' => [
             ['no', 'yes', 'none', 'yes'],
             ['setRiskyAllowed(false)', "'@auto' => true"],
