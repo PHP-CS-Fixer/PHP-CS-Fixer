@@ -100,16 +100,16 @@ final class InitCommand extends Command
 
         $io->note("We recommend usage of {$setAutoWithOptionalRiskySetNamesTextual} rulesets. They take insights from your existing `composer.json` to configure project the best. For your current setup, that would mean:");
 
-        $generateSetsBehindAutoSet = static function () use ($setAuto, $setAutoRisky, $isRiskyAllowed): array {
-            $sets = array_merge(
-                array_keys($setAuto->getRulesCandidates()),
-                $isRiskyAllowed ? array_keys($setAutoRisky->getRulesCandidates()) : [],
-            );
-            natcasesort($sets);
-
-            return $sets;
-        };
-        $setsBehindAutoSet = $generateSetsBehindAutoSet();
+        /** @var list<string> $setsBehindAutoSetOnlySafe */
+        $setsBehindAutoSetOnlySafe = array_keys($setAuto->getRulesCandidates());
+        /** @var list<string> $setsBehindAutoSetOnlyRisky */
+        $setsBehindAutoSetOnlyRisky = $isRiskyAllowed ? array_keys($setAutoRisky->getRulesCandidates()) : [];
+        /** @var list<string> $setsBehindAutoSet */
+        $setsBehindAutoSet = array_merge(
+            $setsBehindAutoSetOnlySafe,
+            $setsBehindAutoSetOnlyRisky,
+        );
+        natcasesort($setsBehindAutoSet);
 
         $io->listing(
             array_map(
@@ -128,6 +128,9 @@ final class InitCommand extends Command
         /** @var array<string, array<string, mixed>|bool> $rules */
         $rules = [];
 
+        /** @var list<string> $resolvedSetNames */
+        $resolvedSetNames = [];
+
         $useAutoSet = 'yes' === $io->choice(
             "Do you want to use <fg=blue>{$setAutoWithOptionalRiskySetNamesTextual}</> ruleset?",
             ['yes', 'no'],
@@ -136,8 +139,11 @@ final class InitCommand extends Command
 
         if ($useAutoSet) {
             $rules[$setAuto->getName()] = true;
+            $resolvedSetNames = array_merge($resolvedSetNames, $setsBehindAutoSetOnlySafe);
+
             if ($isRiskyAllowed) {
                 $rules[$setAutoRisky->getName()] = true;
+                $resolvedSetNames = array_merge($resolvedSetNames, $setsBehindAutoSetOnlyRisky);
             }
         }
 
@@ -185,11 +191,15 @@ final class InitCommand extends Command
             $sets = [$sets];
         }
 
-        foreach (array_filter($sets, static fn ($item) => 'none' !== $item) as $set) {
+        /** @var list<string> $sets */
+        $sets = array_filter($sets, static fn ($item) => 'none' !== $item);
+
+        foreach ($sets as $set) {
             $rules[$set] = true;
         }
+        $resolvedSetNames = array_merge($resolvedSetNames, $sets);
 
-        $phpUnitCallType = $this->askForPhpUnitCallType($io, $setsBehindAutoSet);
+        $phpUnitCallType = $this->askForPhpUnitCallType($io, $resolvedSetNames);
         if (null !== $phpUnitCallType) {
             $rules[(new PhpUnitTestCaseStaticMethodCallsFixer())->getName()] = ['call_type' => $phpUnitCallType];
         }
@@ -268,14 +278,14 @@ final class InitCommand extends Command
      * on the call type to use. Yet the choice is worth making explicitly, so let's ask for it instead of leaving the
      * rule undiscovered.
      *
-     * @param array<int, string> $setsBehindAutoSet
+     * @param list<string> $resolvedSetNames
      *
      * @return null|string the call type to enforce, or `null` to not enforce any
      */
-    private function askForPhpUnitCallType(SymfonyStyle $io, array $setsBehindAutoSet): ?string
+    private function askForPhpUnitCallType(SymfonyStyle $io, array $resolvedSetNames): ?string
     {
-        // the rule is risky, so offer it only when the risky PHPUnit migration set is on the table
-        if (!\in_array((new AutoPHPUnitMigrationRiskySet())->getName(), $setsBehindAutoSet, true)) {
+        // the rule is risky, so offer it only when the risky PHPUnit migration set is enabled
+        if (!\in_array((new AutoPHPUnitMigrationRiskySet())->getName(), $resolvedSetNames, true)) {
             return null;
         }
 
