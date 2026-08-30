@@ -264,7 +264,7 @@ final class InitCommand extends Command
     }
 
     /**
-     * The `php_unit_test_case_static_method_calls` rule is not part of any automatic set, as there is no wide alignment
+     * The `PhpUnitTestCaseStaticMethodCallsFixer` rule is not part of any automatic set, as there is no wide alignment
      * on the call type to use. Yet the choice is worth making explicitly, so let's ask for it instead of leaving the
      * rule undiscovered.
      *
