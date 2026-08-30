@@ -106,8 +106,10 @@ final class InitCommand extends Command
 
         /** @var list<string> $setsBehindAutoSetOnlySafe */
         $setsBehindAutoSetOnlySafe = array_keys($setAuto->getRulesCandidates());
+
         /** @var list<string> $setsBehindAutoSetOnlyRisky */
         $setsBehindAutoSetOnlyRisky = $isRiskyAllowed ? array_keys($setAutoRisky->getRulesCandidates()) : [];
+
         /** @var list<string> $setsBehindAutoSet */
         $setsBehindAutoSet = array_merge(
             $setsBehindAutoSetOnlySafe,
