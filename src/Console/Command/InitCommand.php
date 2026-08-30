@@ -78,6 +78,8 @@ final class InitCommand extends Command
 
     private function prepareConfigurationFileContent(SymfonyStyle $io): string
     {
+        $io->section('Risky rules');
+
         $io->note([
             'While we start, we must tell you that we put our diligence to NOT change the meaning of your codebase.',
             'Yet, some of the rules are explicitly _risky_ to apply. A rule is _risky_ if it could change code behaviour, e.g. transforming `==` into `===` or removal of trailing whitespaces within multiline strings.',
@@ -94,6 +96,8 @@ final class InitCommand extends Command
         $setAuto = new AutoSet();
         $setAutoRisky = new AutoRiskySet();
         $setAutoWithOptionalRiskySetNamesTextual = $isRiskyAllowed ? '`@auto`/`@auto:risky`' : '`@auto`';
+
+        $io->section('`@auto` ruleset');
 
         $io->note("We recommend usage of {$setAutoWithOptionalRiskySetNamesTextual} rulesets. They take insights from your existing `composer.json` to configure project the best. For your current setup, that would mean:");
 
@@ -163,6 +167,8 @@ final class InitCommand extends Command
         );
         natcasesort($extraSets);
 
+        $io->section('More rulesets');
+
         $sets = $io->choice(
             'Do you want to use any of other recommended ruleset? (multi-choice)',
             array_combine(
@@ -186,11 +192,13 @@ final class InitCommand extends Command
             array_unique(array_filter($sets, static fn ($item) => 'none' !== $item)),
         );
 
+        $io->section('Files finder');
+
         $io->note([
             'By default, PHP CS Fixer will looks for `*.php` files excluding `./vendor/` dir.',
         ]);
         $useDefaultFinder = 'yes' === $io->choice(
-            'Do you want to rely on default file finder, or do you want to customize it?',
+            'Do you want to rely on default files finder, or do you want to customize it?',
             ['yes' => 'default', 'no' => 'customizable'],
             'yes',
         );
