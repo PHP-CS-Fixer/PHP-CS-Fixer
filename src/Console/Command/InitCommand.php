@@ -279,6 +279,8 @@ final class InitCommand extends Command
             return null;
         }
 
+        $io->section('PHPUnit additions');
+
         $io->note('PHPUnit methods can be called on the instance or statically. You can decide on your preference.');
 
         $callType = $io->choice(
