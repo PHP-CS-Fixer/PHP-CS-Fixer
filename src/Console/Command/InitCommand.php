@@ -113,7 +113,8 @@ final class InitCommand extends Command
 
         $io->note([
             'At PHP CS Fixer, we put our diligence to NOT change your code\'s logic and behaviour.',
-            'Yet, some of the rules are explicitly _risky_ to apply - e.g. transforming `==` into `===` or removal of trailing whitespaces within multiline strings.',
+            'Yet, some of the rules are opposite by design - explicitly _risky_ to apply.',
+            'Exampleas are transforming `==` into `===` or removal of trailing whitespaces within multiline strings.',
             'Such rules are improving your codebase even further, yet you shall always review changes proposed by _risky_ rules carefully.',
         ]);
 
@@ -123,15 +124,13 @@ final class InitCommand extends Command
             'no',
         );
 
+        $io->section('`@auto` ruleset');
+
         $setsByName = RuleSets::getBuiltInSetDefinitions();
 
         $setAuto = new AutoSet();
         $setAutoRisky = new AutoRiskySet();
         $setAutoWithOptionalRiskySetNamesTextual = $isRiskyAllowed ? '`@auto`/`@auto:risky`' : '`@auto`';
-
-        $io->section('`@auto` ruleset');
-
-        $io->note("We recommend usage of {$setAutoWithOptionalRiskySetNamesTextual} rulesets. They take insights from your existing `composer.json` to configure your project the best. For your current setup, that would mean:");
 
         /** @var list<string> $setsBehindAutoSetOnlySafe */
         $setsBehindAutoSetOnlySafe = array_keys($setAuto->getRulesCandidates());
@@ -146,6 +145,7 @@ final class InitCommand extends Command
         );
         natcasesort($setsBehindAutoSet);
 
+        $io->note("We recommend usage of {$setAutoWithOptionalRiskySetNamesTextual} rulesets. They take insights from your existing `composer.json` to configure your project the best. For your current setup, that would mean:");
         $io->listing(
             array_map(
                 static fn (RuleSetDefinitionInterface $item): string => \sprintf(
@@ -182,6 +182,8 @@ final class InitCommand extends Command
             }
         }
 
+        $io->section('More rulesets');
+
         $generateExtraSets = static function () use ($isRiskyAllowed): array {
             $setSymfony = new SymfonySet();
             $setPhpCsFixer = new PhpCsFixerSet();
@@ -207,8 +209,6 @@ final class InitCommand extends Command
             $generateExtraSets(),
         );
         natcasesort($extraSets);
-
-        $io->section('More rulesets');
 
         $sets = $io->choice(
             'Do you want to use any of the other recommended rulesets? (multi-choice)',
