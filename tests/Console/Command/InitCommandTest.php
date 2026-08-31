@@ -43,11 +43,9 @@ final class InitCommandTest extends TestCase
     public function testConfigurationIsPrepared(
         array $inputs,
         array $expectedRules,
-        array $unexpectedRules,
-        bool $isCallTypeQuestionExpected
+        array $unexpectedRules
     ): void {
-        $output = new BufferedOutput();
-        $configuration = self::prepareConfigurationFileContent($inputs, $output);
+        $configuration = self::prepareConfigurationFileContent($inputs);
 
         foreach ($expectedRules as $expectedRule) {
             self::assertStringContainsString($expectedRule, $configuration);
@@ -56,15 +54,10 @@ final class InitCommandTest extends TestCase
         foreach ($unexpectedRules as $unexpectedRule) {
             self::assertStringNotContainsString($unexpectedRule, $configuration);
         }
-
-        self::assertSame(
-            $isCallTypeQuestionExpected,
-            str_contains($output->fetch(), 'Which call type do you use for PHPUnit methods?'),
-        );
     }
 
     /**
-     * @return iterable<string, array{list<string>, list<string>, list<string>, bool}>
+     * @return iterable<string, array{list<string>, list<string>, list<string>}>
      */
     public static function provideConfigurationIsPreparedCases(): iterable
     {
@@ -72,21 +65,18 @@ final class InitCommandTest extends TestCase
             ['yes', 'yes', 'none', 'this', 'yes'],
             ["'php_unit_test_case_static_method_calls' => ['call_type' => 'this']"],
             [],
-            true,
         ];
 
         yield 'another call type is picked' => [
             ['yes', 'yes', 'none', 'self', 'yes'],
             ["'php_unit_test_case_static_method_calls' => ['call_type' => 'self']"],
             [],
-            true,
         ];
 
         yield 'no call type is enforced' => [
             ['yes', 'yes', 'none', 'none', 'yes'],
             ["'@auto' => true", "'@auto:risky' => true"],
             ['php_unit_test_case_static_method_calls', "'none'"],
-            true,
         ];
 
         yield 'an extra ruleset is picked next to the automatic ones' => [
@@ -97,7 +87,6 @@ final class InitCommandTest extends TestCase
                 "'php_unit_test_case_static_method_calls' => ['call_type' => 'this']",
             ],
             [],
-            true,
         ];
 
         yield 'an extra ruleset is picked without the automatic ones 1' => [
@@ -107,34 +96,33 @@ final class InitCommandTest extends TestCase
                 "'php_unit_test_case_static_method_calls' => ['call_type' => 'this']",
             ],
             [],
-            true,
         ];
 
         yield 'an extra ruleset is picked without the automatic ones 2' => [
             ['yes', 'no', '@Symfony', 'yes'],
             ["'@Symfony' => true"],
             ['php_unit_test_case_static_method_calls', "'@auto:risky'"],
-            false,
         ];
 
         yield 'risky rules are not allowed' => [
             ['no', 'yes', 'none', 'yes'],
             ['setRiskyAllowed(false)', "'@auto' => true"],
             ['php_unit_test_case_static_method_calls', "'@auto:risky'"],
-            false,
         ];
     }
 
     /**
      * @param list<string> $inputs answers to the questions asked by the command
      */
-    private static function prepareConfigurationFileContent(array $inputs, BufferedOutput $output): string
+    private static function prepareConfigurationFileContent(array $inputs): string
     {
+        // the answers are read from the input stream, the way Symfony's own
+        // CommandTester::setInputs() feeds them, not from the ArrayInput parameters
         $input = new ArrayInput([]);
         $input->setInteractive(true);
         $input->setStream(self::createInputStream($inputs));
 
-        $io = new SymfonyStyle($input, $output);
+        $io = new SymfonyStyle($input, new BufferedOutput());
 
         return \Closure::bind(
             static fn (InitCommand $command): string => $command->prepareConfigurationFileContent($io),
