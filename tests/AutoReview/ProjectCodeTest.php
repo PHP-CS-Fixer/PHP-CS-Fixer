@@ -19,7 +19,6 @@ use PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer;
 use PhpCsFixer\AbstractPhpdocTypesFixer;
 use PhpCsFixer\AbstractProxyFixer;
 use PhpCsFixer\Console\Command\FixCommand;
-use PhpCsFixer\Console\Command\InitCommand;
 use PhpCsFixer\Console\Internal\Command\ParseCommand;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
@@ -121,7 +120,6 @@ final class ProjectCodeTest extends TestCase
         $testClassName = 'PhpCsFixer\Tests'.substr($className, 10).'Test';
 
         $exceptions = [
-            InitCommand::class,
             DocumentationTag::class,
             DocumentationTagGenerator::class,
         ];
