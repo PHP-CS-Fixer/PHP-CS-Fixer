@@ -84,7 +84,7 @@ final class InitCommand extends Command
         $io->section('Risky rules');
 
         $io->note([
-            'While we start, we must tell you that we put our diligence to NOT change the meaning of your codebase.',
+            'While we start, we must tell you that we put our diligence to NOT change the meaning of your codebase or change the result of your code.',
             'Yet, some of the rules are explicitly _risky_ to apply. A rule is _risky_ if it could change code behaviour, e.g. transforming `==` into `===` or removal of trailing whitespaces within multiline strings.',
             'Such rules are improving your codebase even further, yet you shall always review changes proposed by _risky_ rules carefully.',
         ]);
@@ -102,7 +102,7 @@ final class InitCommand extends Command
 
         $io->section('`@auto` ruleset');
 
-        $io->note("We recommend usage of {$setAutoWithOptionalRiskySetNamesTextual} rulesets. They take insights from your existing `composer.json` to configure project the best. For your current setup, that would mean:");
+        $io->note("We recommend usage of {$setAutoWithOptionalRiskySetNamesTextual} rulesets. They take insights from your existing `composer.json` to configure your project the best. For your current setup, that would mean:");
 
         /** @var list<string> $setsBehindAutoSetOnlySafe */
         $setsBehindAutoSetOnlySafe = array_keys($setAuto->getRulesCandidates());
@@ -182,7 +182,7 @@ final class InitCommand extends Command
         $io->section('More rulesets');
 
         $sets = $io->choice(
-            'Do you want to use any of other recommended ruleset? (multi-choice)',
+            'Do you want to use any of the other recommended rulesets? (multi-choice)',
             array_combine(
                 $extraSets,
                 array_map(
@@ -194,7 +194,7 @@ final class InitCommand extends Command
             true,
         );
 
-        // older Symfony version can return single string instead of array with single string, let's unify
+        // older Symfony version can return a single string instead of an array with a single string, let's unify
         if (!\is_array($sets)) {
             $sets = [$sets];
         }
@@ -215,11 +215,11 @@ final class InitCommand extends Command
         $io->section('Files finder');
 
         $io->note([
-            'By default, PHP CS Fixer will looks for `*.php` files excluding `./vendor/` dir.',
+            'By default, PHP CS Fixer will look for `*.php` files excluding `./vendor/` dir.',
         ]);
         $useDefaultFinder = 'yes' === $io->choice(
-            'Do you want to rely on default files finder, or do you want to customize it?',
-            ['yes' => 'default', 'no' => 'customizable'],
+            'Do you want to rely on the default files finder, or do you want to customise it?',
+            ['yes' => 'default', 'no' => 'customisable'],
             'yes',
         );
 
@@ -246,7 +246,7 @@ final class InitCommand extends Command
                 )."\n    ]",
                 $useDefaultFinder
                     ? ''
-                    : "// 💡 additional files, eg bin entry file
+                    : "// 💡 additional files, e.g. bin entry file
             // ->append([__DIR__.'/bin-entry-file'])
             // 💡 folders to exclude, if any
             // ->exclude([/* ... */])
