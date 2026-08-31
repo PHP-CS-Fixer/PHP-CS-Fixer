@@ -15,15 +15,18 @@ declare(strict_types=1);
 namespace PhpCsFixer\Console\Command;
 
 use PhpCsFixer\Console\Application;
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixer;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
+use PhpCsFixer\RuleSet\Sets\AutoPHPUnitMigrationRiskySet;
 use PhpCsFixer\RuleSet\Sets\AutoRiskySet;
 use PhpCsFixer\RuleSet\Sets\AutoSet;
 use PhpCsFixer\RuleSet\Sets\PhpCsFixerRiskySet;
 use PhpCsFixer\RuleSet\Sets\PhpCsFixerSet;
 use PhpCsFixer\RuleSet\Sets\SymfonyRiskySet;
 use PhpCsFixer\RuleSet\Sets\SymfonySet;
+use PhpCsFixer\Utils;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -101,16 +104,18 @@ final class InitCommand extends Command
 
         $io->note("We recommend usage of {$setAutoWithOptionalRiskySetNamesTextual} rulesets. They take insights from your existing `composer.json` to configure project the best. For your current setup, that would mean:");
 
-        $generateSetsBehindAutoSet = static function () use ($setAuto, $setAutoRisky, $isRiskyAllowed): array {
-            $sets = array_merge(
-                array_keys($setAuto->getRulesCandidates()),
-                $isRiskyAllowed ? array_keys($setAutoRisky->getRulesCandidates()) : [],
-            );
-            natcasesort($sets);
+        /** @var list<string> $setsBehindAutoSetOnlySafe */
+        $setsBehindAutoSetOnlySafe = array_keys($setAuto->getRulesCandidates());
 
-            return $sets;
-        };
-        $setsBehindAutoSet = $generateSetsBehindAutoSet();
+        /** @var list<string> $setsBehindAutoSetOnlyRisky */
+        $setsBehindAutoSetOnlyRisky = $isRiskyAllowed ? array_keys($setAutoRisky->getRulesCandidates()) : [];
+
+        /** @var list<string> $setsBehindAutoSet */
+        $setsBehindAutoSet = array_merge(
+            $setsBehindAutoSetOnlySafe,
+            $setsBehindAutoSetOnlyRisky,
+        );
+        natcasesort($setsBehindAutoSet);
 
         $io->listing(
             array_map(
@@ -126,7 +131,11 @@ final class InitCommand extends Command
             ),
         );
 
+        /** @var array<string, array<string, mixed>|bool> $rules */
         $rules = [];
+
+        /** @var list<string> $resolvedSetNames */
+        $resolvedSetNames = [];
 
         $useAutoSet = 'yes' === $io->choice(
             "Do you want to use <fg=blue>{$setAutoWithOptionalRiskySetNamesTextual}</> ruleset?",
@@ -135,9 +144,12 @@ final class InitCommand extends Command
         );
 
         if ($useAutoSet) {
-            $rules[] = $setAuto->getName();
+            $rules[$setAuto->getName()] = true;
+            $resolvedSetNames = array_merge($resolvedSetNames, $setsBehindAutoSetOnlySafe);
+
             if ($isRiskyAllowed) {
-                $rules[] = $setAutoRisky->getName();
+                $rules[$setAutoRisky->getName()] = true;
+                $resolvedSetNames = array_merge($resolvedSetNames, $setsBehindAutoSetOnlyRisky);
             }
         }
 
@@ -187,10 +199,18 @@ final class InitCommand extends Command
             $sets = [$sets];
         }
 
-        $rules = array_merge(
-            $rules,
-            array_unique(array_filter($sets, static fn ($item) => 'none' !== $item)),
-        );
+        /** @var list<string> $sets */
+        $sets = array_filter($sets, static fn ($item) => 'none' !== $item);
+
+        foreach ($sets as $set) {
+            $rules[$set] = true;
+        }
+        $resolvedSetNames = array_merge($resolvedSetNames, $sets);
+
+        $phpUnitCallType = $this->askForPhpUnitCallType($io, $resolvedSetNames);
+        if (null !== $phpUnitCallType) {
+            $rules[(new PhpUnitTestCaseStaticMethodCallsFixer())->getName()] = ['call_type' => $phpUnitCallType];
+        }
 
         $io->section('Files finder');
 
@@ -219,7 +239,8 @@ final class InitCommand extends Command
                 "[\n".implode(
                     ",\n",
                     array_map(
-                        static fn ($item) => "        '{$item}' => true",
+                        static fn (string $name, $configuration): string => \sprintf("        '%s' => %s", $name, Utils::toString($configuration)),
+                        array_keys($rules),
                         $rules,
                     ),
                 )."\n    ]",
@@ -260,5 +281,39 @@ final class InitCommand extends Command
             '<href=$2;fg=bright-blue;options=underscore>$1 ($2)</>',
             $text,
         );
+    }
+
+    /**
+     * The `PhpUnitTestCaseStaticMethodCallsFixer` rule is not part of any automatic set, as there is no wide alignment
+     * on the call type to use. Yet the choice is worth making explicitly, so let's ask for it instead of leaving the
+     * rule undiscovered.
+     *
+     * @param list<string> $resolvedSetNames
+     *
+     * @return null|string the call type to enforce, or `null` to not enforce any
+     */
+    private function askForPhpUnitCallType(SymfonyStyle $io, array $resolvedSetNames): ?string
+    {
+        // the rule is risky, so offer it only when the risky PHPUnit migration set is enabled
+        if (!\in_array((new AutoPHPUnitMigrationRiskySet())->getName(), $resolvedSetNames, true)) {
+            return null;
+        }
+
+        $io->section('PHPUnit additions');
+
+        $io->note('PHPUnit methods can be called on the instance or statically. You can decide on your preference.');
+
+        $callType = $io->choice(
+            'Which call type do you use for PHPUnit methods?',
+            [
+                'this' => '`$this->assertSame()`',
+                'self' => '`self::assertSame()`',
+                'static' => '`static::assertSame()`',
+                'none' => 'none - do not enforce any',
+            ],
+            'none',
+        );
+
+        return 'none' === $callType ? null : $callType;
     }
 }
