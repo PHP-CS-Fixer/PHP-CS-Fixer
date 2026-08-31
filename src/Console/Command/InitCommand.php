@@ -295,6 +295,7 @@ final class InitCommand extends Command
             'We recommend to add following entries to your `.gitignore` files:',
         ]);
 
+        /** @var non-empty-list<array{name: non-empty-string, description: non-empty-string, exists: bool}> $entries */
         $entries = [
             [
                 'name' => '.php-cs-fixer.cache',
