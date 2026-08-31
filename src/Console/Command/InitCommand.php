@@ -46,6 +46,7 @@ use Symfony\Component\Filesystem\Exception\IOException;
 final class InitCommand extends Command
 {
     private const FIXER_FILENAME = '.php-cs-fixer.dist.php';
+    private const GITIGNORE_FILENAME = '.gitignore';
 
     public function __construct()
     {
@@ -66,17 +67,44 @@ final class InitCommand extends Command
 
         $io->warning('This command is experimental');
 
-        if (file_exists(self::FIXER_FILENAME)) {
-            $io->error(\sprintf('Configuration file `%s` already exists.', self::FIXER_FILENAME));
+        $this->handleConfigurationFile($io);
+        $this->handleGitIgnore($io);
 
-            return Command::FAILURE;
+        return Command::SUCCESS;
+    }
+
+    private function handleConfigurationFile(SymfonyStyle $io): void
+    {
+        $io->title('⚙️ Configuring PHP CS Fixer');
+
+        if (file_exists(self::FIXER_FILENAME)) {
+            $io->info(\sprintf('Configuration file `%s` already exists. Skipping.', self::FIXER_FILENAME));
+
+            return;
         }
 
         $configurationFileContent = $this->prepareConfigurationFileContent($io);
         $this->writeFile(self::FIXER_FILENAME, $configurationFileContent);
-        $io->success(\sprintf('Configuration file created successfully as `%s`.', self::FIXER_FILENAME));
 
-        return Command::SUCCESS;
+        $io->success(\sprintf('Configuration file `%s`created.', self::FIXER_FILENAME));
+    }
+
+    private function handleGitIgnore(SymfonyStyle $io): void
+    {
+        $io->title('⚙️ Polishing GIT integration');
+
+        $gitignoreFileExists = file_exists(self::GITIGNORE_FILENAME);
+        $gitignoreFileContent = $this->prepareGitIgnoreContent($io, true === $gitignoreFileExists ? $this->readFile(self::GITIGNORE_FILENAME) : '');
+
+        if (null === $gitignoreFileContent) {
+            $io->info(\sprintf('Git file `%s` %s.', self::GITIGNORE_FILENAME, 'is already up to recommendations'));
+
+            return;
+        }
+
+        $this->writeFile(self::GITIGNORE_FILENAME, $gitignoreFileContent);
+
+        $io->success(\sprintf('Git file `%s` %s.', self::GITIGNORE_FILENAME, 'is already up to recommendations'));
     }
 
     private function prepareConfigurationFileContent(SymfonyStyle $io): string
@@ -88,6 +116,7 @@ final class InitCommand extends Command
             'Yet, some of the rules are explicitly _risky_ to apply - e.g. transforming `==` into `===` or removal of trailing whitespaces within multiline strings.',
             'Such rules are improving your codebase even further, yet you shall always review changes proposed by _risky_ rules carefully.',
         ]);
+
         $isRiskyAllowed = 'yes' === $io->choice(
             'Do you want to enable _risky_ rules?',
             ['yes', 'no'],
@@ -260,12 +289,71 @@ final class InitCommand extends Command
         );
     }
 
+    private function prepareGitIgnoreContent(SymfonyStyle $io, string $currentContent): ?string
+    {
+        $io->note([
+            'We recommend to add following entries to your `.gitignore` files:',
+        ]);
+
+        /** @var non-empty-list<array{name: non-empty-string, description: non-empty-string, exists: bool}> $entries */
+        $entries = [
+            [
+                'name' => '.php-cs-fixer.cache',
+                'description' => 'Cache file allowing to skip unchanged files on subsequent runs',
+                'exists' => true,
+            ],
+            [
+                'name' => '.php-cs-fixer.php',
+                'description' => 'The local configuration that will take precedence over ``.php-cs-fixer.dist.php`` configuration',
+                'exists' => true,
+            ],
+        ];
+
+        $entriesToAdd = [];
+
+        foreach ($entries as &$entry) {
+            $entry['exists'] = str_contains($currentContent, $entry['name']);
+
+            if (false === $entry['exists']) {
+                $entriesToAdd[] = '/'.$entry['name'];
+            }
+        }
+
+        $io->listing(
+            array_map(
+                static fn (array $entry): string => \sprintf(
+                    '<fg=blue>`%s`</> - %s %s',
+                    $entry['name'],
+                    self::formatReference($entry['description']),
+                    true === $entry['exists'] ? '(already present)' : '(will be added)',
+                ),
+                $entries,
+            ),
+        );
+
+        if ([] === $entriesToAdd) {
+            return null;
+        }
+
+        return $currentContent."\n# PHP CS Fixer configuration\n".implode("\n", $entriesToAdd)."\n";
+    }
+
     private function writeFile(string $filename, string $content): void
     {
         $result = @file_put_contents($filename, $content);
         if (false === $result) {
             throw new IOException(\sprintf('Failed to write file "%s".', $filename));
         }
+    }
+
+    private function readFile(string $filename): string
+    {
+        $result = @file_get_contents($filename);
+        if (false === $result) {
+            throw new IOException(\sprintf('Failed to read file "%s".', $filename));
+        }
+
+        return $result;
     }
 
     private static function formatReference(string $text): string
