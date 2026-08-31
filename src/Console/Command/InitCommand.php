@@ -84,7 +84,7 @@ final class InitCommand extends Command
         $io->section('Risky rules');
 
         $io->note([
-            'At PHP CS Fixer, we put our diligence to NOT change your code's logic and behaviour.',
+            'At PHP CS Fixer, we put our diligence to NOT change your code\'s logic and behaviour.',
             'Yet, some of the rules are explicitly _risky_ to apply - e.g. transforming `==` into `===` or removal of trailing whitespaces within multiline strings.',
             'Such rules are improving your codebase even further, yet you shall always review changes proposed by _risky_ rules carefully.',
         ]);
