@@ -15,7 +15,8 @@ Warning
 This rule is CONFIGURABLE
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can configure this rule using the following option: ``elements``.
+You can configure this rule using the following options: ``elements``,
+``general_visibility_when_set_visibility_present``.
 
 Configuration
 -------------
@@ -28,6 +29,17 @@ The structural elements to fix.
 Allowed values: a subset of ``['const', 'method', 'property']``
 
 Default value: ``['const', 'method', 'property']``
+
+``general_visibility_when_set_visibility_present``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+How to handle the general visibility modifier of a property that also declares a
+set-visibility modifier: ``require`` to always declare it, ``omit`` to drop the
+redundant ``public``, ``keep`` to leave it as it is.
+
+Allowed values: ``'keep'``, ``'omit'`` and ``'require'``
+
+Default value: ``'require'``
 
 Examples
 --------
@@ -149,6 +161,22 @@ Example #3
 Example #4
 ~~~~~~~~~~
 
+With configuration: ``['general_visibility_when_set_visibility_present' => 'omit']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    class Sample
+    {
+   -    public private(set) $baz;
+   +    private(set) $baz;
+    }
+
+Example #5
+~~~~~~~~~~
+
 With configuration: ``['elements' => ['const']]``.
 
 .. code-block:: diff
@@ -167,14 +195,26 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PER <./../../ruleSets/PER.rst>`_ *(deprecated)*
-- `@PER-CS <./../../ruleSets/PER-CS.rst>`_
+- `@PER <./../../ruleSets/PER.rst>`_ *(deprecated)* with config:
+
+  ``['general_visibility_when_set_visibility_present' => 'keep']``
+
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
+
+  ``['general_visibility_when_set_visibility_present' => 'keep']``
+
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ *(deprecated)*
 - `@PER-CS1x0 <./../../ruleSets/PER-CS1x0.rst>`_
 - `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ *(deprecated)*
 - `@PER-CS2x0 <./../../ruleSets/PER-CS2x0.rst>`_
-- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ *(deprecated)*
-- `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ *(deprecated)* with config:
+
+  ``['general_visibility_when_set_visibility_present' => 'keep']``
+
+- `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_ with config:
+
+  ``['general_visibility_when_set_visibility_present' => 'keep']``
+
 - `@PHP7x1Migration <./../../ruleSets/PHP7x1Migration.rst>`_
 - `@PHP7x3Migration <./../../ruleSets/PHP7x3Migration.rst>`_
 - `@PHP7x4Migration <./../../ruleSets/PHP7x4Migration.rst>`_
@@ -193,13 +233,18 @@ The rule is part of the following rule sets:
 - `@PHP83Migration <./../../ruleSets/PHP83Migration.rst>`_ *(deprecated)*
 - `@PHP84Migration <./../../ruleSets/PHP84Migration.rst>`_ *(deprecated)*
 - `@PHP85Migration <./../../ruleSets/PHP85Migration.rst>`_ *(deprecated)*
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
+  ``['general_visibility_when_set_visibility_present' => 'require']``
+
 - `@PSR2 <./../../ruleSets/PSR2.rst>`_ with config:
 
   ``['elements' => ['method', 'property']]``
 
 - `@PSR12 <./../../ruleSets/PSR12.rst>`_
-- `@Symfony <./../../ruleSets/Symfony.rst>`_
+- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
+  ``['general_visibility_when_set_visibility_present' => 'require']``
 
 References
 ----------
