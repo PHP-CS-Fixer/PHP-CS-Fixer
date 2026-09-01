@@ -15,15 +15,18 @@ declare(strict_types=1);
 namespace PhpCsFixer\Console\Command;
 
 use PhpCsFixer\Console\Application;
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixer;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
+use PhpCsFixer\RuleSet\Sets\AutoPHPUnitMigrationRiskySet;
 use PhpCsFixer\RuleSet\Sets\AutoRiskySet;
 use PhpCsFixer\RuleSet\Sets\AutoSet;
 use PhpCsFixer\RuleSet\Sets\PhpCsFixerRiskySet;
 use PhpCsFixer\RuleSet\Sets\PhpCsFixerSet;
 use PhpCsFixer\RuleSet\Sets\SymfonyRiskySet;
 use PhpCsFixer\RuleSet\Sets\SymfonySet;
+use PhpCsFixer\Utils;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -43,6 +46,7 @@ use Symfony\Component\Filesystem\Exception\IOException;
 final class InitCommand extends Command
 {
     private const FIXER_FILENAME = '.php-cs-fixer.dist.php';
+    private const GITIGNORE_FILENAME = '.gitignore';
 
     public function __construct()
     {
@@ -61,24 +65,66 @@ final class InitCommand extends Command
 
         $io = new SymfonyStyle($input, $stdErr);
 
-        if (file_exists(self::FIXER_FILENAME)) {
-            $io->error(\sprintf('Configuration file `%s` already exists.', self::FIXER_FILENAME));
-
-            return Command::FAILURE;
-        }
-
         $io->warning('This command is experimental');
 
+        $this->handleConfigurationFile($io);
+        $this->handleGitIgnore($io);
+
+        return Command::SUCCESS;
+    }
+
+    private function handleConfigurationFile(SymfonyStyle $io): void
+    {
+        $io->title('⚙️ Configuring PHP CS Fixer');
+
+        if (file_exists(self::FIXER_FILENAME)) {
+            $io->info(\sprintf('Configuration file `%s` already exists. Skipping.', self::FIXER_FILENAME));
+
+            return;
+        }
+
+        $configurationFileContent = $this->prepareConfigurationFileContent($io);
+        $this->writeFile(self::FIXER_FILENAME, $configurationFileContent);
+
+        $io->success(\sprintf('Configuration file `%s`created.', self::FIXER_FILENAME));
+    }
+
+    private function handleGitIgnore(SymfonyStyle $io): void
+    {
+        $io->title('⚙️ Polishing GIT integration');
+
+        $gitignoreFileExists = file_exists(self::GITIGNORE_FILENAME);
+        $gitignoreFileContent = $this->prepareGitIgnoreContent($io, true === $gitignoreFileExists ? $this->readFile(self::GITIGNORE_FILENAME) : '');
+
+        if (null === $gitignoreFileContent) {
+            $io->info(\sprintf('Git file `%s` %s.', self::GITIGNORE_FILENAME, 'is already up to recommendations'));
+
+            return;
+        }
+
+        $this->writeFile(self::GITIGNORE_FILENAME, $gitignoreFileContent);
+
+        $io->success(\sprintf('Git file `%s` %s.', self::GITIGNORE_FILENAME, 'is already up to recommendations'));
+    }
+
+    private function prepareConfigurationFileContent(SymfonyStyle $io): string
+    {
+        $io->section('Risky rules');
+
         $io->note([
-            'While we start, we must tell you that we put our diligence to NOT change the meaning of your codebase.',
-            'Yet, some of the rules are explicitly _risky_ to apply. A rule is _risky_ if it could change code behaviour, e.g. transforming `==` into `===` or removal of trailing whitespaces within multiline strings.',
+            'At PHP CS Fixer, we put our diligence to NOT change your code\'s logic and behaviour.',
+            'Yet, some of the rules are opposite by design - explicitly _risky_ to apply.',
+            'Exampleas are transforming `==` into `===` or removal of trailing whitespaces within multiline strings.',
             'Such rules are improving your codebase even further, yet you shall always review changes proposed by _risky_ rules carefully.',
         ]);
+
         $isRiskyAllowed = 'yes' === $io->choice(
             'Do you want to enable _risky_ rules?',
             ['yes', 'no'],
             'no',
         );
+
+        $io->section('`@auto` ruleset');
 
         $setsByName = RuleSets::getBuiltInSetDefinitions();
 
@@ -86,39 +132,26 @@ final class InitCommand extends Command
         $setAutoRisky = new AutoRiskySet();
         $setAutoWithOptionalRiskySetNamesTextual = $isRiskyAllowed ? '`@auto`/`@auto:risky`' : '`@auto`';
 
-        $io->note("We recommend usage of {$setAutoWithOptionalRiskySetNamesTextual} rulesets. They take insights from your existing `composer.json` to configure project the best. For your current setup, that would mean:");
+        /** @var list<string> $setsBehindAutoSetOnlySafe */
+        $setsBehindAutoSetOnlySafe = array_keys($setAuto->getRulesCandidates());
 
-        $generateSetsBehindAutoSet = static function () use ($setAuto, $setAutoRisky, $isRiskyAllowed): array {
-            $sets = array_merge(
-                array_keys($setAuto->getRulesCandidates()),
-                $isRiskyAllowed ? array_keys($setAutoRisky->getRulesCandidates()) : [],
-            );
-            natcasesort($sets);
+        /** @var list<string> $setsBehindAutoSetOnlyRisky */
+        $setsBehindAutoSetOnlyRisky = $isRiskyAllowed ? array_keys($setAutoRisky->getRulesCandidates()) : [];
 
-            return $sets;
-        };
-        $setsBehindAutoSet = $generateSetsBehindAutoSet();
+        /** @var list<string> $setsBehindAutoSet */
+        $setsBehindAutoSet = array_merge(
+            $setsBehindAutoSetOnlySafe,
+            $setsBehindAutoSetOnlyRisky,
+        );
+        natcasesort($setsBehindAutoSet);
 
-        $formatReference = static function (string $text): string {
-            $text = Preg::replace(
-                '/``(.+?)``/',
-                '<fg=blue>$1</>',
-                $text,
-            );
-
-            return Preg::replace(
-                '/`(.+?) <(.+?)>`_/',
-                '<href=$2;fg=bright-blue;options=underscore>$1 ($2)</>',
-                $text,
-            );
-        };
-
+        $io->note("We recommend usage of {$setAutoWithOptionalRiskySetNamesTextual} rulesets. They take insights from your existing `composer.json` to configure your project the best. For your current setup, that would mean:");
         $io->listing(
             array_map(
                 static fn (RuleSetDefinitionInterface $item): string => \sprintf(
                     '<fg=blue>`%s`</> - %s',
                     $item->getName(),
-                    $formatReference($item->getDescription()),
+                    self::formatReference($item->getDescription()),
                 ),
                 array_map(
                     static fn (string $name): RuleSetDefinitionInterface => $setsByName[$name], // @phpstan-ignore-line offsetAccess.notFound
@@ -127,7 +160,11 @@ final class InitCommand extends Command
             ),
         );
 
+        /** @var array<string, array<string, mixed>|bool> $rules */
         $rules = [];
+
+        /** @var list<string> $resolvedSetNames */
+        $resolvedSetNames = [];
 
         $useAutoSet = 'yes' === $io->choice(
             "Do you want to use <fg=blue>{$setAutoWithOptionalRiskySetNamesTextual}</> ruleset?",
@@ -136,11 +173,16 @@ final class InitCommand extends Command
         );
 
         if ($useAutoSet) {
-            $rules[] = $setAuto->getName();
+            $rules[$setAuto->getName()] = true;
+            $resolvedSetNames = array_merge($resolvedSetNames, $setsBehindAutoSetOnlySafe);
+
             if ($isRiskyAllowed) {
-                $rules[] = $setAutoRisky->getName();
+                $rules[$setAutoRisky->getName()] = true;
+                $resolvedSetNames = array_merge($resolvedSetNames, $setsBehindAutoSetOnlyRisky);
             }
         }
+
+        $io->section('More rulesets');
 
         $generateExtraSets = static function () use ($isRiskyAllowed): array {
             $setSymfony = new SymfonySet();
@@ -169,11 +211,11 @@ final class InitCommand extends Command
         natcasesort($extraSets);
 
         $sets = $io->choice(
-            'Do you want to use any of other recommended ruleset? (multi-choice)',
+            'Do you want to use any of the other recommended rulesets? (multi-choice)',
             array_combine(
                 $extraSets,
                 array_map(
-                    static fn (string $item): string => $formatReference($setsByName[$item]->getDescription()), // @phpstan-ignore-line offsetAccess.notFound
+                    static fn (string $item): string => self::formatReference($setsByName[$item]->getDescription()), // @phpstan-ignore-line offsetAccess.notFound
                     $extraSets,
                 ),
             ) + ['none' => 'none'],
@@ -181,22 +223,32 @@ final class InitCommand extends Command
             true,
         );
 
-        // older Symfony version can return single string instead of array with single string, let's unify
+        // older Symfony version can return a single string instead of an array with a single string, let's unify
         if (!\is_array($sets)) {
             $sets = [$sets];
         }
 
-        $rules = array_merge(
-            $rules,
-            array_unique(array_filter($sets, static fn ($item) => 'none' !== $item)),
-        );
+        /** @var list<string> $sets */
+        $sets = array_filter($sets, static fn ($item) => 'none' !== $item);
+
+        foreach ($sets as $set) {
+            $rules[$set] = true;
+        }
+        $resolvedSetNames = array_merge($resolvedSetNames, $sets);
+
+        $phpUnitCallType = $this->askForPhpUnitCallType($io, $resolvedSetNames);
+        if (null !== $phpUnitCallType) {
+            $rules[(new PhpUnitTestCaseStaticMethodCallsFixer())->getName()] = ['call_type' => $phpUnitCallType];
+        }
+
+        $io->section('Files finder');
 
         $io->note([
-            'By default, PHP CS Fixer will looks for `*.php` files excluding `./vendor/` dir.',
+            'By default, PHP CS Fixer will look for `*.php` files excluding `./vendor/` dir.',
         ]);
         $useDefaultFinder = 'yes' === $io->choice(
-            'Do you want to rely on default file finder, or do you want to customize it?',
-            ['yes' => 'default', 'no' => 'customizable'],
+            'Do you want to rely on the default files finder, or do you want to customise it?',
+            ['yes' => 'default', 'no' => 'customisable'],
             'yes',
         );
 
@@ -205,7 +257,7 @@ final class InitCommand extends Command
             throw new IOException('Failed to read template file.');
         }
 
-        $content = str_replace(
+        return str_replace(
             [
                 '/*{{ IS_RISKY_ALLOWED }}*/',
                 '/*{{ RULES }}*/',
@@ -216,13 +268,14 @@ final class InitCommand extends Command
                 "[\n".implode(
                     ",\n",
                     array_map(
-                        static fn ($item) => "        '{$item}' => true",
+                        static fn (string $name, $configuration): string => \sprintf("        '%s' => %s", $name, Utils::toString($configuration)),
+                        array_keys($rules),
                         $rules,
                     ),
                 )."\n    ]",
                 $useDefaultFinder
                     ? ''
-                    : "// 💡 additional files, eg bin entry file
+                    : "// 💡 additional files, e.g. bin entry file
             // ->append([__DIR__.'/bin-entry-file'])
             // 💡 folders to exclude, if any
             // ->exclude([/* ... */])
@@ -234,14 +287,121 @@ final class InitCommand extends Command
             ],
             $readResult,
         );
+    }
 
-        $writeResult = @file_put_contents(self::FIXER_FILENAME, $content);
-        if (false === $writeResult) {
-            throw new IOException(\sprintf('Failed to write file "%s".', self::FIXER_FILENAME));
+    private function prepareGitIgnoreContent(SymfonyStyle $io, string $currentContent): ?string
+    {
+        $io->note([
+            'We recommend to add following entries to your `.gitignore` files:',
+        ]);
+
+        /** @var non-empty-list<array{name: non-empty-string, description: non-empty-string, exists: bool}> $entries */
+        $entries = [
+            [
+                'name' => '.php-cs-fixer.cache',
+                'description' => 'Cache file allowing to skip unchanged files on subsequent runs',
+                'exists' => true,
+            ],
+            [
+                'name' => '.php-cs-fixer.php',
+                'description' => 'The local configuration that will take precedence over ``.php-cs-fixer.dist.php`` configuration',
+                'exists' => true,
+            ],
+        ];
+
+        $entriesToAdd = [];
+
+        foreach ($entries as &$entry) {
+            $entry['exists'] = str_contains($currentContent, $entry['name']);
+
+            if (false === $entry['exists']) {
+                $entriesToAdd[] = '/'.$entry['name'];
+            }
         }
 
-        $io->success(\sprintf('Configuration file created successfully as `%s`.', self::FIXER_FILENAME));
+        $io->listing(
+            array_map(
+                static fn (array $entry): string => \sprintf(
+                    '<fg=blue>`%s`</> - %s %s',
+                    $entry['name'],
+                    self::formatReference($entry['description']),
+                    true === $entry['exists'] ? '(already present)' : '(will be added)',
+                ),
+                $entries,
+            ),
+        );
 
-        return Command::SUCCESS;
+        if ([] === $entriesToAdd) {
+            return null;
+        }
+
+        return $currentContent."\n# PHP CS Fixer configuration\n".implode("\n", $entriesToAdd)."\n";
+    }
+
+    private function writeFile(string $filename, string $content): void
+    {
+        $result = @file_put_contents($filename, $content);
+        if (false === $result) {
+            throw new IOException(\sprintf('Failed to write file "%s".', $filename));
+        }
+    }
+
+    private function readFile(string $filename): string
+    {
+        $result = @file_get_contents($filename);
+        if (false === $result) {
+            throw new IOException(\sprintf('Failed to read file "%s".', $filename));
+        }
+
+        return $result;
+    }
+
+    private static function formatReference(string $text): string
+    {
+        $text = Preg::replace(
+            '/``(.+?)``/',
+            '<fg=blue>$1</>',
+            $text,
+        );
+
+        return Preg::replace(
+            '/`(.+?) <(.+?)>`_/',
+            '<href=$2;fg=bright-blue;options=underscore>$1 ($2)</>',
+            $text,
+        );
+    }
+
+    /**
+     * The `PhpUnitTestCaseStaticMethodCallsFixer` rule is not part of any automatic set, as there is no wide alignment
+     * on the call type to use. Yet the choice is worth making explicitly, so let's ask for it instead of leaving the
+     * rule undiscovered.
+     *
+     * @param list<string> $resolvedSetNames
+     *
+     * @return null|string the call type to enforce, or `null` to not enforce any
+     */
+    private function askForPhpUnitCallType(SymfonyStyle $io, array $resolvedSetNames): ?string
+    {
+        // the rule is risky, so offer it only when the risky PHPUnit migration set is enabled
+        if (!\in_array((new AutoPHPUnitMigrationRiskySet())->getName(), $resolvedSetNames, true)) {
+            return null;
+        }
+
+        $io->section('PHPUnit additions');
+
+        $io->note('PHPUnit methods can be called on the instance or statically. You can decide on your preference.');
+
+        $callType = $io->choice(
+            'Which call type do you use for PHPUnit methods?',
+            [
+                'this' => '`$this->assertSame()`',
+                'self' => '`self::assertSame()`',
+                'static' => '`static::assertSame()`',
+                'none' => 'none - do not enforce any',
+            ],
+            'none',
+        );
+
+        return 'none' === $callType ? null : $callType;
     }
 }

@@ -45,6 +45,21 @@ final class ControlStructureBracesFixerTest extends AbstractFixerTestCase
      */
     public static function provideFixCases(): iterable
     {
+        yield 'else with a body starting with a parenthesis' => [
+            '<?php if ($a) { b(); } else { (c() && d()) || e(); }',
+            '<?php if ($a) { b(); } else (c() && d()) || e();',
+        ];
+
+        yield 'nested bracesless control structures with such an else' => [
+            "<?php\nif (is_array(\$d)) {\n    foreach (\$d as \$x) {\n        (f(\$x) && g(\$x)) || h(\$x); } }\nelse {\n    (f(\$d) && g(\$d)) || h(\$d); }\n",
+            "<?php\nif (is_array(\$d))\n    foreach (\$d as \$x)\n        (f(\$x) && g(\$x)) || h(\$x);\nelse\n    (f(\$d) && g(\$d)) || h(\$d);\n",
+        ];
+
+        yield 'do with a body starting with a parenthesis' => [
+            '<?php do { (a() && b()) || c(); } while ($x);',
+            '<?php do (a() && b()) || c(); while ($x);',
+        ];
+
         yield 'if' => [
             '<?php if ($foo) { foo(); }',
             '<?php if ($foo) foo();',
