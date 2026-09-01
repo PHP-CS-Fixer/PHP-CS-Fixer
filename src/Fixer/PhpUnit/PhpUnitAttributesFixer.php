@@ -27,7 +27,9 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\FullyQualifiedNameAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Processor\ImportProcessor;
 use PhpCsFixer\Tokenizer\Token;
@@ -256,9 +258,11 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
             $insertedClassName .= $token->getContent();
         }
 
+        $fullyQualifiedNameAnalyzer = new FullyQualifiedNameAnalyzer($tokens);
+
         foreach (AttributeAnalyzer::collect($tokens, $attributeIndex) as $attributeAnalysis) {
             foreach ($attributeAnalysis->getAttributes() as $attribute) {
-                $className = ltrim(AttributeAnalyzer::determineAttributeFullyQualifiedName($tokens, $attribute['name'], $attribute['start']), '\\');
+                $className = $fullyQualifiedNameAnalyzer->getFullyQualifiedName($attribute['name'], $attribute['start'], NamespaceUseAnalysis::TYPE_CLASS);
 
                 if ($insertedClassName === $className) {
                     return true;
