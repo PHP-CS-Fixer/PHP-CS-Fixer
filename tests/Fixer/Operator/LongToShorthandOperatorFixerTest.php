@@ -14,16 +14,17 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Operator;
 
+use PhpCsFixer\Fixer\AbstractLongToShorthandOperatorFixer;
 use PhpCsFixer\Fixer\AbstractShortOperatorFixer;
 use PhpCsFixer\Fixer\Operator\LongToShorthandOperatorFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
  *
+ * @covers \PhpCsFixer\Fixer\AbstractLongToShorthandOperatorFixer
  * @covers \PhpCsFixer\Fixer\AbstractShortOperatorFixer
  * @covers \PhpCsFixer\Fixer\Operator\LongToShorthandOperatorFixer
  *
@@ -31,6 +32,7 @@ use PHPUnit\Framework\Attributes\RequiresPhp;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AbstractLongToShorthandOperatorFixer::class)]
 #[CoversClass(AbstractShortOperatorFixer::class)]
 #[CoversClass(LongToShorthandOperatorFixer::class)]
 final class LongToShorthandOperatorFixerTest extends AbstractFixerTestCase
@@ -45,18 +47,39 @@ final class LongToShorthandOperatorFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: null|string}>
      */
     public static function provideFixCases(): iterable
     {
+        // Only a plain variable target is a candidate here; any offset or member
+        // access target is left to `long_to_shorthand_operator_for_complex_targets`.
+        yield 'string offset target left alone' => [
+            '<?php $text[0] = $text[0] & "\x7F";',
+        ];
+
+        yield 'array offset target left alone' => [
+            '<?php $a[1] = $a[1] + 2;',
+        ];
+
+        yield 'nested offset target left alone' => [
+            '<?php $a[1][2] = $a[1][2] - 852;',
+        ];
+
+        yield 'property target left alone' => [
+            '<?php $this->test = $this->test + $i;',
+        ];
+
+        yield 'static property target left alone' => [
+            '<?php self::$c = self::$c + 1;',
+        ];
+
+        yield 'variable-variable target left alone' => [
+            '<?php $$name = $$name + 1;',
+        ];
+
         yield 'simple I' => [
             '<?php $a += 123;',
             '<?php $a = $a + 123;',
-        ];
-
-        yield 'simple II' => [
-            '<?php $b[0] *= 789;',
-            '<?php $b[0] = ($b[0]) * 789;',
         ];
 
         yield 'simple III' => [
@@ -72,21 +95,6 @@ final class LongToShorthandOperatorFixerTest extends AbstractFixerTestCase
         yield 'simple V' => [
             '<?php foo(1, $x *= 1235, 1);',
             '<?php foo(1, $x = $x * 1235, 1);',
-        ];
-
-        yield 'simple II\' array' => [
-            '<?php $aa[1] %= 963;',
-            '<?php $aa[1] = $aa[1] % 963;',
-        ];
-
-        yield 'simple III array' => [
-            '<?php $a[1][2] -= 852;',
-            '<?php $a[1][2] = $a[1][2] - 852;',
-        ];
-
-        yield 'simple IV array' => [
-            '<?php {$a[0][1][122] ^= $a;}',
-            '<?php {$a[0][1][122] = $a[0][1][122] ^ $a;}',
         ];
 
         yield [
@@ -121,18 +129,6 @@ final class LongToShorthandOperatorFixerTest extends AbstractFixerTestCase
             ];
         }
 
-        // array index
-
-        yield 'simple I array' => [
-            '<?php $ai[1] += 566;',
-            '<?php $ai[1] = $ai[1] + 566;',
-        ];
-
-        yield 'simple II array' => [
-            '<?php $p[1] += 789;',
-            '<?php $p[1] = $p[1] + 789;',
-        ];
-
         // minimal and multiple
 
         yield 'minimal' => [
@@ -146,7 +142,7 @@ final class LongToShorthandOperatorFixerTest extends AbstractFixerTestCase
         ];
 
         // test simple with all operators
-        $operators = \Closure::bind(static fn (): array => LongToShorthandOperatorFixer::OPERATORS, null, LongToShorthandOperatorFixer::class)();
+        $operators = \Closure::bind(static fn (): array => AbstractLongToShorthandOperatorFixer::OPERATORS, null, AbstractLongToShorthandOperatorFixer::class)();
 
         foreach ($operators as $operator => $info) {
             $shortHand = $info[1];
@@ -178,17 +174,6 @@ EOD
 <<<EOD
 EOD
 ;',
-        ];
-
-        yield [
-            '<?php $a6 .=  '.'
-<<<\'EOD\'
-EOD
-?>',
-            '<?php $a6 = $a6 .
-<<<\'EOD\'
-EOD
-?>',
         ];
 
         yield [
@@ -244,113 +229,27 @@ EOD
             ',
         ];
 
-        // do not fix
-
-        yield 'do not fix various' => ['<?php
-            $a = ${foo} . 1;
-            $a = ${foo}++ + 1;
-            $a = $a[1] * 1;
-            $a = $a(1 + 2) . 1;
-            $a = $a[1][2] . 1;
-            $a = $a[1][2][3][foo()][$a++][1+$a][${"foo"}][99] . 1;
-            $a = ${foo}++ . 1;
-            $a = ($a /* */ /* */ /* */ /* */ + 1 /* */ ) + 1;
-            $a = 1 . 1 + foo();
-            $a = 1 . foo() + 1;
-            $a = 1 . foo();
-            $a = 1 . foo(1, ++$a);
-            $a = foo() . 1;
-            $a = foo(1, ++$a) . 1;
-            $a = $a[1] * 1;
-            $a[1] = $a[0] * 1;
-            $a = $a(1 + 2) . 1;
-            foo($b, ${foo} + 1);
-            foo($a + 1);
-            $a++ + 2;
-            2 + $a++;
-            $a = 7 . (int) $a;
-            $a = (int) $a . 7;
-            (int) $a = 7 . (int) $a;
-            (int) $a = (int) $a . 7;
-            $a = 1 . $a + foo();
-            $a = $a instanceof \Foo & $b;
-            $a = $a + $b instanceof \Foo;
-            $a = $d / $a + $b;
-            $d + $a = $a - $e;
-            $a = $a >= $b;
-            $a[1] = $a[1] instanceof \Foo & $b;
-        '];
+        // do not fix; not assignment / precedence
 
         yield ['<?php $a = 123 + $a + $c ?>'];
 
         yield ['<?php $a = $a + 123 + $c ?>'];
 
-        // do not fix; not assignment
-
         yield ['<?php ($a + 123);'];
 
-        yield ['<?php while(true){$a + 123;}'];
-
         yield ['<?php $a + 123;'];
-
-        yield ['<?php ; $a + 123;'];
-
-        // do not fix; precedence
 
         yield [
             '<?php
                 $a = 1;
                 $b = 3;
                 $a = $a + $b ? 1 : 2;
-                var_dump($a);
-
-                $a = 1;
-                $b = 3;
-                $a += $b ? 1 : 2;
-                var_dump($a);
-
-                //---------------------
 
                 $a = 2;
                 $b = null;
                 $a = $a + $b ?? 3;
-                var_dump($a);
-
-                $a = 2;
-                $b = null;
-                $a += $b ?? 3;
-                var_dump($a);
-
-                //---------------------
-
-                $a = 3;
-                $b = null;
-                $a = $a + $b === null ? 3 : 1;
-                var_dump($a);
-
-                $a = 3;
-                $b = null;
-                $a += $b === null ? 3 : 1;
-                var_dump($a);
-
-                //---------------------
-
-                $a = $a & $a ^ true;
-                $a = $a ^ true & $a;
-                $a = 1 . $a + foo();
-
-                //---------------------
-
-                $a = 1;
-                $b = false;
-                $z = true;
-
-                $a = $a + $b || $z;
-                var_dump($a);
             ',
         ];
-
-        yield ['<?php {echo 1;} $a = new class{} & $a;'];
 
         // reverse
 
@@ -362,47 +261,6 @@ EOD
         yield 'simple V, comments, reverse' => [
             '<?php foo(1, /*1*/$x /*2*/*= /*3*/123/*4*//*5*//*6*/, 1);',
             '<?php foo(1, /*1*/$x/*2*/=/*3*/123/*4*/*/*5*/$x/*6*/, 1);',
-        ];
-
-        yield 'simple VI, `)`, reverse' => [
-            '<?php foo(1, $x *= 123);',
-            '<?php foo(1, $x=123*$x);',
-        ];
-
-        yield [
-            '<?php $a99 .= // foo
-<<<EOD
-EOD
-    ;',
-            '<?php $a99 = $a99 . // foo
-<<<EOD
-EOD
-    ;',
-        ];
-
-        yield [
-            '<?php $a00 .= // foo2
-<<<\'EOD\'
-EOD
-;',
-            '<?php $a00 = $a00 . // foo2
-<<<\'EOD\'
-EOD
-;',
-        ];
-
-        yield 'do bother with to much mess' => [
-            '<?php
-                $a = 1 + $a + 2 + $a;
-                $a = $a + 1 + $a + 2;
-            ',
-        ];
-
-        yield [
-            '<?php
-                $r[1] = [&$r[1]];
-                $r[1] = [$r[1],&$r[1]];
-            ',
         ];
 
         yield 'switch case & default' => [
@@ -433,77 +291,6 @@ EOD
         yield 'alternative syntax' => [
             '<?php foreach([1, 2, 3] as $i): $a += $i; endforeach;',
             '<?php foreach([1, 2, 3] as $i): $a = $a + $i; endforeach;',
-        ];
-
-        yield 'assign and return' => [
-            '<?php
-
-class Foo
-{
-    private int $test = 1;
-
-    public function bar(int $i): int
-    {
-        return $this->test += $i;
-    }
-}',
-            '<?php
-
-class Foo
-{
-    private int $test = 1;
-
-    public function bar(int $i): int
-    {
-        return $this->test = $this->test + $i;
-    }
-}',
-        ];
-    }
-
-    /**
-     * @requires PHP < 8.0.0
-     *
-     * @dataProvider provideFixPre80Cases
-     */
-    #[RequiresPhp('< 8.0.0')]
-    #[DataProvider('provideFixPre80Cases')]
-    public function testFixPre80(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<array{0: string, 1?: string}>
-     */
-    public static function provideFixPre80Cases(): iterable
-    {
-        yield [
-            '<?php
-                $a = $a[1]{2} . 1;
-                $a = $a[1]{2}[3][foo()][$a++][1+$a][${"foo"}][99] . 1;
-                $a = 1 . $a[1]{2};
-                $a = 1 . $a[1]{2}[3][foo()][$a++][1+$a][${"foo"}][99];',
-        ];
-
-        yield 'simple I\' array' => [
-            '<?php $a[1] += 963;',
-            '<?php $a[1] = $a{1} + 963;',
-        ];
-
-        yield 'simple II array' => [
-            '<?php $a[1]{1} += 852;',
-            '<?php $a[1]{1} = $a[1]{1} + 852;',
-        ];
-
-        yield 'simple III array' => [
-            '<?php $a{7} += 742;',
-            '<?php $a{7} = $a[7] + 742;',
-        ];
-
-        yield 'simple IV array' => [
-            '<?php {$a[0]{1}[1] ^= $azz;} ?>',
-            '<?php {$a[0]{1}[1] = $a[0][1]{1} ^ $azz;} ?>',
         ];
     }
 }
