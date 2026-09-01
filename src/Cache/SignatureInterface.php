@@ -38,5 +38,10 @@ interface SignatureInterface
 
     public function getRuleCustomisationPolicyVersion(): string;
 
+    /**
+     * @return array<string, string>
+     */
+    public function getExtraFingerprints(): array;
+
     public function equals(self $signature): bool;
 }
