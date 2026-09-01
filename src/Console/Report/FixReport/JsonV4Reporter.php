@@ -18,21 +18,19 @@ use PhpCsFixer\Console\Application;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
- * @author Boris Gorbylev <ekho@ekho.name>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @readonly
  *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
- *
- * @TODO v4 replace with JsonV4Reporter
  */
-final class JsonReporter implements ReporterInterface
+final class JsonV4Reporter implements ReporterInterface
 {
     public function getFormat(): string
     {
-        return 'json';
+        return 'json_v4';
     }
 
     public function generate(ReportSummary $reportSummary): string
@@ -40,10 +38,10 @@ final class JsonReporter implements ReporterInterface
         $jsonFiles = [];
 
         foreach ($reportSummary->getChanged() as $file => $fixResult) {
-            $jsonFile = ['name' => $file];
+            $jsonFile = ['file' => $file];
 
             if ($reportSummary->shouldAddAppliedFixers()) {
-                $jsonFile['appliedFixers'] = $fixResult['appliedFixers'];
+                $jsonFile['applied_fixers'] = $fixResult['appliedFixers'];
             }
 
             if ('' !== $fixResult['diff']) {
@@ -54,12 +52,16 @@ final class JsonReporter implements ReporterInterface
         }
 
         $json = [
+            'tool' => Application::NAME,
+            'version' => Application::VERSION,
             'about' => Application::getAbout(),
-            'files' => $jsonFiles,
-            'time' => [
-                'total' => round($reportSummary->getTime() / 1_000, 3),
-            ],
-            'memory' => round($reportSummary->getMemory() / 1_024 / 1_024, 3),
+            'command' => $reportSummary->isDryRun() ? 'check' : 'fix',
+            'result' => [] === $jsonFiles ? 'OK' : 'violations',
+            'files_processed' => $reportSummary->getFilesCount(),
+            'files_with_violations' => \count($jsonFiles),
+            'violations' => $jsonFiles,
+            'duration_s' => round($reportSummary->getTime() / 1_000, 3),
+            'memory_mb' => round($reportSummary->getMemory() / 1_024 / 1_024, 3),
         ];
 
         $json = json_encode($json, \JSON_THROW_ON_ERROR);
