@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\ControlStructure;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
+use PhpCsFixer\Fixer\Whitespace\ColonSpaceFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -25,12 +27,23 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * Fixer for rules defined in PSR2 ¶5.2.
  *
+ * @deprecated in favour of ColonSpaceFixer
+ *
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class SwitchCaseSpaceFixer extends AbstractFixer
+final class SwitchCaseSpaceFixer extends AbstractFixer implements DeprecatedFixerInterface
 {
+    private ColonSpaceFixer $colonSpaceFixer;
+
+    public function __construct()
+    {
+        $this->colonSpaceFixer = new ColonSpaceFixer();
+
+        parent::__construct();
+    }
+
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -55,6 +68,13 @@ final class SwitchCaseSpaceFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(\T_SWITCH);
+    }
+
+    public function getSuccessorsNames(): array
+    {
+        return [
+            $this->colonSpaceFixer->getName(),
+        ];
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
