@@ -1583,6 +1583,18 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         ];
     }
 
+    public function testGetReporterForFormatWithTooManyParts(): void
+    {
+        $resolver = $this->createConfigurationResolver([
+            'format' => '@auto,json,txt',
+        ]);
+
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('The format "@auto,json,txt" is invalid.');
+
+        $resolver->getReporter();
+    }
+
     public function testGetReporterForRawFormatOnStdIn(): void
     {
         $resolver = $this->createConfigurationResolver([
