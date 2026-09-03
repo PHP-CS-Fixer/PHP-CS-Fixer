@@ -1,0 +1,36 @@
+name: BC Check
+
+on:
+  pull_request:
+
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
+jobs:
+  bc-check:
+    name: BC Check
+
+    runs-on: ubuntu-latest
+    env:
+      php-version: '8.5'
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-tags: true
+
+      - name: Remove non-compatible library
+        run: composer remove --dev --no-update facile-it/paraunit
+
+      - name: Add BC check library
+        run: composer require --dev --no-update roave/backward-compatibility-check:^8
+
+      - name: Setup PHP with Composer deps
+        uses: ./.github/composite-actions/setup-php-with-composer-deps
+        with:
+          os: ${{ runner.os }}
+          php: ${{ env.php-version }}
+          extensions: bcmath, intl
+
+      - name: Check for BC breaks
+        run: vendor/bin/roave-backward-compatibility-check --format=markdown --from=$(git tag -l "v3.*" --sort=-v:refname | head -n 1)

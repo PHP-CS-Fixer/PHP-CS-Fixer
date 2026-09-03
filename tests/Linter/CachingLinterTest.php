@@ -14,13 +14,14 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Linter;
 
-use org\bovigo\vfs\vfsStream;
 use PhpCsFixer\Linter\CachingLinter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingResultInterface;
+use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @author ntzm
@@ -59,30 +60,34 @@ final class CachingLinterTest extends TestCase
 
     public function testLintFileIsCalledOnceOnSameContent(): void
     {
-        $fs = vfsStream::setup('root', null, [
-            'foo.php' => '<?php echo "baz";',
-            'bar.php' => '<?php echo "baz";',
-            'baz.php' => '<?php echo "foobarbaz";',
-        ]);
+        $directory = TestCaseUtils::createTemporaryDirectory();
 
-        $result1 = $this->createLintingResultDouble();
-        $result2 = $this->createLintingResultDouble();
+        try {
+            file_put_contents($directory.'/foo.php', '<?php echo "baz";');
+            file_put_contents($directory.'/bar.php', '<?php echo "baz";');
+            file_put_contents($directory.'/baz.php', '<?php echo "foobarbaz";');
 
-        $sublinter = $this->createLinterDouble(
-            null,
-            [
-                $fs->url().'/foo.php' => $result1,
-                $fs->url().'/baz.php' => $result2,
-            ],
-            [],
-        );
+            $result1 = $this->createLintingResultDouble();
+            $result2 = $this->createLintingResultDouble();
 
-        $linter = new CachingLinter($sublinter);
+            $sublinter = $this->createLinterDouble(
+                null,
+                [
+                    $directory.'/foo.php' => $result1,
+                    $directory.'/baz.php' => $result2,
+                ],
+                [],
+            );
 
-        self::assertSame($result1, $linter->lintFile($fs->url().'/foo.php'));
-        self::assertSame($result1, $linter->lintFile($fs->url().'/foo.php'));
-        self::assertSame($result1, $linter->lintFile($fs->url().'/bar.php'));
-        self::assertSame($result2, $linter->lintFile($fs->url().'/baz.php'));
+            $linter = new CachingLinter($sublinter);
+
+            self::assertSame($result1, $linter->lintFile($directory.'/foo.php'));
+            self::assertSame($result1, $linter->lintFile($directory.'/foo.php'));
+            self::assertSame($result1, $linter->lintFile($directory.'/bar.php'));
+            self::assertSame($result2, $linter->lintFile($directory.'/baz.php'));
+        } finally {
+            (new Filesystem())->remove($directory);
+        }
     }
 
     public function testLintSourceIsCalledOnceOnSameContent(): void
