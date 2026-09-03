@@ -270,13 +270,17 @@ final class RuleSetTest extends TestCase
             ],
         ];
 
+        // `strict_comparison` added here only to make this test case unique,
+        // otherwise ProjectCodeTest::testDataFromDataProviders() reports it as duplicate of the one above.
         yield 'native rule name overridden by next entry with FQCN as rule name (raw string)' => [
             [
                 'array_syntax' => false,
                 'PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer' => true,
+                'strict_comparison' => true,
             ],
             [
                 'array_syntax' => true,
+                'strict_comparison' => true,
             ],
         ];
 
