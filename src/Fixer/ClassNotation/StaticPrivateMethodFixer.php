@@ -108,7 +108,7 @@ final class StaticPrivateMethodFixer extends AbstractFixer
                 $classOpen = $tokens->getNextTokenOfKind($index, ['{']);
                 $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $classOpen);
 
-                $anythingChanged |= $this->fixClass($tokens, $tokensAnalyzer, $classOpen, $classClose);
+                $anythingChanged = $this->fixClass($tokens, $tokensAnalyzer, $classOpen, $classClose) || $anythingChanged;
             }
         } while ($anythingChanged);
     }
