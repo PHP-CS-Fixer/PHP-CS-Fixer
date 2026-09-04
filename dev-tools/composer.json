@@ -9,7 +9,7 @@
         "phpcompatibility/phpcompatibility-symfony": "^2-alpha2",
         "phpmd/phpmd": "dev-master as 2.16.0",
         "phpstan/extension-installer": "^1.4.3",
-        "phpstan/phpstan": "^2.2.12",
+        "phpstan/phpstan": "^2.2.13",
         "phpstan/phpstan-deprecation-rules": "^2.0.5",
         "phpstan/phpstan-phpunit": "^2.0.18",
         "phpstan/phpstan-strict-rules": "^2.0.12",
