@@ -14,7 +14,20 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Compat\Symfony\Component\Console\Style;
 
-class_alias(
-    method_exists(\Symfony\Component\Console\Style\SymfonyStyle::class, 'outlineSuccess') ? \Symfony\Component\Console\Style\SymfonyStyle::class : SymfonyStyleCompat::class,
-    SymfonyStyle::class,
-);
+if (method_exists(\Symfony\Component\Console\Style\SymfonyStyle::class, 'outlineSuccess')) { // @phpstan-ignore function.alreadyNarrowedType
+    /**
+     * @internal
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+     */
+    final class SymfonyStyle extends \Symfony\Component\Console\Style\SymfonyStyle {}
+} else {
+    /**
+     * @internal
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+     *
+     * @phpstan-ignore class.extendsFinalByPhpDoc
+     */
+    final class SymfonyStyle extends SymfonyStyleCompat {}
+}

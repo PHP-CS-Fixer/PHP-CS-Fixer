@@ -20,34 +20,44 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * This file is a polyfill for SymfonyStyle @ Symfony 8.2 provide methods `outline*()` that are not available in older Symfony.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @internal
+ *
+ * @final
  */
-final class SymfonyStyleCompat extends SymfonyStyle
+class SymfonyStyleCompat extends SymfonyStyle
 {
+    /** @param array<string>|string $message */ // @phpstan-ignore method.childParameterType
     public function outlineSuccess($message): void
     {
         $this->success($message);
     }
 
+    /** @param array<string>|string $message */ // @phpstan-ignore method.childParameterType
     public function outlineError($message): void
     {
         $this->error($message);
     }
 
+    /** @param array<string>|string $message */ // @phpstan-ignore method.childParameterType
     public function outlineWarning($message): void
     {
         $this->warning($message);
     }
 
+    /** @param array<string>|string $message */ // @phpstan-ignore method.childParameterType
     public function outlineNote($message): void
     {
         $this->note($message);
     }
 
+    /** @param array<string>|string $message */ // @phpstan-ignore method.childParameterType
     public function outlineInfo($message): void
     {
         $this->info($message);
     }
 
+    /** @param array<string>|string $message */ // @phpstan-ignore method.childParameterType
     public function outlineCaution($message): void
     {
         $this->caution($message);
