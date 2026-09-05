@@ -162,6 +162,23 @@ class Foo
 ',
         ];
 
+        yield 'It normalizes boundary lines of an already multi line doc block' => [
+            '<?php
+
+/**
+ * @param string $first
+ * @param string $second
+ */
+function example($first, $second): void {}
+',
+            '<?php
+
+/** @param string $first
+ * @param string $second */
+function example($first, $second): void {}
+',
+        ];
+
         yield 'It does change trait_import and other doc blocks to multi if configured to do so' => [
             '<?php
 
