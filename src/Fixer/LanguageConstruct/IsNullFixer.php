@@ -19,6 +19,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -92,6 +93,15 @@ final class IsNullFixer extends AbstractFixer
                 continue;
             }
 
+            $referenceEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $matches[1]);
+
+            // skip named arguments, as the argument name cannot be preserved by the transformation
+            for ($namedArgumentTokenIndex = $matches[1]; $namedArgumentTokenIndex <= $referenceEnd; ++$namedArgumentTokenIndex) {
+                if ($tokens[$namedArgumentTokenIndex]->isGivenKind(CT::T_NAMED_ARGUMENT_COLON)) {
+                    continue 2;
+                }
+            }
+
             $prevTokenIndex = $tokens->getPrevMeaningfulToken($matches[0]);
 
             // handle function references with namespaces
@@ -114,7 +124,6 @@ final class IsNullFixer extends AbstractFixer
             }
 
             // before getting rind of `()` around a parameter, ensure it's not assignment/ternary invariant
-            $referenceEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $matches[1]);
             $isContainingDangerousConstructs = false;
 
             for ($paramTokenIndex = $matches[1]; $paramTokenIndex <= $referenceEnd; ++$paramTokenIndex) {

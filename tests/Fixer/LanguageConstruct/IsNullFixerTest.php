@@ -304,6 +304,32 @@ final class IsNullFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP >= 8.0
+     */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix80Cases(): iterable
+    {
+        yield 'named argument is left untouched' => [
+            '<?php $x = is_null(value: $x);',
+        ];
+
+        yield 'inverted named argument is left untouched' => [
+            '<?php $x = !is_null(value: $x);',
+        ];
+    }
+
+    /**
      * @dataProvider provideFix81Cases
      *
      * @requires PHP >= 8.1.0
