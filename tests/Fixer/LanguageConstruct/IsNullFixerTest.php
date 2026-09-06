@@ -320,12 +320,32 @@ final class IsNullFixerTest extends AbstractFixerTestCase
      */
     public static function provideFix80Cases(): iterable
     {
-        yield 'named argument is left untouched' => [
-            '<?php $x = is_null(value: $x);',
+        yield 'named argument matching the parameter name is fixed' => [
+            '<?php $x = null === $y;',
+            '<?php $x = is_null(value: $y);',
         ];
 
-        yield 'inverted named argument is left untouched' => [
-            '<?php $x = !is_null(value: $x);',
+        yield 'inverted named argument matching the parameter name is fixed' => [
+            '<?php $x = null !== $y;',
+            '<?php $x = !is_null(value: $y);',
+        ];
+
+        yield 'named argument with extra whitespace and trailing comma is fixed' => [
+            '<?php $x = null === $y;',
+            '<?php $x = is_null(  value:   $y ,  );',
+        ];
+
+        yield 'named argument wrapping an expression is fixed' => [
+            '<?php $x = null === ($y ?? $z);',
+            '<?php $x = is_null(value: $y ?? $z);',
+        ];
+
+        yield 'named argument not matching the parameter name is left untouched' => [
+            '<?php $x = is_null(notValue: $y);',
+        ];
+
+        yield 'named argument matching the parameter name only case-insensitively is left untouched' => [
+            '<?php $x = is_null(Value: $y);',
         ];
 
         yield 'named argument in a nested call is still fixed' => [
