@@ -95,11 +95,12 @@ final class IsNullFixer extends AbstractFixer
 
             $referenceEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $matches[1]);
 
-            // skip named arguments, as the argument name cannot be preserved by the transformation
-            for ($namedArgumentTokenIndex = $matches[1]; $namedArgumentTokenIndex <= $referenceEnd; ++$namedArgumentTokenIndex) {
-                if ($tokens[$namedArgumentTokenIndex]->isGivenKind(CT::T_NAMED_ARGUMENT_COLON)) {
-                    continue 2;
-                }
+            // skip named argument, as the argument name cannot be preserved by the transformation;
+            // `is_null()` takes a single parameter, so only the first token inside the parentheses can carry a name
+            $possibleNamedArgumentColonIndex = $tokens->getNextMeaningfulToken($next);
+
+            if (null !== $possibleNamedArgumentColonIndex && $tokens[$possibleNamedArgumentColonIndex]->isGivenKind(CT::T_NAMED_ARGUMENT_COLON)) {
+                continue;
             }
 
             $prevTokenIndex = $tokens->getPrevMeaningfulToken($matches[0]);

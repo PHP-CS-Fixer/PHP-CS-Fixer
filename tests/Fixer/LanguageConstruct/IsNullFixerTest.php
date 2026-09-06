@@ -306,7 +306,7 @@ final class IsNullFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP >= 8.0
+     * @requires PHP >= 8.0.0
      */
     #[DataProvider('provideFix80Cases')]
     #[RequiresPhp('>= 8.0.0')]
@@ -326,6 +326,11 @@ final class IsNullFixerTest extends AbstractFixerTestCase
 
         yield 'inverted named argument is left untouched' => [
             '<?php $x = !is_null(value: $x);',
+        ];
+
+        yield 'named argument in a nested call is still fixed' => [
+            '<?php $x = null === strlen(string: $y);',
+            '<?php $x = is_null(strlen(string: $y));',
         ];
     }
 
