@@ -98,6 +98,11 @@ final class IsNullFixer extends AbstractFixer
                 continue;
             }
 
+            // an unpacked argument is not a value that can be compared to `null`, so leave such call as is
+            if ($tokens[$next]->isGivenKind(\T_ELLIPSIS)) {
+                continue;
+            }
+
             $referenceEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $matches[1]);
 
             // `is_null()` takes a single parameter, so only the first token inside the parentheses can carry a name

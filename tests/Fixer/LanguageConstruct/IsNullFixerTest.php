@@ -301,6 +301,19 @@ final class IsNullFixerTest extends AbstractFixerTestCase
             '<?php $a === (int) (null === $x) + (int) (null !== $y);',
             '<?php $a === (int) is_null($x) + (int) !is_null($y);',
         ];
+
+        yield [
+            '<?php $a = is_null(...$args);',
+        ];
+
+        yield [
+            '<?php $a = !is_null(...$args);',
+        ];
+
+        yield [
+            '<?php $a = null === strlen(...$args);',
+            '<?php $a = is_null(strlen(...$args));',
+        ];
     }
 
     /**
