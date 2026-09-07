@@ -125,3 +125,8 @@ services:
         class: PhpCsFixer\PHPStan\Extension\PregMatchTypeSpecifyingExtension
         tags:
             - phpstan.typeSpecifier.staticMethodTypeSpecifyingExtension
+
+    -
+        class: PhpCsFixer\PHPStan\Extension\PregReplaceCallbackClosureTypeExtension
+        tags:
+            - phpstan.staticMethodParameterClosureTypeExtension

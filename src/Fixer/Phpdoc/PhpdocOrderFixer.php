@@ -113,7 +113,7 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
                         throw new InvalidOptionsException(\sprintf(
                             'The option "order" value is invalid. Tag%s %s %s duplicated.',
                             \count($duplicates) > 1 ? 's' : '',
-                            Utils::naturalLanguageJoin($duplicates), // @phpstan-ignore-line argument.type
+                            Utils::naturalLanguageJoin(array_map(static fn ($tag): string => (string) $tag, $duplicates)),
                             \count($duplicates) > 1 ? 'are' : 'is',
                         ));
                     }

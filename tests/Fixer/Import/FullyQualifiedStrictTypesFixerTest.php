@@ -2833,6 +2833,23 @@ function foo($a) {}',
             ['import_symbols' => true],
         ];
 
+        yield 'fix closure return type when closure has a use clause' => [
+            <<<'PHP'
+                <?php
+                namespace Foo;
+                use Lib\Package\Bar;
+                $bar = new Bar();
+                $function = function () use ($bar): ?Bar { return $bar; };
+                PHP,
+            <<<'PHP'
+                <?php
+                namespace Foo;
+                $bar = new \Lib\Package\Bar();
+                $function = function () use ($bar): ?\Lib\Package\Bar { return $bar; };
+                PHP,
+            ['import_symbols' => true],
+        ];
+
         yield 'usage of <?=' => [
             <<<'PHP'
                 <?php
