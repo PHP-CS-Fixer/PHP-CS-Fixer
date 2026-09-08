@@ -231,7 +231,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
     /**
      * {@inheritdoc}
      *
-     * Must run before NoSuperfluousPhpdocTagsFixer, OrderedAttributesFixer, OrderedImportsFixer, OrderedInterfacesFixer, StatementIndentationFixer.
+     * Must run before BlankLineAfterStatementFixer, NoSuperfluousPhpdocTagsFixer, OrderedAttributesFixer, OrderedImportsFixer, OrderedInterfacesFixer, StatementIndentationFixer.
      * Must run after ClassKeywordFixer, PhpUnitAttributesFixer, PhpdocToPropertyTypeFixer, PhpdocToReturnTypeFixer.
      */
     public function getPriority(): int

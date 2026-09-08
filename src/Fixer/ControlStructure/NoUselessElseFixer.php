@@ -44,7 +44,7 @@ final class NoUselessElseFixer extends AbstractNoUselessElseFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before BlankLineBeforeStatementFixer, BracesFixer, CombineConsecutiveUnsetsFixer, NoBreakCommentFixer, NoExtraBlankLinesFixer, NoTrailingWhitespaceFixer, NoUselessReturnFixer, NoWhitespaceInBlankLineFixer, SimplifiedIfReturnFixer, StatementIndentationFixer.
+     * Must run before BlankLineAfterStatementFixer, BlankLineBeforeStatementFixer, BracesFixer, CombineConsecutiveUnsetsFixer, NoBreakCommentFixer, NoExtraBlankLinesFixer, NoTrailingWhitespaceFixer, NoUselessReturnFixer, NoWhitespaceInBlankLineFixer, SimplifiedIfReturnFixer, StatementIndentationFixer.
      * Must run after NoAlternativeSyntaxFixer, NoEmptyStatementFixer, NoUnneededBracesFixer, NoUnneededCurlyBracesFixer.
      */
     public function getPriority(): int
