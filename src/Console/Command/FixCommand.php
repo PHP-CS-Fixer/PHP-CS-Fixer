@@ -106,11 +106,12 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
                 <info>$ php %command.full_name% --path-mode=intersection /path/to/dir</info>
 
-            The <comment>--format</comment> option for the output format. Supported formats are `@auto` (default one on v4+), `txt` (default one on v3), `json`, `xml`, `checkstyle`, `junit` and `gitlab`.
+            The <comment>--format</comment> option for the output format. Supported formats are `@auto` (default one on v4+), `txt` (default one on v3), `json`, `xml`, `checkstyle`, `junit`, `gitlab` and `raw`.
 
             * `@auto` aims to auto-select best reporter for given CI or local execution (resolution into best format is outside of BC promise and is future-ready)
               * `gitlab` for GitLab
             * `@auto,{format}` takes `@auto` under CI, and {format} otherwise
+            * `raw` prints the resulting file instead of a report about it, it is available for STDIN only
 
             NOTE: the output for the following formats are generated in accordance with schemas
 
@@ -169,10 +170,20 @@ use Symfony\Component\Stopwatch\Stopwatch;
             By using <comment>--using-cache</comment> option with `yes` or `no` you can set if the caching
             mechanism should be used.
 
-            The command can also read from standard input, in which case it won't
-            automatically fix anything:
+            The command can also read from standard input, by passing `-` as the path. The file on STDIN cannot be
+            written to, so the analysis is always done as if <comment>--dry-run</comment> was passed and the outcome is
+            available in the report only:
 
+                <info>$ php %command.full_name% --diff - < foo.php</info>
                 <info>$ cat foo.php | php %command.full_name% --diff -</info>
+
+            With `--format=raw` the fixed file is printed to STDOUT instead of a report, which makes the tool usable
+            as a step of a formatting pipeline, for example for format-on-save in an editor:
+
+                <info>$ php %command.full_name% --format=raw - < foo.php</info>
+
+            The `raw` format is the default one for STDIN when `PHP_CS_FIXER_FUTURE_MODE` is enabled, and it will
+            become the default one for STDIN in the next MAJOR release.
 
             Finally, if you don't need BC kept on CLI level, you might use `PHP_CS_FIXER_FUTURE_MODE` to start using options that
             would be default in next MAJOR release and to forbid using deprecated configuration:
@@ -265,6 +276,10 @@ use Symfony\Component\Stopwatch\Stopwatch;
         );
 
         $reporter = $resolver->getReporter();
+
+        // The `raw` report is the analysed file itself and is meant to be piped, so it is never decorated,
+        // no matter what the output says. Decoration of STDERR is not affected.
+        $isReportDecorated = $output->isDecorated() && 'raw' !== $reporter->getFormat();
 
         $stdErr = $output instanceof ConsoleOutputInterface
             ? $output->getErrorOutput()
@@ -412,10 +427,10 @@ use Symfony\Component\Stopwatch\Stopwatch;
             memory_get_peak_usage(true) + $runner->getWorkersMemoryUsage(),
             OutputInterface::VERBOSITY_VERBOSE <= $verbosity,
             $resolver->isDryRun(),
-            $output->isDecorated(),
+            $isReportDecorated,
         );
 
-        $output->isDecorated()
+        $isReportDecorated
             ? $output->write($reporter->generate($reportSummary))
             : $output->write($reporter->generate($reportSummary), false, OutputInterface::OUTPUT_RAW);
 

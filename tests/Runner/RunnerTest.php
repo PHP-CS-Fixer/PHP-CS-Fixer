@@ -23,6 +23,7 @@ use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
+use PhpCsFixer\FileReader;
 use PhpCsFixer\Fixer;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Linter\Linter;
@@ -32,6 +33,7 @@ use PhpCsFixer\Linter\LintingResultInterface;
 use PhpCsFixer\Runner\Event\AnalysisStarted;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Runner;
+use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -108,6 +110,57 @@ final class RunnerTest extends TestCase
 
         self::assertCount(1, $changed);
         self::assertSame($expectedChangedInfo, array_pop($changed));
+    }
+
+    /**
+     * @covers \PhpCsFixer\Runner\Runner::fix
+     * @covers \PhpCsFixer\Runner\Runner::fixFile
+     */
+    public function testThatFixOfStdInCollectsNewContent(): void
+    {
+        $writeStdinContent = \Closure::bind(
+            static function (?string $content): void {
+                FileReader::createSingleton()->stdinContent = $content;
+            },
+            null,
+            FileReader::class,
+        );
+
+        $originalStdinContent = \Closure::bind(
+            static fn (): ?string => FileReader::createSingleton()->stdinContent,
+            null,
+            FileReader::class,
+        )();
+
+        $writeStdinContent("<?php \$a = (int)\$b;\n");
+
+        try {
+            $runner = new Runner(
+                new \ArrayIterator([new StdinFileInfo()]),
+                [new Fixer\CastNotation\CastSpacesFixer()],
+                new NullDiffer(),
+                null,
+                new ErrorsManager(),
+                $this->createLinterDouble(),
+                true,
+                new NullCacheManager(),
+            );
+
+            $changed = $runner->fix();
+        } finally {
+            $writeStdinContent($originalStdinContent);
+        }
+
+        self::assertSame(
+            [
+                'php://stdin' => [
+                    'appliedFixers' => ['cast_spaces'],
+                    'diff' => '',
+                    'newContent' => "<?php \$a = (int) \$b;\n",
+                ],
+            ],
+            $changed,
+        );
     }
 
     /**

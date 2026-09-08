@@ -44,6 +44,7 @@ use PhpCsFixer\Runner\Parallel\ProcessFactory;
 use PhpCsFixer\Runner\Parallel\ProcessIdentifier;
 use PhpCsFixer\Runner\Parallel\ProcessPool;
 use PhpCsFixer\Runner\Parallel\WorkerException;
+use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Analyzer\FixerAnnotationAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 use React\EventLoop\StreamSelectLoop;
@@ -55,7 +56,7 @@ use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * @phpstan-type _RunResult array<string, array{appliedFixers: list<string>, diff: string}>
+ * @phpstan-type _RunResult array<string, array{appliedFixers: list<string>, diff: string, newContent?: string}>
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Greg Korba <greg@codito.dev>
@@ -538,8 +539,13 @@ final class Runner
             Tokens::clearCache();
 
             if (null !== $fixInfo) {
-                $relativePath = $this->directory->getRelativePathTo($file->__toString());
-                $changed[$relativePath] = $fixInfo;
+                // `php://stdin` is a stream URI, not a filesystem path, so it must not be run through
+                // path normalisation, which would report it as `php:\stdin` on Windows.
+                $path = $file instanceof StdinFileInfo
+                    ? $file->getRealPath()
+                    : $this->directory->getRelativePathTo($file->__toString());
+
+                $changed[$path] = $fixInfo;
 
                 if ($this->stopOnViolation) {
                     break;
@@ -551,7 +557,7 @@ final class Runner
     }
 
     /**
-     * @return null|array{appliedFixers: list<string>, diff: string}
+     * @return null|array{appliedFixers: list<string>, diff: string, newContent?: string}
      */
     private function fixFile(\SplFileInfo $file, LintingResultInterface $lintingResult): ?array
     {
@@ -700,6 +706,12 @@ final class Runner
                 'appliedFixers' => $appliedFixers,
                 'diff' => $this->differ->diff($old, $new, $file),
             ];
+
+            if ($file instanceof StdinFileInfo) {
+                // Required by the `raw` reporter, which is available for STDIN only.
+                // It is not collected for regular files, as that would keep the whole fixed codebase in memory.
+                $fixInfo['newContent'] = $new;
+            }
 
             try {
                 $this->linter->lintSource($new)->check();

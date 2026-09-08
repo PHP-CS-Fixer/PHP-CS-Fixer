@@ -670,35 +670,47 @@ final class ConfigurationResolver
     private function resolveFormat(): string
     {
         if (null === $this->format) {
-            $formatCandidate = $this->options['format'] ?? $this->getConfig()->getFormat();
-            $parts = explode(',', $formatCandidate);
+            $format = $this->resolveFormatCandidate();
 
-            if (\count($parts) > 2) {
-                throw new InvalidConfigurationException(\sprintf('The format "%s" is invalid.', $formatCandidate));
+            if ('raw' === $format && !$this->isStdIn()) {
+                throw new InvalidConfigurationException('The format "raw" is available only when the input is read from STDIN.');
             }
 
-            $this->format = $parts[0];
-
-            if ('@auto' === $this->format) {
-                if (filter_var(getenv('GITLAB_CI'), \FILTER_VALIDATE_BOOL)) {
-                    $this->format = 'gitlab';
-
-                    return $this->format;
-                }
-
-                $agentDetector = new AgentDetector\Detector();
-
-                if ($agentDetector->isAgentPresent(array_fill_keys(array_keys(getenv()), ''))) {
-                    $this->format = 'json';
-
-                    return $this->format;
-                }
-
-                $this->format = $parts[1] ?? 'txt';
-            }
+            $this->format = $format;
         }
 
         return $this->format;
+    }
+
+    private function resolveFormatCandidate(): string
+    {
+        $formatCandidate = $this->options['format'] ?? $this->getConfig()->getFormat();
+        $parts = explode(',', $formatCandidate);
+
+        if (\count($parts) > 2) {
+            throw new InvalidConfigurationException(\sprintf('The format "%s" is invalid.', $formatCandidate));
+        }
+
+        // @TODO v4: make `raw` the default for STDIN and drop the future mode condition
+        if (null === $this->options['format'] && $this->isStdIn() && Future::isFutureModeEnabled()) {
+            return 'raw';
+        }
+
+        if ('@auto' === $parts[0]) {
+            if (filter_var(getenv('GITLAB_CI'), \FILTER_VALIDATE_BOOL)) {
+                return 'gitlab';
+            }
+
+            $agentDetector = new AgentDetector\Detector();
+
+            if ($agentDetector->isAgentPresent(array_fill_keys(array_keys(getenv()), ''))) {
+                return 'json';
+            }
+
+            return $parts[1] ?? 'txt';
+        }
+
+        return $parts[0];
     }
 
     private function getRuleSet(): RuleSetInterface
