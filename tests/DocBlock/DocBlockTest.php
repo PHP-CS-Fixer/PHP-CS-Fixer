@@ -93,6 +93,47 @@ final class DocBlockTest extends TestCase
         self::assertEmpty($doc->getAnnotation(5));
     }
 
+    /**
+     * @dataProvider provideSeparateAnnotationsFromBoundariesCases
+     */
+    #[DataProvider('provideSeparateAnnotationsFromBoundariesCases')]
+    public function testSeparateAnnotationsFromBoundaries(string $expected, string $input): void
+    {
+        $doc = new DocBlock($input);
+        $doc->getAnnotations();
+        $doc->separateAnnotationsFromBoundaries('    ', "\n");
+
+        self::assertSame($expected, $doc->getContent());
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function provideSeparateAnnotationsFromBoundariesCases(): iterable
+    {
+        yield 'empty content' => ['', ''];
+
+        yield 'both boundaries' => [
+            "/**\n     * @return array<string, mixed>\n     * @throws RuntimeException\n     */",
+            "/** @return array<string, mixed>\n     * @throws RuntimeException */",
+        ];
+
+        yield 'opening boundary' => [
+            "/**\n     * @return array<string, mixed>\n     */",
+            "/** @return array<string, mixed>\n     */",
+        ];
+
+        yield 'closing boundary' => [
+            "/**\n     * @return array<string, mixed>\n     */",
+            "/**\n     * @return array<string, mixed> */",
+        ];
+
+        yield 'standalone boundaries' => [
+            "/**\n     * @return array<string, mixed>\n     */",
+            "/**\n     * @return array<string, mixed>\n     */",
+        ];
+    }
+
     public function testGetAnnotationsOfTypeParam(): void
     {
         $doc = new DocBlock(self::$sample);
