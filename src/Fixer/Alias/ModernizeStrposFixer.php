@@ -78,7 +78,7 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Replace `strpos()` and `stripos()` calls with `str_starts_with()` or `str_contains()` if possible.',
+            'Replace `strpos()|mb_strpos()` and `stripos()|mb_stripos()` calls with `str_starts_with()` or `str_contains()` if possible.',
             [
                 new CodeSample(
                     <<<'PHP'
@@ -87,6 +87,10 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
                         if (strpos($haystack, $needle) !== 0) {}
                         if (strpos($haystack, $needle) !== false) {}
                         if (strpos($haystack, $needle) === false) {}
+                        if (mb_strpos($haystack, $needle) === 0) {}
+                        if (mb_strpos($haystack, $needle) !== 0) {}
+                        if (mb_strpos($haystack, $needle) !== false) {}
+                        if (mb_strpos($haystack, $needle) === false) {}
 
                         PHP,
                 ),
@@ -101,13 +105,21 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
                         if (stripos($haystack, $needle) !== 0) {}
                         if (stripos($haystack, $needle) !== false) {}
                         if (stripos($haystack, $needle) === false) {}
+                        if (mb_strpos($haystack, $needle) === 0) {}
+                        if (mb_strpos($haystack, $needle) !== 0) {}
+                        if (mb_strpos($haystack, $needle) !== false) {}
+                        if (mb_strpos($haystack, $needle) === false) {}
+                        if (mb_stripos($haystack, $needle) === 0) {}
+                        if (mb_stripos($haystack, $needle) !== 0) {}
+                        if (mb_stripos($haystack, $needle) !== false) {}
+                        if (mb_stripos($haystack, $needle) === false) {}
 
                         PHP,
                     ['modernize_stripos' => true],
                 ),
             ],
             null,
-            'Risky if `strpos`, `stripos`, `str_starts_with`, `str_contains` or `strtolower` functions are overridden.',
+            'Risky if `strpos`, `stripos`, `mb_strpos`, `mb_stripos`, `str_starts_with`, `str_contains`, `strtolower` or `mb_strtolower` functions are overridden.',
         );
     }
 
@@ -147,9 +159,10 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
         $functionsAnalyzer = new FunctionsAnalyzer();
         $argumentsAnalyzer = new ArgumentsAnalyzer();
 
-        $modernizeCandidates = [[\T_STRING, 'strpos']];
+        $modernizeCandidates = [[\T_STRING, 'strpos'], [\T_STRING, 'mb_strpos']];
         if ($this->configuration['modernize_stripos']) {
             $modernizeCandidates[] = [\T_STRING, 'stripos'];
+            $modernizeCandidates[] = [\T_STRING, 'mb_stripos'];
         }
 
         for ($index = \count($tokens) - 1; $index > 0; --$index) {
@@ -175,8 +188,9 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
             }
 
             if (null !== $compareTokens) {
-                $isCaseInsensitive = $tokens[$index]->equals([\T_STRING, 'stripos'], false);
-                $this->fixCall($tokens, $index, $compareTokens, $isCaseInsensitive);
+                $isCaseInsensitive = $tokens[$index]->equalsAny([[\T_STRING, 'stripos'], [\T_STRING, 'mb_stripos']], false);
+                $wrapWithMultibyte = $tokens[$index]->equals([\T_STRING, 'mb_stripos'], false);
+                $this->fixCall($tokens, $index, $compareTokens, $isCaseInsensitive, $wrapWithMultibyte);
             }
         }
     }
@@ -184,8 +198,13 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
     /**
      * @param array{operator_index: int, operand_index: int} $operatorIndices
      */
-    private function fixCall(Tokens $tokens, int $functionIndex, array $operatorIndices, bool $isCaseInsensitive): void
-    {
+    private function fixCall(
+        Tokens $tokens,
+        int $functionIndex,
+        array $operatorIndices,
+        bool $isCaseInsensitive,
+        bool $wrapWithMultibyte
+    ): void {
         foreach (self::REPLACEMENTS as $replacement) {
             if (!$tokens[$operatorIndices['operator_index']]->equals($replacement['operator'])) {
                 continue;
@@ -214,17 +233,18 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
             $tokens->insertAt($functionIndex, new Token($replacement['replacement']));
 
             if ($isCaseInsensitive) {
-                $this->wrapArgumentsWithStrToLower($tokens, $functionIndex);
+                $this->wrapArgumentsWithLowerCaseFunction($tokens, $functionIndex, $wrapWithMultibyte);
             }
 
             break;
         }
     }
 
-    private function wrapArgumentsWithStrToLower(Tokens $tokens, int $functionIndex): void
+    private function wrapArgumentsWithLowerCaseFunction(Tokens $tokens, int $functionIndex, bool $wrapWithMultibyte): void
     {
         $argumentsAnalyzer = new ArgumentsAnalyzer();
         $shouldAddNamespace = $tokens[$functionIndex - 1]->isGivenKind(\T_NS_SEPARATOR);
+        $lowercaseFunction = $wrapWithMultibyte ? 'mb_strtolower' : 'strtolower';
 
         $openIndex = $tokens->getNextMeaningfulToken($functionIndex);
         $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openIndex);
@@ -251,7 +271,7 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
             ++$firstArgumentIndexStart;
         }
 
-        $tokens->insertAt($firstArgumentIndexStart, [new Token([\T_STRING, 'strtolower']), new Token('(')]);
+        $tokens->insertAt($firstArgumentIndexStart, [new Token([\T_STRING, $lowercaseFunction]), new Token('(')]);
         $tokens->insertAt($firstArgumentIndexEnd, new Token(')'));
 
         if ($shouldAddNamespace) {
@@ -259,7 +279,7 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
             ++$secondArgumentIndexStart;
         }
 
-        $tokens->insertAt($secondArgumentIndexStart, [new Token([\T_STRING, 'strtolower']), new Token('(')]);
+        $tokens->insertAt($secondArgumentIndexStart, [new Token([\T_STRING, $lowercaseFunction]), new Token('(')]);
         $tokens->insertAt($secondArgumentIndexEnd, new Token(')'));
     }
 
