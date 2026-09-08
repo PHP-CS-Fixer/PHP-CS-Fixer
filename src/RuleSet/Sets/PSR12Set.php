@@ -70,7 +70,6 @@ final class PSR12Set extends AbstractRuleSetDefinition
                 ],
                 'sort_algorithm' => 'none',
             ],
-            'return_type_declaration' => true,
             'short_scalar_cast' => true,
             'single_import_per_statement' => ['group_to_single_imports' => false],
             'single_space_around_construct' => [
