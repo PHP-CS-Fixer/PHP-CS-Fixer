@@ -418,7 +418,16 @@ final class RunnerTest extends TestCase
             FixerAnnotationMode::ALL,
         );
 
-        self::assertArrayHasKey('B-with-ignore-tag.php', $runner->fix());
+        self::assertCount(1, $runner->fix());
+    }
+
+    public function testInvalidFixerAnnotationModeIsRejected(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown fixer annotation mode "invalid".');
+
+        // @phpstan-ignore-next-line argument.type We intentionally exercise invalid constructor input.
+        $this->createRunnerForFixerAnnotation([], new ErrorsManager(), 'invalid');
     }
 
     /**

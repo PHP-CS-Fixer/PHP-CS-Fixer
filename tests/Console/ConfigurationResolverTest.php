@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Console;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Cache\FileCacheManager;
+use PhpCsFixer\Cache\FileHandler;
 use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Config;
 use PhpCsFixer\Config\FixerAnnotationMode;
@@ -64,6 +66,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[CoversClass(ConfigurationResolver::class)]
 final class ConfigurationResolverTest extends TestCase
 {
+    private const CACHE_FILE_PREFIX = 'php-cs-fixer-cache-';
+    private const LEGACY_FIXER_ANNOTATION_ENV_VAR = 'PHP_CS_FIXER_IGNORE_MISMATCHED_RULES_EXCEPTIONS';
+    private const TEST_TOOL_VERSION = 'test-version';
+
     public function testResolveParallelConfig(): void
     {
         $parallelConfig = new ParallelConfig();
@@ -81,6 +87,21 @@ final class ConfigurationResolverTest extends TestCase
             FixerAnnotationMode::FORBIDDEN,
             $this->createConfigurationResolver([], $config)->getFixerAnnotationMode(),
         );
+    }
+
+    public function testResolveDefaultFixerAnnotationModeForLegacyConfig(): void
+    {
+        $previousValue = getenv(self::LEGACY_FIXER_ANNOTATION_ENV_VAR);
+        putenv(self::LEGACY_FIXER_ANNOTATION_ENV_VAR);
+
+        try {
+            self::assertSame(
+                FixerAnnotationMode::MATCHING,
+                $this->createConfigurationResolver([], self::createStub(ConfigInterface::class))->getFixerAnnotationMode(),
+            );
+        } finally {
+            putenv(false === $previousValue ? self::LEGACY_FIXER_ANNOTATION_ENV_VAR : self::LEGACY_FIXER_ANNOTATION_ENV_VAR.'='.$previousValue);
+        }
     }
 
     public function testCliFixerAnnotationModeOverridesConfig(): void
@@ -1071,6 +1092,39 @@ final class ConfigurationResolverTest extends TestCase
         self::assertInstanceOf(NullCacheManager::class, $cacheManager);
 
         self::assertFalse($resolver->getLinter()->isAsync());
+    }
+
+    public function testCacheManagerSignatureIncludesFixerAnnotationMode(): void
+    {
+        $cacheFile = tempnam(sys_get_temp_dir(), self::CACHE_FILE_PREFIX);
+        if (false === $cacheFile) {
+            throw new \RuntimeException('Unable to create a temporary cache file.');
+        }
+
+        $toolInfo = self::createStub(ToolInfoInterface::class);
+        $toolInfo->method('getVersion')->willReturn(self::TEST_TOOL_VERSION);
+        $toolInfo->method('isInstalledAsPhar')->willReturn(true);
+
+        $config = (new Config())
+            ->setCacheFile($cacheFile)
+            ->setFixerAnnotationMode(FixerAnnotationMode::FORBIDDEN)
+        ;
+
+        try {
+            $resolver = $this->createConfigurationResolver(['dry-run' => false], $config, '', $toolInfo);
+
+            self::assertInstanceOf(FileCacheManager::class, $resolver->getCacheManager());
+
+            unset($resolver);
+
+            $cache = (new FileHandler($cacheFile))->read();
+            self::assertNotNull($cache);
+            self::assertSame(FixerAnnotationMode::FORBIDDEN, $cache->getSignature()->getFixerAnnotationMode());
+        } finally {
+            if (file_exists($cacheFile) && !unlink($cacheFile)) {
+                throw new \RuntimeException(\sprintf('Unable to remove temporary cache file "%s".', $cacheFile));
+            }
+        }
     }
 
     public function testResolveCacheFileWithOption(): void

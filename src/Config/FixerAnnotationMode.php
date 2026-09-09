@@ -35,6 +35,9 @@ final class FixerAnnotationMode
         self::ALL,
     ];
 
+    /**
+     * @codeCoverageIgnore
+     */
     private function __construct() {}
 
     /**
