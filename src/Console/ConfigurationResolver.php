@@ -22,6 +22,7 @@ use PhpCsFixer\Cache\FileCacheManager;
 use PhpCsFixer\Cache\FileHandler;
 use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Cache\Signature;
+use PhpCsFixer\ComposerJsonReader;
 use PhpCsFixer\Config\NullRuleCustomisationPolicy;
 use PhpCsFixer\Config\RuleCustomisationPolicyAwareConfigInterface;
 use PhpCsFixer\Config\RuleCustomisationPolicyInterface;
@@ -297,6 +298,8 @@ final class ConfigurationResolver
                     RuleSets::registerCustomRuleSet($ruleSet);
                 }
             }
+
+            ComposerJsonReader::setConfig($this->config);
         }
 
         return $this->config;
