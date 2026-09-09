@@ -75,10 +75,24 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
             return;
         }
 
+        // Skip if isset() is inside a logical not (!) expression
+        // e.g., !(isset($x)) ? $x : '' should not be converted
+        $prevToPrevTokenIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
+        if (null !== $prevToPrevTokenIndex && $tokens[$prevToPrevTokenIndex]->equals('!')) {
+            return;
+        }
+
         $startBraceIndex = $tokens->getNextTokenOfKind($index, ['(']);
         $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $startBraceIndex);
 
+        // Skip any trailing closing parentheses that may wrap the isset() call
+        // e.g., (isset($x)) ? $x : '' -> the outer ')' is between the inner ')' and the '?'
         $ternaryQuestionMarkIndex = $tokens->getNextMeaningfulToken($endBraceIndex);
+        $hasOuterParens = false;
+        while ($tokens[$ternaryQuestionMarkIndex]->equals(')')) {
+            $hasOuterParens = true;
+            $ternaryQuestionMarkIndex = $tokens->getNextMeaningfulToken($ternaryQuestionMarkIndex);
+        }
 
         if (!$tokens[$ternaryQuestionMarkIndex]->equals('?')) {
             return; // we are not in a ternary operator
@@ -107,11 +121,18 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
 
         $ternaryFirstOperandIndex = $tokens->getNextMeaningfulToken($ternaryQuestionMarkIndex);
 
+        // Check if the isset() is wrapped in parentheses that should be removed
+        // e.g., (isset($x)) ? $x : '' -> $x ?? ''
+        $replaceStartIndex = $index;
+        if ($tokens[$prevTokenIndex]->equals('(') && $hasOuterParens) {
+            $replaceStartIndex = $prevTokenIndex;
+        }
+
         // preserve comments and spaces
         $comments = [];
         $commentStarted = false;
 
-        for ($loopIndex = $index; $loopIndex < $ternaryFirstOperandIndex; ++$loopIndex) {
+        for ($loopIndex = $replaceStartIndex; $loopIndex < $ternaryFirstOperandIndex; ++$loopIndex) {
             if ($tokens[$loopIndex]->isComment()) {
                 $comments[] = $tokens[$loopIndex];
                 $commentStarted = true;
@@ -125,7 +146,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
         }
 
         $tokens[$ternaryColonIndex] = new Token([\T_COALESCE, '??']);
-        $tokens->overrideRange($index, $ternaryFirstOperandIndex - 1, $comments);
+        $tokens->overrideRange($replaceStartIndex, $ternaryFirstOperandIndex - 1, $comments);
     }
 
     /**

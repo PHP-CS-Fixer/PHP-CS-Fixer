@@ -239,6 +239,22 @@ null
             '<?php $x = $THIS ?? null;',
             '<?php $x = isset($THIS) ? $THIS : null;',
         ];
+
+        // PHP 8.5+ closures in constant expressions are not relevant here, but test parentheses handling.
+        yield 'isset() wrapped in parentheses.' => [
+            '<?php $x = $a ?? null;',
+            '<?php $x = (isset($a)) ? $a : null;',
+        ];
+
+        yield 'isset() wrapped in parentheses with spaces.' => [
+            '<?php $x = $a ?? null;',
+            '<?php $x = ( isset($a) ) ? $a : null;',
+        ];
+
+        yield 'isset() wrapped in parentheses with complex expression.' => [
+            '<?php $x = $obj->prop ?? null;',
+            '<?php $x = (isset($obj->prop)) ? $obj->prop : null;',
+        ];
     }
 
     /**
