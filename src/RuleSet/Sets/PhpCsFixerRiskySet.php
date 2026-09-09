@@ -32,6 +32,7 @@ final class PhpCsFixerRiskySet extends AbstractRuleSetDefinition
             'declare_strict_types' => true,
             'final_internal_class' => true,
             'get_class_to_class_keyword' => false,
+            'long_to_shorthand_operator_for_complex_targets' => true,
             'modernize_strpos' => false,
             // @TODO: consider switching to `true`, like in @Symfony
             'native_constant_invocation' => [

@@ -37,10 +37,9 @@ Example #1
 Rule sets
 ---------
 
-The rule is part of the following rule sets:
+The rule is part of the following rule set:
 
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
-- `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
 References
 ----------
