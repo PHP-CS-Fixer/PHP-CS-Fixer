@@ -1163,6 +1163,66 @@ final class ConfigurationResolverTest extends TestCase
         );
     }
 
+    /**
+     * @group legacy
+     */
+    #[Group('legacy')]
+    public function testResolveRulesDisablingDeprecatedFixerDisablesItsSuccessors(): void
+    {
+        $this->expectDeprecation('Rule "visibility_required" is deprecated. Use "modifier_keywords" instead.');
+
+        $config = new Config();
+        $config->setRules([
+            '@PSR2' => true,
+            'visibility_required' => false,
+        ]);
+
+        $resolver = $this->createConfigurationResolver([], $config);
+
+        $rules = $resolver->getRules();
+        self::assertArrayNotHasKey('visibility_required', $rules);
+        self::assertArrayNotHasKey('modifier_keywords', $rules);
+    }
+
+    /**
+     * @group legacy
+     */
+    #[Group('legacy')]
+    public function testResolveRulesDisablingDeprecatedFixerKeepsExplicitlyConfiguredSuccessor(): void
+    {
+        $this->expectDeprecation('Rule "visibility_required" is deprecated. Use "modifier_keywords" instead.');
+
+        $config = new Config();
+        $config->setRules([
+            'visibility_required' => false,
+            'modifier_keywords' => ['elements' => ['method']],
+        ]);
+
+        $resolver = $this->createConfigurationResolver([], $config);
+
+        self::assertSameRules(
+            [
+                'modifier_keywords' => ['elements' => ['method']],
+            ],
+            $resolver->getRules(),
+        );
+    }
+
+    /**
+     * @group legacy
+     */
+    #[Group('legacy')]
+    public function testResolveRulesWithOptionDisablingDeprecatedFixerDisablesItsSuccessors(): void
+    {
+        $this->expectDeprecation('Rule "visibility_required" is deprecated. Use "modifier_keywords" instead.');
+
+        $resolver = $this->createConfigurationResolver(['rules' => '@PSR2,-visibility_required']);
+
+        $rules = $resolver->getRules();
+        self::assertArrayNotHasKey('visibility_required', $rules);
+        self::assertArrayNotHasKey('modifier_keywords', $rules);
+    }
+
     public function testResolveRulesWithOption(): void
     {
         $resolver = $this->createConfigurationResolver(['rules' => 'statement_indentation,-strict_comparison']);
