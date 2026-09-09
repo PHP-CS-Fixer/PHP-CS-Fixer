@@ -275,6 +275,7 @@ final class ConfigTest extends TestCase
         self::assertSame(['@PSR12' => true], $config->getRules());
         self::assertTrue($config->getUsingCache());
         self::assertSame(filter_var(getenv('PHP_CS_FIXER_IGNORE_ENV'), \FILTER_VALIDATE_BOOL), $config->getUnsupportedPhpVersionAllowed());
+        self::assertNull($config->getMinimumPhpVersion());
 
         $finder = $config->getFinder();
         self::assertInstanceOf(Finder::class, $finder);
@@ -303,6 +304,12 @@ final class ConfigTest extends TestCase
 
         $config->setUnsupportedPhpVersionAllowed(true);
         self::assertTrue($config->getUnsupportedPhpVersionAllowed());
+
+        self::assertSame($config, $config->setMinimumPhpVersion('8.1'));
+        self::assertSame('8.1', $config->getMinimumPhpVersion());
+
+        $config->setMinimumPhpVersion(null);
+        self::assertNull($config->getMinimumPhpVersion());
 
         self::assertNull($config->getRuleCustomisationPolicy());
 
