@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Runner;
 
 use PhpCsFixer\Cache\Directory;
 use PhpCsFixer\Cache\NullCacheManager;
+use PhpCsFixer\Config\FixerAnnotationMode;
 use PhpCsFixer\Config\RuleCustomisationPolicyInterface;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
@@ -52,6 +53,8 @@ use Symfony\Component\Finder\Finder;
 #[CoversClass(Runner::class)]
 final class RunnerTest extends TestCase
 {
+    private const FIXER_ANNOTATION_FIXTURE_FILE = 'B-with-ignore-tag.php';
+
     /**
      * @covers \PhpCsFixer\Runner\Runner::fix
      * @covers \PhpCsFixer\Runner\Runner::fixFile
@@ -376,6 +379,48 @@ final class RunnerTest extends TestCase
         );
     }
 
+    public function testFixerAnnotationCanBeForbidden(): void
+    {
+        $runner = $this->createRunnerForFixerAnnotation(
+            [new Fixer\Basic\NumericLiteralSeparatorFixer()],
+            new ErrorsManager(),
+            FixerAnnotationMode::FORBIDDEN,
+        );
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(\sprintf(
+            '@php-cs-fixer-ignore annotation(s) are forbidden in "%s". Please remove them.',
+            self::getFixerAnnotationFixturePath(),
+        ));
+
+        $runner->fix();
+    }
+
+    public function testFixerAnnotationOutsideRuntimeRulesetIsRejectedInMatchingMode(): void
+    {
+        $runner = $this->createRunnerForFixerAnnotation(
+            [new Fixer\FunctionNotation\NativeFunctionInvocationFixer()],
+            new ErrorsManager(),
+            FixerAnnotationMode::MATCHING,
+        );
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('@php-cs-fixer-ignore annotation(s) used for rules that are not in the current set of enabled rules:');
+
+        $runner->fix();
+    }
+
+    public function testFixerAnnotationOutsideRuntimeRulesetIsAcceptedInAllMode(): void
+    {
+        $runner = $this->createRunnerForFixerAnnotation(
+            [new Fixer\FunctionNotation\NativeFunctionInvocationFixer()],
+            new ErrorsManager(),
+            FixerAnnotationMode::ALL,
+        );
+
+        self::assertArrayHasKey('B-with-ignore-tag.php', $runner->fix());
+    }
+
     /**
      * @param non-empty-string                                                  $path
      * @param _RuleCustomisationPolicyCallback                                  $arraySyntaxCustomiser
@@ -586,6 +631,38 @@ final class RunnerTest extends TestCase
                 return 'some-diff';
             }
         };
+    }
+
+    /**
+     * @param list<FixerInterface>                                                                  $fixers
+     * @param FixerAnnotationMode::ALL|FixerAnnotationMode::FORBIDDEN|FixerAnnotationMode::MATCHING $fixerAnnotationMode
+     */
+    private function createRunnerForFixerAnnotation(array $fixers, ErrorsManager $errorsManager, string $fixerAnnotationMode): Runner
+    {
+        $file = self::getFixerAnnotationFixturePath();
+
+        return new Runner(
+            new \ArrayIterator([new \SplFileInfo($file)]),
+            $fixers,
+            new NullDiffer(),
+            null,
+            $errorsManager,
+            new Linter(),
+            true,
+            new NullCacheManager(),
+            new Directory(\dirname($file)),
+            false,
+            null,
+            null,
+            null,
+            null,
+            $fixerAnnotationMode,
+        );
+    }
+
+    private static function getFixerAnnotationFixturePath(): string
+    {
+        return \dirname(__DIR__).'/Fixtures/FixerTest/rule-ignored-by-tag/'.self::FIXER_ANNOTATION_FIXTURE_FILE;
     }
 
     private function createLinterDouble(): LinterInterface

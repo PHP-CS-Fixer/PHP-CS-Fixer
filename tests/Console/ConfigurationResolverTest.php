@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\Console;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Config;
+use PhpCsFixer\Config\FixerAnnotationMode;
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Command\FixCommand;
@@ -70,6 +71,36 @@ final class ConfigurationResolverTest extends TestCase
         $resolver = $this->createConfigurationResolver([], $config);
 
         self::assertSame($parallelConfig, $resolver->getParallelConfig());
+    }
+
+    public function testResolveFixerAnnotationModeFromConfig(): void
+    {
+        $config = (new Config())->setFixerAnnotationMode(FixerAnnotationMode::FORBIDDEN);
+
+        self::assertSame(
+            FixerAnnotationMode::FORBIDDEN,
+            $this->createConfigurationResolver([], $config)->getFixerAnnotationMode(),
+        );
+    }
+
+    public function testCliFixerAnnotationModeOverridesConfig(): void
+    {
+        $config = (new Config())->setFixerAnnotationMode(FixerAnnotationMode::FORBIDDEN);
+
+        self::assertSame(
+            FixerAnnotationMode::ALL,
+            $this->createConfigurationResolver(['fixer-annotation-mode' => FixerAnnotationMode::ALL], $config)->getFixerAnnotationMode(),
+        );
+    }
+
+    public function testInvalidCliFixerAnnotationMode(): void
+    {
+        $resolver = $this->createConfigurationResolver(['fixer-annotation-mode' => 'invalid']);
+
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('The fixer annotation mode "invalid" is not defined, supported are "forbidden", "matching" and "all".');
+
+        $resolver->getFixerAnnotationMode();
     }
 
     public function testDefaultParallelConfigFallbacksToAutoDetect(): void
@@ -1260,7 +1291,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
         $options = $definition->getOptions();
         self::assertSame(
-            ['path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'allow-unsupported-php-version', 'cache-file', 'diff', 'format', 'stop-on-violation', 'show-progress', 'sequential'],
+            ['path-mode', 'allow-risky', 'fixer-annotation-mode', 'config', 'dry-run', 'rules', 'using-cache', 'allow-unsupported-php-version', 'cache-file', 'diff', 'format', 'stop-on-violation', 'show-progress', 'sequential'],
             array_keys($options),
             'Expected options mismatch, possibly test needs updating.',
         );
