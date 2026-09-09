@@ -1113,14 +1113,19 @@ final class ConfigurationResolverTest extends TestCase
         try {
             $resolver = $this->createConfigurationResolver(['dry-run' => false], $config, '', $toolInfo);
 
-            self::assertInstanceOf(FileCacheManager::class, $resolver->getCacheManager());
+            $cacheManager = $resolver->getCacheManager();
+            self::assertInstanceOf(FileCacheManager::class, $cacheManager);
 
-            unset($resolver);
+            for ($i = 0; $i < FileCacheManager::WRITE_FREQUENCY; ++$i) {
+                $cacheManager->setFileHash(__FILE__, self::TEST_TOOL_VERSION);
+            }
 
             $cache = (new FileHandler($cacheFile))->read();
             self::assertNotNull($cache);
             self::assertSame(FixerAnnotationMode::FORBIDDEN, $cache->getSignature()->getFixerAnnotationMode());
         } finally {
+            unset($resolver, $cacheManager);
+
             if (file_exists($cacheFile) && !unlink($cacheFile)) {
                 throw new \RuntimeException(\sprintf('Unable to remove temporary cache file "%s".', $cacheFile));
             }
