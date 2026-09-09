@@ -28,6 +28,12 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
  */
 final class DiffConsoleFormatter
 {
+    /**
+     * Matches ANSI/VT100 escape sequences: CSI (e.g. colours, cursor movement),
+     * OSC (e.g. window title) terminated by BEL or ST, and other two-byte escapes.
+     */
+    private const ESCAPE_SEQUENCES_PATTERN = '#\x1B(?:\[[0-?]*[ -/]*[@-~]|][^\x07\x1B]*(?:\x07|\x1B\x5C)|[\x40-\x5A\x5C\x5F])#';
+
     private bool $isDecoratedOutput;
 
     private string $template;
@@ -52,6 +58,8 @@ final class DiffConsoleFormatter
                 \PHP_EOL,
                 array_map(
                     static function (string $line) use ($isDecorated, $lineTemplate): string {
+                        $line = Preg::replace(self::ESCAPE_SEQUENCES_PATTERN, '', $line);
+
                         if ($isDecorated) {
                             $count = 0;
                             $line = Preg::replaceCallback(

@@ -128,5 +128,75 @@ final class DiffConsoleFormatterTest extends TestCase
             (string) mb_convert_encoding("--- Original\n+++ New\n@@ @@\n-ausgefüllt", 'ISO-8859-1'),
             '%s',
         ];
+
+        // CSI sequences (colours, cursor movement) are stripped even when decorated
+        yield [
+            "<fg=green>+hello world</fg=green>",
+            true,
+            '%s',
+            "+hello \x1B[31mworld\x1B[0m",
+            '%s',
+        ];
+
+        yield [
+            '+hello world',
+            false,
+            '%s',
+            "+hello \x1B[31mworld\x1B[0m",
+            '%s',
+        ];
+
+        // OSC terminated by BEL (window title) is stripped
+        yield [
+            '<fg=red>-evil line</fg=red>',
+            true,
+            '%s',
+            "-evil \x1B]0;PWNED\x07line",
+            '%s',
+        ];
+
+        yield [
+            '-evil line',
+            false,
+            '%s',
+            "-evil \x1B]0;PWNED\x07line",
+            '%s',
+        ];
+
+        // OSC terminated by ST (ESC \) – e.g. hyperlinks – is stripped
+        yield [
+            '<fg=green>+foo bar</fg=green>',
+            true,
+            '%s',
+            "+foo \x1B]8;;https://example.com\x1B\\bar",
+            '%s',
+        ];
+
+        // two-byte escapes (e.g. reverse index ESC M) are stripped – pattern covers ESC [@-Z \ _
+        yield [
+            ' context line',
+            true,
+            '%s',
+            " context \x1BMline",
+            '%s',
+        ];
+
+        // cursor movement / erase CSI sequences are stripped
+        yield [
+            '<fg=cyan>@@ -1 +1 @@</fg=cyan>',
+            true,
+            '%s',
+            "@@ \x1B[2J\x1B[999;999H-1 +1 @@",
+            '%s',
+        ];
+
+        // multiple mixed sequences on one line are all stripped
+        yield [
+            '<fg=green>+abc</fg=green>',
+            true,
+            '%s',
+            "+a\x1B[31mb\x1B]0;title\x07c\x1BM",
+            '%s',
+        ];
     }
 }
