@@ -32,6 +32,21 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
 {
     /**
+     * Token kinds whose condition is wrapped in parentheses, so that a
+     * parenthesis following the closing one opens a statement, not a call.
+     */
+    private const CONTROL_STRUCTURE_TOKEN_KINDS = [
+        \T_CATCH,
+        \T_DECLARE,
+        \T_ELSEIF,
+        \T_FOR,
+        \T_FOREACH,
+        \T_IF,
+        \T_SWITCH,
+        \T_WHILE,
+    ];
+
+    /**
      * Token kinds which can work as function calls.
      */
     private const FUNCTIONY_TOKEN_KINDS = [
@@ -123,12 +138,31 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
                     Tokens::BLOCK_TYPE_INDEX_BRACE === $block['type']
                     || Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE === $block['type']
                     || Tokens::BLOCK_TYPE_INDEX_BRACKET === $block['type']
-                    || Tokens::BLOCK_TYPE_PARENTHESIS === $block['type']
+                    || (
+                        Tokens::BLOCK_TYPE_PARENTHESIS === $block['type']
+                        && !$this->isControlStructureCondition($tokens, $lastTokenIndex)
+                    )
                 ) {
                     $this->fixFunctionCall($tokens, $index);
                 }
             }
         }
+    }
+
+    /**
+     * Tells whether the given closing parenthesis closes the condition of a
+     * control structure, e.g. the `)` of `foreach ($a as $b)`.
+     *
+     * @param Tokens $tokens       tokens to handle
+     * @param int    $closingIndex index of the closing parenthesis
+     */
+    private function isControlStructureCondition(Tokens $tokens, int $closingIndex): bool
+    {
+        $openingIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $closingIndex);
+        $beforeOpeningIndex = $tokens->getPrevMeaningfulToken($openingIndex);
+
+        return null !== $beforeOpeningIndex
+            && $tokens[$beforeOpeningIndex]->isGivenKind(self::CONTROL_STRUCTURE_TOKEN_KINDS);
     }
 
     /**

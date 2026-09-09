@@ -53,6 +53,22 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
             '<?php abc ($a);',
         ];
 
+        yield 'control structure body starting with a parenthesis' => [
+            '<?php if ($a) (f() && g()) || h();',
+        ];
+
+        yield 'loop body starting with a parenthesis' => [
+            '<?php foreach ($a as $b) (f() && g()) || h();',
+        ];
+
+        yield 'while body starting with a parenthesis' => [
+            '<?php while ($a) (f() && g()) || h();',
+        ];
+
+        yield 'for body starting with a parenthesis' => [
+            '<?php for ($i = 0; $i < 1; ++$i) (f() && g()) || h();',
+        ];
+
         yield 'test method call' => [
             '<?php $o->abc($a);',
             '<?php $o->abc ($a);',
