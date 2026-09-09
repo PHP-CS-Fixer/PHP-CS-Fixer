@@ -1120,6 +1120,8 @@ final class ConfigurationResolverTest extends TestCase
                 $cacheManager->setFileHash(__FILE__, self::TEST_TOOL_VERSION);
             }
 
+            clearstatcache(true, $cacheFile);
+
             $cache = (new FileHandler($cacheFile))->read();
             self::assertNotNull($cache);
             self::assertSame(FixerAnnotationMode::FORBIDDEN, $cache->getSignature()->getFixerAnnotationMode());
