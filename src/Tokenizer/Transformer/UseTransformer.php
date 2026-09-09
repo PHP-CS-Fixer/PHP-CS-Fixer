@@ -33,8 +33,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class UseTransformer extends AbstractTransformer
 {
-    private const CLASS_TYPES = [\T_TRAIT, FCT::T_ENUM];
-
     public function getPriority(): int
     {
         // Should run after CurlyBraceTransformer and before TypeColonTransformer
@@ -51,39 +49,45 @@ final class UseTransformer extends AbstractTransformer
         return $tokens->isTokenKindFound(\T_USE);
     }
 
-    public function processToken(Tokens $tokens, Token $token, int $index): void
+    public function process(Tokens $tokens): void
     {
-        if ($token->isGivenKind(\T_USE) && $this->isUseForLambda($tokens, $index)) {
-            $tokens[$index] = new Token([CT::T_USE_LAMBDA, $token->getContent()]);
+        $count = $tokens->count();
 
-            return;
-        }
+        for ($index = 0; $index < $count; ++$index) {
+            $id = $tokens[$index]->getId();
 
-        // Only search inside class/trait body for `T_USE` for traits.
-        // Cannot import traits inside interfaces or anywhere else
+            if (\T_USE === $id && $this->isUseForLambda($tokens, $index)) {
+                $tokens[$index] = new Token([CT::T_USE_LAMBDA, $tokens[$index]->getContent()]);
 
-        if ($token->isGivenKind(\T_CLASS)) {
-            if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(\T_DOUBLE_COLON)) {
-                return;
-            }
-        } elseif (!$token->isGivenKind(self::CLASS_TYPES)) {
-            return;
-        }
-
-        $index = $tokens->getNextTokenOfKind($index, ['{']);
-        $innerLimit = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
-
-        while ($index < $innerLimit) {
-            $token = $tokens[++$index];
-
-            if (!$token->isGivenKind(\T_USE)) {
                 continue;
             }
 
-            if ($this->isUseForLambda($tokens, $index)) {
-                $tokens[$index] = new Token([CT::T_USE_LAMBDA, $token->getContent()]);
-            } else {
-                $tokens[$index] = new Token([CT::T_USE_TRAIT, $token->getContent()]);
+            // Only search inside class/trait body for `T_USE` for traits.
+            // Cannot import traits inside interfaces or anywhere else
+
+            if (\T_CLASS === $id) {
+                if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(\T_DOUBLE_COLON)) {
+                    continue;
+                }
+            } elseif (\T_TRAIT !== $id && FCT::T_ENUM !== $id) {
+                continue;
+            }
+
+            $index = $tokens->getNextTokenOfKind($index, ['{']);
+            $innerLimit = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
+
+            while ($index < $innerLimit) {
+                $token = $tokens[++$index];
+
+                if (\T_USE !== $token->getId()) {
+                    continue;
+                }
+
+                if ($this->isUseForLambda($tokens, $index)) {
+                    $tokens[$index] = new Token([CT::T_USE_LAMBDA, $token->getContent()]);
+                } else {
+                    $tokens[$index] = new Token([CT::T_USE_TRAIT, $token->getContent()]);
+                }
             }
         }
     }
