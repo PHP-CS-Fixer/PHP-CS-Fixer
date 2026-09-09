@@ -138,7 +138,7 @@ final class PhpUnitDataProviderMethodOrderFixer extends AbstractPhpUnitFixer imp
                     $sortedBefore = $sorted;
                     $sorted = $this->moveMethodElement(
                         $sorted,
-                        $usageName === $sameUsageName // @phpstan-ignore argument.type (https://github.com/phpstan/phpstan/issues/12482)
+                        $usageName === $sameUsageName
                             ? $sameProviderName
                             : $usageName,
                         $providerName,
