@@ -127,6 +127,40 @@ The following example shows how to use all ``PhpCsFixer`` rules but without the 
 
 If you need to set up exception for rules, eg ignore or reconfigure a rule for specific files, check the `Rules exceptions <./rules_exceptions.rst>`_.
 
+Using class names as rule keys
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Instead of string rule names, you can use the fully-qualified class name (FQCN) of a fixer as the key.
+The recommended way is to use the ``::class`` constant, which gives you IDE autocompletion, go-to-definition, and rename-refactoring support out of the box:
+
+.. code-block:: php
+
+    <?php
+
+    use PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer;
+    use PhpCsFixer\Fixer\Phpdoc\AlignMultilineCommentFixer;
+    use PhpCsFixer\Fixer\Strict\StrictParamFixer;
+
+    $finder = (new PhpCsFixer\Finder())
+        ->in(__DIR__)
+    ;
+
+    return (new PhpCsFixer\Config())
+        ->setRules([
+            '@PSR12' => true,
+            StrictParamFixer::class => true,
+            ArraySyntaxFixer::class => ['syntax' => 'short'],
+            AlignMultilineCommentFixer::class => false,
+        ])
+        ->setFinder($finder)
+    ;
+
+String names and ``::class`` constants are interchangeable and can be mixed freely.
+This is especially useful when overriding rules from a ruleset that was defined using class names, or vice versa.
+
+A raw FQCN string (e.g. ``'PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer'``) is also accepted,
+but the ``::class`` constant form is preferred as it is refactoring-safe and verified by static analysis tools.
+
 
 Configuring whitespaces
 -----------------------
