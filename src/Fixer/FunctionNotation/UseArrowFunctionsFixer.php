@@ -19,6 +19,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -45,7 +46,7 @@ final class UseArrowFunctionsFixer extends AbstractFixer
                         SAMPLE,
                 ),
             ],
-            null,
+            'Closures in constant expressions (attributes, constants, and property or parameter defaults) are not converted.',
             'Risky when using `isset()` on outside variables that are not imported with `use ()`.',
         );
     }
@@ -73,14 +74,9 @@ final class UseArrowFunctionsFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $analyzer = new TokensAnalyzer($tokens);
+        $constantExpressionClosures = null;
 
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
-            if ($tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
-                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
-
-                continue;
-            }
-
             if (!$tokens[$index]->isGivenKind(\T_FUNCTION) || !$analyzer->isLambda($index)) {
                 continue;
             }
@@ -167,9 +163,105 @@ final class UseArrowFunctionsFixer extends AbstractFixer
                 continue;
             }
 
+            $constantExpressionClosures ??= $this->getConstantExpressionClosures($tokens);
+
+            if (isset($constantExpressionClosures[$index])) {
+                continue;
+            }
+
             // Transform the function to an arrow function
             $this->transform($tokens, $index, $useStart, $useEnd, $braceOpen, $return, $semicolon, $braceClose);
         }
+    }
+
+    /**
+     * Constant-expression restrictions do not extend into closure bodies or
+     * property hooks: these contain ordinary executable code. Collect nested
+     * scopes before fixing, then classify each closure in its innermost scope.
+     * The backward fixing pass leaves earlier closure indices unchanged.
+     *
+     * @return array<int, true>
+     */
+    private function getConstantExpressionClosures(Tokens $tokens): array
+    {
+        /** @var list<array{start: int, end: int, constant: bool}> $scopes */
+        $scopes = [];
+
+        foreach ($tokens as $index => $token) {
+            if ($token->isGivenKind(FCT::T_ATTRIBUTE)) {
+                $scopes[] = ['start' => $index + 1, 'end' => $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index) - 1, 'constant' => true];
+            } elseif ($token->isClassy()) {
+                /** @var int $bodyOpen */
+                $bodyOpen = $tokens->getNextTokenOfKind($index, ['{', '(', [CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN]]);
+
+                if (!$tokens[$bodyOpen]->equals('{')) {
+                    $blockType = $tokens[$bodyOpen]->equals('(') ? Tokens::BLOCK_TYPE_PARENTHESIS : Tokens::BLOCK_TYPE_CLASS_INSTANTIATION_PARENTHESIS;
+                    $argumentsEnd = $tokens->findBlockEnd($blockType, $bodyOpen);
+
+                    /** @var int $bodyOpen */
+                    $bodyOpen = $tokens->getNextTokenOfKind($argumentsEnd, ['{']);
+                }
+
+                $scopes[] = ['start' => $bodyOpen + 1, 'end' => $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $bodyOpen) - 1, 'constant' => true];
+            } elseif ($token->isGivenKind([\T_FUNCTION, \T_FN])) {
+                /** @var int $parametersOpen */
+                $parametersOpen = $tokens->getNextTokenOfKind($index, ['(']);
+                $parametersEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $parametersOpen);
+                $scopes[] = ['start' => $parametersOpen + 1, 'end' => $parametersEnd - 1, 'constant' => true];
+
+                if ($token->isGivenKind(\T_FUNCTION)) {
+                    /** @var int $bodyOpen */
+                    $bodyOpen = $tokens->getNextTokenOfKind($parametersEnd, ['{', ';']);
+
+                    if ($tokens[$bodyOpen]->equals('{')) {
+                        $scopes[] = ['start' => $bodyOpen + 1, 'end' => $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $bodyOpen) - 1, 'constant' => false];
+                    }
+                }
+            } elseif ($token->isGivenKind(\T_CONST)) {
+                $scopes[] = ['start' => $index + 1, 'end' => $this->findConstantDeclarationEnd($tokens, $index) - 1, 'constant' => true];
+            } elseif ($token->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
+                $scopes[] = ['start' => $index + 1, 'end' => $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PROPERTY_HOOK, $index) - 1, 'constant' => false];
+            }
+        }
+
+        $scopes = array_filter($scopes, static fn (array $scope): bool => $scope['start'] <= $scope['end']);
+        usort($scopes, static fn (array $left, array $right): int => $left['start'] <=> $right['start']);
+
+        $stack = [['end' => $tokens->count(), 'constant' => false]];
+        $scopeIndex = 0;
+        $closures = [];
+
+        foreach ($tokens as $index => $token) {
+            while (\count($stack) > 1 && $stack[\count($stack) - 1]['end'] < $index) {
+                array_pop($stack);
+            }
+
+            while (isset($scopes[$scopeIndex]) && $scopes[$scopeIndex]['start'] === $index) {
+                $stack[] = $scopes[$scopeIndex];
+                ++$scopeIndex;
+            }
+
+            if ($token->isGivenKind(\T_FUNCTION) && $stack[\count($stack) - 1]['constant']) {
+                $closures[$index] = true;
+            }
+        }
+
+        return $closures;
+    }
+
+    private function findConstantDeclarationEnd(Tokens $tokens, int $index): int
+    {
+        while (!$tokens[$index]->equals(';') && !$tokens[$index]->isGivenKind(\T_CLOSE_TAG)) {
+            $block = Tokens::detectBlockType($tokens[$index]);
+
+            if (null !== $block && $block['isStart']) {
+                $index = $tokens->findBlockEnd($block['type'], $index);
+            }
+
+            ++$index;
+        }
+
+        return $index;
     }
 
     private function transform(Tokens $tokens, int $index, ?int $useStart, ?int $useEnd, int $braceOpen, int $return, int $semicolon, int $braceClose): void
