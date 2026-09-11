@@ -225,9 +225,7 @@ final class UseArrowFunctionsFixer extends AbstractFixer
         }
 
         $scopes = array_filter($scopes, static fn (array $scope): bool => $scope['start'] <= $scope['end']);
-        usort($scopes, static fn (array $left, array $right): int => $left['start'] === $right['start']
-            ? $right['end'] <=> $left['end']
-            : $left['start'] <=> $right['start']);
+        usort($scopes, static fn (array $left, array $right): int => $left['start'] <=> $right['start']);
 
         $stack = [['end' => $tokens->count(), 'constant' => false]];
         $scopeIndex = 0;
@@ -253,19 +251,17 @@ final class UseArrowFunctionsFixer extends AbstractFixer
 
     private function findConstantDeclarationEnd(Tokens $tokens, int $index): int
     {
-        for ($count = $tokens->count(); $index < $count; ++$index) {
-            if ($tokens[$index]->equals(';') || $tokens[$index]->isGivenKind(\T_CLOSE_TAG)) {
-                return $index;
-            }
-
+        while (!$tokens[$index]->equals(';') && !$tokens[$index]->isGivenKind(\T_CLOSE_TAG)) {
             $block = Tokens::detectBlockType($tokens[$index]);
 
             if (null !== $block && $block['isStart']) {
                 $index = $tokens->findBlockEnd($block['type'], $index);
             }
+
+            ++$index;
         }
 
-        return $tokens->count();
+        return $index;
     }
 
     private function transform(Tokens $tokens, int $index, ?int $useStart, ?int $useEnd, int $braceOpen, int $return, int $semicolon, int $braceClose): void
