@@ -62,7 +62,7 @@ services:
       args:
         ALPINE_VERSION: '3.24'
         PHP_VERSION: '8.5'
-        PHP_XDEBUG_VERSION: ''
+        PHP_XDEBUG_VERSION: 3.5.3
     environment:
       <<: *default_environment
       XDEBUG_MODE: coverage
