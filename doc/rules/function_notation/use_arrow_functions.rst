@@ -4,6 +4,12 @@ Rule ``use_arrow_functions``
 
 Anonymous functions with return as the only statement must use arrow functions.
 
+Description
+-----------
+
+Closures in constant expressions (attributes, constants, and property or
+parameter defaults) are not converted.
+
 Warning
 -------
 
