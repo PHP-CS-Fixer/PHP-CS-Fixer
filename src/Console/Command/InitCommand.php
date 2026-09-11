@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Console\Command;
 
+use PhpCsFixer\Compat\Symfony\Component\Console\Style\SymfonyStyle;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixer;
 use PhpCsFixer\Preg;
@@ -32,7 +33,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Exception\IOException;
 
 /**
@@ -65,7 +65,7 @@ final class InitCommand extends Command
 
         $io = new SymfonyStyle($input, $stdErr);
 
-        $io->warning('This command is experimental');
+        $io->outlineWarning('This command is experimental.');
 
         $this->handleConfigurationFile($io);
         $this->handleGitIgnore($io);
@@ -78,7 +78,7 @@ final class InitCommand extends Command
         $io->title('⚙️ Configuring PHP CS Fixer');
 
         if (file_exists(self::FIXER_FILENAME)) {
-            $io->info(\sprintf('Configuration file `%s` already exists. Skipping.', self::FIXER_FILENAME));
+            $io->outlineInfo(\sprintf('Configuration file `%s` already exists. Skipping.', self::FIXER_FILENAME));
 
             return;
         }
@@ -86,7 +86,7 @@ final class InitCommand extends Command
         $configurationFileContent = $this->prepareConfigurationFileContent($io);
         $this->writeFile(self::FIXER_FILENAME, $configurationFileContent);
 
-        $io->success(\sprintf('Configuration file `%s`created.', self::FIXER_FILENAME));
+        $io->outlineSuccess(\sprintf('Configuration file `%s` created.', self::FIXER_FILENAME));
     }
 
     private function handleGitIgnore(SymfonyStyle $io): void
@@ -97,24 +97,24 @@ final class InitCommand extends Command
         $gitignoreFileContent = $this->prepareGitIgnoreContent($io, true === $gitignoreFileExists ? $this->readFile(self::GITIGNORE_FILENAME) : '');
 
         if (null === $gitignoreFileContent) {
-            $io->info(\sprintf('Git file `%s` %s.', self::GITIGNORE_FILENAME, 'is already up to recommendations'));
+            $io->outlineInfo(\sprintf('Git file `%s` %s.', self::GITIGNORE_FILENAME, 'is already up to recommendations'));
 
             return;
         }
 
         $this->writeFile(self::GITIGNORE_FILENAME, $gitignoreFileContent);
 
-        $io->success(\sprintf('Git file `%s` %s.', self::GITIGNORE_FILENAME, 'is already up to recommendations'));
+        $io->outlineSuccess(\sprintf('Git file `%s` %s.', self::GITIGNORE_FILENAME, $gitignoreFileExists ? 'updated' : 'created'));
     }
 
     private function prepareConfigurationFileContent(SymfonyStyle $io): string
     {
         $io->section('Risky rules');
 
-        $io->note([
+        $io->outlineNote([
             'At PHP CS Fixer, we put our diligence to NOT change your code\'s logic and behaviour.',
             'Yet, some of the rules are opposite by design - explicitly _risky_ to apply.',
-            'Exampleas are transforming `==` into `===` or removal of trailing whitespaces within multiline strings.',
+            'Examples are transforming `==` into `===` or removal of trailing whitespaces within multiline strings.',
             'Such rules are improving your codebase even further, yet you shall always review changes proposed by _risky_ rules carefully.',
         ]);
 
@@ -145,7 +145,7 @@ final class InitCommand extends Command
         );
         natcasesort($setsBehindAutoSet);
 
-        $io->note("We recommend usage of {$setAutoWithOptionalRiskySetNamesTextual} rulesets. They take insights from your existing `composer.json` to configure your project the best. For your current setup, that would mean:");
+        $io->outlineNote("We recommend usage of {$setAutoWithOptionalRiskySetNamesTextual} rulesets. They take insights from your existing `composer.json` to configure your project the best. For your current setup, that would mean:");
         $io->listing(
             array_map(
                 static fn (RuleSetDefinitionInterface $item): string => \sprintf(
@@ -243,7 +243,7 @@ final class InitCommand extends Command
 
         $io->section('Files finder');
 
-        $io->note([
+        $io->outlineNote([
             'By default, PHP CS Fixer will look for `*.php` files excluding `./vendor/` dir.',
         ]);
         $useDefaultFinder = 'yes' === $io->choice(
@@ -291,7 +291,7 @@ final class InitCommand extends Command
 
     private function prepareGitIgnoreContent(SymfonyStyle $io, string $currentContent): ?string
     {
-        $io->note([
+        $io->outlineNote([
             'We recommend to add following entries to your `.gitignore` files:',
         ]);
 
