@@ -251,7 +251,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
      * {@inheritdoc}
      *
      * Must run before BlankLineBeforeStatementFixer.
-     * Must run after ClassAttributesSeparationFixer, CombineConsecutiveUnsetsFixer, EmptyLoopBodyFixer, EmptyLoopConditionFixer, FunctionToConstantFixer, LongToShorthandOperatorFixer, ModernizeStrposFixer, NoEmptyCommentFixer, NoEmptyPhpdocFixer, NoEmptyStatementFixer, NoUnusedImportsFixer, NoUselessElseFixer, NoUselessPrintfFixer, NoUselessReturnFixer, NoUselessSprintfFixer, PhpdocReadonlyClassCommentToKeywordFixer, StringLengthToEmptyFixer, YieldFromArrayToYieldsFixer.
+     * Must run after ClassAttributesSeparationFixer, CombineConsecutiveUnsetsFixer, EmptyLoopBodyFixer, EmptyLoopConditionFixer, FunctionToConstantFixer, LongToShorthandOperatorFixer, LongToShorthandOperatorForComplexTargetsFixer, ModernizeStrposFixer, NoEmptyCommentFixer, NoEmptyPhpdocFixer, NoEmptyStatementFixer, NoUnusedImportsFixer, NoUselessElseFixer, NoUselessPrintfFixer, NoUselessReturnFixer, NoUselessSprintfFixer, PhpdocReadonlyClassCommentToKeywordFixer, StringLengthToEmptyFixer, YieldFromArrayToYieldsFixer.
      */
     public function getPriority(): int
     {

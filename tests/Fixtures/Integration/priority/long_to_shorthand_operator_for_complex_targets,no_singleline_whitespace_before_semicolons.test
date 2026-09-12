@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: long_to_shorthand_operator_for_complex_targets,no_singleline_whitespace_before_semicolons.
+--RULESET--
+{"long_to_shorthand_operator_for_complex_targets": true, "no_singleline_whitespace_before_semicolons": true}
+--EXPECT--
+<?php
+
+$options[0] *= $query;
+
+--INPUT--
+<?php
+
+$options[0] = $query * $options[0];
