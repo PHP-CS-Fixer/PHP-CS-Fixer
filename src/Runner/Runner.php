@@ -20,6 +20,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Cache\CacheManagerInterface;
 use PhpCsFixer\Cache\Directory;
 use PhpCsFixer\Cache\DirectoryInterface;
+use PhpCsFixer\Config\FixerAnnotationMode;
 use PhpCsFixer\Config\NullRuleCustomisationPolicy;
 use PhpCsFixer\Config\RuleCustomisationPolicyInterface;
 use PhpCsFixer\Console\Command\WorkerCommand;
@@ -122,8 +123,16 @@ final class Runner
     private RuleCustomisationPolicyInterface $ruleCustomisationPolicy;
 
     /**
-     * @param null|\Traversable<array-key, \SplFileInfo> $fileIterator
-     * @param list<FixerInterface>                       $fixers
+     * @var FixerAnnotationMode::ALL|FixerAnnotationMode::FORBIDDEN|FixerAnnotationMode::MATCHING
+     */
+    private string $fixerAnnotationMode;
+
+    private bool $ignoreMismatchedRulesExceptions;
+
+    /**
+     * @param null|\Traversable<array-key, \SplFileInfo>                                                 $fileIterator
+     * @param list<FixerInterface>                                                                       $fixers
+     * @param null|FixerAnnotationMode::ALL|FixerAnnotationMode::FORBIDDEN|FixerAnnotationMode::MATCHING $fixerAnnotationMode
      */
     public function __construct(
         ?\Traversable $fileIterator,
@@ -140,7 +149,8 @@ final class Runner
         ?ParallelConfig $parallelConfig = null,
         ?InputInterface $input = null,
         ?string $configFile = null,
-        ?RuleCustomisationPolicyInterface $ruleCustomisationPolicy = null
+        ?RuleCustomisationPolicyInterface $ruleCustomisationPolicy = null,
+        ?string $fixerAnnotationMode = null
     ) {
         // Required only for main process (calculating workers count)
         $this->fileCount = null !== $fileIterator ? \count(iterator_to_array($fileIterator)) : 0;
@@ -168,6 +178,12 @@ final class Runner
         $this->input = $input;
         $this->configFile = $configFile;
         $this->ruleCustomisationPolicy = $ruleCustomisationPolicy ?? new NullRuleCustomisationPolicy();
+        $this->ignoreMismatchedRulesExceptions = FixerAnnotationMode::legacyEnvironmentVariableIsEnabled();
+        $this->fixerAnnotationMode = $fixerAnnotationMode ?? FixerAnnotationMode::getDefault();
+
+        if (!\in_array($this->fixerAnnotationMode, FixerAnnotationMode::all(), true)) {
+            throw new \InvalidArgumentException(\sprintf('Unknown fixer annotation mode "%s".', $this->fixerAnnotationMode));
+        }
     }
 
     /**
@@ -203,15 +219,17 @@ final class Runner
         }
 
         $ruleCustomisers = $this->ruleCustomisationPolicy->getRuleCustomisers();
-        $this->validateRulesNamesForExceptions(
-            array_keys($ruleCustomisers),
-            <<<'EOT'
-                Rule Customisation Policy contains customisers for rules that are not in the current set of enabled rules:
-                %s
+        if (!$this->ignoreMismatchedRulesExceptions) {
+            $this->validateRulesNamesForExceptions(
+                array_keys($ruleCustomisers),
+                <<<'EOT'
+                    Rule Customisation Policy contains customisers for rules that are not in the current set of enabled rules:
+                    %s
 
-                Please check your configuration to ensure that these rules are included, or update your Rule Customisation Policy if they have been replaced by other rules in the version of PHP CS Fixer you are using.
-                EOT,
-        );
+                    Please check your configuration to ensure that these rules are included, or update your Rule Customisation Policy if they have been replaced by other rules in the version of PHP CS Fixer you are using.
+                    EOT,
+            );
+        }
 
         // @TODO 4.0: Remove condition and its body, as no longer needed when param will be required in the constructor.
         // This is a fallback only in case someone calls `new Runner()` in a custom repo and does not provide v4-ready params in v3-codebase.
@@ -235,10 +253,6 @@ final class Runner
      */
     private function validateRulesNamesForExceptions(array $ruleExceptions, string $errorTemplate): void
     {
-        if (true === filter_var(getenv('PHP_CS_FIXER_IGNORE_MISMATCHED_RULES_EXCEPTIONS'), \FILTER_VALIDATE_BOOLEAN)) {
-            return;
-        }
-
         if ([] === $ruleExceptions) {
             return;
         }
@@ -610,15 +624,24 @@ final class Runner
             );
         }
 
-        $this->validateRulesNamesForExceptions(
-            $rulesIgnoredByAnnotations,
-            <<<EOT
-                @php-cs-fixer-ignore annotation(s) used for rules that are not in the current set of enabled rules:
-                %s
+        if ([] !== $rulesIgnoredByAnnotations && FixerAnnotationMode::FORBIDDEN === $this->fixerAnnotationMode) {
+            throw new \RuntimeException(\sprintf(
+                '@php-cs-fixer-ignore annotation(s) are forbidden in "%s". Please remove them.',
+                $filePathname,
+            ));
+        }
 
-                Please check your annotation(s) usage in {$filePathname} to ensure that these rules are included, or update your annotation(s) usage if they have been replaced by other rules in the version of PHP CS Fixer you are using.
-                EOT,
-        );
+        if (FixerAnnotationMode::MATCHING === $this->fixerAnnotationMode) {
+            $this->validateRulesNamesForExceptions(
+                $rulesIgnoredByAnnotations,
+                <<<EOT
+                    @php-cs-fixer-ignore annotation(s) used for rules that are not in the current set of enabled rules:
+                    %s
+
+                    Please check your annotation(s) usage in {$filePathname} to ensure that these rules are included, or update your annotation(s) usage if they have been replaced by other rules in the version of PHP CS Fixer you are using.
+                    EOT,
+            );
+        }
 
         try {
             foreach ($this->fixers as $fixer) {

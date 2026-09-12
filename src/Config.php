@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer;
 
+use PhpCsFixer\Config\FixerAnnotationAwareConfigInterface;
+use PhpCsFixer\Config\FixerAnnotationMode;
 use PhpCsFixer\Config\RuleCustomisationPolicyAwareConfigInterface;
 use PhpCsFixer\Config\RuleCustomisationPolicyInterface;
 use PhpCsFixer\Fixer\FixerInterface;
@@ -30,7 +32,7 @@ use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
  *
  * @api-extendable
  */
-class Config implements ConfigInterface, ParallelAwareConfigInterface, UnsupportedPhpVersionAllowedConfigInterface, CustomRulesetsAwareConfigInterface, RuleCustomisationPolicyAwareConfigInterface
+class Config implements ConfigInterface, ParallelAwareConfigInterface, UnsupportedPhpVersionAllowedConfigInterface, CustomRulesetsAwareConfigInterface, RuleCustomisationPolicyAwareConfigInterface, FixerAnnotationAwareConfigInterface
 {
     /**
      * @var non-empty-string
@@ -87,12 +89,18 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
 
     private ?RuleCustomisationPolicyInterface $ruleCustomisationPolicy = null;
 
+    /**
+     * @var FixerAnnotationMode::ALL|FixerAnnotationMode::FORBIDDEN|FixerAnnotationMode::MATCHING
+     */
+    private string $fixerAnnotationMode;
+
     public function __construct(string $name = 'default')
     {
         $this->name = $name.(Future::isFutureModeEnabled() ? ' (future mode)' : '');
         $this->rules = Future::getV4OrV3(['@PER-CS' => true], ['@PSR12' => true]); // @TODO 4.0 | 3.x switch to '@auto' for v4
         $this->format = Future::getV4OrV3('@auto', 'txt');
         $this->parallelConfig = ParallelConfigFactory::detect();
+        $this->fixerAnnotationMode = FixerAnnotationMode::getDefault();
 
         // @TODO 4.0 cleanup
         if (false !== getenv('PHP_CS_FIXER_IGNORE_ENV')) {
@@ -131,6 +139,14 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     public function getFormat(): string
     {
         return $this->format;
+    }
+
+    /**
+     * @return FixerAnnotationMode::ALL|FixerAnnotationMode::FORBIDDEN|FixerAnnotationMode::MATCHING
+     */
+    public function getFixerAnnotationMode(): string
+    {
+        return $this->fixerAnnotationMode;
     }
 
     public function getHideProgress(): bool
@@ -229,6 +245,22 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     public function setFormat(string $format): ConfigInterface
     {
         $this->format = $format;
+
+        return $this;
+    }
+
+    /**
+     * @param FixerAnnotationMode::ALL|FixerAnnotationMode::FORBIDDEN|FixerAnnotationMode::MATCHING $fixerAnnotationMode
+     *
+     * @return $this
+     */
+    public function setFixerAnnotationMode(string $fixerAnnotationMode): ConfigInterface
+    {
+        if (!\in_array($fixerAnnotationMode, FixerAnnotationMode::all(), true)) {
+            throw new \InvalidArgumentException(\sprintf('Unknown fixer annotation mode "%s".', $fixerAnnotationMode));
+        }
+
+        $this->fixerAnnotationMode = $fixerAnnotationMode;
 
         return $this;
     }

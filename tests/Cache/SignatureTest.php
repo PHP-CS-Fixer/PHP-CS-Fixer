@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Cache;
 
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\Cache\SignatureInterface;
+use PhpCsFixer\Config\FixerAnnotationMode;
 use PhpCsFixer\Tests\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -54,8 +55,9 @@ final class SignatureTest extends TestCase
         $lineEnding = \PHP_EOL;
         $rules = ['foo' => true, 'bar' => false];
         $ruleCustomisationPolicyVersion = '123';
+        $fixerAnnotationMode = FixerAnnotationMode::FORBIDDEN;
 
-        $signature = new Signature($php, $version, $indent, $lineEnding, $rules, $ruleCustomisationPolicyVersion);
+        $signature = new Signature($php, $version, $indent, $lineEnding, $rules, $ruleCustomisationPolicyVersion, $fixerAnnotationMode);
 
         self::assertSame($php, $signature->getPhpVersion());
         self::assertSame($version, $signature->getFixerVersion());
@@ -63,6 +65,7 @@ final class SignatureTest extends TestCase
         self::assertSame($lineEnding, $signature->getLineEnding());
         self::assertSame($rules, $signature->getRules());
         self::assertSame($ruleCustomisationPolicyVersion, $signature->getRuleCustomisationPolicyVersion());
+        self::assertSame($fixerAnnotationMode, $signature->getFixerAnnotationMode());
     }
 
     /**
@@ -116,6 +119,11 @@ final class SignatureTest extends TestCase
         yield 'ruleCustomisationPolicyVersion' => [
             $base,
             new Signature($php, $version, $indent, $lineEnding, $rules, '2'),
+        ];
+
+        yield 'fixerAnnotationMode' => [
+            $base,
+            new Signature($php, $version, $indent, $lineEnding, $rules, $ruleCustomisationPolicyVersion, FixerAnnotationMode::ALL),
         ];
     }
 

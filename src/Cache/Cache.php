@@ -74,6 +74,7 @@ final class Cache implements CacheInterface
                     'lineEnding' => $this->getSignature()->getLineEnding(),
                     'rules' => $this->getSignature()->getRules(),
                     'ruleCustomisationPolicyVersion' => $this->getSignature()->getRuleCustomisationPolicyVersion(),
+                    'fixerAnnotationMode' => $this->getSignature()->getFixerAnnotationMode(),
                     'hashes' => $this->hashes,
                 ],
                 \JSON_THROW_ON_ERROR,
@@ -108,6 +109,7 @@ final class Cache implements CacheInterface
             'lineEnding',
             'rules',
             // 'ruleCustomisationPolicyVersion', // @TODO v4: require me
+            'fixerAnnotationMode',
             'hashes',
         ];
 
@@ -127,6 +129,7 @@ final class Cache implements CacheInterface
             $data['lineEnding'],
             $data['rules'],
             $data['ruleCustomisationPolicyVersion'] ?? NullRuleCustomisationPolicy::VERSION_FOR_CACHE,
+            $data['fixerAnnotationMode'],
         );
 
         $cache = new self($signature);

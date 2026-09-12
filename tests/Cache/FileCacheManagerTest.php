@@ -18,8 +18,11 @@ use PhpCsFixer\Cache\CacheInterface;
 use PhpCsFixer\Cache\CacheManagerInterface;
 use PhpCsFixer\Cache\DirectoryInterface;
 use PhpCsFixer\Cache\FileCacheManager;
+use PhpCsFixer\Cache\FileHandler;
 use PhpCsFixer\Cache\FileHandlerInterface;
+use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\Cache\SignatureInterface;
+use PhpCsFixer\Config\FixerAnnotationMode;
 use PhpCsFixer\Hasher;
 use PhpCsFixer\Tests\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -126,6 +129,50 @@ final class FileCacheManagerTest extends TestCase
         $manager = new FileCacheManager($handler, $signature);
 
         self::assertFalse($manager->needFixing($file, $fileContent));
+    }
+
+    public function testLegacyCacheWithoutFixerAnnotationModeIsInvalidated(): void
+    {
+        $cacheFile = tempnam(sys_get_temp_dir(), 'php-cs-fixer-cache-');
+        if (false === $cacheFile) {
+            throw new \RuntimeException('Unable to create a temporary cache file.');
+        }
+
+        $file = 'hello.php';
+        $fileContent = '<?php echo "Hello!"';
+        $signature = new Signature(
+            \PHP_VERSION,
+            '3.0',
+            '    ',
+            "\n",
+            [],
+            '1',
+            FixerAnnotationMode::MATCHING,
+        );
+        $manager = null;
+
+        try {
+            $bytesWritten = file_put_contents($cacheFile, json_encode([
+                'php' => $signature->getPhpVersion(),
+                'version' => $signature->getFixerVersion(),
+                'indent' => $signature->getIndent(),
+                'lineEnding' => $signature->getLineEnding(),
+                'rules' => $signature->getRules(),
+                'ruleCustomisationPolicyVersion' => $signature->getRuleCustomisationPolicyVersion(),
+                'hashes' => [$file => Hasher::calculate($fileContent)],
+            ], \JSON_THROW_ON_ERROR));
+
+            if (false === $bytesWritten) {
+                throw new \RuntimeException('Unable to write the temporary cache file.');
+            }
+
+            $manager = new FileCacheManager(new FileHandler($cacheFile), $signature);
+
+            self::assertTrue($manager->needFixing($file, $fileContent));
+        } finally {
+            unset($manager);
+            @unlink($cacheFile);
+        }
     }
 
     public function testNeedFixingUsesRelativePathToFile(): void
@@ -307,6 +354,11 @@ final class FileCacheManagerTest extends TestCase
             public function getRuleCustomisationPolicyVersion(): string
             {
                 throw new \LogicException('Not implemented.');
+            }
+
+            public function getFixerAnnotationMode(): string
+            {
+                return FixerAnnotationMode::MATCHING;
             }
 
             public function equals(SignatureInterface $signature): bool
