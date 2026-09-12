@@ -16,6 +16,10 @@ Rules
 -----
 
 - `@PER-CS2x0 <./PER-CS2x0.rst>`_
+- `modifier_keywords <./../rules/class_notation/modifier_keywords.rst>`_ with config:
+
+  ``['general_visibility_when_set_visibility_present' => 'keep']``
+
 - `nullable_type_declaration <./../rules/language_construct/nullable_type_declaration.rst>`_
 - `operator_linebreak <./../rules/operator/operator_linebreak.rst>`_
 - `ordered_types <./../rules/class_notation/ordered_types.rst>`_ with config:
