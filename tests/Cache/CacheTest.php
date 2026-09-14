@@ -19,6 +19,7 @@ use PhpCsFixer\Cache\CacheInterface;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\Cache\SignatureInterface;
 use PhpCsFixer\Config;
+use PhpCsFixer\Config\FixerAnnotationMode;
 use PhpCsFixer\Hasher;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
@@ -139,6 +140,7 @@ final class CacheTest extends TestCase
                 'bar' => false,
             ],
             'ruleCustomisationPolicyVersion' => '1.2.3',
+            'fixerAnnotationMode' => FixerAnnotationMode::MATCHING,
             'hashes' => [],
         ];
 
@@ -188,6 +190,7 @@ final class CacheTest extends TestCase
                 'bar' => true,
             ],
             'fooBar',
+            FixerAnnotationMode::ALL,
         )];
 
         yield [new Signature(
@@ -201,6 +204,24 @@ final class CacheTest extends TestCase
             ],
             'fooBar',
         )];
+    }
+
+    public function testFromLegacyJsonWithoutFixerAnnotationModeIsRejected(): void
+    {
+        $json = json_encode([
+            'php' => \PHP_VERSION,
+            'version' => '3.0',
+            'indent' => '    ',
+            'lineEnding' => "\n",
+            'rules' => [],
+            'ruleCustomisationPolicyVersion' => '1',
+            'hashes' => [],
+        ], \JSON_THROW_ON_ERROR);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('JSON data is missing keys "fixerAnnotationMode"');
+
+        Cache::fromJson($json);
     }
 
     public function testToJsonThrowsExceptionOnInvalid(): void
@@ -253,6 +274,11 @@ final class CacheTest extends TestCase
             public function getRuleCustomisationPolicyVersion(): string
             {
                 return 'Policy Version';
+            }
+
+            public function getFixerAnnotationMode(): string
+            {
+                return FixerAnnotationMode::MATCHING;
             }
 
             public function equals(SignatureInterface $signature): bool

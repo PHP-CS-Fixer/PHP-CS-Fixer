@@ -61,6 +61,38 @@ Just put this annotation in comment anywhere on top or bottom of the file, and t
     // @php-cs-fixer-ignore no_empty_statement    Works Also
     // @php-cs-fixer-ignore no_extra_blank_lines  on bottom of file
 
+By default, annotations may only refer to rules enabled in the runtime ruleset. The
+annotation mode can be configured with ``Config::setFixerAnnotationMode()``:
+
+.. code-block:: php
+
+    <?php
+
+    use PhpCsFixer\Config;
+    use PhpCsFixer\Config\FixerAnnotationMode;
+
+    return (new Config())
+        // Reject every @php-cs-fixer-ignore annotation.
+        ->setFixerAnnotationMode(FixerAnnotationMode::FORBIDDEN)
+    ;
+
+The available modes are:
+
+* ``FixerAnnotationMode::FORBIDDEN``: annotations are rejected;
+* ``FixerAnnotationMode::MATCHING``: annotations are accepted only for enabled
+  rules (the default);
+* ``FixerAnnotationMode::ALL``: annotations may refer to any rule.
+
+The ``--fixer-annotation-mode`` command-line option accepts the corresponding
+``forbidden``, ``matching``, and ``all`` values and overrides the configured mode.
+
+The ``PHP_CS_FIXER_IGNORE_MISMATCHED_RULES_EXCEPTIONS`` environment variable is
+deprecated. For annotations, its enabled behaviour is equivalent to
+``FixerAnnotationMode::ALL``. The environment variable also bypasses validation
+of mismatched Rule Customisation Policy entries; that separate legacy behaviour
+is not part of the annotation mode, so those entries must be corrected when
+migrating away from the environment variable.
+
 Configuring exceptions via ``Rule Customisation Policy``
 --------------------------------------------------------
 
