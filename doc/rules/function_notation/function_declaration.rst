@@ -11,7 +11,8 @@ This rule is CONFIGURABLE
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can configure this rule using the following options: ``closure_fn_spacing``,
-``closure_function_spacing``, ``trailing_comma_single_line``.
+``closure_function_spacing``, ``named_function_spacing``,
+``trailing_comma_single_line``.
 
 Configuration
 -------------
@@ -35,6 +36,15 @@ Spacing to use before open parenthesis for closures.
 Allowed values: ``'none'`` and ``'one'``
 
 Default value: ``'one'``
+
+``named_function_spacing``
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Spacing to use after function name in a function declaration (not a closure).
+
+Allowed values: ``'none'`` and ``'one'``
+
+Default value: ``'none'``
 
 ``trailing_comma_single_line``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -99,6 +109,19 @@ With configuration: ``['closure_fn_spacing' => 'none']``.
     <?php
    -$f = fn () => null;
    +$f = fn() => null;
+
+Example #4
+~~~~~~~~~~
+
+With configuration: ``['named_function_spacing' => 'one']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -function foo($bar, $baz) {}
+   +function foo ($bar, $baz) {}
 
 Rule sets
 ---------
