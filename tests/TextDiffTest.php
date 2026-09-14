@@ -109,7 +109,7 @@ final class TextDiffTest extends TestCase
         sort($formats);
 
         self::assertSame(
-            ['checkstyle', 'gitlab', 'json', 'junit', 'txt', 'xml'],
+            ['checkstyle', 'gitlab', 'json', 'junit', 'raw', 'txt', 'xml'],
             $formats,
         );
     }
