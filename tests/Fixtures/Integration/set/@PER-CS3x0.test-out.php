@@ -87,3 +87,10 @@ argumentsMultilineWithoutComma(
     1,
     2,
 );
+
+if (!$a) {
+    exit();
+}
+if (!$b) {
+    die();
+}
