@@ -1101,7 +1101,6 @@ class Foo
 {
     /** A */
     private $email;
-
     private $foo0; #0 /* test */
     private $foo1; #1
     private $foo2; /* @2 */
@@ -1128,10 +1127,8 @@ class Foo
 {
     /** @var int */
     const FOO = 1;
-
     /** @var int */
     const BAR = 2;
-
     const BAZ = 3;
     const OTHER = 4;
     const OTHER2 = 5;
@@ -1422,6 +1419,10 @@ abstract class Example
                     {
                         function A() {}
                         function B() {}
+                        /**
+                         * Doc block.
+                         */
+                        function foo() {}
                     }
                 ',
             '<?php
@@ -1430,6 +1431,11 @@ abstract class Example
                         function A() {}
 
                         function B() {}
+
+                        /**
+                         * Doc block.
+                         */
+                        function foo() {}
                     }
                 ',
             ['elements' => ['method' => 'none']],
@@ -2020,9 +2026,12 @@ class Foo
 {
     #[Assert\Email(["message" => "Foo"])]
     private $email;
-
     private $foo1; #1
     private $foo2; /* @2 */
+    /** @var int|null */
+    private $bar1;
+    /** @var string|null */
+    private $bar2;
 }',
             '<?php
 class Foo
@@ -2034,6 +2043,12 @@ class Foo
     private $foo1; #1
 
     private $foo2; /* @2 */
+
+    /** @var int|null */
+    private $bar1;
+
+    /** @var string|null */
+    private $bar2;
 }',
             ['elements' => ['property' => 'none']],
         ];
