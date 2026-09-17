@@ -73,22 +73,18 @@ final class UseArrowFunctionsFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $analyzer = new TokensAnalyzer($tokens);
-        $constantExpressionRanges = $this->getConstantExpressionRanges($tokens, $analyzer);
+
+        $classyBraces = $this->getClassyBraces($tokens);
+        $parameterLists = $this->getParameterLists($tokens);
 
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
-            if ($tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
-                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
-
-                continue;
-            }
-
             if (!$tokens[$index]->isGivenKind(\T_FUNCTION) || !$analyzer->isLambda($index)) {
                 continue;
             }
 
-            // Arrow functions are not allowed in constant expressions, converting
-            // a closure used there would produce code that cannot be compiled.
-            if ($this->isWithinRanges($index, $constantExpressionRanges)) {
+            // Constant expressions allow closures as of PHP 8.5, but never arrow
+            // functions, so converting one there yields code that cannot compile.
+            if ($this->isInConstantExpression($tokens, $index, $classyBraces, $parameterLists)) {
                 continue;
             }
 
@@ -180,75 +176,171 @@ final class UseArrowFunctionsFixer extends AbstractFixer
     }
 
     /**
-     * Collects the ranges of the constant expressions of the file.
+     * Whether the closure at the given index belongs to a constant expression.
      *
-     * Constant expressions allow closures since PHP 8.5, but never arrow
-     * functions, as those capture the outer scope by value automatically.
+     * The innermost enclosing scope decides: the body of a closure declared in a
+     * constant expression is ordinary runtime code, while a default value nested
+     * inside a runtime closure's signature is still a constant expression.
      *
-     * @return list<array{int, int}>
+     * @param array<int, true> $classyBraces
+     * @param array<int, true> $parameterLists
      */
-    private function getConstantExpressionRanges(Tokens $tokens, TokensAnalyzer $analyzer): array
+    private function isInConstantExpression(Tokens $tokens, int $index, array $classyBraces, array $parameterLists): bool
     {
-        $ranges = [];
+        $position = $index;
 
-        foreach ($tokens as $index => $token) {
-            // Global, class and enum constants. `use const` is tokenized as
-            // CT::T_CONST_IMPORT, so it is not matched here.
-            if ($token->isGivenKind(\T_CONST)) {
-                $end = $tokens->getNextTokenOfKind($index, [';']);
+        while (true) {
+            $open = $this->getEnclosingBlockStart($tokens, $position);
 
-                if (null !== $end) {
-                    $ranges[] = [$index, $end];
+            if (null === $open) {
+                return $this->isWithinConstantDeclaration($tokens, $position);
+            }
+
+            $blockType = Tokens::detectBlockType($tokens[$open]);
+
+            // Attribute arguments are constant expressions.
+            if (Tokens::BLOCK_TYPE_ATTRIBUTE === $blockType['type']) {
+                return true;
+            }
+
+            // A property hook holds runtime code, unlike the default value of
+            // the property it belongs to.
+            if (Tokens::BLOCK_TYPE_PROPERTY_HOOK === $blockType['type']) {
+                return false;
+            }
+
+            if (Tokens::BLOCK_TYPE_BRACE === $blockType['type']) {
+                // Directly in a classy body, so within a constant or a property
+                // default value. Any other brace opens runtime code, be it a
+                // function body or a control structure.
+                return isset($classyBraces[$open]);
+            }
+
+            if (Tokens::BLOCK_TYPE_PARENTHESIS === $blockType['type']) {
+                // Default values of parameters are constant expressions.
+                if (isset($parameterLists[$open])) {
+                    return true;
                 }
-
-                continue;
             }
 
-            // Parameter lists, as default values are constant expressions.
-            // `use function` is tokenized as CT::T_FUNCTION_IMPORT.
-            if ($token->isGivenKind([\T_FUNCTION, \T_FN])) {
-                $start = $tokens->getNextTokenOfKind($index, ['(']);
-
-                if (null !== $start) {
-                    $ranges[] = [$start, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $start)];
-                }
-            }
+            // Arrays, argument lists and groupings take the surrounding context.
+            $position = $open;
         }
-
-        // Property default values.
-        foreach ($analyzer->getClassyElements() as $index => $element) {
-            if ('property' !== $element['type']) {
-                continue;
-            }
-
-            $equals = $tokens->getNextMeaningfulToken($index);
-
-            if (null === $equals || !$tokens[$equals]->equals('=')) {
-                continue;
-            }
-
-            $end = $tokens->getNextTokenOfKind($equals, [';']);
-
-            if (null !== $end) {
-                $ranges[] = [$equals, $end];
-            }
-        }
-
-        return $ranges;
     }
 
     /**
-     * @param list<array{int, int}> $ranges
+     * Get the start of the innermost block the given index sits in, if any.
      */
-    private function isWithinRanges(int $index, array $ranges): bool
+    private function getEnclosingBlockStart(Tokens $tokens, int $position): ?int
     {
-        foreach ($ranges as [$start, $end]) {
-            if ($index > $start && $index < $end) {
+        $depth = 0;
+
+        for ($index = $position - 1; $index >= 0; --$index) {
+            $blockType = Tokens::detectBlockType($tokens[$index]);
+
+            if (null === $blockType) {
+                continue;
+            }
+
+            if (!$blockType['isStart']) {
+                ++$depth;
+
+                continue;
+            }
+
+            if (0 === $depth) {
+                return $index;
+            }
+
+            --$depth;
+        }
+
+        return null;
+    }
+
+    /**
+     * Whether the statement the given index belongs to declares a constant.
+     */
+    private function isWithinConstantDeclaration(Tokens $tokens, int $position): bool
+    {
+        for ($index = $position - 1; $index > 0; --$index) {
+            $token = $tokens[$index];
+            $blockType = Tokens::detectBlockType($token);
+
+            // Jump over a complete block, such as an index or a grouping, that
+            // the declaration may hold before the closure.
+            if (null !== $blockType && !$blockType['isStart']) {
+                $index = $tokens->findBlockStart($blockType['type'], $index);
+
+                continue;
+            }
+
+            if ($token->isGivenKind(\T_CONST)) {
                 return true;
+            }
+
+            if ($token->equals(';') || $token->isGivenKind(\T_CLOSE_TAG)) {
+                return false;
             }
         }
 
         return false;
+    }
+
+    /**
+     * Get the braces that open the body of a class, interface, trait or enum.
+     *
+     * @return array<int, true>
+     */
+    private function getClassyBraces(Tokens $tokens): array
+    {
+        $braces = [];
+
+        foreach ($tokens as $index => $token) {
+            if (!$token->isClassy()) {
+                continue;
+            }
+
+            $position = $tokens->getNextMeaningfulToken($index);
+
+            // Skip the argument list of an anonymous class, as it may itself
+            // contain braces, for instance those of a closure passed to it.
+            if (null !== $position && $tokens[$position]->equals('(')) {
+                $position = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $position);
+            }
+
+            $brace = $tokens->getNextTokenOfKind($position, ['{']);
+
+            if (null !== $brace) {
+                $braces[$brace] = true;
+            }
+        }
+
+        return $braces;
+    }
+
+    /**
+     * Get the parentheses that open the parameter list of a declaration.
+     *
+     * @return array<int, true>
+     */
+    private function getParameterLists(Tokens $tokens): array
+    {
+        $parentheses = [];
+
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind([\T_FUNCTION, \T_FN])) {
+                continue;
+            }
+
+            $start = $tokens->getNextTokenOfKind($index, ['(']);
+
+            if (null !== $start) {
+                $parentheses[$start] = true;
+            }
+        }
+
+        return $parentheses;
     }
 
     private function transform(Tokens $tokens, int $index, ?int $useStart, ?int $useEnd, int $braceOpen, int $return, int $semicolon, int $braceClose): void
