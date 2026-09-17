@@ -200,7 +200,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     /**
      * @param list<RuleSetDefinitionInterface> $ruleSets
      */
-    public function registerCustomRuleSets(array $ruleSets): ConfigInterface
+    public function registerCustomRuleSets(array $ruleSets): self
     {
         foreach ($ruleSets as $ruleset) {
             $this->customRuleSets[$ruleset->getName()] = $ruleset;
@@ -295,14 +295,14 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
         return $this;
     }
 
-    public function setUnsupportedPhpVersionAllowed(bool $isUnsupportedPhpVersionAllowed): ConfigInterface
+    public function setUnsupportedPhpVersionAllowed(bool $isUnsupportedPhpVersionAllowed): self
     {
         $this->isUnsupportedPhpVersionAllowed = $isUnsupportedPhpVersionAllowed;
 
         return $this;
     }
 
-    public function setRuleCustomisationPolicy(?RuleCustomisationPolicyInterface $ruleCustomisationPolicy): ConfigInterface
+    public function setRuleCustomisationPolicy(?RuleCustomisationPolicyInterface $ruleCustomisationPolicy): self
     {
         // explicitly prevent policy with no proper version defined
         if (null !== $ruleCustomisationPolicy && '' === $ruleCustomisationPolicy->getPolicyVersionForCache()) {
