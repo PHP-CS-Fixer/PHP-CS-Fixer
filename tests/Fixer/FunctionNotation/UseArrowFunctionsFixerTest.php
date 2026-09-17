@@ -296,6 +296,27 @@ $load = function ($path) use ($data) {
     return $data[$path];
 };',
         ];
+
+        yield 'convert in class with properties without default value' => [
+            '<?php
+class Foo {
+    public $a;
+    public $b, $c;
+
+    public function d() {
+        return static fn () => 1;
+    }
+}',
+            '<?php
+class Foo {
+    public $a;
+    public $b, $c;
+
+    public function d() {
+        return static function () { return 1; };
+    }
+}',
+        ];
     }
 
     /**
