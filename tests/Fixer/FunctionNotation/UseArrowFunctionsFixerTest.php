@@ -345,5 +345,97 @@ $load = function ($path) use ($data) {
                 }
                 PHP,
         ];
+
+        yield 'do not convert closure in global constant' => [
+            <<<'PHP'
+                <?php
+                const CALLBACK = static function () { return 1; };
+                $a = static fn () => 2;
+                PHP,
+            <<<'PHP'
+                <?php
+                const CALLBACK = static function () { return 1; };
+                $a = static function () { return 2; };
+                PHP,
+        ];
+
+        yield 'do not convert closure in class constant' => [
+            <<<'PHP'
+                <?php
+                class Foo {
+                    const CALLBACK = static function () { return 1; };
+                }
+                PHP,
+        ];
+
+        yield 'do not convert closure in enum constant' => [
+            <<<'PHP'
+                <?php
+                enum Foo {
+                    const CALLBACK = static function () { return 1; };
+                }
+                PHP,
+        ];
+
+        yield 'do not convert closure nested in constant array' => [
+            <<<'PHP'
+                <?php
+                const CALLBACKS = ['a' => [static function () { return 1; }]];
+                PHP,
+        ];
+
+        yield 'do not convert closure in property default' => [
+            <<<'PHP'
+                <?php
+                class Foo {
+                    public $callback = static function () { return 1; };
+
+                    public function bar() {
+                        return static fn () => 2;
+                    }
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo {
+                    public $callback = static function () { return 1; };
+
+                    public function bar() {
+                        return static function () { return 2; };
+                    }
+                }
+                PHP,
+        ];
+
+        yield 'do not convert closure in parameter default' => [
+            <<<'PHP'
+                <?php
+                function foo($callback = static function () { return 1; }) {
+                    return static fn () => $callback;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                function foo($callback = static function () { return 1; }) {
+                    return static function () { return $callback; };
+                }
+                PHP,
+        ];
+
+        yield 'do not convert closure in promoted property default' => [
+            <<<'PHP'
+                <?php
+                class Foo {
+                    public function __construct(public $callback = static function () { return 1; }) {}
+                }
+                PHP,
+        ];
+
+        yield 'do not convert closure in arrow function parameter default' => [
+            <<<'PHP'
+                <?php
+                $f = fn ($callback = static function () { return 1; }) => $callback;
+                PHP,
+        ];
     }
 }

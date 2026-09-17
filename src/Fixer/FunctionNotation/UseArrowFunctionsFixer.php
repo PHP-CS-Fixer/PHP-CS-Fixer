@@ -73,6 +73,7 @@ final class UseArrowFunctionsFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $analyzer = new TokensAnalyzer($tokens);
+        $constantExpressionRanges = $this->getConstantExpressionRanges($tokens, $analyzer);
 
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
             if ($tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
@@ -82,6 +83,12 @@ final class UseArrowFunctionsFixer extends AbstractFixer
             }
 
             if (!$tokens[$index]->isGivenKind(\T_FUNCTION) || !$analyzer->isLambda($index)) {
+                continue;
+            }
+
+            // Arrow functions are not allowed in constant expressions, converting
+            // a closure used there would produce code that cannot be compiled.
+            if ($this->isWithinRanges($index, $constantExpressionRanges)) {
                 continue;
             }
 
@@ -170,6 +177,78 @@ final class UseArrowFunctionsFixer extends AbstractFixer
             // Transform the function to an arrow function
             $this->transform($tokens, $index, $useStart, $useEnd, $braceOpen, $return, $semicolon, $braceClose);
         }
+    }
+
+    /**
+     * Collects the ranges of the constant expressions of the file.
+     *
+     * Constant expressions allow closures since PHP 8.5, but never arrow
+     * functions, as those capture the outer scope by value automatically.
+     *
+     * @return list<array{int, int}>
+     */
+    private function getConstantExpressionRanges(Tokens $tokens, TokensAnalyzer $analyzer): array
+    {
+        $ranges = [];
+
+        foreach ($tokens as $index => $token) {
+            // Global, class and enum constants. `use const` is tokenized as
+            // CT::T_CONST_IMPORT, so it is not matched here.
+            if ($token->isGivenKind(\T_CONST)) {
+                $end = $tokens->getNextTokenOfKind($index, [';']);
+
+                if (null !== $end) {
+                    $ranges[] = [$index, $end];
+                }
+
+                continue;
+            }
+
+            // Parameter lists, as default values are constant expressions.
+            // `use function` is tokenized as CT::T_FUNCTION_IMPORT.
+            if ($token->isGivenKind([\T_FUNCTION, \T_FN])) {
+                $start = $tokens->getNextTokenOfKind($index, ['(']);
+
+                if (null !== $start) {
+                    $ranges[] = [$start, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $start)];
+                }
+            }
+        }
+
+        // Property default values.
+        foreach ($analyzer->getClassyElements() as $index => $element) {
+            if ('property' !== $element['type']) {
+                continue;
+            }
+
+            $equals = $tokens->getNextMeaningfulToken($index);
+
+            if (null === $equals || !$tokens[$equals]->equals('=')) {
+                continue;
+            }
+
+            $end = $tokens->getNextTokenOfKind($equals, [';']);
+
+            if (null !== $end) {
+                $ranges[] = [$equals, $end];
+            }
+        }
+
+        return $ranges;
+    }
+
+    /**
+     * @param list<array{int, int}> $ranges
+     */
+    private function isWithinRanges(int $index, array $ranges): bool
+    {
+        foreach ($ranges as [$start, $end]) {
+            if ($index > $start && $index < $end) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function transform(Tokens $tokens, int $index, ?int $useStart, ?int $useEnd, int $braceOpen, int $return, int $semicolon, int $braceClose): void
