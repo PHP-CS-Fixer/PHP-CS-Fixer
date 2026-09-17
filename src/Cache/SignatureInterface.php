@@ -18,6 +18,8 @@ namespace PhpCsFixer\Cache;
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 interface SignatureInterface
 {
@@ -33,6 +35,8 @@ interface SignatureInterface
      * @return array<string, array<string, mixed>|bool>
      */
     public function getRules(): array;
+
+    public function getRuleCustomisationPolicyVersion(): string;
 
     public function equals(self $signature): bool;
 }

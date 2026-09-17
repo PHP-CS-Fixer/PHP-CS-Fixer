@@ -14,6 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\FixerConfiguration;
 
+/**
+ * @readonly
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class DeprecatedFixerOption implements DeprecatedFixerOptionInterface
 {
     private FixerOptionInterface $option;
@@ -41,6 +46,9 @@ final class DeprecatedFixerOption implements DeprecatedFixerOptionInterface
         return $this->option->hasDefault();
     }
 
+    /**
+     * @return mixed
+     */
     public function getDefault()
     {
         return $this->option->getDefault();

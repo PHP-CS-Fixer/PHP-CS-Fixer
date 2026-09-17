@@ -19,18 +19,18 @@ use PhpCsFixer\Console\Report\ListSetsReport\ReportSummary;
 use PhpCsFixer\RuleSet\Sets\PhpCsFixerSet;
 use PhpCsFixer\RuleSet\Sets\SymfonyRiskySet;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractReporterTestCase extends TestCase
 {
-    /**
-     * @var null|ReporterInterface
-     */
-    protected $reporter;
+    protected ?ReporterInterface $reporter = null;
 
     protected function setUp(): void
     {
@@ -50,13 +50,14 @@ abstract class AbstractReporterTestCase extends TestCase
     {
         self::assertSame(
             $this->getFormat(),
-            $this->reporter->getFormat()
+            $this->reporter->getFormat(),
         );
     }
 
     /**
      * @dataProvider provideGenerateCases
      */
+    #[DataProvider('provideGenerateCases')]
     final public function testGenerate(string $expectedReport, ReportSummary $reportSummary): void
     {
         $actualReport = $this->reporter->generate($reportSummary);

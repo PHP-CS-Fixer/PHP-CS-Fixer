@@ -26,6 +26,8 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoTrailingCommaInSinglelineArrayFixer extends AbstractProxyFixer implements DeprecatedFixerInterface
 {
@@ -33,7 +35,7 @@ final class NoTrailingCommaInSinglelineArrayFixer extends AbstractProxyFixer imp
     {
         return new FixerDefinition(
             'PHP single-line arrays should not have trailing comma.',
-            [new CodeSample("<?php\n\$a = array('sample',  );\n")]
+            [new CodeSample("<?php\n\$a = array('sample',  );\n")],
         );
     }
 

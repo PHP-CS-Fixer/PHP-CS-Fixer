@@ -20,6 +20,8 @@ use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
@@ -28,15 +30,16 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
  * @internal
  *
  * @covers \PhpCsFixer\DocBlock\Annotation
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Annotation::class)]
 final class AnnotationTest extends TestCase
 {
     /**
      * This represents the content an entire docblock.
-     *
-     * @var string
      */
-    private static $sample = '/**
+    private const SAMPLE = '/**
      * Test docblock.
      *
      * @param string $hello
@@ -58,7 +61,7 @@ final class AnnotationTest extends TestCase
      *
      * @var list<string>
      */
-    private static $content = [
+    private const CONTENT = [
         "     * @param string \$hello\n",
         "     * @param bool \$test Description\n     *        extends over many lines\n",
         "     * @param adkjbadjasbdand \$asdnjkasd\n",
@@ -71,28 +74,29 @@ final class AnnotationTest extends TestCase
      *
      * @var list<int>
      */
-    private static $start = [3, 4, 7, 9, 14];
+    private const START = [3, 4, 7, 9, 14];
 
     /**
      * This represents the start indexes of each annotation.
      *
      * @var list<int>
      */
-    private static $end = [3, 5, 7, 12, 14];
+    private const END = [3, 5, 7, 12, 14];
 
     /**
      * This represents the tag type of each annotation.
      *
      * @var list<string>
      */
-    private static $tags = ['param', 'param', 'param', 'throws', 'return'];
+    private static array $tags = ['param', 'param', 'param', 'throws', 'return'];
 
     /**
      * @dataProvider provideGetContentCases
      */
+    #[DataProvider('provideGetContentCases')]
     public function testGetContent(int $index, string $content): void
     {
-        $doc = new DocBlock(self::$sample);
+        $doc = new DocBlock(self::SAMPLE);
         $annotation = $doc->getAnnotation($index);
 
         self::assertSame($content, $annotation->getContent());
@@ -100,11 +104,11 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, string}>
+     * @return iterable<int, array{int, string}>
      */
     public static function provideGetContentCases(): iterable
     {
-        foreach (self::$content as $index => $content) {
+        foreach (self::CONTENT as $index => $content) {
             yield [$index, $content];
         }
     }
@@ -112,20 +116,21 @@ final class AnnotationTest extends TestCase
     /**
      * @dataProvider provideStartCases
      */
+    #[DataProvider('provideStartCases')]
     public function testStart(int $index, int $start): void
     {
-        $doc = new DocBlock(self::$sample);
+        $doc = new DocBlock(self::SAMPLE);
         $annotation = $doc->getAnnotation($index);
 
         self::assertSame($start, $annotation->getStart());
     }
 
     /**
-     * @return iterable<array{int, int}>
+     * @return iterable<int, array{int, int}>
      */
     public static function provideStartCases(): iterable
     {
-        foreach (self::$start as $index => $start) {
+        foreach (self::START as $index => $start) {
             yield [$index, $start];
         }
     }
@@ -133,20 +138,21 @@ final class AnnotationTest extends TestCase
     /**
      * @dataProvider provideEndCases
      */
+    #[DataProvider('provideEndCases')]
     public function testEnd(int $index, int $end): void
     {
-        $doc = new DocBlock(self::$sample);
+        $doc = new DocBlock(self::SAMPLE);
         $annotation = $doc->getAnnotation($index);
 
         self::assertSame($end, $annotation->getEnd());
     }
 
     /**
-     * @return iterable<array{int, int}>
+     * @return iterable<int, array{int, int}>
      */
     public static function provideEndCases(): iterable
     {
-        foreach (self::$end as $index => $end) {
+        foreach (self::END as $index => $end) {
             yield [$index, $end];
         }
     }
@@ -154,16 +160,17 @@ final class AnnotationTest extends TestCase
     /**
      * @dataProvider provideGetTagCases
      */
+    #[DataProvider('provideGetTagCases')]
     public function testGetTag(int $index, string $tag): void
     {
-        $doc = new DocBlock(self::$sample);
+        $doc = new DocBlock(self::SAMPLE);
         $annotation = $doc->getAnnotation($index);
 
         self::assertSame($tag, $annotation->getTag()->getName());
     }
 
     /**
-     * @return iterable<array{int, string}>
+     * @return iterable<int, array{int, string}>
      */
     public static function provideGetTagCases(): iterable
     {
@@ -175,9 +182,10 @@ final class AnnotationTest extends TestCase
     /**
      * @dataProvider provideRemoveCases
      */
+    #[DataProvider('provideRemoveCases')]
     public function testRemove(int $index, int $start, int $end): void
     {
-        $doc = new DocBlock(self::$sample);
+        $doc = new DocBlock(self::SAMPLE);
         $annotation = $doc->getAnnotation($index);
 
         $annotation->remove();
@@ -187,18 +195,19 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, int, int}>
+     * @return iterable<int, array{int, int, int}>
      */
     public static function provideRemoveCases(): iterable
     {
-        foreach (self::$start as $index => $start) {
-            yield [$index, $start, self::$end[$index]];
+        foreach (self::START as $index => $start) {
+            yield [$index, $start, self::END[$index]];
         }
     }
 
     /**
      * @dataProvider provideRemoveEdgeCasesCases
      */
+    #[DataProvider('provideRemoveEdgeCasesCases')]
     public function testRemoveEdgeCases(string $expected, string $input): void
     {
         $doc = new DocBlock($input);
@@ -209,7 +218,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideRemoveEdgeCasesCases(): iterable
     {
@@ -256,6 +265,7 @@ final class AnnotationTest extends TestCase
      *
      * @dataProvider provideTypeParsingCases
      */
+    #[DataProvider('provideTypeParsingCases')]
     public function testTypeParsing(array $expected, string $input): void
     {
         $tag = new Annotation([new Line($input)]);
@@ -263,6 +273,9 @@ final class AnnotationTest extends TestCase
         self::assertSame($expected, $tag->getTypes());
     }
 
+    /**
+     * @return iterable<int, array{list<string>, string}>
+     */
     public static function provideTypeParsingCases(): iterable
     {
         yield [
@@ -466,6 +479,11 @@ final class AnnotationTest extends TestCase
         ];
 
         yield [
+            ["array{\n    a: int,\n    b: string\n}"],
+            "/** @var array{\n    a: int,\n    b: string\n} */",
+        ];
+
+        yield [
             ['callable(string)'],
             '/** @param callable(string) $function',
         ];
@@ -522,6 +540,7 @@ final class AnnotationTest extends TestCase
      *
      * @dataProvider provideTypesCases
      */
+    #[DataProvider('provideTypesCases')]
     public function testTypes(array $expected, array $new, string $input, string $output): void
     {
         $line = new Line($input);
@@ -536,6 +555,9 @@ final class AnnotationTest extends TestCase
         self::assertSame($output, $line->getContent());
     }
 
+    /**
+     * @return iterable<int, array{list<string>, list<string>, string, string}>
+     */
     public static function provideTypesCases(): iterable
     {
         yield [['Foo', 'null'], ['Bar[]'], '     * @param Foo|null $foo', '     * @param Bar[] $foo'];
@@ -558,6 +580,7 @@ final class AnnotationTest extends TestCase
      *
      * @dataProvider provideNormalizedTypesCases
      */
+    #[DataProvider('provideNormalizedTypesCases')]
     public function testNormalizedTypes(array $expected, string $input): void
     {
         $line = new Line($input);
@@ -566,6 +589,9 @@ final class AnnotationTest extends TestCase
         self::assertSame($expected, $tag->getNormalizedTypes());
     }
 
+    /**
+     * @return iterable<int, array{list<string>, string}>
+     */
     public static function provideNormalizedTypesCases(): iterable
     {
         yield [['null', 'string'], '* @param StRiNg|NuLl $foo'];
@@ -630,6 +656,7 @@ final class AnnotationTest extends TestCase
      *
      * @dataProvider provideGetTypeExpressionCases
      */
+    #[DataProvider('provideGetTypeExpressionCases')]
     public function testGetTypeExpression(string $line, ?NamespaceAnalysis $namespace, array $namespaceUses, ?string $expectedCommonType): void
     {
         $annotation = new Annotation([new Line($line)], $namespace, $namespaceUses);
@@ -638,6 +665,9 @@ final class AnnotationTest extends TestCase
         self::assertSame($expectedCommonType, $result->getCommonType());
     }
 
+    /**
+     * @return iterable<int, array{string, null|NamespaceAnalysis, list<NamespaceUseAnalysis>, null|string}>
+     */
     public static function provideGetTypeExpressionCases(): iterable
     {
         $appNamespace = new NamespaceAnalysis('App', 'App', 0, 999, 0, 999);
@@ -653,6 +683,7 @@ final class AnnotationTest extends TestCase
     /**
      * @dataProvider provideGetVariableNameCases
      */
+    #[DataProvider('provideGetVariableNameCases')]
     public function testGetVariableName(string $line, ?string $expectedVariableName): void
     {
         $annotation = new Annotation([new Line($line)]);
@@ -660,7 +691,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, null|string}>
+     * @return iterable<int, array{string, null|string}>
      */
     public static function provideGetVariableNameCases(): iterable
     {
@@ -686,6 +717,10 @@ final class AnnotationTest extends TestCase
 
         yield ['* @param & $foo', '$foo'];
 
+        yield ['* @param int&$foo', '$foo'];
+
+        yield ['* @param int& $foo', '$foo'];
+
         yield ['* @param int &$foo', '$foo'];
 
         yield ['* @param int & $foo', '$foo'];
@@ -705,5 +740,25 @@ final class AnnotationTest extends TestCase
         yield ['* @param ?int $foo=null invalid description', '$foo'];
 
         yield ['* @param int $počet Special chars in variable name', '$počet'];
+
+        yield [" * @param array{\n * a: Foo,\n * b: Bar\n * } \$x", '$x'];
+    }
+
+    public function testGetVariableNameForMultiline(): void
+    {
+        $docBlock = new DocBlock(
+            <<<'PHP'
+                <?php
+                /**
+                 * @param array{
+                 *        a: Foo,
+                 *        b: Bar
+                 * } $x
+                 */
+                PHP,
+        );
+        $annotation = $docBlock->getAnnotation(0);
+
+        self::assertSame('$x', $annotation->getVariableName());
     }
 }

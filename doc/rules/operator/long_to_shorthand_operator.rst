@@ -7,8 +7,8 @@ Shorthand notation for operators should be used if possible.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when applying for string offsets (e.g. ``<?php $text = "foo"; $text[0] =
 $text[0] & "\x7F";``).

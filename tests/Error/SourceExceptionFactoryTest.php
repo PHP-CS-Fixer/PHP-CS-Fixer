@@ -18,12 +18,16 @@ use PhpCsFixer\Error\SourceExceptionFactory;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Runner\Parallel\WorkerException;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @covers \PhpCsFixer\Error\SourceExceptionFactory
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(SourceExceptionFactory::class)]
 final class SourceExceptionFactoryTest extends TestCase
 {
     public function testFromArrayWithInstantiableException(): void

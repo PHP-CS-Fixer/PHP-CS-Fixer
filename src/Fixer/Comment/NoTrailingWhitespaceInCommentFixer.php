@@ -24,17 +24,19 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoTrailingWhitespaceInCommentFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'There MUST be no trailing spaces inside comment or PHPDoc.',
+            'There must be no trailing whitespace at the end of lines in comments and PHPDocs.',
             [new CodeSample('<?php
 // This is '.'
 // a comment. '.'
-')]
+')],
         );
     }
 
@@ -50,21 +52,21 @@ final class NoTrailingWhitespaceInCommentFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_COMMENT, T_DOC_COMMENT]);
+        return $tokens->isAnyTokenKindsFound([\T_COMMENT, \T_DOC_COMMENT]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(T_DOC_COMMENT)) {
-                $tokens[$index] = new Token([T_DOC_COMMENT, Preg::replace('/(*ANY)[\h]+$/m', '', $token->getContent())]);
+            if ($token->isGivenKind(\T_DOC_COMMENT)) {
+                $tokens[$index] = new Token([\T_DOC_COMMENT, Preg::replace('/(*ANY)[\h]+$/m', '', $token->getContent())]);
 
                 continue;
             }
 
-            if ($token->isGivenKind(T_COMMENT)) {
+            if ($token->isGivenKind(\T_COMMENT)) {
                 if (str_starts_with($token->getContent(), '/*')) {
-                    $tokens[$index] = new Token([T_COMMENT, Preg::replace('/(*ANY)[\h]+$/m', '', $token->getContent())]);
+                    $tokens[$index] = new Token([\T_COMMENT, Preg::replace('/(*ANY)[\h]+$/m', '', $token->getContent())]);
                 } elseif (isset($tokens[$index + 1]) && $tokens[$index + 1]->isWhitespace()) {
                     $trimmedContent = ltrim($tokens[$index + 1]->getContent(), " \t");
                     $tokens->ensureWhitespaceAtIndex($index + 1, 0, $trimmedContent);

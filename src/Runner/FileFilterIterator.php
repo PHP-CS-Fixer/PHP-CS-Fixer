@@ -16,16 +16,18 @@ namespace PhpCsFixer\Runner;
 
 use PhpCsFixer\Cache\CacheManagerInterface;
 use PhpCsFixer\FileReader;
-use PhpCsFixer\FixerFileProcessedEvent;
+use PhpCsFixer\Runner\Event\FileProcessed;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @extends \FilterIterator<mixed, \SplFileInfo, \Iterator<mixed, \SplFileInfo>>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FileFilterIterator extends \FilterIterator
 {
@@ -39,15 +41,17 @@ final class FileFilterIterator extends \FilterIterator
     private array $visitedElements = [];
 
     /**
-     * @param \Traversable<\SplFileInfo> $iterator
+     * @param iterable<\SplFileInfo> $iterator
      */
     public function __construct(
-        \Traversable $iterator,
+        iterable $iterator,
         ?EventDispatcherInterface $eventDispatcher,
         CacheManagerInterface $cacheManager
     ) {
         if (!$iterator instanceof \Iterator) {
-            $iterator = new \IteratorIterator($iterator);
+            $iterator = new \IteratorIterator(
+                $iterator instanceof \Traversable ? $iterator : new \ArrayIterator($iterator),
+            );
         }
 
         parent::__construct($iterator);
@@ -63,8 +67,8 @@ final class FileFilterIterator extends \FilterIterator
             throw new \RuntimeException(
                 \sprintf(
                     'Expected instance of "\SplFileInfo", got "%s".',
-                    get_debug_type($file)
-                )
+                    get_debug_type($file),
+                ),
             );
         }
 
@@ -89,10 +93,7 @@ final class FileFilterIterator extends \FilterIterator
             // file that does not need fixing due to cache
             || !$this->cacheManager->needFixing($file->getPathname(), $content)
         ) {
-            $this->dispatchEvent(
-                FixerFileProcessedEvent::NAME,
-                new FixerFileProcessedEvent(FixerFileProcessedEvent::STATUS_SKIPPED)
-            );
+            $this->dispatchEvent(FileProcessed::NAME, new FileProcessed(FileProcessed::STATUS_SKIPPED));
 
             return false;
         }

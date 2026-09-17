@@ -16,22 +16,28 @@ namespace PhpCsFixer\Tests\Console\Output\Progress;
 
 use PhpCsFixer\Console\Output\OutputContext;
 use PhpCsFixer\Console\Output\Progress\PercentageBarOutput;
-use PhpCsFixer\FixerFileProcessedEvent;
+use PhpCsFixer\Runner\Event\FileProcessed;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Console\Output\Progress\PercentageBarOutput
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(PercentageBarOutput::class)]
 final class PercentageBarOutputTest extends TestCase
 {
     /**
-     * @param list<array{0: FixerFileProcessedEvent::STATUS_*, 1?: int}> $statuses
+     * @param list<array{0: FileProcessed::STATUS_*, 1?: int}> $statuses
      *
      * @dataProvider providePercentageBarProgressOutputCases
      */
+    #[DataProvider('providePercentageBarProgressOutputCases')]
     public function testPercentageBarProgressOutput(array $statuses, string $expectedOutput, int $width): void
     {
         $nbFiles = 0;
@@ -44,30 +50,30 @@ final class PercentageBarOutputTest extends TestCase
         $processOutput = new PercentageBarOutput(new OutputContext($output, $width, $nbFiles));
 
         $this->foreachStatus($statuses, static function (int $status) use ($processOutput): void {
-            $processOutput->onFixerFileProcessed(new FixerFileProcessedEvent($status));
+            $processOutput->onFixerFileProcessed(new FileProcessed($status));
         });
 
         self::assertSame($expectedOutput, rtrim($output->fetch()));
     }
 
     /**
-     * @return iterable<int|string, array{0: list<array{0: FixerFileProcessedEvent::STATUS_*, 1?: int}>, 1: string, 2: int}>
+     * @return iterable<int, array{0: list<array{0: FileProcessed::STATUS_*, 1?: int}>, 1: string, 2: int}>
      */
     public static function providePercentageBarProgressOutputCases(): iterable
     {
         yield [
             [
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 100],
+                [FileProcessed::STATUS_NO_CHANGES, 100],
             ],
-            '   0/100 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%'.PHP_EOL.
-            ' 100/100 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%',
+            '   0/100 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%'.\PHP_EOL
+            .' 100/100 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%',
             80,
         ];
     }
 
     /**
-     * @param list<array{0: FixerFileProcessedEvent::STATUS_*, 1?: int}> $statuses
-     * @param \Closure(FixerFileProcessedEvent::STATUS_*): void          $action
+     * @param list<array{0: FileProcessed::STATUS_*, 1?: int}> $statuses
+     * @param \Closure(FileProcessed::STATUS_*): void          $action
      */
     private function foreachStatus(array $statuses, \Closure $action): void
     {

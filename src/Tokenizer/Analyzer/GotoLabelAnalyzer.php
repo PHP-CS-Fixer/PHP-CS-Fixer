@@ -18,6 +18,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class GotoLabelAnalyzer
 {
@@ -29,12 +31,12 @@ final class GotoLabelAnalyzer
 
         $prevMeaningfulTokenIndex = $tokens->getPrevMeaningfulToken($index);
 
-        if (!$tokens[$prevMeaningfulTokenIndex]->isGivenKind(T_STRING)) {
+        if (!$tokens[$prevMeaningfulTokenIndex]->isGivenKind(\T_STRING)) {
             return false;
         }
 
         $prevMeaningfulTokenIndex = $tokens->getPrevMeaningfulToken($prevMeaningfulTokenIndex);
 
-        return $tokens[$prevMeaningfulTokenIndex]->equalsAny([':', ';', '{', '}', [T_OPEN_TAG]]);
+        return $tokens[$prevMeaningfulTokenIndex]->equalsAny([':', ';', '{', '}', [\T_OPEN_TAG]]);
     }
 }

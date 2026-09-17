@@ -16,6 +16,8 @@ namespace PhpCsFixer\Tests\FixerDefinition;
 
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -23,7 +25,10 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\FixerDefinition\VersionSpecification
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(VersionSpecification::class)]
 final class VersionSpecificationTest extends TestCase
 {
     public function testConstructorRequiresEitherMinimumOrMaximum(): void
@@ -35,14 +40,18 @@ final class VersionSpecificationTest extends TestCase
 
     /**
      * @dataProvider provideConstructorRejectsInvalidValuesCases
+     *
+     * @param null|int<1, max> $minimum
+     * @param null|int<1, max> $maximum
      */
+    #[DataProvider('provideConstructorRejectsInvalidValuesCases')]
     public function testConstructorRejectsInvalidValues(?int $minimum = null, ?int $maximum = null): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         new VersionSpecification(
             $minimum,
-            $maximum
+            $maximum,
         );
     }
 
@@ -53,23 +62,27 @@ final class VersionSpecificationTest extends TestCase
     {
         yield 'minimum is negative' => [-1, null];
 
-        yield 'minimum is zero ' => [0, null];
+        yield 'minimum is zero' => [0, null];
 
         yield 'maximum is negative' => [null, -1];
 
-        yield 'maximum is zero ' => [null, 0];
+        yield 'maximum is zero' => [null, 0];
 
         yield 'maximum less than minimum' => [32, 31];
     }
 
     /**
      * @dataProvider provideIsSatisfiedByReturnsTrueCases
+     *
+     * @param null|int<1, max> $minimum
+     * @param null|int<1, max> $maximum
      */
+    #[DataProvider('provideIsSatisfiedByReturnsTrueCases')]
     public function testIsSatisfiedByReturnsTrue(?int $minimum, ?int $maximum, int $actual): void
     {
         $versionSpecification = new VersionSpecification(
             $minimum,
-            $maximum
+            $maximum,
         );
 
         self::assertTrue($versionSpecification->isSatisfiedBy($actual));
@@ -91,12 +104,16 @@ final class VersionSpecificationTest extends TestCase
 
     /**
      * @dataProvider provideIsSatisfiedByReturnsFalseCases
+     *
+     * @param null|int<1, max> $minimum
+     * @param null|int<1, max> $maximum
      */
+    #[DataProvider('provideIsSatisfiedByReturnsFalseCases')]
     public function testIsSatisfiedByReturnsFalse(?int $minimum, ?int $maximum, int $actual): void
     {
         $versionSpecification = new VersionSpecification(
             $minimum,
-            $maximum
+            $maximum,
         );
 
         self::assertFalse($versionSpecification->isSatisfiedBy($actual));

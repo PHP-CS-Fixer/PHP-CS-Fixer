@@ -7,8 +7,8 @@ All multi-line strings must use correct line ending.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Changing the line endings of multi-line strings might affect string comparisons
 and outputs.

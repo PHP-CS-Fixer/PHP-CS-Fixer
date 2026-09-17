@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * Fixer for rules defined in PSR1 ¶2.2.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class EncodingFixer extends AbstractFixer
 {
@@ -43,12 +45,14 @@ final class EncodingFixer extends AbstractFixer
             'PHP code MUST use only UTF-8 without BOM (remove BOM).',
             [
                 new CodeSample(
-                    $this->bom.'<?php
+                    <<<PHP
+                        {$this->bom}<?php
 
-echo "Hello!";
-'
+                        echo "Hello!";
+
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

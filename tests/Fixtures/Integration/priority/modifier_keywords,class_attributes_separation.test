@@ -1,0 +1,16 @@
+--TEST--
+Integration of fixers: modifier_keywords,class_attributes_separation.
+--RULESET--
+{"modifier_keywords": true, "class_attributes_separation": {"elements": {"property": "none"}}}
+--EXPECT--
+<?php
+class Foo {
+    /* Bar */
+ private $bar;
+}
+
+--INPUT--
+<?php
+class Foo {
+    private /* Bar */ $bar;
+}

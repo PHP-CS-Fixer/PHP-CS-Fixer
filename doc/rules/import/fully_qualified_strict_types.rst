@@ -5,6 +5,15 @@ Rule ``fully_qualified_strict_types``
 Removes the leading part of fully qualified symbol references if a given symbol
 is imported or belongs to the current namespace.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``import_symbols``,
+``leading_backslash_in_global_namespace``, ``phpdoc_tags``.
+
 Configuration
 -------------
 

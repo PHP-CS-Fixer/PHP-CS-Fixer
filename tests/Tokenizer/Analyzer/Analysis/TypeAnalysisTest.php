@@ -16,6 +16,9 @@ namespace PhpCsFixer\Tests\Tokenizer\Analyzer\Analysis;
 
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @author VeeWee <toonverwerft@gmail.com>
@@ -23,7 +26,10 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(TypeAnalysis::class)]
 final class TypeAnalysisTest extends TestCase
 {
     public function testName(): void
@@ -52,6 +58,7 @@ final class TypeAnalysisTest extends TestCase
     /**
      * @dataProvider provideReservedCases
      */
+    #[DataProvider('provideReservedCases')]
     public function testReserved(string $type, bool $expected): void
     {
         $analysis = new TypeAnalysis($type, 1, 2);
@@ -59,7 +66,7 @@ final class TypeAnalysisTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, bool}>
+     * @return iterable<int, array{string, bool}>
      */
     public static function provideReservedCases(): iterable
     {
@@ -109,6 +116,7 @@ final class TypeAnalysisTest extends TestCase
     /**
      * @dataProvider provideIsNullableCases
      */
+    #[DataProvider('provideIsNullableCases')]
     public function testIsNullable(bool $expected, string $input): void
     {
         $analysis = new TypeAnalysis($input, 1, 2);
@@ -116,7 +124,7 @@ final class TypeAnalysisTest extends TestCase
     }
 
     /**
-     * @return iterable<array{bool, string}>
+     * @return iterable<int, array{bool, string}>
      */
     public static function provideIsNullableCases(): iterable
     {
@@ -136,15 +144,17 @@ final class TypeAnalysisTest extends TestCase
     /**
      * @dataProvider provideIsNullable80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideIsNullable80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testIsNullable80(bool $expected, string $input): void
     {
         $this->testIsNullable($expected, $input);
     }
 
     /**
-     * @return iterable<array{bool, string}>
+     * @return iterable<int, array{bool, string}>
      */
     public static function provideIsNullable80Cases(): iterable
     {
@@ -198,15 +208,17 @@ final class TypeAnalysisTest extends TestCase
     /**
      * @dataProvider provideIsNullable81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideIsNullable81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testIsNullable81(bool $expected, string $input): void
     {
         $this->testIsNullable($expected, $input);
     }
 
     /**
-     * @return iterable<array{bool, string}>
+     * @return iterable<int, array{bool, string}>
      */
     public static function provideIsNullable81Cases(): iterable
     {
@@ -220,15 +232,17 @@ final class TypeAnalysisTest extends TestCase
     /**
      * @dataProvider provideIsNullable82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      */
+    #[DataProvider('provideIsNullable82Cases')]
+    #[RequiresPhp('>= 8.2.0')]
     public function testIsNullable82(bool $expected, string $input): void
     {
         $this->testIsNullable($expected, $input);
     }
 
     /**
-     * @return iterable<array{bool, string}>
+     * @return iterable<int, array{bool, string}>
      */
     public static function provideIsNullable82Cases(): iterable
     {

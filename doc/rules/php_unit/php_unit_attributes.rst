@@ -4,6 +4,14 @@ Rule ``php_unit_attributes``
 
 PHPUnit attributes must be used over their respective PHPDoc-based annotations.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``keep_annotations``.
+
 Configuration
 -------------
 
@@ -43,7 +51,7 @@ Example #1
    -     * @requires PHP 8.0
          */
    +    #[\PHPUnit\Framework\Attributes\DataProvider('giveMeSomeData')]
-   +    #[\PHPUnit\Framework\Attributes\RequiresPhp('8.0')]
+   +    #[\PHPUnit\Framework\Attributes\RequiresPhp('>= 8.0')]
         public function testSomething($expected, $actual) {}
     }
 
@@ -70,9 +78,10 @@ With configuration: ``['keep_annotations' => true]``.
          * @requires PHP 8.0
          */
    +    #[\PHPUnit\Framework\Attributes\DataProvider('giveMeSomeData')]
-   +    #[\PHPUnit\Framework\Attributes\RequiresPhp('8.0')]
+   +    #[\PHPUnit\Framework\Attributes\RequiresPhp('>= 8.0')]
         public function testSomething($expected, $actual) {}
     }
+
 References
 ----------
 

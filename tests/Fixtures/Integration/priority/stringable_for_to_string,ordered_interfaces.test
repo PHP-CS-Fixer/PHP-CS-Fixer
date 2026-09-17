@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: stringable_for_to_string,ordered_interfaces.
+--RULESET--
+{ "stringable_for_to_string": true, "ordered_interfaces": true }
+--REQUIREMENTS--
+{ "php": 80000 }
+--EXPECT--
+<?php class Foo implements \Bar, \Stringable
+{
+    public function __toString() { return "Foo"; }
+}
+
+--INPUT--
+<?php class Foo implements \Bar
+{
+    public function __toString() { return "Foo"; }
+}

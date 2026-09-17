@@ -20,13 +20,16 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class NoSpaceAroundDoubleColonFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'There must be no space around double colons (also called Scope Resolution Operator or Paamayim Nekudotayim).',
-            [new CodeSample("<?php\n\necho Foo\\Bar :: class;\n")]
+            [new CodeSample("<?php\n\necho Foo\\Bar :: class;\n")],
         );
     }
 
@@ -42,13 +45,13 @@ final class NoSpaceAroundDoubleColonFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOUBLE_COLON);
+        return $tokens->isTokenKindFound(\T_DOUBLE_COLON);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = \count($tokens) - 2; $index > 1; --$index) {
-            if ($tokens[$index]->isGivenKind(T_DOUBLE_COLON)) {
+            if ($tokens[$index]->isGivenKind(\T_DOUBLE_COLON)) {
                 $this->removeSpace($tokens, $index, 1);
                 $this->removeSpace($tokens, $index, -1);
             }

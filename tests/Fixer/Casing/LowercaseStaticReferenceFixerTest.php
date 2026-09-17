@@ -14,29 +14,37 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Casing;
 
+use PhpCsFixer\Fixer\Casing\LowercaseStaticReferenceFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
- * @author Kuba Werłos <werlos@gmail.com>
- *
  * @covers \PhpCsFixer\Fixer\Casing\LowercaseStaticReferenceFixer
  *
  * @internal
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\LowercaseStaticReferenceFixer>
+ *
+ * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(LowercaseStaticReferenceFixer::class)]
 final class LowercaseStaticReferenceFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -252,20 +260,57 @@ final class LowercaseStaticReferenceFixerTest extends AbstractFixerTestCase
                     }
                 }',
         ];
+
+        yield [
+            <<<'PHP'
+                <?php
+                class Foo {
+                    public    self $a;
+                    protected self $b;
+                    private   self $c;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo {
+                    public    SELF $a;
+                    protected SELF $b;
+                    private   SELF $c;
+                }
+                PHP,
+        ];
+
+        yield [
+            <<<'PHP'
+                <?php
+                define("SELF", "foo");
+                define("PARENT", "bar");
+                bar(SELF);
+                echo PARENT;
+                class Foo {
+                    public static function f()
+                    {
+                        return SELF;
+                    }
+                }
+                PHP,
+        ];
     }
 
     /**
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -318,15 +363,17 @@ class Foo
     /**
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideFix81Cases(): iterable
     {
@@ -334,23 +381,39 @@ class Foo
             '<?php class A { final const PARENT = 42; }',
         ];
 
-        yield [
-            '<?php enum Foo: string { case PARENT = \'parent\'; }',
-        ];
+        yield [<<<'PHP'
+            <?php enum Foo: string
+            {
+                case SELF = 'self';
+                case STATIC = 'static';
+                case PARENT = 'parent';
+            }
+            PHP];
+
+        yield [<<<'PHP'
+            <?php enum Foo
+            {
+                case SELF;
+                case STATIC;
+                case PARENT;
+            }
+            PHP];
     }
 
     /**
      * @dataProvider provideFix83Cases
      *
-     * @requires PHP 8.3
+     * @requires PHP >= 8.3.0
      */
+    #[DataProvider('provideFix83Cases')]
+    #[RequiresPhp('>= 8.3.0')]
     public function testFix83(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string}>
+     * @return iterable<int, array{0: string, 1?: null|string}>
      */
     public static function provideFix83Cases(): iterable
     {

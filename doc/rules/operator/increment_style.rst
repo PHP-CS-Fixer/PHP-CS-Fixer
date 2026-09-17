@@ -4,6 +4,14 @@ Rule ``increment_style``
 
 Pre- or post-increment and decrement operators should be used if possible.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``style``.
+
 Configuration
 -------------
 

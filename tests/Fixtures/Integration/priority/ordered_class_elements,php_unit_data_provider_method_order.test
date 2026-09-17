@@ -1,0 +1,47 @@
+--TEST--
+Integration of fixers: ordered_class_elements,php_unit_data_provider_method_order.
+--RULESET--
+{"ordered_class_elements": {"order": ["method_public_static", "method_public"]}, "php_unit_data_provider_method_order": true}
+--EXPECT--
+<?php
+
+namespace Foo;
+
+use PHPUnit\Framework\TestCase;
+
+class BarTest extends TestCase
+{
+
+    /**
+     * @dataProvider getData
+     */
+    public function testSomething()
+    {
+    }
+    public static function getData(): iterable
+    {
+        yield from range(1, 10);
+    }
+}
+
+--INPUT--
+<?php
+
+namespace Foo;
+
+use PHPUnit\Framework\TestCase;
+
+class BarTest extends TestCase
+{
+    public static function getData(): iterable
+    {
+        yield from range(1, 10);
+    }
+
+    /**
+     * @dataProvider getData
+     */
+    public function testSomething()
+    {
+    }
+}

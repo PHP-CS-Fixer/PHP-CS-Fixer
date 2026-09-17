@@ -2,7 +2,16 @@
 Rule ``general_phpdoc_annotation_remove``
 =========================================
 
-Configured annotations should be omitted from PHPDoc.
+Removes configured annotations from PHPDoc.
+
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``annotations``,
+``case_sensitive``.
 
 Configuration
 -------------
@@ -79,6 +88,7 @@ With configuration: ``['annotations' => ['package', 'subpackage']]``.
      * @version 1.0
      */
     function foo() {}
+
 References
 ----------
 

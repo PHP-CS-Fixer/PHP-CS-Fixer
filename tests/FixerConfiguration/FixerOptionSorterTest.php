@@ -17,12 +17,16 @@ namespace PhpCsFixer\Tests\FixerConfiguration;
 use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerConfiguration\FixerOptionSorter;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\FixerConfiguration\FixerOptionSorter
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FixerOptionSorter::class)]
 final class FixerOptionSorterTest extends TestCase
 {
     public function testSortAcceptsEmptyArray(): void

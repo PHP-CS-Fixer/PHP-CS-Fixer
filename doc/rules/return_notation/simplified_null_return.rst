@@ -31,6 +31,7 @@ Example #2
     function baz(): ?int { return null; }
    -function xyz(): void { return null; }
    +function xyz(): void { return; }
+
 References
 ----------
 

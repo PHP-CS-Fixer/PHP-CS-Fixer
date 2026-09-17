@@ -7,8 +7,8 @@ Use ``&&`` and ``||`` logical operators instead of ``and`` and ``or``.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky, because you must double-check if using and/or with lower precedence was
 intentional.

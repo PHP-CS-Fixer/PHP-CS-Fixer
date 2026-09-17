@@ -15,15 +15,25 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Test\Assert;
 
 use JsonSchema\Validator;
+use PhpCsFixer\Tests\TestCase;
 
-/** @internal */
+/**
+ * @internal
+ *
+ * @phpstan-require-extends TestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 trait AssertJsonSchemaTrait
 {
     private static function assertJsonSchema(string $schemaFile, string $json): void
     {
-        $data = json_decode($json, null, 512, JSON_THROW_ON_ERROR);
+        $data = json_decode($json, null, 512, \JSON_THROW_ON_ERROR);
         $validator = new Validator();
         $validator->validate($data, (object) ['$ref' => 'file://'.realpath($schemaFile)]);
+
+        /** @var list<array{property: string, message: string}> $errors */
+        $errors = $validator->getErrors();
 
         self::assertTrue(
             $validator->isValid(),
@@ -31,9 +41,9 @@ trait AssertJsonSchemaTrait
                 "\n",
                 array_map(
                     static fn (array $item): string => \sprintf('Property `%s`: %s.', $item['property'], $item['message']),
-                    $validator->getErrors(),
-                )
-            )
+                    $errors,
+                ),
+            ),
         );
     }
 }

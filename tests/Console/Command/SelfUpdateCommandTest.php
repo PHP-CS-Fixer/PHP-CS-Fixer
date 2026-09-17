@@ -14,61 +14,57 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Console\Command;
 
-use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamDirectory;
-use org\bovigo\vfs\vfsStreamException;
-use org\bovigo\vfs\vfsStreamWrapper;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\SelfUpdateCommand;
 use PhpCsFixer\Console\SelfUpdate\GithubClientInterface;
 use PhpCsFixer\Console\SelfUpdate\NewVersionChecker;
 use PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface;
 use PhpCsFixer\PharCheckerInterface;
+use PhpCsFixer\Preg;
+use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfoInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Console\Command\SelfUpdateCommand
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(SelfUpdateCommand::class)]
 final class SelfUpdateCommandTest extends TestCase
 {
-    /**
-     * @var null|vfsStreamDirectory
-     */
-    private $root;
+    private string $directory;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->root = vfsStream::setup();
+        $this->directory = TestCaseUtils::createTemporaryDirectory();
 
         file_put_contents($this->getToolPath(), 'Current PHP CS Fixer.');
 
-        file_put_contents($this->root->url().'/'.self::getNewMinorReleaseVersion().'.phar', 'New minor version of PHP CS Fixer.');
-        file_put_contents($this->root->url().'/'.self::getNewMajorReleaseVersion().'.phar', 'New major version of PHP CS Fixer.');
+        file_put_contents($this->directory.'/'.self::getNewMinorReleaseVersion().'.phar', 'New minor version of PHP CS Fixer.');
+        file_put_contents($this->directory.'/'.self::getNewMajorReleaseVersion().'.phar', 'New major version of PHP CS Fixer.');
     }
 
     protected function tearDown(): void
     {
+        (new Filesystem())->remove($this->directory);
+
         parent::tearDown();
-
-        $this->root = null;
-
-        try {
-            vfsStreamWrapper::unregister();
-        } catch (vfsStreamException $exception) {
-            // ignored
-        }
     }
 
     /**
      * @dataProvider provideCommandNameCases
      */
+    #[DataProvider('provideCommandNameCases')]
     public function testCommandName(string $name): void
     {
         $command = new SelfUpdateCommand(
@@ -84,7 +80,7 @@ final class SelfUpdateCommandTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideCommandNameCases(): iterable
     {
@@ -98,6 +94,7 @@ final class SelfUpdateCommandTest extends TestCase
      *
      * @dataProvider provideExecuteCases
      */
+    #[DataProvider('provideExecuteCases')]
     public function testExecute(
         string $latestVersion,
         ?string $latestMinorVersion,
@@ -121,6 +118,9 @@ final class SelfUpdateCommandTest extends TestCase
         self::assertSame(0, $commandTester->getStatusCode());
     }
 
+    /**
+     * @return iterable<int, array{string, null|string, array<string, bool|string>, bool, string, string}>
+     */
     public static function provideExecuteCases(): iterable
     {
         $currentVersion = Application::VERSION;
@@ -231,6 +231,7 @@ final class SelfUpdateCommandTest extends TestCase
      *
      * @dataProvider provideExecuteWhenNotAbleToGetLatestVersionsCases
      */
+    #[DataProvider('provideExecuteWhenNotAbleToGetLatestVersionsCases')]
     public function testExecuteWhenNotAbleToGetLatestVersions(
         bool $latestMajorVersionSuccess,
         bool $latestMinorVersionSuccess,
@@ -254,11 +255,14 @@ final class SelfUpdateCommandTest extends TestCase
 
         self::assertDisplay(
             "\033[37;41mUnable to determine newest version: Foo.\033[39;49m\n",
-            $commandTester
+            $commandTester,
         );
         self::assertSame(1, $commandTester->getStatusCode());
     }
 
+    /**
+     * @return iterable<int, array{bool, bool, array<string, bool|string>, bool}>
+     */
     public static function provideExecuteWhenNotAbleToGetLatestVersionsCases(): iterable
     {
         yield [false, false, [], true];
@@ -303,6 +307,7 @@ final class SelfUpdateCommandTest extends TestCase
      *
      * @dataProvider provideExecuteWhenNotInstalledAsPharCases
      */
+    #[DataProvider('provideExecuteWhenNotInstalledAsPharCases')]
     public function testExecuteWhenNotInstalledAsPhar(array $input, bool $decorated): void
     {
         $command = new SelfUpdateCommand(
@@ -315,11 +320,14 @@ final class SelfUpdateCommandTest extends TestCase
 
         self::assertDisplay(
             "\033[37;41mSelf-update is available only for PHAR version.\033[39;49m\n",
-            $commandTester
+            $commandTester,
         );
         self::assertSame(1, $commandTester->getStatusCode());
     }
 
+    /**
+     * @return iterable<int, array{array<string, bool|string>, bool}>
+     */
     public static function provideExecuteWhenNotInstalledAsPharCases(): iterable
     {
         yield [[], true];
@@ -347,6 +355,7 @@ final class SelfUpdateCommandTest extends TestCase
 
         $commandTester = new CommandTester($command);
 
+        \assert(\array_key_exists('argv', $_SERVER));
         $realPath = $_SERVER['argv'][0];
         $_SERVER['argv'][0] = $this->getToolPath();
 
@@ -360,22 +369,22 @@ final class SelfUpdateCommandTest extends TestCase
     private static function assertDisplay(string $expectedDisplay, CommandTester $commandTester): void
     {
         if (!$commandTester->getOutput()->isDecorated()) {
-            $expectedDisplay = preg_replace("/\033\\[(\\d+;)*\\d+m/", '', $expectedDisplay);
+            $expectedDisplay = Preg::replace("/\033\\[(\\d+;)*\\d+m/", '', $expectedDisplay);
         }
 
         self::assertSame(
             $expectedDisplay,
-            $commandTester->getDisplay(true)
+            $commandTester->getDisplay(true),
         );
     }
 
     private function createToolInfoDouble(bool $isInstalledAsPhar = true): ToolInfoInterface
     {
-        return new class($this->root, $isInstalledAsPhar) implements ToolInfoInterface {
-            private vfsStreamDirectory $directory;
+        return new class($this->directory, $isInstalledAsPhar) implements ToolInfoInterface {
+            private string $directory;
             private bool $isInstalledAsPhar;
 
-            public function __construct(vfsStreamDirectory $directory, bool $isInstalledAsPhar)
+            public function __construct(string $directory, bool $isInstalledAsPhar)
             {
                 $this->directory = $directory;
                 $this->isInstalledAsPhar = $isInstalledAsPhar;
@@ -413,19 +422,19 @@ final class SelfUpdateCommandTest extends TestCase
 
             public function getPharDownloadUri(string $version): string
             {
-                return \sprintf('%s/%s.phar', $this->directory->url(), $version);
+                return \sprintf('%s/%s.phar', $this->directory, $version);
             }
         };
     }
 
     private function getToolPath(): string
     {
-        return "{$this->root->url()}/php-cs-fixer";
+        return "{$this->directory}/php-cs-fixer";
     }
 
     private static function getCurrentMajorVersion(): int
     {
-        return (int) preg_replace('/^v?(\d+).*$/', '$1', Application::VERSION);
+        return (int) Preg::replace('/^v?(\d+).*$/', '$1', Application::VERSION);
     }
 
     private static function getNewMinorReleaseVersion(): string
@@ -478,7 +487,7 @@ final class SelfUpdateCommandTest extends TestCase
 
             public function getLatestVersionOfMajor(int $majorVersion): ?string
             {
-                TestCase::assertSame((int) preg_replace('/^v?(\d+).*$/', '$1', Application::VERSION), $majorVersion);
+                TestCase::assertSame((int) Preg::replace('/^v?(\d+).*$/', '$1', Application::VERSION), $majorVersion);
 
                 if ($this->latestMinorVersionSuccess) {
                     return $this->latestMinorVersion;
@@ -495,7 +504,7 @@ final class SelfUpdateCommandTest extends TestCase
                         {
                             throw new \LogicException('Not implemented.');
                         }
-                    }
+                    },
                 ))->compareVersions($versionA, $versionB);
             }
         };

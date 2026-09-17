@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Gregor Harlan <gharlan@web.de>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NamespaceOperatorTransformer extends AbstractTransformer
 {
@@ -33,15 +35,20 @@ final class NamespaceOperatorTransformer extends AbstractTransformer
         return 5_03_00;
     }
 
-    public function process(Tokens $tokens, Token $token, int $index): void
+    public function isCandidate(Tokens $tokens): bool
     {
-        if (!$token->isGivenKind(T_NAMESPACE)) {
+        return $tokens->isTokenKindFound(\T_NAMESPACE);
+    }
+
+    public function processToken(Tokens $tokens, Token $token, int $index): void
+    {
+        if (!$token->isGivenKind(\T_NAMESPACE)) {
             return;
         }
 
         $nextIndex = $tokens->getNextMeaningfulToken($index);
 
-        if ($tokens[$nextIndex]->isGivenKind(T_NS_SEPARATOR)) {
+        if ($tokens[$nextIndex]->isGivenKind(\T_NS_SEPARATOR)) {
             $tokens[$index] = new Token([CT::T_NAMESPACE_OPERATOR, $token->getContent()]);
         }
     }

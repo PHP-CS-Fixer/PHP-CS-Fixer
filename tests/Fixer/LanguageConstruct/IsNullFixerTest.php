@@ -14,29 +14,37 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 
+use PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
- * @author Vladimir Reznichenko <kalessil@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer>
+ *
+ * @author Vladimir Reznichenko <kalessil@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(IsNullFixer::class)]
 final class IsNullFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -293,13 +301,84 @@ final class IsNullFixerTest extends AbstractFixerTestCase
             '<?php $a === (int) (null === $x) + (int) (null !== $y);',
             '<?php $a === (int) is_null($x) + (int) !is_null($y);',
         ];
+
+        // argument unpacking
+        yield [
+            '<?php $a = is_null(...$args);',
+        ];
+
+        yield [
+            '<?php $a = !is_null(...$args);',
+        ];
+
+        yield [
+            '<?php $a = \is_null(...$args);',
+        ];
+
+        yield [
+            '<?php $a = null === strlen(...$args);',
+            '<?php $a = is_null(strlen(...$args));',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP >= 8.0.0
+     */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix80Cases(): iterable
+    {
+        yield 'named argument matching the parameter name is fixed' => [
+            '<?php $x = null === $y;',
+            '<?php $x = is_null(value: $y);',
+        ];
+
+        yield 'inverted named argument matching the parameter name is fixed' => [
+            '<?php $x = null !== $y;',
+            '<?php $x = !is_null(value: $y);',
+        ];
+
+        yield 'named argument with extra whitespace and trailing comma is fixed' => [
+            '<?php $x = null === $y;',
+            '<?php $x = is_null(  value:   $y ,  );',
+        ];
+
+        yield 'named argument wrapping an expression is fixed' => [
+            '<?php $x = null === ($y ?? $z);',
+            '<?php $x = is_null(value: $y ?? $z);',
+        ];
+
+        yield 'named argument not matching the parameter name is left untouched' => [
+            '<?php $x = is_null(notValue: $y);',
+        ];
+
+        yield 'named argument matching the parameter name only case-insensitively is left untouched' => [
+            '<?php $x = is_null(Value: $y);',
+        ];
+
+        yield 'named argument in a nested call is still fixed' => [
+            '<?php $x = null === strlen(string: $y);',
+            '<?php $x = is_null(strlen(string: $y));',
+        ];
     }
 
     /**
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

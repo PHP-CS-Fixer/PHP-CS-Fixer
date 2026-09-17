@@ -4,6 +4,14 @@ Rule ``blank_line_before_statement``
 
 An empty line feed must precede any configured statement.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``statements``.
+
 Configuration
 -------------
 
@@ -241,7 +249,6 @@ The rule is part of the following rule sets:
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
   ``['statements' => ['return']]``
-
 
 References
 ----------

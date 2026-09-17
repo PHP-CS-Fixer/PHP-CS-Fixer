@@ -17,19 +17,23 @@ namespace PhpCsFixer\Tests\Documentation;
 use PhpCsFixer\Documentation\DocumentationLocator;
 use PhpCsFixer\Fixer\Casing\ConstantCaseFixer;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Documentation\DocumentationLocator
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(DocumentationLocator::class)]
 final class DocumentationLocatorTest extends TestCase
 {
     public function testFixersDocumentationDirectoryPath(): void
     {
         self::assertSame(
             realpath(__DIR__.'/../..').'/doc/rules',
-            (new DocumentationLocator())->getFixersDocumentationDirectoryPath()
+            (new DocumentationLocator())->getFixersDocumentationDirectoryPath(),
         );
     }
 
@@ -37,7 +41,7 @@ final class DocumentationLocatorTest extends TestCase
     {
         self::assertSame(
             realpath(__DIR__.'/../..').'/doc/rules/index.rst',
-            (new DocumentationLocator())->getFixersDocumentationIndexFilePath()
+            (new DocumentationLocator())->getFixersDocumentationIndexFilePath(),
         );
     }
 
@@ -45,7 +49,7 @@ final class DocumentationLocatorTest extends TestCase
     {
         self::assertSame(
             realpath(__DIR__.'/../..').'/doc/rules/casing/constant_case.rst',
-            (new DocumentationLocator())->getFixerDocumentationFilePath(new ConstantCaseFixer())
+            (new DocumentationLocator())->getFixerDocumentationFilePath(new ConstantCaseFixer()),
         );
     }
 
@@ -53,7 +57,7 @@ final class DocumentationLocatorTest extends TestCase
     {
         self::assertSame(
             'casing/constant_case.rst',
-            (new DocumentationLocator())->getFixerDocumentationFileRelativePath(new ConstantCaseFixer())
+            (new DocumentationLocator())->getFixerDocumentationFileRelativePath(new ConstantCaseFixer()),
         );
     }
 
@@ -61,7 +65,7 @@ final class DocumentationLocatorTest extends TestCase
     {
         self::assertSame(
             realpath(__DIR__.'/../..').'/doc/ruleSets',
-            (new DocumentationLocator())->getRuleSetsDocumentationDirectoryPath()
+            (new DocumentationLocator())->getRuleSetsDocumentationDirectoryPath(),
         );
     }
 
@@ -69,7 +73,7 @@ final class DocumentationLocatorTest extends TestCase
     {
         self::assertSame(
             realpath(__DIR__.'/../..').'/doc/ruleSets/index.rst',
-            (new DocumentationLocator())->getRuleSetsDocumentationIndexFilePath()
+            (new DocumentationLocator())->getRuleSetsDocumentationIndexFilePath(),
         );
     }
 
@@ -77,7 +81,7 @@ final class DocumentationLocatorTest extends TestCase
     {
         self::assertSame(
             realpath(__DIR__.'/../..').'/doc/ruleSets/PhpCsFixerRisky.rst',
-            (new DocumentationLocator())->getRuleSetsDocumentationFilePath('@PhpCsFixer:risky')
+            (new DocumentationLocator())->getRuleSetsDocumentationFilePath('@PhpCsFixer:risky'),
         );
     }
 
@@ -85,7 +89,7 @@ final class DocumentationLocatorTest extends TestCase
     {
         self::assertSame(
             realpath(__DIR__.'/../..').'/doc/usage.rst',
-            (new DocumentationLocator())->getUsageFilePath()
+            (new DocumentationLocator())->getUsageFilePath(),
         );
     }
 }

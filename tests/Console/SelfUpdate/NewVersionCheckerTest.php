@@ -17,12 +17,17 @@ namespace PhpCsFixer\Tests\Console\SelfUpdate;
 use PhpCsFixer\Console\SelfUpdate\GithubClientInterface;
 use PhpCsFixer\Console\SelfUpdate\NewVersionChecker;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Console\SelfUpdate\NewVersionChecker
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NewVersionChecker::class)]
 final class NewVersionCheckerTest extends TestCase
 {
     public function testGetLatestVersion(): void
@@ -35,6 +40,7 @@ final class NewVersionCheckerTest extends TestCase
     /**
      * @dataProvider provideGetLatestVersionOfMajorCases
      */
+    #[DataProvider('provideGetLatestVersionOfMajorCases')]
     public function testGetLatestVersionOfMajor(int $majorVersion, ?string $expectedVersion): void
     {
         $checker = new NewVersionChecker($this->createGithubClientDouble());
@@ -43,7 +49,7 @@ final class NewVersionCheckerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, null|string}>
+     * @return iterable<int, array{int, null|string}>
      */
     public static function provideGetLatestVersionOfMajorCases(): iterable
     {
@@ -57,22 +63,23 @@ final class NewVersionCheckerTest extends TestCase
     /**
      * @dataProvider provideCompareVersionsCases
      */
+    #[DataProvider('provideCompareVersionsCases')]
     public function testCompareVersions(string $versionA, string $versionB, int $expectedResult): void
     {
         $checker = new NewVersionChecker($this->createGithubClientDouble());
 
         self::assertSame(
             $expectedResult,
-            $checker->compareVersions($versionA, $versionB)
+            $checker->compareVersions($versionA, $versionB),
         );
         self::assertSame(
             -$expectedResult,
-            $checker->compareVersions($versionB, $versionA)
+            $checker->compareVersions($versionB, $versionA),
         );
     }
 
     /**
-     * @return iterable<array{string, string, int}>
+     * @return iterable<int, array{string, string, int}>
      */
     public static function provideCompareVersionsCases(): iterable
     {

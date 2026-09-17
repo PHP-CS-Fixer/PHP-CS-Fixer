@@ -22,6 +22,8 @@ use PhpCsFixer\Console\Application;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ToolInfo implements ToolInfoInterface
 {
@@ -32,12 +34,9 @@ final class ToolInfo implements ToolInfoInterface
     /**
      * @var null|array{name: string, version: string, dist: array{reference?: string}}
      */
-    private $composerInstallationDetails;
+    private ?array $composerInstallationDetails = null;
 
-    /**
-     * @var null|bool
-     */
-    private $isInstalledByComposer;
+    private ?bool $isInstalledByComposer = null;
 
     public function getComposerInstallationDetails(): array
     {
@@ -46,8 +45,9 @@ final class ToolInfo implements ToolInfoInterface
         }
 
         if (null === $this->composerInstallationDetails) {
-            $composerInstalled = json_decode(file_get_contents($this->getComposerInstalledFile()), true, 512, JSON_THROW_ON_ERROR);
+            $composerInstalled = json_decode(file_get_contents($this->getComposerInstalledFile()), true, 512, \JSON_THROW_ON_ERROR);
 
+            /** @var list<array{name: string, version: string, dist: array{reference?: string}}> $packages */
             $packages = $composerInstalled['packages'] ?? $composerInstalled;
 
             foreach ($packages as $package) {
@@ -104,14 +104,14 @@ final class ToolInfo implements ToolInfoInterface
      */
     public function isRunInsideDocker(): bool
     {
-        return is_file('/.dockerenv') && str_starts_with(__FILE__, '/fixer/');
+        return str_starts_with(__FILE__, '/fixer/') && is_file('/.dockerenv');
     }
 
     public function getPharDownloadUri(string $version): string
     {
         return \sprintf(
             'https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases/download/%s/php-cs-fixer.phar',
-            $version
+            $version,
         );
     }
 

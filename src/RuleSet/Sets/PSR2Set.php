@@ -14,32 +14,40 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
+use PhpCsFixer\RuleSet\AbstractRuleSetDefinition;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PSR2Set extends AbstractRuleSetDescription
+final class PSR2Set extends AbstractRuleSetDefinition
 {
     public function getRules(): array
     {
         return [
             '@PSR1' => true,
             'blank_line_after_namespace' => true,
-            'braces_position' => true,
+            'braces_position' => [
+                'allow_single_line_anonymous_functions' => false,
+            ],
             'class_definition' => true,
             'constant_case' => true,
             'control_structure_braces' => true,
             'control_structure_continuation_position' => true,
             'elseif' => true,
-            'function_declaration' => true,
+            'function_declaration' => [
+                'closure_fn_spacing' => 'one', // @TODO: default value of this option changed, consider to switch to new default
+            ],
             'indentation_type' => true,
             'line_ending' => true,
             'lowercase_keywords' => true,
             'method_argument_space' => [
+                'after_heredoc' => false, // @TODO: default value of this option changed, consider to switch to new default
                 'attribute_placement' => 'ignore',
                 'on_multiline' => 'ensure_fully_multiline',
             ],
+            'modifier_keywords' => ['elements' => ['method', 'property']],
             'no_break_comment' => true,
             'no_closing_tag' => true,
             'no_multiple_statements_per_line' => true,
@@ -93,7 +101,6 @@ final class PSR2Set extends AbstractRuleSetDescription
             'statement_indentation' => true,
             'switch_case_semicolon_to_colon' => true,
             'switch_case_space' => true,
-            'visibility_required' => ['elements' => ['method', 'property']],
         ];
     }
 

@@ -19,6 +19,12 @@
 
     <rule ref="rulesets/naming.xml/ConstantNamingConventions" />
 
+    <rule ref="rulesets/unusedcode.xml/UnusedLocalVariable" >
+        <properties>
+            <property name='allow-unused-foreach-variables' value='true' />
+        </properties>
+    </rule>
+
     <rule ref="rulesets/cleancode.xml/IfStatementAssignment" />
 
     <rule ref="../../../../../mi-schi/phpmd-extension/rulesets/cleancode.xml/DataStructureMethods" />

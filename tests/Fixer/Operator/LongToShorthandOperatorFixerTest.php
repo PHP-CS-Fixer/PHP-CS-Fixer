@@ -14,8 +14,12 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Operator;
 
+use PhpCsFixer\Fixer\AbstractShortOperatorFixer;
 use PhpCsFixer\Fixer\Operator\LongToShorthandOperatorFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -24,19 +28,24 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\Operator\LongToShorthandOperatorFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\LongToShorthandOperatorFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AbstractShortOperatorFixer::class)]
+#[CoversClass(LongToShorthandOperatorFixer::class)]
 final class LongToShorthandOperatorFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -137,9 +146,7 @@ final class LongToShorthandOperatorFixerTest extends AbstractFixerTestCase
         ];
 
         // test simple with all operators
-
-        $reflection = new \ReflectionClass(LongToShorthandOperatorFixer::class);
-        $operators = $reflection->getStaticProperties()['operators'];
+        $operators = \Closure::bind(static fn (): array => LongToShorthandOperatorFixer::OPERATORS, null, LongToShorthandOperatorFixer::class)();
 
         foreach ($operators as $operator => $info) {
             $shortHand = $info[1];
@@ -455,17 +462,19 @@ class Foo
     }
 
     /**
-     * @requires PHP <8.0
+     * @requires PHP < 8.0.0
      *
      * @dataProvider provideFixPre80Cases
      */
+    #[RequiresPhp('< 8.0.0')]
+    #[DataProvider('provideFixPre80Cases')]
     public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixPre80Cases(): iterable
     {

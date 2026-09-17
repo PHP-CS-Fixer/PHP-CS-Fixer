@@ -14,13 +14,19 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
+use PhpCsFixer\Fixer\Whitespace\CompactNullableTypeDeclarationFixer;
+use PHPUnit\Framework\Attributes\CoversClass;
+
 /**
- * @author Jack Cherng <jfcherng@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Whitespace\CompactNullableTypeDeclarationFixer
  *
  * @extends AbstractNullableTypeDeclarationFixerTestCase<\PhpCsFixer\Fixer\Whitespace\CompactNullableTypeDeclarationFixer>
+ *
+ * @author Jack Cherng <jfcherng@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(CompactNullableTypeDeclarationFixer::class)]
 final class CompactNullableTypeDeclarationFixerTest extends AbstractNullableTypeDeclarationFixerTestCase {}

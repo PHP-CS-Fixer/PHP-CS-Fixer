@@ -22,6 +22,8 @@ use PhpCsFixer\Console\Command\FixCommandExitStatusCalculator;
  * @internal
  *
  * @final Only internal extending this class is supported
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 class InvalidConfigurationException extends \InvalidArgumentException
 {
@@ -30,7 +32,7 @@ class InvalidConfigurationException extends \InvalidArgumentException
         parent::__construct(
             $message,
             $code ?? FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_CONFIG,
-            $previous
+            $previous,
         );
     }
 }

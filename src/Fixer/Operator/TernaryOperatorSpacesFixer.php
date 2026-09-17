@@ -26,6 +26,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TernaryOperatorSpacesFixer extends AbstractFixer
 {
@@ -33,7 +35,7 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Standardize spaces around ternary operator.',
-            [new CodeSample("<?php \$a = \$a   ?1 :0;\n")]
+            [new CodeSample("<?php \$a = \$a   ?1 :0;\n")],
         );
     }
 
@@ -119,13 +121,13 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
                 !str_contains($tokens[$index]->getContent(), "\n")
                 && !$tokens[$index - 1]->isComment()
             ) {
-                $tokens[$index] = new Token([T_WHITESPACE, ' ']);
+                $tokens[$index] = new Token([\T_WHITESPACE, ' ']);
             }
 
             return;
         }
 
         $index += $after ? 0 : 1;
-        $tokens->insertAt($index, new Token([T_WHITESPACE, ' ']));
+        $tokens->insertAt($index, new Token([\T_WHITESPACE, ' ']));
     }
 }

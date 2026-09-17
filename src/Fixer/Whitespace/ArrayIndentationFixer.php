@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\Indentation;
+use PhpCsFixer\Fixer\IndentationTrait;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
@@ -25,9 +25,12 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
-    use Indentation;
+    use IndentationTrait;
 
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -35,13 +38,13 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
             'Each element of an array must be indented exactly once.',
             [
                 new CodeSample("<?php\n\$foo = [\n   'bar' => [\n    'baz' => true,\n  ],\n];\n"),
-            ]
+            ],
         );
     }
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_ARRAY, T_LIST, CT::T_ARRAY_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN]);
+        return $tokens->isAnyTokenKindsFound([\T_ARRAY, \T_LIST, CT::T_ARRAY_BRACKET_OPEN, CT::T_DESTRUCTURING_BRACKET_OPEN]);
     }
 
     /**
@@ -58,6 +61,8 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $lastIndent = '';
+
+        /** @var list<array{type: 'array', end_index: int, initial_indent: string}|array{type: 'expression', end_index: int, initial_indent: string, new_indent: string}> $scopes */
         $scopes = [];
         $previousLineInitialIndent = '';
         $previousLineNewIndent = '';
@@ -70,8 +75,8 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
             }
 
             if (
-                $token->isGivenKind([CT::T_ARRAY_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN])
-                || ($token->equals('(') && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind([T_ARRAY, T_LIST]))
+                $token->isGivenKind([CT::T_ARRAY_BRACKET_OPEN, CT::T_DESTRUCTURING_BRACKET_OPEN])
+                || ($token->equals('(') && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind([\T_ARRAY, \T_LIST]))
             ) {
                 $blockType = Tokens::detectBlockType($token);
                 $endIndex = $tokens->findBlockEnd($blockType['type'], $index);
@@ -92,6 +97,8 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
             if (null === $currentScope) {
                 continue;
             }
+
+            \assert(isset($scopes[$currentScope]));
 
             if ($token->isWhitespace()) {
                 if (!Preg::match('/\R/', $token->getContent())) {
@@ -117,7 +124,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
                     $content = Preg::replace(
                         '/(\R+)\h*$/',
                         '$1'.$scopes[$currentScope]['initial_indent'].($indent ? $this->whitespacesConfig->getIndent() : ''),
-                        $token->getContent()
+                        $token->getContent(),
                     );
 
                     $previousLineInitialIndent = $this->extractIndent($token->getContent());
@@ -126,11 +133,11 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
                     $content = Preg::replace(
                         '/(\R)'.preg_quote($scopes[$currentScope]['initial_indent'], '/').'(\h*)$/',
                         '$1'.$scopes[$currentScope]['new_indent'].'$2',
-                        $token->getContent()
+                        $token->getContent(),
                     );
                 }
 
-                $tokens[$index] = new Token([T_WHITESPACE, $content]);
+                $tokens[$index] = new Token([\T_WHITESPACE, $content]);
                 $lastIndent = $this->extractIndent($content);
 
                 continue;
@@ -174,12 +181,12 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
             $searchEndToken = $tokens[$searchEndIndex];
 
             if ($searchEndToken->equalsAny(['(', '{'])
-                || $searchEndToken->isGivenKind([CT::T_ARRAY_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN])
+                || $searchEndToken->isGivenKind([CT::T_ARRAY_BRACKET_OPEN, CT::T_DESTRUCTURING_BRACKET_OPEN])
             ) {
                 $type = Tokens::detectBlockType($searchEndToken);
                 $searchEndIndex = $tokens->findBlockEnd(
                     $type['type'],
-                    $searchEndIndex
+                    $searchEndIndex,
                 );
 
                 continue;

@@ -21,8 +21,8 @@ readonly class Foo
 
 /**
  * @param inTeGer $fo fo descr
+ * @readonly
  * @param float $bar fo descr
- * @readonly 
  */
 class Foo
 {

@@ -13,8 +13,8 @@ that implements the ``Traversable`` interface.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when relying on signature of the data provider.
 

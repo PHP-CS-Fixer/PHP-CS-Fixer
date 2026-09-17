@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\Cache;
 use PhpCsFixer\Cache\CacheManagerInterface;
 use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -24,7 +25,10 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Cache\NullCacheManager
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NullCacheManager::class)]
 final class NullCacheManagerTest extends TestCase
 {
     public function testIsFinal(): void

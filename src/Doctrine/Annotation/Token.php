@@ -18,6 +18,8 @@ namespace PhpCsFixer\Doctrine\Annotation;
  * A Doctrine annotation token.
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class Token
 {

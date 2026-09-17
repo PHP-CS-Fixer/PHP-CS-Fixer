@@ -20,6 +20,7 @@ use PhpCsFixer\Cache\FileHandler;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\Cache\SignatureInterface;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Filesystem\Exception\IOException;
 
 /**
@@ -28,7 +29,10 @@ use Symfony\Component\Filesystem\Exception\IOException;
  * @internal
  *
  * @covers \PhpCsFixer\Cache\FileHandler
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FileHandler::class)]
 final class FileHandlerTest extends TestCase
 {
     protected function tearDown(): void
@@ -96,7 +100,7 @@ final class FileHandlerTest extends TestCase
         $this->expectException(IOException::class);
         $this->expectExceptionMessageMatches(\sprintf(
             '#^Directory of cache file "%s" does not exists and couldn\'t be created\.#',
-            preg_quote($file, '#')
+            preg_quote($file, '#'),
         ));
 
         $cache = new Cache($this->createSignature());
@@ -132,7 +136,7 @@ final class FileHandlerTest extends TestCase
         $this->expectException(IOException::class);
         $this->expectExceptionMessageMatches(\sprintf(
             '#^%s$#',
-            preg_quote('Cannot write cache file "'.realpath($dir).'" as the location exists as directory.', '#')
+            preg_quote('Cannot write cache file "'.realpath($dir).'" as the location exists as directory.', '#'),
         ));
 
         $handler->write(new Cache($this->createSignature()));
@@ -150,7 +154,7 @@ final class FileHandlerTest extends TestCase
         $this->expectException(IOException::class);
         $this->expectExceptionMessageMatches(\sprintf(
             '#^%s$#',
-            preg_quote('Cannot write to file "'.realpath($file).'" as it is not writable.', '#')
+            preg_quote('Cannot write to file "'.realpath($file).'" as it is not writable.', '#'),
         ));
 
         $handler->write(new Cache($this->createSignature()));
@@ -207,11 +211,12 @@ final class FileHandlerTest extends TestCase
     private function createSignature(): SignatureInterface
     {
         return new Signature(
-            PHP_VERSION,
+            \PHP_VERSION,
             '2.0',
             '    ',
-            PHP_EOL,
+            \PHP_EOL,
             ['foo' => true, 'bar' => false],
+            'baz',
         );
     }
 }

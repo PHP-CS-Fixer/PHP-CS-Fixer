@@ -17,18 +17,18 @@ namespace PhpCsFixer\Tests\Console\Report\FixReport;
 use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractReporterTestCase extends TestCase
 {
-    /**
-     * @var null|ReporterInterface
-     */
-    protected $reporter;
+    protected ?ReporterInterface $reporter = null;
 
     protected function setUp(): void
     {
@@ -48,13 +48,14 @@ abstract class AbstractReporterTestCase extends TestCase
     {
         self::assertSame(
             $this->getFormat(),
-            $this->reporter->getFormat()
+            $this->reporter->getFormat(),
         );
     }
 
     /**
      * @dataProvider provideGenerateCases
      */
+    #[DataProvider('provideGenerateCases')]
     final public function testGenerate(string $expectedReport, ReportSummary $reportSummary): void
     {
         $actualReport = $this->reporter->generate($reportSummary);
@@ -76,7 +77,7 @@ abstract class AbstractReporterTestCase extends TestCase
                 0,
                 false,
                 false,
-                false
+                false,
             ),
         ];
 
@@ -104,7 +105,7 @@ abstract class AbstractReporterTestCase extends TestCase
                 0,
                 false,
                 false,
-                false
+                false,
             ),
         ];
 
@@ -132,7 +133,7 @@ abstract class AbstractReporterTestCase extends TestCase
                 0,
                 false,
                 false,
-                false
+                false,
             ),
         ];
 
@@ -150,7 +151,7 @@ abstract class AbstractReporterTestCase extends TestCase
                 0,
                 true,
                 false,
-                false
+                false,
             ),
         ];
 
@@ -178,7 +179,7 @@ abstract class AbstractReporterTestCase extends TestCase
                 2_621_440, // 2.5 * 1024 * 1024
                 false,
                 false,
-                false
+                false,
             ),
         ];
 
@@ -200,7 +201,20 @@ abstract class AbstractReporterTestCase extends TestCase
                 2_621_440, // 2.5 * 1024 * 1024
                 true,
                 true,
-                true
+                true,
+            ),
+        ];
+
+        yield 'dry run with no time' => [
+            static::createDryRunWithNoTimeReport(),
+            new ReportSummary(
+                [],
+                1,
+                0,
+                2_621_440, // 2.5 * 1024 * 1024
+                false,
+                true,
+                false,
             ),
         ];
     }
@@ -220,6 +234,8 @@ abstract class AbstractReporterTestCase extends TestCase
     abstract protected static function createWithTimeAndMemoryReport(): string;
 
     abstract protected static function createComplexReport(): string;
+
+    abstract protected static function createDryRunWithNoTimeReport(): string;
 
     abstract protected function assertFormat(string $expected, string $input): void;
 }

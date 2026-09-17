@@ -32,34 +32,41 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-#[AsCommand(name: 'list-sets')]
+#[AsCommand(name: 'list-sets', description: 'List all available RuleSets.')]
 final class ListSetsCommand extends Command
 {
-    /** @var string */
-    protected static $defaultName = 'list-sets';
+    public function __construct()
+    {
+        parent::__construct('list-sets');
+        $this->setDescription('List all available RuleSets.');
+    }
 
     protected function configure(): void
     {
-        $this
-            ->setDefinition(
-                [
-                    new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats.', (new TextReporter())->getFormat()),
-                ]
-            )
-            ->setDescription('List all available RuleSets.')
-        ;
+        $reporterFactory = new ReporterFactory();
+        $reporterFactory->registerBuiltInReporters();
+        $formats = $reporterFactory->getFormats();
+        \assert([] !== $formats);
+
+        $this->setDefinition(
+            [
+                new InputOption('format', '', InputOption::VALUE_REQUIRED, HelpCommand::getDescriptionWithAllowedValues('To output results in other formats (%s).', $formats), (new TextReporter())->getFormat(), $formats),
+            ],
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $reporter = $this->resolveReporterWithFactory(
             $input->getOption('format'),
-            new ReporterFactory()
+            new ReporterFactory(),
         );
 
         $reportSummary = new ReportSummary(
-            array_values(RuleSets::getSetDefinitions())
+            array_values(RuleSets::getSetDefinitions()),
         );
 
         $report = $reporter->generate($reportSummary);

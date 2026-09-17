@@ -16,17 +16,23 @@ namespace PhpCsFixer\Tests\Console\Output\Progress;
 
 use PhpCsFixer\Console\Output\Progress\NullOutput;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Console\Output\Progress\NullOutput
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NullOutput::class)]
 final class NullOutputTest extends TestCase
 {
     /**
      * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testNullOutput(): void
     {
         $output = new NullOutput();

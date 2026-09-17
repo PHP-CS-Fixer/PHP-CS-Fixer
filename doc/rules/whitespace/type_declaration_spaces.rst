@@ -5,6 +5,14 @@ Rule ``type_declaration_spaces``
 Ensure single space between a variable and its type declaration in function
 arguments and properties.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``elements``.
+
 Configuration
 -------------
 
@@ -14,9 +22,11 @@ Configuration
 Structural elements where the spacing after the type declaration should be
 fixed.
 
-Allowed values: a subset of ``['function', 'property']``
+Allowed values: a subset of ``['constant', 'function', 'property']``
 
 Default value: ``['function', 'property']``
+
+Default value (future-mode): ``['function', 'property', 'constant']``
 
 Examples
 --------
@@ -82,13 +92,34 @@ With configuration: ``['elements' => ['property']]``.
         public function baz(string     $a) {}
     }
 
+Example #4
+~~~~~~~~~~
+
+With configuration: ``['elements' => ['constant']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    class Foo
+    {
+   -    public  const string   BAR = "";
+   +    public  const string BAR = "";
+    }
+
 Rule sets
 ---------
 
 The rule is part of the following rule sets:
 
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
-- `@Symfony <./../../ruleSets/Symfony.rst>`_
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
+  ``['elements' => ['function', 'property']]``
+
+- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
+  ``['elements' => ['function', 'property']]``
 
 References
 ----------

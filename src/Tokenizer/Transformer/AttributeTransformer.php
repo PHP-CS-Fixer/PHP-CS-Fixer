@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * Transforms attribute related Tokens.
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class AttributeTransformer extends AbstractTransformer
 {
@@ -37,23 +39,24 @@ final class AttributeTransformer extends AbstractTransformer
         return 8_00_00;
     }
 
-    public function process(Tokens $tokens, Token $token, int $index): void
+    public function isCandidate(Tokens $tokens): bool
     {
-        if (!$tokens[$index]->isGivenKind(T_ATTRIBUTE)) {
+        return $tokens->isTokenKindFound(\T_ATTRIBUTE);
+    }
+
+    public function processToken(Tokens $tokens, Token $token, int $index): void
+    {
+        if (!$tokens[$index]->isGivenKind(\T_ATTRIBUTE)) {
             return;
         }
-
-        $level = 1;
 
         do {
             ++$index;
 
-            if ($tokens[$index]->equals('[')) {
-                ++$level;
-            } elseif ($tokens[$index]->equals(']')) {
-                --$level;
+            if ($tokens[$index]->equals('(')) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index) + 1;
             }
-        } while (0 < $level);
+        } while (!$tokens[$index]->equals(']'));
 
         $tokens[$index] = new Token([CT::T_ATTRIBUTE_CLOSE, ']']);
     }

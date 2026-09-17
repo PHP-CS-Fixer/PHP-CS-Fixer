@@ -4,6 +4,14 @@ Rule ``php_unit_internal_class``
 
 All PHPUnit test classes should be marked as internal.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``types``.
+
 Configuration
 -------------
 

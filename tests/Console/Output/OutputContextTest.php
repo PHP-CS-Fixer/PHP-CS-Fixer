@@ -16,13 +16,17 @@ namespace PhpCsFixer\Tests\Console\Output;
 
 use PhpCsFixer\Console\Output\OutputContext;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Console\Output\NullOutput;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Console\Output\OutputContext
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(OutputContext::class)]
 final class OutputContextTest extends TestCase
 {
     public function testProvidedValuesAreAccessible(): void

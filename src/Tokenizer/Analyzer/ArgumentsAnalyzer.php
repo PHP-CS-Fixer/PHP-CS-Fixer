@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tokenizer\Analyzer;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -24,9 +25,13 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Vladimir Reznichenko <kalessil@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ArgumentsAnalyzer
 {
+    private const ARGUMENT_INFO_SKIP_TYPES = [\T_ELLIPSIS, \T_FINAL, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE, FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET];
+
     /**
      * Count amount of parameters in a function/method reference.
      */
@@ -87,16 +92,6 @@ final class ArgumentsAnalyzer
 
     public function getArgumentInfo(Tokens $tokens, int $argumentStart, int $argumentEnd): ArgumentAnalysis
     {
-        static $skipTypes = null;
-
-        if (null === $skipTypes) {
-            $skipTypes = [T_ELLIPSIS, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE];
-
-            if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
-                $skipTypes[] = T_READONLY;
-            }
-        }
-
         $info = [
             'default' => null,
             'name' => null,
@@ -111,8 +106,14 @@ final class ArgumentsAnalyzer
         for ($index = $argumentStart; $index <= $argumentEnd; ++$index) {
             $token = $tokens[$index];
 
-            if (\defined('T_ATTRIBUTE') && $token->isGivenKind(T_ATTRIBUTE)) {
+            if ($token->isGivenKind(FCT::T_ATTRIBUTE)) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
+
+                continue;
+            }
+
+            if ($token->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PROPERTY_HOOK, $index);
 
                 continue;
             }
@@ -120,13 +121,16 @@ final class ArgumentsAnalyzer
             if (
                 $token->isComment()
                 || $token->isWhitespace()
-                || $token->isGivenKind($skipTypes)
+                || $token->isGivenKind(self::ARGUMENT_INFO_SKIP_TYPES)
                 || $token->equals('&')
             ) {
                 continue;
             }
 
-            if ($token->isGivenKind(T_VARIABLE)) {
+            if ($token->isGivenKind(\T_VARIABLE)) {
+                if ($sawName) {
+                    continue;
+                }
                 $sawName = true;
                 $info['name_index'] = $index;
                 $info['name'] = $token->getContent();
@@ -155,7 +159,7 @@ final class ArgumentsAnalyzer
             $info['name'],
             $info['name_index'],
             $info['default'],
-            null !== $info['type'] ? new TypeAnalysis($info['type'], $info['type_index_start'], $info['type_index_end']) : null
+            null !== $info['type'] ? new TypeAnalysis($info['type'], $info['type_index_start'], $info['type_index_end']) : null,
         );
     }
 }

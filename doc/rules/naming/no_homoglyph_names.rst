@@ -7,8 +7,8 @@ Replace accidental usage of homoglyphs (non ascii characters) in names.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Renames classes and cannot rename the files. You might have string references to
 renamed code (``$$name``).

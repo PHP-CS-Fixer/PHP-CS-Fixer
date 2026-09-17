@@ -4,13 +4,19 @@ Rule ``native_function_invocation``
 
 Add leading ``\`` before function invocation to speed up resolving.
 
-Warning
--------
+Warnings
+--------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when any of the functions are overridden.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``exclude``,
+``include``, ``scope``, ``strict``.
 
 Configuration
 -------------
@@ -204,7 +210,6 @@ The rule is part of the following rule sets:
 - `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_ with config:
 
   ``['include' => ['@compiler_optimized'], 'scope' => 'namespaced', 'strict' => true]``
-
 
 References
 ----------

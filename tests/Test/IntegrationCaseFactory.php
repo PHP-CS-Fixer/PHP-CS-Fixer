@@ -18,5 +18,7 @@ namespace PhpCsFixer\Tests\Test;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class IntegrationCaseFactory extends AbstractIntegrationCaseFactory {}

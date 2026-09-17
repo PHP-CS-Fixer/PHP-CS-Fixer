@@ -14,31 +14,40 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Internal;
 
+use PhpCsFixer\Fixer\Internal\ConfigurableFixerTemplateFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Internal\ConfigurableFixerTemplateFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Internal\ConfigurableFixerTemplateFixer>
  *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
  * @requires OS Linux|Darwin
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ConfigurableFixerTemplateFixer::class)]
+#[RequiresOperatingSystem('Linux|Darwin')]
 final class ConfigurableFixerTemplateFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(): void
     {
         self::markTestIncomplete('Tests not implemented for this class, run the rule on codebase and check if PHPStan accepts the changes.');
     }
 
     /**
-     * @return iterable<array{}>
+     * @return iterable<int, array{}>
      */
     public static function provideFixCases(): iterable
     {

@@ -6,6 +6,15 @@ Write conditions in Yoda style (``true``), non-Yoda style (``['equal' => false,
 'identical' => false, 'less_and_greater' => false]``) or ignore those conditions
 (``null``) based on configuration.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options:
+``always_move_variable``, ``equal``, ``identical``, ``less_and_greater``.
+
 Configuration
 -------------
 

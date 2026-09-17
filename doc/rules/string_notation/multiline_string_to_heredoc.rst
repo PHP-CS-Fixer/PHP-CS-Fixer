@@ -36,6 +36,7 @@ Example #2
    +line1
    +{$obj->getName()}
    +EOD;
+
 References
 ----------
 

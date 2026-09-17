@@ -4,16 +4,11 @@ Rule ``compact_nullable_typehint``
 
 Remove extra spaces in a nullable typehint.
 
-Description
------------
-
-Rule is applied only in a PHP 7.1+ environment.
-
 Warning
 -------
 
-This rule is deprecated and will be removed in the next major version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is DEPRECATED and will be removed in the next major version 4.0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You should use ``compact_nullable_type_declaration`` instead.
 
@@ -31,6 +26,7 @@ Example #1
    -function sample(? string $str): ? string
    +function sample(?string $str): ?string
     {}
+
 References
 ----------
 

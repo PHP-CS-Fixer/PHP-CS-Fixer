@@ -2,7 +2,7 @@
 Rule ``phpdoc_no_package``
 ==========================
 
-``@package`` and ``@subpackage`` annotations should be omitted from PHPDoc.
+``@package`` and ``@subpackage`` annotations must be removed from PHPDoc.
 
 Examples
 --------

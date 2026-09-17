@@ -1,0 +1,25 @@
+--TEST--
+Integration of fixers: protected_to_private,static_private_method.
+--RULESET--
+{"protected_to_private": true, "static_private_method": true}
+--EXPECT--
+<?php
+
+final class Foo
+{
+    private static function baz()
+    {
+        return 1;
+    }
+}
+
+--INPUT--
+<?php
+
+final class Foo
+{
+    protected function baz()
+    {
+        return 1;
+    }
+}

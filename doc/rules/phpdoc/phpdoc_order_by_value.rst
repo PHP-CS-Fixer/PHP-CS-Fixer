@@ -4,6 +4,14 @@ Rule ``phpdoc_order_by_value``
 
 Order PHPDoc tags by value.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``annotations``.
+
 Configuration
 -------------
 

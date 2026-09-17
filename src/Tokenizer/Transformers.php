@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer;
 
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * Collection of Transformer classes.
@@ -23,6 +22,8 @@ use Symfony\Component\Finder\SplFileInfo;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class Transformers
 {
@@ -62,10 +63,14 @@ final class Transformers
     public function transform(Tokens $tokens): void
     {
         foreach ($this->items as $transformer) {
-            foreach ($tokens as $index => $token) {
-                $transformer->process($tokens, $token, $index);
+            if (!$transformer->isCandidate($tokens)) {
+                continue;
             }
+
+            $transformer->process($tokens);
         }
+
+        $tokens->clearEmptyTokens();
     }
 
     /**
@@ -94,16 +99,19 @@ final class Transformers
     }
 
     /**
-     * @return \Generator<TransformerInterface>
+     * @return iterable<TransformerInterface>
      */
     private function findBuiltInTransformers(): iterable
     {
-        /** @var SplFileInfo $file */
         foreach (Finder::create()->files()->in(__DIR__.'/Transformer') as $file) {
             $relativeNamespace = $file->getRelativePath();
             $class = __NAMESPACE__.'\Transformer\\'.('' !== $relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
 
-            yield new $class();
+            $instance = new $class();
+
+            \assert($instance instanceof TransformerInterface);
+
+            yield $instance;
         }
     }
 }

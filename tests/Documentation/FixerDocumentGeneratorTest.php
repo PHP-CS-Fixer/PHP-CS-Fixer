@@ -17,24 +17,30 @@ namespace PhpCsFixer\Tests\Documentation;
 use PhpCsFixer\Documentation\DocumentationLocator;
 use PhpCsFixer\Documentation\FixerDocumentGenerator;
 use PhpCsFixer\Fixer\Basic\BracesFixer;
-use PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer;
+use PhpCsFixer\Fixer\ClassNotation\ModifierKeywordsFixer;
 use PhpCsFixer\Fixer\Comment\HeaderCommentFixer;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\LanguageConstruct\ClassKeywordFixer;
 use PhpCsFixer\Fixer\Strict\StrictParamFixer;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Documentation\FixerDocumentGenerator
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FixerDocumentGenerator::class)]
 final class FixerDocumentGeneratorTest extends TestCase
 {
     /**
      * @dataProvider provideGenerateRuleSetsDocumentationCases
      */
+    #[DataProvider('provideGenerateRuleSetsDocumentationCases')]
     public function testGenerateRuleSetsDocumentation(FixerInterface $fixer): void
     {
         $locator = new DocumentationLocator();
@@ -47,7 +53,7 @@ final class FixerDocumentGeneratorTest extends TestCase
     }
 
     /**
-     * @return iterable<array{FixerInterface}>
+     * @return iterable<int, array{FixerInterface}>
      */
     public static function provideGenerateRuleSetsDocumentationCases(): iterable
     {
@@ -59,7 +65,7 @@ final class FixerDocumentGeneratorTest extends TestCase
 
         yield [new StrictParamFixer()];
 
-        yield [new VisibilityRequiredFixer()];
+        yield [new ModifierKeywordsFixer()];
     }
 
     public function testGenerateFixersDocumentationIndex(): void

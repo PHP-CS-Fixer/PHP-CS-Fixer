@@ -4,6 +4,15 @@ Rule ``ordered_attributes``
 
 Sorts attributes using the configured sort algorithm.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``order``,
+``sort_algorithm``.
+
 Configuration
 -------------
 
@@ -80,6 +89,7 @@ With configuration: ``['sort_algorithm' => 'custom', 'order' => ['A\\B\\Qux', 'A
     #[\A\B\Corge(a: 'test')]
    +#[Foo]
     class Sample1 {}
+
 References
 ----------
 

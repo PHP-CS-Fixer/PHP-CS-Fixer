@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\FixerConfiguration;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @author ntzm
@@ -24,7 +25,10 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AliasedFixerOptionBuilder::class)]
 final class AliasedFixerOptionBuilderTest extends TestCase
 {
     public function testSetDefault(): void

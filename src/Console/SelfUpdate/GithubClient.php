@@ -15,11 +15,20 @@ declare(strict_types=1);
 namespace PhpCsFixer\Console\SelfUpdate;
 
 /**
+ * @readonly
+ *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class GithubClient implements GithubClientInterface
 {
-    private string $url = 'https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/tags';
+    private string $url;
+
+    public function __construct(string $url = 'https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/tags')
+    {
+        $this->url = $url;
+    }
 
     public function getTags(): array
     {
@@ -30,33 +39,34 @@ final class GithubClient implements GithubClientInterface
                 'http' => [
                     'header' => 'User-Agent: PHP-CS-Fixer/PHP-CS-Fixer',
                 ],
-            ])
+            ]),
         );
 
         if (false === $result) {
             throw new \RuntimeException(\sprintf('Failed to load tags at "%s".', $this->url));
         }
 
-        /**
-         * @var list<array{
-         *     name: string,
-         *     zipball_url: string,
-         *     tarball_url: string,
-         *     commit: array{sha: string, url: string},
-         * }>
-         */
-        $result = json_decode($result, true);
-        if (JSON_ERROR_NONE !== json_last_error()) {
+        try {
+            /**
+             * @var list<array{
+             *     name: string,
+             *     zipball_url: string,
+             *     tarball_url: string,
+             *     commit: array{sha: string, url: string},
+             * }>
+             */
+            $result = json_decode($result, true, 512, \JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
             throw new \RuntimeException(\sprintf(
                 'Failed to read response from "%s" as JSON: %s.',
                 $this->url,
-                json_last_error_msg()
+                $e->getMessage(),
             ));
         }
 
         return array_map(
             static fn (array $tagData): string => $tagData['name'],
-            $result
+            $result,
         );
     }
 }

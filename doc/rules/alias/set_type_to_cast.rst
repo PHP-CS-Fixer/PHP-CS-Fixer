@@ -7,8 +7,8 @@ Cast shall be used, not ``settype``.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when the ``settype`` function is overridden or when used as the 2nd or 3rd
 expression in a ``for`` loop .

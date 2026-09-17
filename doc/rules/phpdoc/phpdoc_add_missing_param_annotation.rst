@@ -4,6 +4,14 @@ Rule ``phpdoc_add_missing_param_annotation``
 
 PHPDoc should contain ``@param`` for all params.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``only_untyped``.
+
 Configuration
 -------------
 

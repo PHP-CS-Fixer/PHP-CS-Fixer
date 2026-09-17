@@ -18,6 +18,7 @@ use PhpCsFixer\Console\Report\ListSetsReport\ReporterFactory;
 use PhpCsFixer\Console\Report\ListSetsReport\ReporterInterface;
 use PhpCsFixer\Console\Report\ListSetsReport\ReportSummary;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
@@ -26,7 +27,10 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Report\ListSetsReport\ReporterFactory
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ReporterFactory::class)]
 final class ReporterFactoryTest extends TestCase
 {
     public function testInterfaceIsFluent(): void
@@ -50,7 +54,7 @@ final class ReporterFactoryTest extends TestCase
         $builder->registerBuiltInReporters();
         self::assertSame(
             ['json', 'txt'],
-            $builder->getFormats()
+            $builder->getFormats(),
         );
     }
 

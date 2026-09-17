@@ -4,6 +4,15 @@ Rule ``doctrine_annotation_indentation``
 
 Doctrine annotations must be indented with four spaces.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``ignored_tags``,
+``indent_mixed_lines``.
+
 Configuration
 -------------
 

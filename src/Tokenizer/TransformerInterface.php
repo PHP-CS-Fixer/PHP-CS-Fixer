@@ -25,6 +25,8 @@ namespace PhpCsFixer\Tokenizer;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 interface TransformerInterface
 {
@@ -62,7 +64,14 @@ interface TransformerInterface
     public function getRequiredPhpVersionId(): int;
 
     /**
+     * Returns whether this transformer should act upon this token collection.
+     *
+     * @see FixerInterface::isCandidate()
+     */
+    public function isCandidate(Tokens $tokens): bool;
+
+    /**
      * Process Token to transform it into custom token when needed.
      */
-    public function process(Tokens $tokens, Token $token, int $index): void;
+    public function process(Tokens $tokens): void;
 }

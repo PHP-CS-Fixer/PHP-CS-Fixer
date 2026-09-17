@@ -4,13 +4,18 @@ Rule ``php_unit_data_provider_name``
 
 Data provider names must match the name of the test.
 
-Warning
--------
+Warnings
+--------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Fixer could be risky if one is calling data provider by name as function.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``prefix``, ``suffix``.
 
 Configuration
 -------------

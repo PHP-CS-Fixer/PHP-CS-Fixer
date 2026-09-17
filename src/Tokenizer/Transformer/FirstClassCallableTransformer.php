@@ -21,6 +21,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FirstClassCallableTransformer extends AbstractTransformer
 {
@@ -29,10 +31,15 @@ final class FirstClassCallableTransformer extends AbstractTransformer
         return 8_01_00;
     }
 
-    public function process(Tokens $tokens, Token $token, int $index): void
+    public function isCandidate(Tokens $tokens): bool
+    {
+        return $tokens->isTokenKindFound(\T_ELLIPSIS);
+    }
+
+    public function processToken(Tokens $tokens, Token $token, int $index): void
     {
         if (
-            $token->isGivenKind(T_ELLIPSIS)
+            $token->isGivenKind(\T_ELLIPSIS)
             && $tokens[$tokens->getPrevMeaningfulToken($index)]->equals('(')
             && $tokens[$tokens->getNextMeaningfulToken($index)]->equals(')')
         ) {

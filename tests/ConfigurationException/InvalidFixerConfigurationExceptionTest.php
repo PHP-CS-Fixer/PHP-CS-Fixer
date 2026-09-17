@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\ConfigurationException;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Console\Command\FixCommandExitStatusCalculator;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -24,7 +25,10 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(InvalidFixerConfigurationException::class)]
 final class InvalidFixerConfigurationExceptionTest extends TestCase
 {
     public function testDefaults(): void
@@ -34,7 +38,7 @@ final class InvalidFixerConfigurationExceptionTest extends TestCase
 
         $exception = new InvalidFixerConfigurationException(
             $fixerName,
-            $message
+            $message,
         );
 
         self::assertSame(\sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
@@ -52,7 +56,7 @@ final class InvalidFixerConfigurationExceptionTest extends TestCase
         $exception = new InvalidFixerConfigurationException(
             $fixerName,
             $message,
-            $previous
+            $previous,
         );
 
         self::assertSame(\sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());

@@ -20,13 +20,19 @@ ensure that all backslashes are escaped. Both single and double backslashes are
 allowed in single-quoted strings, so the purpose in this context is mainly to
 have a uniformed way to have them written all over the codebase.
 
-Warning
--------
+Warnings
+--------
 
-This rule is deprecated and will be removed in the next major version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is DEPRECATED and will be removed in the next major version 4.0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You should use ``string_implicit_backslashes`` instead.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``double_quoted``,
+``heredoc_syntax``, ``single_quoted``.
 
 Configuration
 -------------
@@ -143,6 +149,7 @@ With configuration: ``['heredoc_syntax' => false]``.
     $hereDoc = <<<HEREDOC
     Interpret my \100 but not my \999
     HEREDOC;
+
 References
 ----------
 

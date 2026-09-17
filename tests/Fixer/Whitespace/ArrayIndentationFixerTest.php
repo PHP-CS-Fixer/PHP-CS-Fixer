@@ -14,8 +14,12 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
+use PhpCsFixer\Fixer\Whitespace\ArrayIndentationFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -23,19 +27,23 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @covers \PhpCsFixer\Fixer\Whitespace\ArrayIndentationFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\ArrayIndentationFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ArrayIndentationFixer::class)]
 final class ArrayIndentationFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -840,6 +848,7 @@ $foo = [
     /**
      * @dataProvider provideWithWhitespacesConfigCases
      */
+    #[DataProvider('provideWithWhitespacesConfigCases')]
     public function testWithWhitespacesConfig(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t"));
@@ -847,7 +856,7 @@ $foo = [
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideWithWhitespacesConfigCases(): iterable
     {
@@ -928,8 +937,10 @@ $foo = [
     /**
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -971,6 +982,51 @@ class Foo {
      {
      }
 }',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix85Cases
+     *
+     * @requires PHP >= 8.5.0
+     */
+    #[DataProvider('provideFix85Cases')]
+    #[RequiresPhp('>= 8.5.0')]
+    public function testFix85(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function provideFix85Cases(): iterable
+    {
+        yield 'nested attribute' => [
+            <<<'PHP'
+                <?php
+                #[Foo([static function (#[SensitiveParameter] $a) {
+                    return [
+                        fn (#[Bar([1, 2])] $b) => [
+                            $b[1]
+                        ]
+                    ]
+                    ;
+                }])]
+                class Baz {}
+                PHP,
+            <<<'PHP'
+                <?php
+                #[Foo([static function (#[SensitiveParameter] $a) {
+                    return [
+                        fn (#[Bar([1, 2])] $b) => [
+                            $b[1]
+                        ]
+                                                                                        ]
+                    ;
+                }])]
+                class Baz {}
+                PHP,
         ];
     }
 

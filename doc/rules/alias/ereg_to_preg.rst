@@ -7,8 +7,8 @@ Replace deprecated ``ereg`` regular expression functions with ``preg``.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky if the ``ereg`` function is overridden.
 

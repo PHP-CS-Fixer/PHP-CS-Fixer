@@ -4,6 +4,14 @@ Rule ``phpdoc_tag_type``
 
 Forces PHPDoc tags to be either regular annotations or inline.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``tags``.
+
 Configuration
 -------------
 
@@ -61,7 +69,6 @@ The rule is part of the following rule sets:
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
   ``['tags' => ['inheritDoc' => 'inline']]``
-
 
 References
 ----------

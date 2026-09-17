@@ -15,15 +15,19 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\AbstractFunctionReferenceFixer;
-use PhpCsFixer\AccessibleObject\AccessibleObject;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AbstractFunctionReferenceFixer::class)]
 final class AbstractFunctionReferenceFixerTest extends TestCase
 {
     /**
@@ -31,6 +35,7 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
      *
      * @dataProvider provideAbstractFunctionReferenceFixerCases
      */
+    #[DataProvider('provideAbstractFunctionReferenceFixerCases')]
     public function testAbstractFunctionReferenceFixer(
         ?array $expected,
         string $source,
@@ -46,17 +51,20 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
 
         self::assertSame(
             $expected,
-            AccessibleObject::create($fixer)->find(
+            \Closure::bind(static fn (AbstractFunctionReferenceFixer $fixer): ?array => $fixer->find(
                 $functionNameToSearch,
                 $tokens,
                 $start,
-                $end
-            )
+                $end,
+            ), null, AbstractFunctionReferenceFixer::class)($fixer),
         );
 
         self::assertFalse($tokens->isChanged());
     }
 
+    /**
+     * @return iterable<string, array{0: null|list<int>, 1: string, 2: string, 3?: int}>
+     */
     public static function provideAbstractFunctionReferenceFixerCases(): iterable
     {
         yield 'simple case I' => [

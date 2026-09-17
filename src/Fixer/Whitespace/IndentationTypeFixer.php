@@ -27,13 +27,12 @@ use PhpCsFixer\Tokenizer\Tokens;
  * Fixer for rules defined in PSR2 ¶2.4.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
-    /**
-     * @var string
-     */
-    private $indent;
+    private string $indent;
 
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -41,7 +40,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
             'Code MUST use configured indentation type.',
             [
                 new CodeSample("<?php\n\nif (true) {\n\techo 'Hello!';\n}\n"),
-            ]
+            ],
         );
     }
 
@@ -58,7 +57,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_COMMENT, T_DOC_COMMENT, T_WHITESPACE]);
+        return $tokens->isAnyTokenKindsFound([\T_COMMENT, \T_DOC_COMMENT, \T_WHITESPACE]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -118,14 +117,14 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
                 // change indent to expected one
                 return $matches[1].$this->getExpectedIndent($content, $indent);
             },
-            $content
+            $content,
         );
 
         if ($previousTokenHasTrailingLinebreak) {
             $newContent = substr($newContent, 1);
         }
 
-        return new Token([T_WHITESPACE, $newContent]);
+        return new Token([\T_WHITESPACE, $newContent]);
     }
 
     /**

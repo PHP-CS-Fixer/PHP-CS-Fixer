@@ -14,7 +14,10 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
+use PhpCsFixer\Fixer\FunctionNotation\StaticLambdaFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -22,22 +25,48 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\FunctionNotation\StaticLambdaFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\StaticLambdaFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(StaticLambdaFixer::class)]
 final class StaticLambdaFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
+        yield 'do not fix a lambda that is the direct subject of bindTo' => [
+            '<?php $a = (function () { return 1; })->bindTo(new stdClass());',
+        ];
+
+        yield 'do not fix an arrow function that is the direct subject of bindTo (immediately invoked)' => [
+            '<?php $foobar = new Foobar(); echo (fn () => $foobar->sayHello())->bindTo(null, Foobar::class)();',
+        ];
+
+        yield 'do not fix a lambda that is the direct subject of call' => [
+            '<?php $b = (function () { return $x; })->call(new stdClass());',
+        ];
+
+        yield 'fix a lambda argument of a call whose return value is bound' => [
+            '<?php echo foo(static function () { return 1; })->bindTo(new stdClass());',
+            '<?php echo foo(function () { return 1; })->bindTo(new stdClass());',
+        ];
+
+        yield 'fix an immediately invoked lambda' => [
+            '<?php echo (static function () { return 1; })();',
+            '<?php echo (function () { return 1; })();',
+        ];
+
         yield 'sample' => [
             "<?php\n\$a = static function () use (\$b)\n{   echo \$b;\n};",
             "<?php\n\$a = function () use (\$b)\n{   echo \$b;\n};",
@@ -268,6 +297,20 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
+            '<?php
+                    class N
+                    {
+                        public function O()
+                        {
+                            $a = function () {
+                                return new class($this) {};
+                            };
+                        }
+                    }
+                ',
+        ];
+
+        yield [
             '<?php function test(){} test();',
         ];
 
@@ -331,6 +374,66 @@ $b->abc();
                         }
                     }
                 ',
+        ];
+
+        yield 'anonymous function returning defining class that uses `$this`' => [
+            <<<'PHP'
+                <?php
+                $f = static function () {
+                    class C extends P {
+                        public function f() { return $this->f2(); }
+                    }
+                };
+                PHP,
+            <<<'PHP'
+                <?php
+                $f = function () {
+                    class C extends P {
+                        public function f() { return $this->f2(); }
+                    }
+                };
+                PHP,
+        ];
+
+        yield 'anonymous function defining trait that uses `$this`' => [
+            <<<'PHP'
+                <?php
+                $f = static function () {
+                    trait T {
+                        public function f() { return $this->f2(); }
+                    }
+                };
+                PHP,
+            <<<'PHP'
+                <?php
+                $f = function () {
+                    trait T {
+                        public function f() { return $this->f2(); }
+                    }
+                };
+                PHP,
+        ];
+
+        yield 'anonymous function using anonymous class that uses `$this`' => [
+            <<<'PHP'
+                <?php
+                $f = static function () {
+                    $o = new class { function f() { return $this->x; } };
+                    return $o->f();
+                };
+                PHP,
+            <<<'PHP'
+                <?php
+                $f = function () {
+                    $o = new class { function f() { return $this->x; } };
+                    return $o->f();
+                };
+                PHP,
+        ];
+
+        yield 'arrow function returning anonymous class that uses `$this`' => [
+            '<?php return static fn () => new class { function f() { return $this->x; } };',
+            '<?php return fn () => new class { function f() { return $this->x; } };',
         ];
     }
 }

@@ -8,8 +8,8 @@ itself.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when using dynamic calls like get_called_class() or late static binding.
 

@@ -21,6 +21,8 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FinalClassFixer extends AbstractProxyFixer
 {
@@ -30,9 +32,11 @@ final class FinalClassFixer extends AbstractProxyFixer
             'All classes must be final, except abstract ones and Doctrine entities.',
             [
                 new CodeSample(
-                    '<?php
-class MyApp {}
-'
+                    <<<'PHP'
+                        <?php
+                        class MyApp {}
+
+                        PHP,
                 ),
             ],
             'No exception and no configuration are intentional. Beside Doctrine entities and of course abstract classes, there is no single reason not to declare all classes final. '
@@ -40,7 +44,7 @@ class MyApp {}
             .'If you need to mock a standalone class, create an interface, or maybe it\'s a value-object that shouldn\'t be mocked at all. '
             .'If you need to extend a standalone class, create an interface and use the Composite pattern. '
             .'If these rules are too strict for you, you can use `FinalInternalClassFixer` instead.',
-            'Risky when subclassing non-abstract classes.'
+            'Risky when subclassing non-abstract classes.',
         );
     }
 

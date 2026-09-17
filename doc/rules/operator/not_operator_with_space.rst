@@ -20,6 +20,7 @@ Example #1
    +if ( ! $bar) {
         echo "Help!";
     }
+
 References
 ----------
 

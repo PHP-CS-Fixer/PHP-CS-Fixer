@@ -23,15 +23,26 @@ use React\Socket\ServerInterface;
  * @author Greg Korba <greg@codito.dev>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ProcessPool
 {
+    /**
+     * @readonly
+     */
     private ServerInterface $server;
 
-    /** @var null|(callable(): void) */
+    /**
+     * @var null|(callable(): void)
+     *
+     * @readonly
+     */
     private $onServerClose;
 
-    /** @var array<string, Process> */
+    /**
+     * @var array<string, Process>
+     */
     private array $processes = [];
 
     /**
@@ -68,7 +79,7 @@ final class ProcessPool
 
     public function endAll(): void
     {
-        foreach (array_keys($this->processes) as $identifier) {
+        foreach ($this->processes as $identifier => $process) {
             $this->endProcessIfKnown(ProcessIdentifier::fromRaw($identifier));
         }
     }

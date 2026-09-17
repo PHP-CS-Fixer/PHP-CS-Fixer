@@ -22,13 +22,20 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\EnumAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\MatchAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\ControlCaseStructuresAnalyzer;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @covers \PhpCsFixer\Tokenizer\Analyzer\ControlCaseStructuresAnalyzer
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ControlCaseStructuresAnalyzer::class)]
 final class ControlCaseStructuresAnalyzerTest extends TestCase
 {
     /**
@@ -36,18 +43,23 @@ final class ControlCaseStructuresAnalyzerTest extends TestCase
      *
      * @dataProvider provideFindControlStructuresCases
      */
+    #[DataProvider('provideFindControlStructuresCases')]
     public function testFindControlStructures(array $expectedAnalyses, string $source): void
     {
         $tokens = Tokens::fromCode($source);
-        $analyses = iterator_to_array(ControlCaseStructuresAnalyzer::findControlStructures($tokens, [T_SWITCH]));
+        $analyses = iterator_to_array(ControlCaseStructuresAnalyzer::findControlStructures($tokens, [\T_SWITCH]));
 
         self::assertCount(\count($expectedAnalyses), $analyses);
 
         foreach ($expectedAnalyses as $index => $expectedAnalysis) {
+            \assert(\array_key_exists($index, $analyses));
             self::assertAnalysis($expectedAnalysis, $analyses[$index]);
         }
     }
 
+    /**
+     * @return iterable<array{0: array<int, AbstractControlCaseStructuresAnalysis>, 1: string, 2?: int}>
+     */
     public static function provideFindControlStructuresCases(): iterable
     {
         yield 'two cases' => [
@@ -80,7 +92,7 @@ final class ControlCaseStructuresAnalyzerTest extends TestCase
                         new CaseAnalysis(60, 71),
                         new CaseAnalysis(78, 125),
                     ],
-                    new DefaultAnalysis(9, 10)
+                    new DefaultAnalysis(9, 10),
                 ),
             ],
             '<?php switch (true) {
@@ -177,7 +189,6 @@ switch ($foo) {
                 switch ($bar) : case "a": return "b"; case "c"; return "d"; case "e": return "f"; endswitch;
                 return;
                 case 100: return false; endswitch ?>  <?php echo 1;',
-            1,
         ];
 
         $expected = [
@@ -188,7 +199,7 @@ switch ($foo) {
                 [
                     new CaseAnalysis(8, 11),
                 ],
-                new DefaultAnalysis(16, 17)
+                new DefaultAnalysis(16, 17),
             ),
         ];
 
@@ -215,7 +226,7 @@ default:
                     [
                         new CaseAnalysis(8, 12),
                     ],
-                    null
+                    null,
                 ),
             ],
             '<?php switch($a) {
@@ -233,7 +244,7 @@ case 1/* 1 */:
                     [
                         new CaseAnalysis(10, 22),
                     ],
-                    null
+                    null,
                 ),
             ],
             '<?php
@@ -254,7 +265,7 @@ case 1/* 1 */:
                         new CaseAnalysis(18, 21),
                         new CaseAnalysis(47, 50),
                     ],
-                    null
+                    null,
                 ),
                 23 => new SwitchAnalysis(
                     23,
@@ -263,7 +274,7 @@ case 1/* 1 */:
                     [
                         new CaseAnalysis(32, 35),
                     ],
-                    null
+                    null,
                 ),
             ],
             '<?php
@@ -293,7 +304,7 @@ switch(foo()) {
                     [
                         new CaseAnalysis(10, 13),
                     ],
-                    null
+                    null,
                 ),
             ],
             '<?php /* */ switch ($foo):
@@ -323,10 +334,12 @@ endswitch ?>',
      * @param array<int, AbstractControlCaseStructuresAnalysis> $expectedAnalyses
      * @param list<int>                                         $types
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      *
      * @dataProvider provideFindControlStructuresPhp81Cases
      */
+    #[RequiresPhp('>= 8.1.0')]
+    #[DataProvider('provideFindControlStructuresPhp81Cases')]
     public function testFindControlStructuresPhp81(array $expectedAnalyses, string $source, array $types): void
     {
         $tokens = Tokens::fromCode($source);
@@ -335,10 +348,14 @@ endswitch ?>',
         self::assertCount(\count($expectedAnalyses), $analyses);
 
         foreach ($expectedAnalyses as $index => $expectedAnalysis) {
+            \assert(\array_key_exists($index, $analyses));
             self::assertAnalysis($expectedAnalysis, $analyses[$index]);
         }
     }
 
+    /**
+     * @return iterable<int, array{array<int, AbstractControlCaseStructuresAnalysis>, string, list<int>}>
+     */
     public static function provideFindControlStructuresPhp81Cases(): iterable
     {
         $switchAnalysis = new SwitchAnalysis(1, 6, 26, [new CaseAnalysis(8, 11)], new DefaultAnalysis(18, 19));
@@ -370,29 +387,25 @@ $expressionResult = match ($condition) {
                 1 => $switchAnalysis,
             ],
             $code,
-            [T_SWITCH],
+            [\T_SWITCH],
         ];
 
-        if (\defined('T_ENUM')) { // @TODO: drop condition when PHP 8.1+ is required - sadly PHPUnit still calls the provider even if requires condition is not matched
-            yield [
-                [
-                    1 => $switchAnalysis,
-                    28 => $enumAnalysis,
-                ],
-                $code,
-                [T_SWITCH, T_ENUM],
-            ];
-        }
+        yield [
+            [
+                1 => $switchAnalysis,
+                28 => $enumAnalysis,
+            ],
+            $code,
+            [\T_SWITCH, FCT::T_ENUM],
+        ];
 
-        if (\defined('T_MATCH')) { // @TODO: drop condition when PHP 8.0+ is required - sadly PHPUnit still calls the provider even if requires condition is not matched
-            yield [
-                [
-                    57 => $matchAnalysis,
-                ],
-                $code,
-                [T_MATCH],
-            ];
-        }
+        yield [
+            [
+                57 => $matchAnalysis,
+            ],
+            $code,
+            [FCT::T_MATCH],
+        ];
     }
 
     public function testNoSupportedControlStructure(): void
@@ -400,10 +413,10 @@ $expressionResult = match ($condition) {
         $tokens = Tokens::fromCode('<?php if(time() > 0){ echo 1; }');
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(\sprintf('Unexpected type "%d".', T_IF));
+        $this->expectExceptionMessage(\sprintf('Unexpected type "%d".', \T_IF));
 
         // we use `iterator_to_array` to ensure generator is consumed and it has possibility to raise exception
-        iterator_to_array(ControlCaseStructuresAnalyzer::findControlStructures($tokens, [T_IF]));
+        iterator_to_array(ControlCaseStructuresAnalyzer::findControlStructures($tokens, [\T_IF]));
     }
 
     private static function assertAnalysis(AbstractControlCaseStructuresAnalysis $expectedAnalysis, AbstractControlCaseStructuresAnalysis $analysis): void
@@ -439,7 +452,7 @@ $expressionResult = match ($condition) {
 
         self::assertSame(
             serialize($expectedAnalysis),
-            serialize($analysis)
+            serialize($analysis),
         );
     }
 }

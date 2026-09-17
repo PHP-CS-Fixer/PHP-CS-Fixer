@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: phpdoc_list_type,phpdoc_no_duplicate_types.
+--RULESET--
+{"phpdoc_list_type": true, "phpdoc_no_duplicate_types": true}
+--EXPECT--
+<?php
+/**
+ * @return list<string>
+ */
+function foo() {}
+
+--INPUT--
+<?php
+/**
+ * @return array<string>|list<string>
+ */
+function foo() {}

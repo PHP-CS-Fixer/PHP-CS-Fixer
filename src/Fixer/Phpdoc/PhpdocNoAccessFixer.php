@@ -22,27 +22,31 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocNoAccessFixer extends AbstractProxyFixer
 {
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            '`@access` annotations should be omitted from PHPDoc.',
+            '`@access` annotations must be removed from PHPDoc.',
             [
                 new CodeSample(
-                    '<?php
-class Foo
-{
-    /**
-     * @internal
-     * @access private
-     */
-    private $bar;
-}
-'
+                    <<<'PHP'
+                        <?php
+                        class Foo
+                        {
+                            /**
+                             * @internal
+                             * @access private
+                             */
+                            private $bar;
+                        }
+
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 
@@ -63,7 +67,7 @@ class Foo
         $fixer->configure(
             ['annotations' => ['access'],
                 'case_sensitive' => true,
-            ]
+            ],
         );
 
         return [$fixer];

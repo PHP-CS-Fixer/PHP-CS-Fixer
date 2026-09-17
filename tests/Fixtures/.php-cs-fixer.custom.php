@@ -11,6 +11,8 @@
  */
 
 use PhpCsFixer\ConfigInterface;
+use PhpCsFixer\FailOnUnsupportedVersionConfigInterface;
+use PhpCsFixer\UnsupportedPhpVersionAllowedConfigInterface;
 
 /**
  * Custom config class/file for PHPUnit test.
@@ -19,7 +21,7 @@ use PhpCsFixer\ConfigInterface;
  *
  * @internal
  */
-final class CustomConfig implements ConfigInterface
+final class CustomConfig implements ConfigInterface, UnsupportedPhpVersionAllowedConfigInterface
 {
     /**
      * {@inheritdoc}
@@ -201,6 +203,22 @@ final class CustomConfig implements ConfigInterface
      * {@inheritdoc}
      */
     public function setUsingCache(bool $usingCache): ConfigInterface
+    {
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUnsupportedPhpVersionAllowed(): bool
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUnsupportedPhpVersionAllowed(bool $isUnsupportedPhpVersionAllowed): ConfigInterface
     {
         return $this;
     }

@@ -5,6 +5,15 @@ Rule ``phpdoc_align``
 All items of the given PHPDoc tags must be either left-aligned or (by default)
 aligned vertically.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``align``, ``spacing``,
+``tags``.
+
 Configuration
 -------------
 

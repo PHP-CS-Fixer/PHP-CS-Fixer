@@ -8,8 +8,8 @@ function calls with according type casting operator.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky if any of the functions ``intval``, ``floatval``, ``doubleval``,
 ``strval`` or ``boolval`` are overridden.

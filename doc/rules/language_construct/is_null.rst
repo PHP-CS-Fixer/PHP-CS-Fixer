@@ -7,8 +7,8 @@ Replaces ``is_null($var)`` expression with ``null === $var``.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when the function ``is_null`` is overridden.
 

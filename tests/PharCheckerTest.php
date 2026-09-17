@@ -15,12 +15,16 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\PharChecker;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\PharChecker
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(PharChecker::class)]
 final class PharCheckerTest extends TestCase
 {
     public function testPharChecker(): void

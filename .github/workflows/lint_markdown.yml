@@ -1,0 +1,38 @@
+name: Lint
+
+on:
+  pull_request:
+    paths:
+      - '*.md'
+      - '**/*.md'
+  push:
+    branches:
+      - master
+    paths:
+      - '*.md'
+      - '**/*.md'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-markdown:
+    name: Markdown
+    runs-on: ubuntu-slim
+    timeout-minutes: 1
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+      - name: Configure Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+      - name: Install markdownlint
+        run: gem install mdl
+      - name: Check markdown files
+        run: mdl --git-recurse .

@@ -16,6 +16,9 @@ namespace PhpCsFixer\Tests\Fixer\Casing;
 
 use PhpCsFixer\Fixer\Casing\MagicMethodCasingFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -23,26 +26,27 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\Casing\MagicMethodCasingFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\MagicMethodCasingFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(MagicMethodCasingFixer::class)]
 final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
-        $fixerReflection = new \ReflectionClass(MagicMethodCasingFixer::class);
-        $property = $fixerReflection->getProperty('magicNames');
-        $property->setAccessible(true);
-        $allMethodNames = $property->getValue();
+        $allMethodNames = \Closure::bind(static fn (): array => MagicMethodCasingFixer::MAGIC_NAMES, null, MagicMethodCasingFixer::class)();
 
         // '__callStatic'
         yield 'method declaration for "__callstatic".' => [
@@ -340,21 +344,24 @@ function __Tostring() {}',
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[RequiresPhp('>= 8.0.0')]
     public function testFix80(): void
     {
         $this->doTest(
             '<?php $foo?->__invoke(1, );',
-            '<?php $foo?->__INVOKE(1, );'
+            '<?php $foo?->__INVOKE(1, );',
         );
     }
 
     /**
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

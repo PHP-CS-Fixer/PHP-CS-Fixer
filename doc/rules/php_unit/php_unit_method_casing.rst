@@ -4,6 +4,14 @@ Rule ``php_unit_method_casing``
 
 Enforce camel (or snake) case for PHPUnit test methods, following configuration.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``case``.
+
 Configuration
 -------------
 
@@ -47,6 +55,42 @@ With configuration: ``['case' => 'snake_case']``.
     <?php
     class MyTest extends \PhpUnit\FrameWork\TestCase
     {
+   -    public function testMyCode() {}
+   +    public function test_my_code() {}
+    }
+
+Example #3
+~~~~~~~~~~
+
+*Default* configuration.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    use \PHPUnit\Framework\Attributes\Test;
+    class MyTest extends \PhpUnit\FrameWork\TestCase
+    {
+        #[PHPUnit\Framework\Attributes\Test]
+   -    public function test_my_code() {}
+   +    public function testMyCode() {}
+    }
+
+Example #4
+~~~~~~~~~~
+
+With configuration: ``['case' => 'snake_case']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    use \PHPUnit\Framework\Attributes\Test;
+    class MyTest extends \PhpUnit\FrameWork\TestCase
+    {
+        #[PHPUnit\Framework\Attributes\Test]
    -    public function testMyCode() {}
    +    public function test_my_code() {}
     }

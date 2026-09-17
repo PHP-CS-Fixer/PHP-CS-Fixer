@@ -1,0 +1,102 @@
+--TEST--
+PHP 8.5 test.
+--RULESET--
+{
+    "@PhpCsFixer": true,
+    "@PHP8x5Migration": true
+}
+--REQUIREMENTS--
+{"php": 80500}
+--EXPECT--
+<?php
+
+// https://wiki.php.net/rfc/final_promotion
+class Foo
+{
+    public function __construct(
+        final public bool $one,
+        final public bool $two,
+        final private readonly ?string $three,
+        final private readonly ?string $four,
+        final private readonly ?string $five,
+    ) {}
+}
+
+// https://wiki.php.net/rfc/pipe-operator-v3
+$numberOfAdmins = getUsers()
+    |> (fn ($list) => array_filter($list, isAdmin(...)))
+    |> count(...);
+
+// https://wiki.php.net/rfc/marking_return_value_as_important
+#[NoDiscard]
+function get42(): int
+{
+    return 42;
+}
+function thatNoDiscard()
+{
+    (void) get42();
+}
+
+// https://wiki.php.net/rfc/deprecations_php_8_5
+switch ($a) {
+    case 1:
+        break;
+
+    default:
+        break;
+}
+
+// https://wiki.php.net/rfc/closures_in_const_expr
+class ClosuresInAttibutes
+{
+    #[Attribute123(someName: static function (): void {})]
+    public string $foo;
+}
+
+--INPUT--
+<?php
+
+// https://wiki.php.net/rfc/final_promotion
+class Foo
+{
+    public function __construct(
+        public    final     bool   $one,
+        final    public     bool   $two,
+        readonly    private    final    ?    string    $three,
+        readonly    private    final    null    |    string    $four,
+        readonly    private    final    string    |    null    $five,
+    ) {}
+}
+
+// https://wiki.php.net/rfc/pipe-operator-v3
+$numberOfAdmins = getUsers() |>
+    (fn ($list) => array_filter($list, isAdmin(...))) |>
+    count(...);
+
+// https://wiki.php.net/rfc/marking_return_value_as_important
+#[NoDiscard]
+function get42(): int
+{
+    return 42;
+}
+function thatNoDiscard()
+{
+    (VOID)get42();
+}
+
+// https://wiki.php.net/rfc/deprecations_php_8_5
+switch ($a) {
+    case 1;
+        break;
+
+    default;
+        break;
+}
+
+// https://wiki.php.net/rfc/closures_in_const_expr
+class ClosuresInAttibutes
+{
+    #[Attribute123(someName: static function (): void {})]
+    public string $foo;
+}

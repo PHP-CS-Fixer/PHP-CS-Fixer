@@ -16,6 +16,11 @@ namespace PhpCsFixer\Tests\Smoke;
 
 use Keradus\CliExecutor\CommandExecutor;
 use PhpCsFixer\Console\Application;
+use PhpCsFixer\Preg;
+use PhpCsFixer\Tests\Test\TestCaseUtils;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Large;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -29,7 +34,12 @@ use Symfony\Component\Filesystem\Filesystem;
  * @group covers-nothing
  *
  * @large
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversNothing]
+#[Group('covers-nothing')]
+#[Large]
 final class InstallViaComposerTest extends AbstractSmokeTestCase
 {
     private ?Filesystem $fs;
@@ -93,6 +103,8 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->fs = new Filesystem();
     }
 
@@ -121,11 +133,9 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
             self::fail('No zip extension available.');
         }
 
-        $tmpArtifactPath = tempnam(sys_get_temp_dir(), 'cs_fixer_tmp_');
-        unlink($tmpArtifactPath);
-        $this->fs->mkdir($tmpArtifactPath);
+        $tmpArtifactPath = TestCaseUtils::createTemporaryDirectory();
 
-        $fakeVersion = preg_replace('/\-.+/', '', Application::VERSION, 1).'-alpha987654321';
+        $fakeVersion = Preg::replace('/\-.+/', '', Application::VERSION, 1).'-alpha987654321';
 
         $tmpPath = $this->createFakeComposerProject([
             'repositories' => [
@@ -185,25 +195,18 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
      */
     private function createFakeComposerProject(array $initialComposerFileState): string
     {
-        $tmpPath = tempnam(sys_get_temp_dir(), 'cs_fixer_tmp_');
-
-        if (false === $tmpPath) {
-            throw new \RuntimeException('Creating directory for fake Composer project has failed.');
-        }
-
-        unlink($tmpPath);
-        $this->fs->mkdir($tmpPath);
+        $tmpPath = TestCaseUtils::createTemporaryDirectory();
 
         try {
             file_put_contents(
                 $tmpPath.'/composer.json',
-                json_encode($initialComposerFileState, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT)
+                json_encode($initialComposerFileState, \JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT),
             );
         } catch (\JsonException $e) {
             throw new \InvalidArgumentException(
                 'Initial Composer file state could not be saved as composer.json',
                 $e->getCode(),
-                $e
+                $e,
             );
         }
 

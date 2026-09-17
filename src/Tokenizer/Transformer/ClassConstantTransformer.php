@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ClassConstantTransformer extends AbstractTransformer
 {
@@ -33,11 +35,16 @@ final class ClassConstantTransformer extends AbstractTransformer
         return 5_05_00;
     }
 
-    public function process(Tokens $tokens, Token $token, int $index): void
+    public function isCandidate(Tokens $tokens): bool
+    {
+        return $tokens->isAnyTokenKindsFound([\T_CLASS, \T_STRING]);
+    }
+
+    public function processToken(Tokens $tokens, Token $token, int $index): void
     {
         if (!$token->equalsAny([
-            [T_CLASS, 'class'],
-            [T_STRING, 'class'],
+            [\T_CLASS, 'class'],
+            [\T_STRING, 'class'],
         ], false)) {
             return;
         }
@@ -45,7 +52,7 @@ final class ClassConstantTransformer extends AbstractTransformer
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
         $prevToken = $tokens[$prevIndex];
 
-        if ($prevToken->isGivenKind(T_DOUBLE_COLON)) {
+        if ($prevToken->isGivenKind(\T_DOUBLE_COLON)) {
             $tokens[$index] = new Token([CT::T_CLASS_CONSTANT, $token->getContent()]);
         }
     }

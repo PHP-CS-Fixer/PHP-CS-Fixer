@@ -18,20 +18,24 @@ use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\WorkerCommand;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Console\Tester\ApplicationTester;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Console\Application
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Application::class)]
 final class ApplicationTest extends TestCase
 {
     public function testApplication(): void
     {
         $regex = '/^PHP CS Fixer <info>\d+.\d+.\d+(-DEV)?<\/info> <info>.+<\/info>'
             .' by <comment>Fabien Potencier<\/comment>, <comment>Dariusz Ruminski<\/comment> and <comment>contributors<\/comment>\.'
-            ."\nPHP runtime: <info>\\d+.\\d+.\\d+(-dev)?<\\/info>$/";
+            ."\nPHP runtime: <info>\\d+.\\d+.\\d+(-dev|beta\\d+)?<\\/info>$/";
 
         self::assertMatchesRegularExpression($regex, (new Application())->getLongVersion());
     }
@@ -52,7 +56,7 @@ final class ApplicationTest extends TestCase
 
         self::assertStringContainsString(
             WorkerCommand::ERROR_PREFIX.'{"class":"PhpCsFixer\\\Runner\\\Parallel\\\ParallelisationException","message":"Missing parallelisation options"',
-            $appTester->getDisplay()
+            $appTester->getDisplay(),
         );
     }
 }

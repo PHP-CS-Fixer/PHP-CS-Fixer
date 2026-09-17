@@ -4,13 +4,18 @@ Rule ``ordered_traits``
 
 Trait ``use`` statements must be sorted alphabetically.
 
-Warning
--------
+Warnings
+--------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when depending on order of the imports.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``case_sensitive``.
 
 Configuration
 -------------

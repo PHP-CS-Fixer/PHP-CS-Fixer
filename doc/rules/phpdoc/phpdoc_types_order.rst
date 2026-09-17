@@ -4,6 +4,15 @@ Rule ``phpdoc_types_order``
 
 Sorts PHPDoc types.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``case_sensitive``,
+``null_adjustment``, ``sort_algorithm``.
+
 Configuration
 -------------
 
@@ -136,7 +145,6 @@ The rule is part of the following rule sets:
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
   ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``
-
 
 References
 ----------

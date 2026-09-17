@@ -14,7 +14,10 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 
+use PhpCsFixer\Fixer\ControlStructure\ControlStructureBracesFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -22,12 +25,16 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\ControlStructure\ControlStructureBracesFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\ControlStructureBracesFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ControlStructureBracesFixer::class)]
 final class ControlStructureBracesFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -38,6 +45,21 @@ final class ControlStructureBracesFixerTest extends AbstractFixerTestCase
      */
     public static function provideFixCases(): iterable
     {
+        yield 'else with a body starting with a parenthesis' => [
+            '<?php if ($a) { b(); } else { (c() && d()) || e(); }',
+            '<?php if ($a) { b(); } else (c() && d()) || e();',
+        ];
+
+        yield 'nested bracesless control structures with such an else' => [
+            "<?php\nif (is_array(\$d)) {\n    foreach (\$d as \$x) {\n        (f(\$x) && g(\$x)) || h(\$x); } }\nelse {\n    (f(\$d) && g(\$d)) || h(\$d); }\n",
+            "<?php\nif (is_array(\$d))\n    foreach (\$d as \$x)\n        (f(\$x) && g(\$x)) || h(\$x);\nelse\n    (f(\$d) && g(\$d)) || h(\$d);\n",
+        ];
+
+        yield 'do with a body starting with a parenthesis' => [
+            '<?php do { (a() && b()) || c(); } while ($x);',
+            '<?php do (a() && b()) || c(); while ($x);',
+        ];
+
         yield 'if' => [
             '<?php if ($foo) { foo(); }',
             '<?php if ($foo) foo();',
@@ -159,6 +181,26 @@ final class ControlStructureBracesFixerTest extends AbstractFixerTestCase
 
         yield 'declare followed by closing tag' => [
             '<?php declare(strict_types=1) ?>',
+        ];
+
+        yield 'if with do-while inside' => [
+            '<?php if ($a) { do { foo(); } while ($b); }',
+            '<?php if ($a) do foo(); while ($b);',
+        ];
+
+        yield 'if with try-catch-finally inside' => [
+            '<?php if ($a) { try { foo(); } catch (\Exception $e) { bar(); } finally { baz(); } }',
+            '<?php if ($a) try { foo(); } catch (\Exception $e) { bar(); } finally { baz(); }',
+        ];
+
+        yield 'if with lambda function inside' => [
+            '<?php if ($a) { $f = function () { return 1; }; }',
+            '<?php if ($a) $f = function () { return 1; };',
+        ];
+
+        yield 'if with echo having closing tag and no semicolon' => [
+            '<?php if ($a) { echo 1; } ?>',
+            '<?php if ($a) echo 1 ?>',
         ];
     }
 }

@@ -3,26 +3,33 @@ Rule ``phpdoc_to_param_type``
 =============================
 
 Takes ``@param`` annotations of non-mixed types and adjusts accordingly the
-function signature. Requires PHP >= 7.0.
+function signature.
 
-Warning
--------
+Warnings
+--------
 
-This rule is experimental
+This rule is EXPERIMENTAL
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Rule is not covered with backward compatibility promise, use it at your own
-risk. Rule's behaviour may be changed at any point, including rule's name; its
-options' names, availability and allowed values; its default configuration. Rule
-may be even removed without prior notice. Feel free to provide feedback and help
-with determining final state of the rule.
+Rule is not covered with backward compatibility promise and may produce unstable
+or unexpected results, use it at your own risk. Rule's behaviour may be changed
+at any point, including rule's name; its options' names, availability and
+allowed values; its default configuration. Rule may be even removed without
+prior notice. Feel free to provide feedback and help with determining final
+state of the rule.
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 The ``@param`` annotation is mandatory for the fixer to make changes, signatures
 of methods without it (no docblock, inheritdocs) will not be fixed. Manual
 actions are required if inherited signatures are not properly documented.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``scalar_types``,
+``types_map``, ``union_types``.
 
 Configuration
 -------------
@@ -36,6 +43,15 @@ coercion system.
 Allowed types: ``bool``
 
 Default value: ``true``
+
+``types_map``
+~~~~~~~~~~~~~
+
+Map of custom types, e.g. template types from PHPStan.
+
+Allowed types: ``array<string, string>``
+
+Default value: ``[]``
 
 ``union_types``
 ~~~~~~~~~~~~~~~
@@ -101,6 +117,7 @@ With configuration: ``['union_types' => false]``.
    +function foo(Foo $foo) {}
     /** @param int|string $foo */
     function bar($foo) {}
+
 References
 ----------
 

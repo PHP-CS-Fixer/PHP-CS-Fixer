@@ -4,6 +4,15 @@ Rule ``doctrine_annotation_array_assignment``
 
 Doctrine annotations must use configured operator for assignment in arrays.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``ignored_tags``,
+``operator``.
+
 Configuration
 -------------
 
@@ -68,7 +77,6 @@ The rule is part of the following rule set:
 - `@DoctrineAnnotation <./../../ruleSets/DoctrineAnnotation.rst>`_ with config:
 
   ``['operator' => ':']``
-
 
 References
 ----------

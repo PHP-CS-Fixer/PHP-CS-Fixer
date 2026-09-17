@@ -14,7 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
+use PhpCsFixer\Fixer\ClassNotation\SelfStaticAccessorFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -22,19 +26,23 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\ClassNotation\SelfStaticAccessorFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\SelfStaticAccessorFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(SelfStaticAccessorFixer::class)]
 final class SelfStaticAccessorFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -375,13 +383,93 @@ $a = static function() { return static::class; };
 $b = function() { return static::class; };
 ',
         ];
+
+        yield 'do not fix inside static lambda in class' => [
+            '<?php
+final class Foo
+{
+    public function Bar()
+    {
+        return static function() {
+            return static::class;
+        };
+    }
+}
+',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP >= 8.0.0
+     */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
+    public function testFix80(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function provideFix80Cases(): iterable
+    {
+        yield 'after method with static return type' => [
+            '<?php
+final class Foo
+{
+    public function bar(): static
+    {
+        return $this;
+    }
+
+    public function baz()
+    {
+        return new self();
+    }
+
+    public function qux()
+    {
+        return self::class;
+    }
+}
+',
+            '<?php
+final class Foo
+{
+    public function bar(): static
+    {
+        return $this;
+    }
+
+    public function baz()
+    {
+        return new static();
+    }
+
+    public function qux()
+    {
+        return static::class;
+    }
+}
+',
+        ];
+
+        yield 'after method with nullable static return type' => [
+            '<?php final class Foo { public function bar(): ?static { return $this; } public function baz() { return self::class; } }',
+            '<?php final class Foo { public function bar(): ?static { return $this; } public function baz() { return static::class; } }',
+        ];
     }
 
     /**
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testFix81(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
@@ -488,8 +576,10 @@ enum Foo
     /**
      * @dataProvider provideFix82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      */
+    #[DataProvider('provideFix82Cases')]
+    #[RequiresPhp('>= 8.2.0')]
     public function testFix82(string $expected, string $input): void
     {
         $this->doTest($expected, $input);

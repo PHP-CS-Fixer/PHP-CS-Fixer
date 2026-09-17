@@ -7,8 +7,8 @@ Order the flags in ``fopen`` calls, ``b`` and ``t`` must be last.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when the function ``fopen`` is overridden.
 

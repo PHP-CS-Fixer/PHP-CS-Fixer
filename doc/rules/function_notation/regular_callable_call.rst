@@ -7,8 +7,8 @@ Callables must be called without using ``call_user_func*`` when possible.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when the ``call_user_func`` or ``call_user_func_array`` function is
 overridden or when are used in constructions that should be avoided, like
@@ -48,6 +48,7 @@ Example #2
 
    -call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
    +(static function ($a, $b) { var_dump($a, $b); })(1, 2);
+
 References
 ----------
 

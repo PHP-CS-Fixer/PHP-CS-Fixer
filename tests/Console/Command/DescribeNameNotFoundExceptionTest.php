@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Console\Command;
 
 use PhpCsFixer\Console\Command\DescribeNameNotFoundException;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -23,7 +24,10 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Command\DescribeNameNotFoundException
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(DescribeNameNotFoundException::class)]
 final class DescribeNameNotFoundExceptionTest extends TestCase
 {
     public function testConstructorSetsValues(): void
@@ -33,7 +37,7 @@ final class DescribeNameNotFoundExceptionTest extends TestCase
 
         $exception = new DescribeNameNotFoundException(
             $name,
-            $type
+            $type,
         );
 
         self::assertSame($name, $exception->getName());

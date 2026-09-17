@@ -19,12 +19,18 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AttributeAnalyzer::class)]
 final class AttributeAnalyzerTest extends TestCase
 {
     /**
@@ -33,22 +39,24 @@ final class AttributeAnalyzerTest extends TestCase
     public function testNotAnAttribute(): void
     {
         $tokens = Tokens::fromCode('<?php class Foo { private $bar; }');
-        foreach ($tokens as $index => $token) {
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             self::assertFalse(AttributeAnalyzer::isAttribute($tokens, $index));
         }
     }
 
     /**
-     * @requires     PHP 8.0
+     * @requires     PHP >= 8.0.0
      *
      * @dataProvider provideIsAttributeCases
      */
+    #[RequiresPhp('>= 8.0.0')]
+    #[DataProvider('provideIsAttributeCases')]
     public function testIsAttribute(bool $isInAttribute, string $code): void
     {
         $tokens = Tokens::fromCode($code);
 
         foreach ($tokens as $index => $token) {
-            if ($token->equals([T_STRING, 'Foo'])) {
+            if ($token->equals([\T_STRING, 'Foo'])) {
                 if (isset($testedIndex)) {
                     self::fail('Test is run against index of "Foo", multiple occurrences found.');
                 }
@@ -65,7 +73,7 @@ final class AttributeAnalyzerTest extends TestCase
     /**
      * Test case requires to having "Foo" as it will be searched for to test its index.
      *
-     * @return iterable<array{bool, string}>
+     * @return iterable<int, array{bool, string}>
      */
     public static function provideIsAttributeCases(): iterable
     {
@@ -133,19 +141,21 @@ final class AttributeAnalyzerTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      *
      * @dataProvider provideGetAttributeDeclarationsCases
      *
      * @param list<AttributeAnalysis> $expectedAnalyses
      */
+    #[RequiresPhp('>= 8.0.0')]
+    #[DataProvider('provideGetAttributeDeclarationsCases')]
     public function testGetAttributeDeclarations(string $code, int $startIndex, array $expectedAnalyses): void
     {
         $tokens = Tokens::fromCode($code);
         $actualAnalyses = AttributeAnalyzer::collect($tokens, $startIndex);
 
         foreach ($expectedAnalyses as $expectedAnalysis) {
-            self::assertSame(T_ATTRIBUTE, $tokens[$expectedAnalysis->getOpeningBracketIndex()]->getId());
+            self::assertSame(\T_ATTRIBUTE, $tokens[$expectedAnalysis->getOpeningBracketIndex()]->getId());
             self::assertSame(CT::T_ATTRIBUTE_CLOSE, $tokens[$expectedAnalysis->getClosingBracketIndex()]->getId());
         }
 
@@ -156,7 +166,7 @@ final class AttributeAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1: int, 2: list<AttributeAnalysis>}>
+     * @return iterable<string, array{0: string, 1: int, 2: list<AttributeAnalysis>}>
      */
     public static function provideGetAttributeDeclarationsCases(): iterable
     {
@@ -342,19 +352,21 @@ final class AttributeAnalyzerTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      *
      * @dataProvider provideGetAttributeDeclarations81Cases
      *
      * @param list<AttributeAnalysis> $expectedAnalyses
      */
+    #[RequiresPhp('>= 8.1.0')]
+    #[DataProvider('provideGetAttributeDeclarations81Cases')]
     public function testGetAttributeDeclarations81(string $code, int $startIndex, array $expectedAnalyses): void
     {
         $this->testGetAttributeDeclarations($code, $startIndex, $expectedAnalyses);
     }
 
     /**
-     * @return iterable<array{0: string, 1: int, 2: list<AttributeAnalysis>}>
+     * @return iterable<string, array{0: string, 1: int, 2: list<AttributeAnalysis>}>
      */
     public static function provideGetAttributeDeclarations81Cases(): iterable
     {

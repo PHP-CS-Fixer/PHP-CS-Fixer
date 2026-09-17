@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -22,12 +24,20 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @internal
  *
  * @covers \PhpCsFixer\WhitespacesFixerConfig
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(WhitespacesFixerConfig::class)]
 final class WhitespacesFixerConfigTest extends TestCase
 {
     /**
+     * @param non-empty-string  $indent
+     * @param non-empty-string  $lineEnding
+     * @param ?non-empty-string $exceptionRegExp
+     *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $indent, string $lineEnding, ?string $exceptionRegExp = null): void
     {
         if (null !== $exceptionRegExp) {
@@ -42,7 +52,7 @@ final class WhitespacesFixerConfigTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1: string, 2?: string}>
+     * @return iterable<int, array{0: non-empty-string, 1: non-empty-string, 2?: non-empty-string}>
      */
     public static function provideFixCases(): iterable
     {

@@ -18,6 +18,9 @@ declare(ticks=1);
  */
 class FooBar
 {
+    /**
+     * @var int
+     */
     public const SOME_CONST = 42;
 
     private $fooBar;
@@ -119,6 +122,7 @@ function callback($a, ...$b)
     return (--$a) * ($b++);
 }
 
+/** @var int $a */
 $a = &$b;
 $c = &$d;
 

@@ -1,0 +1,23 @@
+--TEST--
+Integration of fixers: php_unit_data_provider_static,modifier_keywords.
+--RULESET--
+{"php_unit_data_provider_static": true, "modifier_keywords": true}
+--EXPECT--
+<?php
+class FooTest extends TestCase {
+    /**
+    * @dataProvider provideFooCases
+    */
+    public function testFoo() {}
+    public static function provideFooCases() { $x->getData(); }
+}
+
+--INPUT--
+<?php
+class FooTest extends TestCase {
+    /**
+    * @dataProvider provideFooCases
+    */
+    function testFoo() {}
+    function provideFooCases() { $x->getData(); }
+}

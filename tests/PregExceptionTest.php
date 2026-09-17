@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\PregException;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>
@@ -22,7 +23,10 @@ use PhpCsFixer\PregException;
  * @internal
  *
  * @covers \PhpCsFixer\PregException
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(PregException::class)]
 final class PregExceptionTest extends TestCase
 {
     public function testPregException(): void

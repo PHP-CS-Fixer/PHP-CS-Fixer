@@ -16,30 +16,21 @@ namespace PhpCsFixer\Tests\Test;
 
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TestCaseUtils
 {
-    /**
-     * @param iterable<array{0: string, 1?: string}> $cases
-     *
-     * @return iterable<array{0: string, 1?: string}>
-     */
-    public static function swapExpectedInputTestCases(iterable $cases): iterable
+    public static function createTemporaryDirectory(): string
     {
-        foreach ($cases as $case) {
-            if (1 === \count($case)) {
-                yield $case;
+        $directory = sys_get_temp_dir().'/php-cs-fixer-test-'.bin2hex(random_bytes(8));
+        (new Filesystem())->mkdir($directory);
 
-                continue;
-            }
-
-            [$case[0], $case[1]] = [$case[1], $case[0]];
-
-            yield $case;
-        }
+        return $directory;
     }
 
     public static function getFixerByName(string $name): FixerInterface

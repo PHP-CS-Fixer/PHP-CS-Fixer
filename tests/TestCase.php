@@ -20,27 +20,37 @@ use PHPUnit\Framework\TestCase as BaseTestCase;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class TestCase extends BaseTestCase
 {
     /** @var null|callable */
     private $previouslyDefinedErrorHandler;
 
-    /** @var list<string> */
+    /** @var array<int, string> */
     private array $expectedDeprecations = [];
 
-    /** @var list<string> */
+    /** @var array<int, string> */
     private array $actualDeprecations = [];
 
-    protected function tearDown(): void
+    protected function assertPostConditions(): void
     {
         if (null !== $this->previouslyDefinedErrorHandler) {
             $this->actualDeprecations = array_unique($this->actualDeprecations);
             sort($this->actualDeprecations);
             $this->expectedDeprecations = array_unique($this->expectedDeprecations);
             sort($this->expectedDeprecations);
-            self::assertSame($this->expectedDeprecations, $this->actualDeprecations);
 
+            self::assertSame($this->expectedDeprecations, $this->actualDeprecations);
+        }
+
+        parent::assertPostConditions();
+    }
+
+    protected function tearDown(): void
+    {
+        if (null !== $this->previouslyDefinedErrorHandler) {
             restore_error_handler();
         }
 
@@ -72,13 +82,19 @@ abstract class TestCase extends BaseTestCase
                     int $code,
                     string $message
                 ) {
-                    if (E_USER_DEPRECATED === $code || E_DEPRECATED === $code) {
+                    if (\E_USER_DEPRECATED === $code || \E_DEPRECATED === $code) {
                         $this->actualDeprecations[] = $message;
                     }
 
                     return true;
-                }
+                },
             );
         }
+    }
+
+    /** @TODO find better place for me */
+    final protected static function createSerializedStringOfClassName(string $className): string
+    {
+        return \sprintf('O:%d:"%s":0:{}', \strlen($className), $className);
     }
 }
