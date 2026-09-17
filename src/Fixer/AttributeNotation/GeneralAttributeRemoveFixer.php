@@ -24,9 +24,12 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\FullyQualifiedNameAnalyzer;
 use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Tokens;
+use Symfony\Component\OptionsResolver\Options;
 
 /**
  * @phpstan-import-type _AttributeItems from AttributeAnalysis
@@ -92,6 +95,8 @@ final class GeneralAttributeRemoveFixer extends AbstractFixer implements Configu
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        $fullyQualifiedNameAnalyzer = new FullyQualifiedNameAnalyzer($tokens);
+
         $index = 0;
 
         while (null !== $index = $tokens->getNextTokenOfKind($index, [[\T_ATTRIBUTE]])) {
@@ -101,7 +106,7 @@ final class GeneralAttributeRemoveFixer extends AbstractFixer implements Configu
 
             $removedCount = 0;
             foreach ($attributeAnalysis->getAttributes() as $element) {
-                $fullname = AttributeAnalyzer::determineAttributeFullyQualifiedName($tokens, $element['name'], $element['start']);
+                $fullname = $fullyQualifiedNameAnalyzer->getFullyQualifiedName($element['name'], $element['start'], NamespaceUseAnalysis::TYPE_CLASS);
 
                 if (!\in_array($fullname, $this->configuration['attributes'], true)) {
                     continue;
@@ -139,6 +144,10 @@ final class GeneralAttributeRemoveFixer extends AbstractFixer implements Configu
             (new FixerOptionBuilder('attributes', 'List of FQNs of attributes for removal.'))
                 ->setAllowedTypes(['class-string[]'])
                 ->setDefault([])
+                ->setNormalizer(static fn (Options $options, array $value): array => array_map(
+                    static fn (string $attribute): string => ltrim($attribute, '\\'),
+                    $value,
+                ))
                 ->getOption(),
         ]);
     }
