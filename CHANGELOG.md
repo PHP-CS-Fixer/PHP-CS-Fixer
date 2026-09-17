@@ -3,6 +3,79 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.25
+----------------------
+
+* fix: handle missing terminator after `??` in `AssignNullCoalescingToCoalesceEqualFixer` (#9831)
+* fix: `IsNullFixer` - do not fix is_null() calls using argument unpacking (#9830)
+* fix: `IsNullFixer` - handle is_null() calls using named arguments (#9828)
+* UX: init - use outlined messages (#9826)
+* deps: bump crate-ci/typos from 1.49.0 to 1.50.1 in /.github/workflows in the all group across 1 directory (#9824)
+* deps: bump phpstan/phpstan from 2.2.9 to 2.2.12 in /dev-tools in the phpstan group (#9822)
+* deps: bump shipmonk/dead-code-detector from 1.3.3 to 1.4.0 in /dev-tools in the shipmonk group across 1 directory (#9823)
+
+Changelog for v3.95.24
+----------------------
+
+* fix: `ControlStructureBracesFixer` - do not read a body starting with a parenthesis as a condition (#9815)
+* UX: init - add handling of `.gitignore` (#9813)
+* UX: init - add sections (#9819)
+* UX: init - command improvements (#9807)
+* UX: init - fix typos and improve wording (#9820)
+* UX: init command - suggest php_unit_test_case_static_method_calls rule (#9810)
+* chore: Fixer name must not be empty (#9756)
+* chore: `DescribeCommand` - replace dynamic method calls with explicit ones (#9817)
+* chore: `PhpdocOrderFixer` - fix type of duplicated tags passed to `naturalLanguageJoin` (#9818)
+* CI: fix warning - Unexpected input(s) 'extensions' (#9809)
+* CI: introduce PHPBench (#9755)
+* refactor: init - move content preparation to helper method (#9812)
+
+Changelog for v3.95.23
+----------------------
+
+* fix: `FunctionsAnalyzer` - detect return type of a closure with a `use` clause (#9806)
+
+Changelog for v3.95.22
+----------------------
+
+* fix: `StaticLambdaFixer` - do not make a lambda static when it is the direct subject of bindTo() or call() (#9802)
+* chore: Implement PHPStan `Preg::replaceCallback()` extension (#9799)
+* chore: `Utils` - fix `stableSort()` and `sortFixers()` template types, remove `@phpstan-ignore` suppressions (#9798)
+* deps: bump phpstan/phpstan from 2.2.8 to 2.2.9 (#9797)
+
+Changelog for v3.95.21
+----------------------
+
+* fix: `StatementIndentationFixer` - do not treat ternary colon as block start (#9795)
+* perf: Introduce new candidate check for transformers (#9770)
+* perf: Optimize `NameQualifiedTransformer` token insertion (#9759)
+* CI: add BC check (#9791)
+* deps: upgrade dev-tools (#9793)
+
+Changelog for v3.95.20
+----------------------
+
+* fix: `PsrAutoloadingFixer` - do not throw when the file cannot be resolved on disk (#9762)
+* refactor: Transformers - move looping over tokens directly into each transformer individually (#9782)
+* test: drop `mikey179/vfsstream` (#9787)
+* test: NoUnusedImportsFixerTest - add new cases around quoted values (#9784)
+
+Changelog for v3.95.19
+----------------------
+
+* fix: binary_operator_spaces alignment for nested single-line arrays in multiline array (#9654)
+* fix: `ClassDefinitionFixer` - keep multiline constructor args when anonymous class has both `extends` and `implements` (#9625)
+* fix: `SelfStaticAccessorFixer` - do not stop fixing a class after a `static` return type (#9774)
+* chore: Fix incorrect URL in CommentsAnalyzer.php docblock (#9772)
+* chore: `Runner` - ignore coverage of non-deterministic parallel branches (#9785)
+* CI: fix using `PHP_CS_FIXER_FAST_LINT_TEST_CASES` (#9783)
+* deps: bump phpstan/phpstan from 2.2.7 to 2.2.8 in /dev-tools in the phpstan group (#9779)
+* deps: bump squizlabs/php_codesniffer from 4.0.1 to 4.0.4 in /dev-tools (#9768)
+* deps: bump the all group across 1 directory with 2 updates (#9767)
+* test: introduce `TestCaseUtils::createTemporaryDirectory()` helper (#9788)
+* test: ProjectCodeTest - restore the duplicate check in data providers (#9761)
+* test: `AbstractFixerTestCase` - use `spl_object_id()` to fix PHP 8.6 deprecations (#9786)
+
 Changelog for v3.95.18
 ----------------------
 

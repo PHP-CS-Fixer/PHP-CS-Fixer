@@ -31,7 +31,12 @@ final class FirstClassCallableTransformer extends AbstractTransformer
         return 8_01_00;
     }
 
-    public function process(Tokens $tokens, Token $token, int $index): void
+    public function isCandidate(Tokens $tokens): bool
+    {
+        return $tokens->isTokenKindFound(\T_ELLIPSIS);
+    }
+
+    public function processToken(Tokens $tokens, Token $token, int $index): void
     {
         if (
             $token->isGivenKind(\T_ELLIPSIS)

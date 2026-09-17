@@ -41,7 +41,12 @@ final class DisjunctiveNormalFormTypeParenthesisTransformer extends AbstractTran
         return 8_02_00;
     }
 
-    public function process(Tokens $tokens, Token $token, int $index): void
+    public function isCandidate(Tokens $tokens): bool
+    {
+        return $tokens->isTokenKindFound(CT::T_TYPE_ALTERNATION);
+    }
+
+    public function processToken(Tokens $tokens, Token $token, int $index): void
     {
         if ($token->equals('(') && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(CT::T_TYPE_ALTERNATION)) {
             $openIndex = $index;

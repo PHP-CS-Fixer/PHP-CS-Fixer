@@ -430,6 +430,20 @@ class ClassTwo {};
             ['dir' => __FILE__],
             new \SplFileInfo(__FILE__),
         ];
+
+        yield 'file that does not exist, but has a name that can be a class name' => [
+            '<?php namespace Aaa; class Foo {}',
+            null,
+            [],
+            new \SplFileInfo('Bar.php'),
+        ];
+
+        yield 'file that does not exist, but has a name that can be a class name, with "dir" configured' => [
+            '<?php namespace Aaa; class Foo {}',
+            null,
+            ['dir' => __DIR__],
+            new \SplFileInfo('Bar.php'),
+        ];
     }
 
     /**
