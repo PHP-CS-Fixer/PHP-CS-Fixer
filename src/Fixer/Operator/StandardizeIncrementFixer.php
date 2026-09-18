@@ -55,7 +55,7 @@ final class StandardizeIncrementFixer extends AbstractIncrementOperatorFixer
      * {@inheritdoc}
      *
      * Must run before IncrementStyleFixer.
-     * Must run after LongToShorthandOperatorFixer.
+     * Must run after LongToShorthandOperatorFixer, LongToShorthandOperatorForComplexTargetsFixer.
      */
     public function getPriority(): int
     {

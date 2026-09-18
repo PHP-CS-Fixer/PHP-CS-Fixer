@@ -5,9 +5,9 @@ Integration of fixers: long_to_shorthand_operator,standardize_increment.
 --EXPECT--
 <?php
 
-++$definitions[$argument];
+++$counter;
 
 --INPUT--
 <?php
 
-$definitions[$argument] = $definitions[$argument] + 1;
+$counter = $counter + 1;
