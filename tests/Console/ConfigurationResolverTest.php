@@ -25,6 +25,7 @@ use PhpCsFixer\Console\Output\Progress\ProgressOutputType;
 use PhpCsFixer\Console\Report\FixReport\CheckstyleReporter;
 use PhpCsFixer\Console\Report\FixReport\GitlabReporter;
 use PhpCsFixer\Console\Report\FixReport\JsonReporter;
+use PhpCsFixer\Console\Report\FixReport\RawReporter;
 use PhpCsFixer\Console\Report\FixReport\TextReporter;
 use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Differ\UnifiedDiffer;
@@ -311,7 +312,7 @@ final class ConfigurationResolverTest extends TestCase
     public function testResolveConfigFileChooseFileWithInvalidFormat(): void
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessageMatches('/^The format "xls" is not defined, supported are "checkstyle", "gitlab", "json", "junit", "txt" and "xml"\.$/');
+        $this->expectExceptionMessageMatches('/^The format "xls" is not defined, supported are "checkstyle", "gitlab", "json", "junit", "raw", "txt" and "xml"\.$/');
 
         $dirBase = self::getFixtureDir();
 
@@ -1580,6 +1581,81 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
             '@auto,json',
             ['AI_AGENT' => 'true'],
         ];
+    }
+
+    public function testGetReporterForFormatWithTooManyParts(): void
+    {
+        $resolver = $this->createConfigurationResolver([
+            'format' => '@auto,json,txt',
+        ]);
+
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('The format "@auto,json,txt" is invalid.');
+
+        $resolver->getReporter();
+    }
+
+    public function testGetReporterForRawFormatOnStdIn(): void
+    {
+        $resolver = $this->createConfigurationResolver([
+            'format' => 'raw',
+            'path' => ['-'],
+        ]);
+
+        self::assertInstanceOf(RawReporter::class, $resolver->getReporter());
+    }
+
+    public function testGetReporterForRawFormatOnRegularPath(): void
+    {
+        $resolver = $this->createConfigurationResolver([
+            'format' => 'raw',
+            'path' => [__FILE__],
+        ]);
+
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('The format "raw" is available only when the input is read from STDIN.');
+
+        $resolver->getReporter();
+    }
+
+    public function testGetReporterForStdInWithoutFutureMode(): void
+    {
+        $resolver = $this->createConfigurationResolver([
+            'path' => ['-'],
+        ]);
+
+        self::assertInstanceOf(TextReporter::class, $resolver->getReporter());
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    #[RunInSeparateProcess]
+    public function testGetReporterForStdInWithFutureMode(): void
+    {
+        putenv('PHP_CS_FIXER_FUTURE_MODE=1');
+
+        $resolver = $this->createConfigurationResolver([
+            'path' => ['-'],
+        ]);
+
+        self::assertInstanceOf(RawReporter::class, $resolver->getReporter());
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    #[RunInSeparateProcess]
+    public function testGetReporterForStdInWithFutureModeAndExplicitFormat(): void
+    {
+        putenv('PHP_CS_FIXER_FUTURE_MODE=1');
+
+        $resolver = $this->createConfigurationResolver([
+            'format' => 'txt',
+            'path' => ['-'],
+        ]);
+
+        self::assertInstanceOf(TextReporter::class, $resolver->getReporter());
     }
 
     /**
