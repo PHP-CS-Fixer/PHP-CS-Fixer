@@ -315,6 +315,51 @@ $load = function ($path) use ($data) {
      */
     public static function provideFix85Cases(): iterable
     {
+        foreach ([
+            'global constant' => '<?php const CALLBACK = static function () { return 1; };',
+            'class constant' => '<?php class Holder { const CALLBACK = static function () { return 1; }; }',
+            'property default' => '<?php class Holder { public $callback = static function () { return 1; }; }',
+            'parameter default' => '<?php function take($callback = static function () { return 1; }) {}',
+            'reference-returning declaration parameter' => '<?php function &take($callback = static function () { return 1; }) { return $callback; }',
+            'abstract declaration parameter' => '<?php interface Factory { public function take($callback = static function () { return 1; }); }',
+            'arrow function parameter default' => '<?php $take = fn ($callback = static function () { return 1; }) => $callback;',
+            'array in constant' => '<?php const CALLBACKS = [static function () { return 1; }, static function () { return 2; }];',
+            'new expression in parameter default' => '<?php function take($holder = new Holder(static function () { return 1; })) {}',
+            'constant before close tag' => '<?php const CALLBACK = static function () { return 1; } ?>',
+        ] as $context => $code) {
+            yield 'preserve closure in '.$context => [$code];
+        }
+
+        yield 'convert runtime closure after a constant declaration' => [
+            '<?php const CALLBACK = static function () { return 1; }; $runtime = static fn () => 2;',
+            '<?php const CALLBACK = static function () { return 1; }; $runtime = static function () { return 2; };',
+        ];
+
+        yield 'convert enclosing runtime closure but preserve its default' => [
+            '<?php $take = fn ($callback = static function () { return 1; }) => $callback;',
+            '<?php $take = function ($callback = static function () { return 1; }) { return $callback; };',
+        ];
+
+        yield 'convert runtime closure in constant closure body' => [
+            '<?php const CALLBACK = static function () { return fn () => 1; };',
+            '<?php const CALLBACK = static function () { return function () { return 1; }; };',
+        ];
+
+        yield 'convert runtime closure in attribute closure body' => [
+            '<?php #[Callback(static function () { return fn () => 1; })] class Holder {}',
+            '<?php #[Callback(static function () { return function () { return 1; }; })] class Holder {}',
+        ];
+
+        yield 'anonymous class arguments are runtime, defaults are constant' => [
+            '<?php $holder = new class(static fn () => 1) { public $callback = static function () { return 2; }; };',
+            '<?php $holder = new class(static function () { return 1; }) { public $callback = static function () { return 2; }; };',
+        ];
+
+        yield 'property hook body is runtime' => [
+            '<?php class Holder { public Closure $callback { get => static fn () => 1; } }',
+            '<?php class Holder { public Closure $callback { get => static function () { return 1; }; } }',
+        ];
+
         yield 'do not convert closure in attribute' => [
             <<<'PHP'
                 <?php
