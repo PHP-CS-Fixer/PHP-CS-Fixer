@@ -138,7 +138,7 @@ final class PhpUnitDataProviderMethodOrderFixer extends AbstractPhpUnitFixer imp
                     $sortedBefore = $sorted;
                     $sorted = $this->moveMethodElement(
                         $sorted,
-                        $usageName === $sameUsageName
+                        ($usageName === $sameUsageName && false !== $sameProviderName)
                             ? $sameProviderName
                             : $usageName,
                         $providerName,
