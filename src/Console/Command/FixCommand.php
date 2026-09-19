@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Console\Command;
 
 use PhpCsFixer\Config;
+use PhpCsFixer\Config\FixerAnnotationMode;
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Application;
@@ -209,6 +210,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 new InputArgument('path', InputArgument::IS_ARRAY, 'The path(s) that rules will be run against (each path can be a file or directory).'),
                 new InputOption('path-mode', '', InputOption::VALUE_REQUIRED, HelpCommand::getDescriptionWithAllowedValues('Specify path mode (%s).', ConfigurationResolver::PATH_MODE_VALUES), ConfigurationResolver::PATH_MODE_OVERRIDE, ConfigurationResolver::PATH_MODE_VALUES),
                 new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, HelpCommand::getDescriptionWithAllowedValues('Are risky fixers allowed (%s).', ConfigurationResolver::BOOL_VALUES), null, ConfigurationResolver::BOOL_VALUES),
+                new InputOption('fixer-annotation-mode', '', InputOption::VALUE_REQUIRED, HelpCommand::getDescriptionWithAllowedValues('Control @php-cs-fixer-ignore annotations (%s).', FixerAnnotationMode::all()), null, FixerAnnotationMode::all()),
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a config file.'),
                 new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified.'),
                 new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'List of rules that should be run against configured paths.', null, static function () {
@@ -245,6 +247,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
             $this->defaultConfig,
             [
                 'allow-risky' => $input->getOption('allow-risky'),
+                'fixer-annotation-mode' => $input->getOption('fixer-annotation-mode'),
                 'config' => $passedConfig,
                 'dry-run' => $this->isDryRun($input),
                 'rules' => $passedRules,
@@ -393,6 +396,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
             $input,
             $resolver->getConfigFile(),
             $resolver->getRuleCustomisationPolicy(),
+            $resolver->getFixerAnnotationMode(),
         );
 
         $this->eventDispatcher->addListener(FileProcessed::NAME, [$progressOutput, 'onFixerFileProcessed']);

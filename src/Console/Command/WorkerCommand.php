@@ -18,6 +18,7 @@ use Clue\React\NDJson\Decoder;
 use Clue\React\NDJson\Encoder;
 use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Config;
+use PhpCsFixer\Config\FixerAnnotationMode;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Runner\Event\FileProcessed;
@@ -77,6 +78,7 @@ final class WorkerCommand extends Command
                 new InputOption('port', null, InputOption::VALUE_REQUIRED, 'Specifies parallelisation server\'s port.'),
                 new InputOption('identifier', null, InputOption::VALUE_REQUIRED, 'Specifies parallelisation process\' identifier.'),
                 new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, HelpCommand::getDescriptionWithAllowedValues('Are risky fixers allowed (%s).', ConfigurationResolver::BOOL_VALUES), null, ConfigurationResolver::BOOL_VALUES),
+                new InputOption('fixer-annotation-mode', '', InputOption::VALUE_REQUIRED, HelpCommand::getDescriptionWithAllowedValues('Control @php-cs-fixer-ignore annotations (%s).', FixerAnnotationMode::all()), null, FixerAnnotationMode::all()),
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a config file.'),
                 new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified.'),
                 new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'List of rules that should be run against configured paths.'),
@@ -218,6 +220,7 @@ final class WorkerCommand extends Command
             new Config(),
             [
                 'allow-risky' => $input->getOption('allow-risky'),
+                'fixer-annotation-mode' => $input->getOption('fixer-annotation-mode'),
                 'config' => $passedConfig,
                 'dry-run' => $input->getOption('dry-run'),
                 'rules' => $passedRules,
@@ -247,6 +250,7 @@ final class WorkerCommand extends Command
             null,
             $this->configurationResolver->getConfigFile(),
             $this->configurationResolver->getRuleCustomisationPolicy(),
+            $this->configurationResolver->getFixerAnnotationMode(),
         );
     }
 }

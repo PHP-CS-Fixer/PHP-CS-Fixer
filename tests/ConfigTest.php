@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Config;
+use PhpCsFixer\Config\FixerAnnotationMode;
 use PhpCsFixer\Config\NullRuleCustomisationPolicy;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Application;
@@ -44,6 +45,8 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
 #[CoversClass(Config::class)]
 final class ConfigTest extends TestCase
 {
+    private const LEGACY_FIXER_ANNOTATION_ENV = 'PHP_CS_FIXER_IGNORE_MISMATCHED_RULES_EXCEPTIONS';
+
     public function testFutureMode(): void
     {
         $futureMode = getenv('PHP_CS_FIXER_FUTURE_MODE');
@@ -261,7 +264,14 @@ final class ConfigTest extends TestCase
 
     public function testConfigDefault(): void
     {
-        $config = new Config();
+        $previousLegacyFixerAnnotationValue = getenv(self::LEGACY_FIXER_ANNOTATION_ENV);
+        putenv(self::LEGACY_FIXER_ANNOTATION_ENV);
+
+        try {
+            $config = new Config();
+        } finally {
+            putenv(false === $previousLegacyFixerAnnotationValue ? self::LEGACY_FIXER_ANNOTATION_ENV : self::LEGACY_FIXER_ANNOTATION_ENV.'='.$previousLegacyFixerAnnotationValue);
+        }
 
         self::assertSame('.php-cs-fixer.cache', $config->getCacheFile());
         self::assertSame([], $config->getCustomFixers());
@@ -306,12 +316,41 @@ final class ConfigTest extends TestCase
 
         self::assertNull($config->getRuleCustomisationPolicy());
 
+        self::assertSame(FixerAnnotationMode::MATCHING, $config->getFixerAnnotationMode());
+        $config->setFixerAnnotationMode(FixerAnnotationMode::FORBIDDEN);
+        self::assertSame(FixerAnnotationMode::FORBIDDEN, $config->getFixerAnnotationMode());
+
         $ruleCustomisationPolicy = new NullRuleCustomisationPolicy();
         $config->setRuleCustomisationPolicy($ruleCustomisationPolicy);
         self::assertSame($ruleCustomisationPolicy, $config->getRuleCustomisationPolicy());
 
         $config->setRuleCustomisationPolicy(null);
         self::assertNull($config->getRuleCustomisationPolicy());
+    }
+
+    public function testInvalidFixerAnnotationMode(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown fixer annotation mode "invalid".');
+
+        (new Config())->setFixerAnnotationMode('invalid'); // @phpstan-ignore argument.type (we explicitly test an invalid mode)
+    }
+
+    public function testLegacyFixerAnnotationEnvironmentVariable(): void
+    {
+        $previousValue = getenv(self::LEGACY_FIXER_ANNOTATION_ENV);
+        putenv(self::LEGACY_FIXER_ANNOTATION_ENV.'=1');
+
+        $this->expectDeprecation(\sprintf(
+            'Environment variable "%s" is deprecated; use Config::setFixerAnnotationMode() or --fixer-annotation-mode instead.',
+            self::LEGACY_FIXER_ANNOTATION_ENV,
+        ));
+
+        try {
+            self::assertSame(FixerAnnotationMode::ALL, (new Config())->getFixerAnnotationMode());
+        } finally {
+            putenv(false === $previousValue ? self::LEGACY_FIXER_ANNOTATION_ENV : self::LEGACY_FIXER_ANNOTATION_ENV.'='.$previousValue);
+        }
     }
 
     public function testConfigConstructorWithName(): void
