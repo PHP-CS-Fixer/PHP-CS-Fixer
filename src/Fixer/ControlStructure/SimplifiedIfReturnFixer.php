@@ -174,8 +174,8 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
         $bool2 = $tokens->getNextMeaningfulToken($next);
         \assert(null !== $bool2); // token must exist otherwise $tokens is not valid syntax
 
-        if (!$tokens[$bool2]->equals([\T_STRING, $isNegative ? 'true' : 'false'])) { // in 2nd return, we search for opposite value
-            // not a boolean
+        if (!$tokens[$bool2]->equals([\T_STRING, $isNegative ? 'true' : 'false'])) {
+            // not a boolean opposite to one in 1st `return` statement
             return null;
         }
 
