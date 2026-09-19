@@ -61,7 +61,7 @@ interface FixerInterface
      *
      * The name must be all lowercase and without any spaces.
      *
-     * @return string The name of the fixer
+     * @return non-empty-string The name of the fixer
      */
     public function getName(): string;
 

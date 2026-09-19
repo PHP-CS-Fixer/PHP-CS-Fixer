@@ -18,8 +18,9 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer;
 use PhpCsFixer\AbstractPhpdocTypesFixer;
 use PhpCsFixer\AbstractProxyFixer;
+use PhpCsFixer\Compat\Symfony\Component\Console\Style\SymfonyStyle;
+use PhpCsFixer\Compat\Symfony\Component\Console\Style\SymfonyStyleCompat;
 use PhpCsFixer\Console\Command\FixCommand;
-use PhpCsFixer\Console\Command\InitCommand;
 use PhpCsFixer\Console\Internal\Command\ParseCommand;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
@@ -121,9 +122,10 @@ final class ProjectCodeTest extends TestCase
         $testClassName = 'PhpCsFixer\Tests'.substr($className, 10).'Test';
 
         $exceptions = [
-            InitCommand::class,
             DocumentationTag::class,
             DocumentationTagGenerator::class,
+            SymfonyStyle::class,
+            SymfonyStyleCompat::class,
         ];
 
         // we allow exceptions to _not_ follow the rule,
@@ -874,6 +876,16 @@ final class ProjectCodeTest extends TestCase
             true,
         )) {
             self::markTestSkipped(\sprintf("Classy '%s' is deprecated alias and thus exception.", $className));
+        }
+
+        if (\in_array(
+            $className,
+            [
+                SymfonyStyle::class,
+            ],
+            true,
+        )) {
+            self::markTestSkipped(\sprintf("Classy '%s' is compat polyfill and thus exception.", $className));
         }
 
         $headerTypes = [

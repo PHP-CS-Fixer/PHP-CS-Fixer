@@ -3,6 +3,38 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.25
+----------------------
+
+* fix: handle missing terminator after `??` in `AssignNullCoalescingToCoalesceEqualFixer` (#9831)
+* fix: `IsNullFixer` - do not fix is_null() calls using argument unpacking (#9830)
+* fix: `IsNullFixer` - handle is_null() calls using named arguments (#9828)
+* UX: init - use outlined messages (#9826)
+* deps: bump crate-ci/typos from 1.49.0 to 1.50.1 in /.github/workflows in the all group across 1 directory (#9824)
+* deps: bump phpstan/phpstan from 2.2.9 to 2.2.12 in /dev-tools in the phpstan group (#9822)
+* deps: bump shipmonk/dead-code-detector from 1.3.3 to 1.4.0 in /dev-tools in the shipmonk group across 1 directory (#9823)
+
+Changelog for v3.95.24
+----------------------
+
+* fix: `ControlStructureBracesFixer` - do not read a body starting with a parenthesis as a condition (#9815)
+* UX: init - add handling of `.gitignore` (#9813)
+* UX: init - add sections (#9819)
+* UX: init - command improvements (#9807)
+* UX: init - fix typos and improve wording (#9820)
+* UX: init command - suggest php_unit_test_case_static_method_calls rule (#9810)
+* chore: Fixer name must not be empty (#9756)
+* chore: `DescribeCommand` - replace dynamic method calls with explicit ones (#9817)
+* chore: `PhpdocOrderFixer` - fix type of duplicated tags passed to `naturalLanguageJoin` (#9818)
+* CI: fix warning - Unexpected input(s) 'extensions' (#9809)
+* CI: introduce PHPBench (#9755)
+* refactor: init - move content preparation to helper method (#9812)
+
+Changelog for v3.95.23
+----------------------
+
+* fix: `FunctionsAnalyzer` - detect return type of a closure with a `use` clause (#9806)
+
 Changelog for v3.95.22
 ----------------------
 

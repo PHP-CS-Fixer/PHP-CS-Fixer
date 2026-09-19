@@ -8,6 +8,9 @@ inputs:
     description: coverage mode
     required: false
     default: none
+  extensions:
+    description: PHP extensions
+    required: false
   tools:
     description: tools
     required: false
