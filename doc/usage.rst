@@ -44,8 +44,8 @@ However, in some case you may want to fine-tune parallelisation with explicit va
     ;
 
 You can also specify a path to execute a command only over a nested directory or a file.
-By default ``--path-mode`` is set to `override`, which means, that if you specify the path to a directory or a file via
-command arguments, then the paths provided to a `Finder` in config file will be ignored. You can use ``--path-mode=intersection``,
+By default ``--path-mode`` is set to ``override``, which means, that if you specify the path to a directory or a file via
+command arguments, then the paths provided to a ``Finder`` in config file will be ignored. You can use ``--path-mode=intersection``,
 which will use the intersection of the paths from the config file and from the argument:
 
 .. code-block:: console
