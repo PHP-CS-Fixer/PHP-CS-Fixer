@@ -21,28 +21,6 @@ If you do not have config file, you can run following command to fix non-hidden,
 
     php php-cs-fixer.phar fix .
 
-You can also fix files in parallel, utilising more CPU cores. You can do this by using config class that implements
-`PhpCsFixer\\ParallelAwareConfigInterface <./../src/ParallelAwareConfigInterface.php>`_, and use ``setParallelConfig()`` method.
-Recommended way is to utilise auto-detecting parallel configuration:
-
-.. code-block:: php
-
-    <?php
-
-    return (new PhpCsFixer\Config())
-        ->setParallelConfig(PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect())
-    ;
-
-However, in some case you may want to fine-tune parallelisation with explicit values (e.g. in environments where auto-detection does not work properly and suggests more cores than it should):
-
-.. code-block:: php
-
-    <?php
-
-    return (new PhpCsFixer\Config())
-        ->setParallelConfig(new PhpCsFixer\Runner\Parallel\ParallelConfig(4, 20))
-    ;
-
 You can also specify a path to execute a command only over a nested directory or a file.
 By default ``--path-mode`` is set to ``override``, which means, that if you specify the path to a directory or a file via
 command arguments, then the paths provided to a ``Finder`` in config file will be ignored. You can use ``--path-mode=intersection``,
@@ -51,6 +29,16 @@ which will use the intersection of the paths from the config file and from the a
 .. code-block:: console
 
     php php-cs-fixer.phar fix --path-mode=intersection /path/to/dir
+
+PHP CS Fixer executes in parallel by default, utilising more CPU cores. You can also fine-tune parallelisation with explicit values (e.g. if you want to disable it, or in environments where auto-detection does not work properly and suggests more cores than it should):
+
+.. code-block:: php
+
+    <?php
+
+    return (new PhpCsFixer\Config())
+        ->setParallelConfig(new PhpCsFixer\Runner\Parallel\ParallelConfig(4, 20))
+    ;
 
 The ``--format`` option for the output format. Supported formats are ``@auto`` (default one on v4+), ``txt`` (default one on v3), ``checkstyle``, ``gitlab``, ``json``, ``junit`` and ``xml``.
 
