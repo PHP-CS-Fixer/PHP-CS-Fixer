@@ -20,6 +20,8 @@ use PhpCsFixer\Fixer\FixerInterface;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
+ * @TODO v4 convert return type here and in Config class from :self to :static, keep the $this phpdoc
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 interface ConfigInterface
