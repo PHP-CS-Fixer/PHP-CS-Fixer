@@ -117,11 +117,10 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
             $indices[] = $start;
 
             $start = $tokens->getNextMeaningfulToken($start);
-
-            if (null === $start) {
-                return null;
-            }
+            \assert(null !== $start); // token must exist otherwise $tokens is not valid syntax
         }
+
+        // searching for first return
 
         if (\T_RETURN !== $tokens[$start]->getId()) {
             return null;
@@ -130,17 +129,19 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
         $indices[] = $start;
 
         $bool1 = $tokens->getNextMeaningfulToken($start);
-        if (null === $bool1 || \T_STRING !== $tokens[$bool1]->getId()) {
+        \assert(null !== $bool1); // token must exist otherwise $tokens is not a valid syntax
+
+        if (!$tokens[$bool1]->equalsAny([[\T_STRING, 'true'], [\T_STRING, 'false']])) {
+            // not a boolean
             return null;
         }
 
         $value1 = $tokens[$bool1]->getContent();
-        if ('true' !== $value1 && 'false' !== $value1) {
-            return null;
-        }
 
         $semi1 = $tokens->getNextMeaningfulToken($bool1);
-        if (null === $semi1 || ';' !== $tokens[$semi1]->getContent()) {
+        \assert(null !== $semi1); // token must exist otherwise $tokens is not valid syntax
+
+        if (';' !== $tokens[$semi1]->getContent()) {
             return null;
         }
 
@@ -149,6 +150,8 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
 
         $next = $tokens->getNextMeaningfulToken($semi1);
         if (null === $next) {
+            // can there be a valid case there is nothing after $semi1 ?
+
             return null;
         }
 
@@ -161,6 +164,8 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
             }
         }
 
+        // searching for second return
+
         if (\T_RETURN !== $tokens[$next]->getId()) {
             return null;
         }
@@ -168,23 +173,23 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
         $indices[] = $next;
 
         $bool2 = $tokens->getNextMeaningfulToken($next);
-        if (null === $bool2 || \T_STRING !== $tokens[$bool2]->getId()) {
+        \assert(null !== $bool2); // token must exist otherwise $tokens is not valid syntax
+
+        if (!$tokens[$bool2]->equalsAny([[\T_STRING, 'true'], [\T_STRING, 'false']])) {
+            // not a boolean
             return null;
         }
 
         $value2 = $tokens[$bool2]->getContent();
 
-        if (('true' !== $value2 && 'false' !== $value2) || $value1 === $value2) {
+        $semi2 = $tokens->getNextMeaningfulToken($bool2);
+        \assert(null !== $semi2); // token must exist otherwise $tokens is not valid syntax
+
+        if (';' !== $tokens[$semi2]->getContent()) {
             return null;
         }
 
         $indices[] = $bool2;
-
-        $semi2 = $tokens->getNextMeaningfulToken($bool2);
-        if (null === $semi2 || ';' !== $tokens[$semi2]->getContent()) {
-            return null;
-        }
-
         $indices[] = $semi2;
 
         return [
