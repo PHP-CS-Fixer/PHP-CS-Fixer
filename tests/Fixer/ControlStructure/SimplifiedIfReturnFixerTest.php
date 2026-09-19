@@ -310,5 +310,33 @@ else:
 endif;
 ',
         ];
+
+        yield 'ternary-not-fixed' => [
+            '<?php return $foo ? true : false;',
+        ];
+
+        yield 'single-return-without-{}-not-fixed' => [
+            '<?php if ($foo) return true;',
+        ];
+
+        yield 'single-return-not-fixed' => [
+            '<?php if ($foo) { return true; }',
+        ];
+
+        yield 'different-values-not-fixed' => [
+            '<?php if ($foo) { return 1; } return 2;',
+        ];
+
+        yield 'null-not-fixed' => [
+            '<?php if ($foo) { return true; } return null;',
+        ];
+
+        yield '2x-true-not-fixed' => [
+            '<?php if ($foo) { return true; } return true;',
+        ];
+
+        yield '2x-false-not-fixed' => [
+            '<?php if ($foo) { return false; } return false;',
+        ];
     }
 }
