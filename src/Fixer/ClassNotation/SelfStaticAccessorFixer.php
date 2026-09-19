@@ -213,14 +213,14 @@ final class SelfStaticAccessorFixer extends AbstractFixer
                 continue;
             }
 
-            $staticIndex = $index;
-            $index = $tokens->getNextMeaningfulToken($index);
+            $nextIndex = $tokens->getNextMeaningfulToken($index);
 
-            if (!$tokens[$index]->isGivenKind(\T_DOUBLE_COLON)) {
+            if (!$tokens[$nextIndex]->isGivenKind(\T_DOUBLE_COLON)) {
                 continue;
             }
 
-            $tokens[$staticIndex] = new Token([\T_STRING, 'self']);
+            $tokens[$index] = new Token([\T_STRING, 'self']);
+            $index = $nextIndex;
         }
 
         return $index;

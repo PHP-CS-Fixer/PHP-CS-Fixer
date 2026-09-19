@@ -81,5 +81,7 @@ jobs:
             PHP_VERSION=${{ matrix.php-version }}
             ALPINE_VERSION=${{ matrix.alpine-version }}
           push: true
+          provenance: mode=max
+          sbom: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

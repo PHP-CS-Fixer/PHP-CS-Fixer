@@ -8,6 +8,9 @@ inputs:
     description: coverage mode
     required: false
     default: none
+  extensions:
+    description: PHP extensions
+    required: false
   tools:
     description: tools
     required: false
@@ -22,5 +25,5 @@ runs:
         php-version: ${{ inputs.version }}
         coverage: ${{ inputs.coverage }}
         tools: composer, ${{ inputs.tools }}
-        extensions: none, ctype, curl, dom, iconv, json, mbstring, opcache, openssl, simplexml, tokenizer, xml, xmlwriter, zip
+        extensions: none, ctype, curl, dom, iconv, json, mbstring, opcache, openssl, simplexml, tokenizer, xml, xmlwriter, zip, ${{ inputs.extensions }}
         ini-values: display_errors=On, display_startup_errors=On, error_reporting=-1, zend.assertions=1

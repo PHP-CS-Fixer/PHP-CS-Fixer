@@ -686,15 +686,6 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
-                    $a = new Foo() <=> 1;
-                ',
-            '<?php
-                    $a = new Foo <=> 1;
-                ',
-        ];
-
-        yield [
-            '<?php
                     $a = new class() {use SomeTrait;};
                     $a = new class() implements Foo{};
                     $a = new class() /**/ extends Bar1{};

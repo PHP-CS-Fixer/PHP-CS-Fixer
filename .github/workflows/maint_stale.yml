@@ -38,7 +38,7 @@ jobs:
     steps:
       # Config reference: https://github.com/actions/stale
       - name: Handle stale issues and pull requests
-        uses: actions/stale@v10
+        uses: actions/stale@v11
         with:
           close-issue-message: ${{ env.CLOSE_MESSAGE }}
           close-pr-message: ${{ env.CLOSE_MESSAGE }} When it comes to pull requests it may be better to create new one, on top of main branch.
@@ -48,8 +48,8 @@ jobs:
           days-before-pr-close: ${{ env.DAYS_BEFORE_PR_CLOSE }}
           days-before-pr-stale: ${{ env.DAYS_BEFORE_PR_STALE }}
           exempt-all-milestones: true
-          exempt-issue-labels: topic/core
-          exempt-pr-labels: topic/core
+          exempt-issue-labels: RTM,topic/core
+          exempt-pr-labels: RTM,topic/core
           labels-to-add-when-unstale: status/to verify
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           stale-issue-label: status/stale

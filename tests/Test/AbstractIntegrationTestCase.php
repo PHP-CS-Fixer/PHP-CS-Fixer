@@ -21,10 +21,7 @@ use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FileRemoval;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
-use PhpCsFixer\Linter\CachingLinter;
-use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
-use PhpCsFixer\Linter\ProcessLinter;
 use PhpCsFixer\PhpunitConstraintIsIdenticalString\Constraint\IsIdenticalString;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\Tests\TestCase;
@@ -81,6 +78,8 @@ use Symfony\Component\Finder\Finder;
  */
 abstract class AbstractIntegrationTestCase extends TestCase
 {
+    use LinterProviderTrait;
+
     protected ?LinterInterface $linter = null;
 
     private static ?FileRemoval $fileRemoval = null;
@@ -357,14 +356,23 @@ abstract class AbstractIntegrationTestCase extends TestCase
     }
 
     /**
+     * Potential entry point to register custom fixers for integration tests, if needed.
+     */
+    protected static function createFixerFactory(): FixerFactory
+    {
+        return (new FixerFactory())
+            ->registerBuiltInFixers()
+        ;
+    }
+
+    /**
      * @return list<FixerInterface>
      */
     private static function createFixers(IntegrationCase $case): array
     {
         $config = $case->getConfig();
 
-        return (new FixerFactory())
-            ->registerBuiltInFixers()
+        return static::createFixerFactory()
             ->useRuleSet($case->getRuleset())
             ->setWhitespacesConfig(
                 new WhitespacesFixerConfig($config['indent'], $config['lineEnding']),
@@ -392,20 +400,5 @@ abstract class AbstractIntegrationTestCase extends TestCase
         }
 
         return $errorStr;
-    }
-
-    private function getLinter(): LinterInterface
-    {
-        static $linter = null;
-
-        if (null === $linter) {
-            $linter = new CachingLinter(
-                filter_var(getenv('PHP_CS_FIXER_FAST_LINT_TEST_CASES'), \FILTER_VALIDATE_BOOLEAN)
-                    ? new Linter()
-                    : new ProcessLinter(),
-            );
-        }
-
-        return $linter;
     }
 }

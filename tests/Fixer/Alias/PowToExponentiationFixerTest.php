@@ -286,6 +286,21 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
+            '<?php
+$a = '.'
+    1**
+    2
+;
+',
+            '<?php
+$a = pow(
+    1,
+    2,
+);
+',
+        ];
+
+        yield [
             '<?php echo 10_0** 2;',
             '<?php echo pow(10_0, 2);',
         ];

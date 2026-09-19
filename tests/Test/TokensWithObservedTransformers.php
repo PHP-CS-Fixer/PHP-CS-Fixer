@@ -61,10 +61,10 @@ final class TokensWithObservedTransformers extends Tokens
             $this->currentTransformer = $transformer->getName();
             $this->observedModificationsPerTransformer[$this->currentTransformer] = [];
 
-            foreach ($this as $index => $token) {
-                $transformer->process($this, $token, $index);
-            }
+            $transformer->process($this);
         }
+
+        $this->clearEmptyTokens();
 
         $this->currentTransformer = null;
     }

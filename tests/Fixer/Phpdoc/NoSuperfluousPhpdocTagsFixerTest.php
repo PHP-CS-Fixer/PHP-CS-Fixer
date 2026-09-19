@@ -2643,6 +2643,48 @@ static fn ($foo): int => 1;',
             ['allow_hidden_params' => true],
         ];
 
+        yield '@param for multiple hidden parameter with option disabled' => [
+            <<<'EOD'
+                <?php
+                /**
+                 */
+                function foo(array $bundleConfig/* , string $bundleDir1 = null, string $bundleDir2 = null, mixed $bundleDir3 = null */) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * @param array   $bundleConfig
+                 * @param ?string $bundleDir1
+                 * @param ?string $bundleDir2
+                 * @param mixed $bundleDir3
+                 */
+                function foo(array $bundleConfig/* , string $bundleDir1 = null, string $bundleDir2 = null, mixed $bundleDir3 = null */) {}
+                EOD,
+            ['allow_hidden_params' => false],
+        ];
+
+        yield '@param for multiple hidden parameter with option enabled' => [
+            <<<'EOD'
+                <?php
+                /**
+                 * @param ?string $bundleDir1
+                 * @param ?string $bundleDir2
+                 */
+                function foo(array $bundleConfig/* , string $bundleDir1 = null, string $bundleDir2 = null, mixed $bundleDir3 = null */) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * @param array   $bundleConfig
+                 * @param ?string $bundleDir1
+                 * @param ?string $bundleDir2
+                 * @param mixed $bundleDir3
+                 */
+                function foo(array $bundleConfig/* , string $bundleDir1 = null, string $bundleDir2 = null, mixed $bundleDir3 = null */) {}
+                EOD,
+            ['allow_hidden_params' => true],
+        ];
+
         yield '@param without space between variable name and description' => [
             <<<'EOD'
                 <?php
