@@ -160,10 +160,9 @@ final class CacheTest extends TestCase
     public function testFromJsonThrowsInvalidArgumentExceptionIfKeyHasWrongType(array $data): void
     {
         $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageMatches('/ is expected to be (a string|an array)\.$/');
 
-        $json = json_encode($data, \JSON_THROW_ON_ERROR);
-
-        Cache::fromJson($json);
+        Cache::fromJson(json_encode($data, \JSON_THROW_ON_ERROR));
     }
 
     /**
