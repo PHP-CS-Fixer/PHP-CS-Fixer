@@ -42,7 +42,10 @@ final class FileHandler implements FileHandlerInterface
 
     public function read(): ?CacheInterface
     {
-        if (!$this->fileInfo->isFile() || !$this->fileInfo->isReadable()) {
+        // Refuse to follow a symlinked cache path: a checkout-supplied symlink at the predictable
+        // default cache location could otherwise be read/written through, reaching a file outside
+        // the intended cache location.
+        if (is_link($this->fileInfo->getPathname()) || !$this->fileInfo->isFile() || !$this->fileInfo->isReadable()) {
             return null;
         }
 
@@ -135,6 +138,18 @@ final class FileHandler implements FileHandlerInterface
 
     private function ensureFileIsWriteable(): void
     {
+        if (is_link($this->fileInfo->getPathname())) {
+            // Do not write through a symbolic link: a checkout-supplied symlink at the predictable
+            // default cache path would otherwise be followed and its target truncated/overwritten
+            // (this also fires for `check`/`--dry-run`, which still writes the cache).
+            throw new IOException(
+                \sprintf('Cannot write cache file "%s" as it is a symbolic link.', $this->fileInfo->getPathname()),
+                0,
+                null,
+                $this->fileInfo->getPathname(),
+            );
+        }
+
         if ($this->fileInfo->isFile() && $this->fileInfo->isWritable()) {
             // all good
             return;

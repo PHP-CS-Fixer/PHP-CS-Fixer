@@ -203,6 +203,34 @@ final class FileHandlerTest extends TestCase
         $cleanPath();
     }
 
+    public function testWriteRefusesSymlinkedCachePathAndDoesNotOverwriteTarget(): void
+    {
+        $dir = __DIR__.'/../Fixtures/cache-file-handler';
+        $victim = $dir.'/symlink-victim.test';
+        $link = $dir.'/symlinked-cache.test';
+        @unlink($link);
+        @unlink($victim);
+        file_put_contents($victim, 'do not overwrite me');
+
+        if (!@symlink($victim, $link)) {
+            @unlink($victim);
+            self::markTestSkipped('Cannot create symbolic links on this system.');
+        }
+
+        $handler = new FileHandler($link);
+
+        try {
+            $handler->write(new Cache($this->createSignature()));
+            self::fail('Expected IOException was not thrown.');
+        } catch (IOException $e) {
+            self::assertStringContainsString('is a symbolic link', $e->getMessage());
+        } finally {
+            self::assertStringEqualsFile($victim, 'do not overwrite me', 'The symlink target must not be overwritten.');
+            @unlink($link);
+            @unlink($victim);
+        }
+    }
+
     private function getFile(): string
     {
         return __DIR__.'/.php-cs-fixer.cache';
