@@ -203,7 +203,7 @@ final class FileHandlerTest extends TestCase
         $cleanPath();
     }
 
-    public function testWriteRefusesSymlinkedCachePathAndDoesNotOverwriteTarget(): void
+    public function testReadIgnoresAndWriteRefusesSymlinkedCachePathWithoutOverwritingTarget(): void
     {
         $dir = __DIR__.'/../Fixtures/cache-file-handler';
         $victim = $dir.'/symlink-victim.test';
@@ -218,6 +218,8 @@ final class FileHandlerTest extends TestCase
         }
 
         $handler = new FileHandler($link);
+
+        self::assertNull($handler->read());
 
         try {
             $handler->write(new Cache($this->createSignature()));

@@ -138,7 +138,7 @@ final class FileHandler implements FileHandlerInterface
 
     private function ensureFileIsWriteable(): void
     {
-        if (is_link($this->fileInfo->getPathname())) {
+        if ($this->fileInfo->isLink()) {
             // Do not write through a symbolic link: a checkout-supplied symlink at the predictable
             // default cache path would otherwise be followed and its target truncated/overwritten
             // (this also fires for `check`/`--dry-run`, which still writes the cache).
