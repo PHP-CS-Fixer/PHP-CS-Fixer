@@ -168,7 +168,7 @@ final class FileHandler implements FileHandlerInterface
         // Ensure path is created, but ignore if already exists. FYI: ignore EA suggestion in IDE,
         // `mkdir()` returns `false` for existing paths, so we can't mix it with `is_dir()` in one condition.
         if (!@is_dir($dir)) {
-            @mkdir($dir, 0777, true);
+            @mkdir($dir, 0755, true);
         }
 
         if (!@is_dir($dir)) {
@@ -180,7 +180,6 @@ final class FileHandler implements FileHandlerInterface
             );
         }
 
-        @touch($file);
-        @chmod($file, 0666);
+        @touch($file); // with default 0644 file mode
     }
 }

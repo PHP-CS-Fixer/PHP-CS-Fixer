@@ -28,6 +28,8 @@ use PhpCsFixer\Runner\Runner;
 use Symfony\Component\Finder\Finder;
 
 /**
+ * @example PHP_CS_FIXER_BENCH_RULE=simplified_if_return PHP_CS_FIXER_BENCH_FILES_LIMIT=500 ./vendor/bin/phpbench run tests/Benchmark/FixersBench.php
+ *
  * @BeforeMethods("setUp")
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.

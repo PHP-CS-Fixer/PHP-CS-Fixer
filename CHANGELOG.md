@@ -3,6 +3,20 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.26
+----------------------
+
+* perf: Use dedicated sequence matcher in `simplified_if_return` (#9763)
+* DX: add XDEBUG for PHP 8.5 docker build (#9841)
+* chore: ConfigInterface - document TODO for v4 (#9845)
+* chore: drop `benchmark.sh` in favour of `phpbench` (#9849)
+* chore: stalebot - exclude RTM labels (#9843)
+* deps: bump dev-deps (#9840)
+* deps: explicitly expect PHPUnit 13.3+ over 13.0.x (#9842)
+* deps: update dev deps (#9848)
+* docs: do not promote deprecated `path` argument usage with `--path-mode=override` (#9850)
+* docs: simpler docs for parallel execution, as it's default one nowadays (#9851)
+
 Changelog for v3.95.25
 ----------------------
 

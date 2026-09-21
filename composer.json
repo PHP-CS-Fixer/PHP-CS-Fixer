@@ -57,7 +57,7 @@
         "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.8",
         "phpunit/phpunit": "^9.6.36 || ^10.5.64 || ^11.5.56 || ^12.5.35 || ^13.3.3",
         "symfony/polyfill-php85": "^1.41",
-        "symfony/var-dumper": "^5.4.48 || ^6.4.45 || ^7.4.18 || ^8.1.6",
+        "symfony/var-dumper": "^5.4.48 || ^6.4.45 || ^7.4.18 || ^8.1.7",
         "symfony/yaml": "^5.4.53 || ^6.4.45 || ^7.4.18 || ^8.1.6"
     },
     "suggest": {
