@@ -48,62 +48,62 @@ final class SimplifiedIfReturnFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield 'simple' => [
-            '<?php return (bool) ($foo)      ;',
+            '<?php return (bool) ($foo);',
             '<?php if ($foo) { return true; } return false;',
         ];
 
         yield 'simple-negative' => [
-            '<?php return ! ($foo)      ;',
+            '<?php return ! ($foo);',
             '<?php if ($foo) { return false; } return true;',
         ];
 
         yield 'simple-negative II' => [
-            '<?php return ! (!$foo && $a())      ;',
+            '<?php return ! (!$foo && $a());',
             '<?php if (!$foo && $a()) { return false; } return true;',
         ];
 
         yield 'simple-braceless' => [
-            '<?php return (bool) ($foo)    ;',
+            '<?php return (bool) ($foo);',
             '<?php if ($foo) return true; return false;',
         ];
 
         yield 'simple-braceless-negative' => [
-            '<?php return ! ($foo)    ;',
+            '<?php return ! ($foo);',
             '<?php if ($foo) return false; return true;',
         ];
 
         yield 'bug-consecutive-ifs' => [
-            '<?php if ($bar) { return 1; } return (bool) ($foo)      ;',
+            '<?php if ($bar) { return 1; } return (bool) ($foo);',
             '<?php if ($bar) { return 1; } if ($foo) { return true; } return false;',
         ];
 
         yield 'bug-consecutive-ifs-negative' => [
-            '<?php if ($bar) { return 1; } return ! ($foo)      ;',
+            '<?php if ($bar) { return 1; } return ! ($foo);',
             '<?php if ($bar) { return 1; } if ($foo) { return false; } return true;',
         ];
 
         yield 'bug-consecutive-ifs-braceless' => [
-            '<?php if ($bar) return 1; return (bool) ($foo)    ;',
+            '<?php if ($bar) return 1; return (bool) ($foo);',
             '<?php if ($bar) return 1; if ($foo) return true; return false;',
         ];
 
         yield 'bug-consecutive-ifs-braceless-negative' => [
-            '<?php if ($bar) return 1; return ! ($foo)    ;',
+            '<?php if ($bar) return 1; return ! ($foo);',
             '<?php if ($bar) return 1; if ($foo) return false; return true;',
         ];
 
         yield [
             <<<'EOT'
                 <?php
-                function f1() { return (bool) ($f1)      ; }
+                function f1() { return (bool) ($f1); }
                 function f2() { return true; } return false;
-                function f3() { return (bool) ($f3)      ; }
+                function f3() { return (bool) ($f3); }
                 function f4() { return true; } return false;
-                function f5() { return (bool) ($f5)      ; }
+                function f5() { return (bool) ($f5); }
                 function f6() { return false; } return true;
-                function f7() { return ! ($f7)      ; }
+                function f7() { return ! ($f7); }
                 function f8() { return false; } return true;
-                function f9() { return ! ($f9)      ; }
+                function f9() { return ! ($f9); }
                 EOT,
             <<<'EOT'
                 <?php
@@ -234,42 +234,42 @@ final class SimplifiedIfReturnFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'else-if' => [
-            '<?php if ($bar) { return $bar; } else return (bool) ($foo)      ;',
+            '<?php if ($bar) { return $bar; } else return (bool) ($foo);',
             '<?php if ($bar) { return $bar; } else if ($foo) { return true; } return false;',
         ];
 
         yield 'else-if-negative' => [
-            '<?php if ($bar) { return $bar; } else return ! ($foo)      ;',
+            '<?php if ($bar) { return $bar; } else return ! ($foo);',
             '<?php if ($bar) { return $bar; } else if ($foo) { return false; } return true;',
         ];
 
         yield 'else-if-braceless' => [
-            '<?php if ($bar) return $bar; else return (bool) ($foo)    ;',
+            '<?php if ($bar) return $bar; else return (bool) ($foo);',
             '<?php if ($bar) return $bar; else if ($foo) return true; return false;',
         ];
 
         yield 'else-if-braceless-negative' => [
-            '<?php if ($bar) return $bar; else return ! ($foo)    ;',
+            '<?php if ($bar) return $bar; else return ! ($foo);',
             '<?php if ($bar) return $bar; else if ($foo) return false; return true;',
         ];
 
         yield 'elseif' => [
-            '<?php if ($bar) { return $bar; } return (bool) ($foo)      ;',
+            '<?php if ($bar) { return $bar; } return (bool) ($foo);',
             '<?php if ($bar) { return $bar; } elseif ($foo) { return true; } return false;',
         ];
 
         yield 'elseif-negative' => [
-            '<?php if ($bar) { return $bar; } return ! ($foo)      ;',
+            '<?php if ($bar) { return $bar; } return ! ($foo);',
             '<?php if ($bar) { return $bar; } elseif ($foo) { return false; } return true;',
         ];
 
         yield 'elseif-braceless' => [
-            '<?php if ($bar) return $bar; return (bool) ($foo)    ;',
+            '<?php if ($bar) return $bar; return (bool) ($foo);',
             '<?php if ($bar) return $bar; elseif ($foo) return true; return false;',
         ];
 
         yield 'elseif-braceless-negative' => [
-            '<?php if ($bar) return $bar; return ! ($foo)    ;',
+            '<?php if ($bar) return $bar; return ! ($foo);',
             '<?php if ($bar) return $bar; elseif ($foo) return false; return true;',
         ];
 
@@ -309,6 +309,94 @@ else:
     return false;
 endif;
 ',
+        ];
+
+        yield 'complex-condition-with-parentheses' => [
+            '<?php return (bool) (($foo && $bar));',
+            '<?php if (($foo && $bar)) { return true; } return false;',
+        ];
+
+        yield 'complex-condition-with-parentheses-negative' => [
+            '<?php return ! (($foo || $bar));',
+            '<?php if (($foo || $bar)) { return false; } return true;',
+        ];
+
+        yield 'method-call-condition' => [
+            '<?php return (bool) ($obj->isValid());',
+            '<?php if ($obj->isValid()) { return true; } return false;',
+        ];
+
+        yield 'method-call-condition-negative' => [
+            '<?php return ! ($obj->isValid());',
+            '<?php if ($obj->isValid()) { return false; } return true;',
+        ];
+
+        yield 'function-call-condition' => [
+            '<?php return (bool) (isset($foo));',
+            '<?php if (isset($foo)) { return true; } return false;',
+        ];
+
+        yield 'function-call-condition-negative' => [
+            '<?php return ! (empty($foo));',
+            '<?php if (empty($foo)) { return false; } return true;',
+        ];
+
+        yield 'array-access-condition' => [
+            '<?php return (bool) ($arr[0]);',
+            '<?php if ($arr[0]) { return true; } return false;',
+        ];
+
+        yield 'array-access-condition-negative' => [
+            '<?php return ! ($arr[$key]);',
+            '<?php if ($arr[$key]) { return false; } return true;',
+        ];
+
+        yield 'static-property-condition' => [
+            '<?php return (bool) (self::$flag);',
+            '<?php if (self::$flag) { return true; } return false;',
+        ];
+
+        yield 'static-property-condition-negative' => [
+            '<?php return ! (static::$enabled);',
+            '<?php if (static::$enabled) { return false; } return true;',
+        ];
+
+        yield 'instance-property-condition' => [
+            '<?php return (bool) ($this->active);',
+            '<?php if ($this->active) { return true; } return false;',
+        ];
+
+        yield 'instance-property-condition-negative' => [
+            '<?php return ! ($this->enabled);',
+            '<?php if ($this->enabled) { return false; } return true;',
+        ];
+
+        yield 'multiple-consecutive-ifs' => [
+            '<?php if ($a) { return 1; } return (bool) ($b); if ($c) { return 3; }',
+            '<?php if ($a) { return 1; } if ($b) { return true; } return false; if ($c) { return 3; }',
+        ];
+
+        yield 'spaces-around-condition' => [
+            '<?php return (bool) ( $foo );',
+            '<?php if ( $foo ) { return true; } return false;',
+        ];
+
+        yield 'newlines-in-condition' => [
+            <<<'EOT'
+                <?php return (bool) (
+                    $foo
+                );
+                EOT,
+            <<<'EOT'
+                <?php if (
+                    $foo
+                ) { return true; } return false;
+                EOT,
+        ];
+
+        yield 'multiple-spaces-after-if' => [
+            '<?php return (bool)  (  $foo  );',
+            '<?php if  (  $foo  ) { return true; } return false;',
         ];
 
         yield 'ternary-not-fixed' => [
