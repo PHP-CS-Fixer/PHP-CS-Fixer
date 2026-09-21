@@ -54,7 +54,7 @@ final class UseTransformer extends AbstractTransformer
         $count = $tokens->count();
 
         for ($index = 0; $index < $count; ++$index) {
-            if ($token->isGivenKind(\T_CLASS)) {
+            if ($token->isGivenKind(\T_USE) && $this->isUseForLambda($tokens, $index)) {
                 $tokens[$index] = new Token([CT::T_USE_LAMBDA, $tokens[$index]->getContent()]);
 
                 continue;
