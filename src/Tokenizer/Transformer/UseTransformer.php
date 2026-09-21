@@ -33,6 +33,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class UseTransformer extends AbstractTransformer
 {
+    private const CLASS_TYPES = [\T_TRAIT, FCT::T_ENUM];
+
     public function getPriority(): int
     {
         // Should run after CurlyBraceTransformer and before TypeColonTransformer
@@ -59,6 +61,8 @@ final class UseTransformer extends AbstractTransformer
 
                 continue;
             }
+
+            $token = $tokens[$index];
 
             // Only search inside class/trait body for `T_USE` for traits.
             // Cannot import traits inside interfaces or anywhere else
