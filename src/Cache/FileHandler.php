@@ -45,7 +45,7 @@ final class FileHandler implements FileHandlerInterface
         // Refuse to follow a symlinked cache path: a checkout-supplied symlink at the predictable
         // default cache location could otherwise be read/written through, reaching a file outside
         // the intended cache location.
-        if (is_link($this->fileInfo->getPathname()) || !$this->fileInfo->isFile() || !$this->fileInfo->isReadable()) {
+        if ($this->fileInfo->isLink() || !$this->fileInfo->isFile() || !$this->fileInfo->isReadable()) {
             return null;
         }
 
