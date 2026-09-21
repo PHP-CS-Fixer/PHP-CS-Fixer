@@ -56,13 +56,13 @@ final class UseTransformer extends AbstractTransformer
         $count = $tokens->count();
 
         for ($index = 0; $index < $count; ++$index) {
+            $token = $tokens[$index];
+
             if ($token->isGivenKind(\T_USE) && $this->isUseForLambda($tokens, $index)) {
-                $tokens[$index] = new Token([CT::T_USE_LAMBDA, $tokens[$index]->getContent()]);
+                $tokens[$index] = new Token([CT::T_USE_LAMBDA, $token->getContent()]);
 
                 continue;
             }
-
-            $token = $tokens[$index];
 
             // Only search inside class/trait body for `T_USE` for traits.
             // Cannot import traits inside interfaces or anywhere else
