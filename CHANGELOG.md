@@ -3,6 +3,31 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.26
+----------------------
+
+* perf: Use dedicated sequence matcher in `simplified_if_return` (#9763)
+* DX: add XDEBUG for PHP 8.5 docker build (#9841)
+* chore: ConfigInterface - document TODO for v4 (#9845)
+* chore: drop `benchmark.sh` in favour of `phpbench` (#9849)
+* chore: stalebot - exclude RTM labels (#9843)
+* deps: bump dev-deps (#9840)
+* deps: explicitly expect PHPUnit 13.3+ over 13.0.x (#9842)
+* deps: update dev deps (#9848)
+* docs: do not promote deprecated `path` argument usage with `--path-mode=override` (#9850)
+* docs: simpler docs for parallel execution, as it's default one nowadays (#9851)
+
+Changelog for v3.95.25
+----------------------
+
+* fix: handle missing terminator after `??` in `AssignNullCoalescingToCoalesceEqualFixer` (#9831)
+* fix: `IsNullFixer` - do not fix is_null() calls using argument unpacking (#9830)
+* fix: `IsNullFixer` - handle is_null() calls using named arguments (#9828)
+* UX: init - use outlined messages (#9826)
+* deps: bump crate-ci/typos from 1.49.0 to 1.50.1 in /.github/workflows in the all group across 1 directory (#9824)
+* deps: bump phpstan/phpstan from 2.2.9 to 2.2.12 in /dev-tools in the phpstan group (#9822)
+* deps: bump shipmonk/dead-code-detector from 1.3.3 to 1.4.0 in /dev-tools in the shipmonk group across 1 directory (#9823)
+
 Changelog for v3.95.24
 ----------------------
 

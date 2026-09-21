@@ -14,13 +14,13 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Console\Command;
 
+use PhpCsFixer\Compat\Symfony\Component\Console\Style\SymfonyStyle;
 use PhpCsFixer\Console\Command\InitCommand;
 use PhpCsFixer\Tests\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * @internal
