@@ -97,7 +97,7 @@ final class SquareBraceTransformer extends AbstractTransformer
         $index = $tokens->getNextMeaningfulToken($index);
 
         while ($index < $endIndex) {
-            if ($tokens[$index]->equals('[') && ($tokens[$previousMeaningfulIndex]->isGivenKind(CT::T_DESTRUCTURING_BRACKET_OPEN) || $tokens[$previousMeaningfulIndex]->equals(','))) {
+            if ($tokens[$index]->equals('[') && $tokens[$previousMeaningfulIndex]->equalsAny([[CT::T_DESTRUCTURING_BRACKET_OPEN], ','])) {
                 $tokens[$tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_BRACKET, $index)] = new Token([CT::T_DESTRUCTURING_BRACKET_CLOSE, ']']);
                 $tokens[$index] = new Token([CT::T_DESTRUCTURING_BRACKET_OPEN, '[']);
             }
@@ -117,20 +117,19 @@ final class SquareBraceTransformer extends AbstractTransformer
         }
 
         $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
-
-        if ($prevToken->equalsAny([')', ']', '}', '"'])) {
-            return false;
-        }
-
-        if ($prevToken->isGivenKind([
-            \T_CONSTANT_ENCAPSED_STRING,
-            \T_STRING,
-            \T_STRING_VARNAME,
-            \T_VARIABLE,
-            CT::T_ARRAY_BRACKET_CLOSE,
-            CT::T_DYNAMIC_PROP_BRACE_CLOSE,
-            CT::T_DYNAMIC_VAR_BRACE_CLOSE,
-            CT::T_ARRAY_INDEX_BRACE_CLOSE,
+        if ($prevToken->equalsAny([
+            ')',
+            ']',
+            '}',
+            '"',
+            [\T_CONSTANT_ENCAPSED_STRING],
+            [\T_STRING],
+            [\T_STRING_VARNAME],
+            [\T_VARIABLE],
+            [CT::T_ARRAY_BRACKET_CLOSE],
+            [CT::T_DYNAMIC_PROP_BRACE_CLOSE],
+            [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
+            [CT::T_ARRAY_INDEX_BRACE_CLOSE],
         ])) {
             return false;
         }
@@ -151,20 +150,18 @@ final class SquareBraceTransformer extends AbstractTransformer
 
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
         $prevToken = $tokens[$prevIndex];
-
-        if ($prevToken->equalsAny([')', ']', '"'])) {
-            return false;
-        }
-
-        if ($prevToken->isGivenKind([
-            \T_CONSTANT_ENCAPSED_STRING,
-            \T_STRING,
-            \T_STRING_VARNAME,
-            \T_VARIABLE,
-            CT::T_ARRAY_BRACKET_CLOSE,
-            CT::T_DYNAMIC_PROP_BRACE_CLOSE,
-            CT::T_DYNAMIC_VAR_BRACE_CLOSE,
-            CT::T_ARRAY_INDEX_BRACE_CLOSE,
+        if ($prevToken->equalsAny([
+            ')',
+            ']',
+            '"',
+            [\T_CONSTANT_ENCAPSED_STRING],
+            [\T_STRING],
+            [\T_STRING_VARNAME],
+            [\T_VARIABLE],
+            [CT::T_ARRAY_BRACKET_CLOSE],
+            [CT::T_DYNAMIC_PROP_BRACE_CLOSE],
+            [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
+            [CT::T_ARRAY_INDEX_BRACE_CLOSE],
         ])) {
             return false;
         }
