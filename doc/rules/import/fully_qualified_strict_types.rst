@@ -188,6 +188,26 @@ With configuration: ``['import_symbols' => true]``.
         }
     }
 
+Example #5
+~~~~~~~~~~
+
+With configuration: ``['import_symbols' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+
+    namespace Foo\Test;
+   +use Some\Attribute;
+
+   -#[\Some\Attribute]
+   +#[Attribute]
+    class Foo
+    {
+    }
+
 Rule sets
 ---------
 

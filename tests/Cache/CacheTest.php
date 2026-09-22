@@ -152,6 +152,48 @@ final class CacheTest extends TestCase
     }
 
     /**
+     * @param array<string, mixed> $data
+     *
+     * @dataProvider provideFromJsonThrowsInvalidArgumentExceptionIfKeyHasWrongTypeCases
+     */
+    #[DataProvider('provideFromJsonThrowsInvalidArgumentExceptionIfKeyHasWrongTypeCases')]
+    public function testFromJsonThrowsInvalidArgumentExceptionIfKeyHasWrongType(array $data): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageMatches('/ is expected to be (a string|an array)\.$/');
+
+        Cache::fromJson(json_encode($data, \JSON_THROW_ON_ERROR));
+    }
+
+    /**
+     * @return iterable<string, array{array<string, mixed>}>
+     */
+    public static function provideFromJsonThrowsInvalidArgumentExceptionIfKeyHasWrongTypeCases(): iterable
+    {
+        $valid = [
+            'php' => '7.1.2',
+            'version' => '2.0',
+            'indent' => '    ',
+            'lineEnding' => "\n",
+            'rules' => ['foo' => true],
+            'ruleCustomisationPolicyVersion' => '1.2.3',
+            'hashes' => [],
+        ];
+
+        foreach ([
+            'php' => 123,
+            'version' => 2.0,
+            'indent' => 4,
+            'lineEnding' => false,
+            'rules' => 'not-an-array',
+            'ruleCustomisationPolicyVersion' => 1,
+            'hashes' => 'not-an-array',
+        ] as $key => $wrongValue) {
+            yield $key => [array_merge($valid, [$key => $wrongValue])];
+        }
+    }
+
+    /**
      * @dataProvider provideCanConvertToAndFromJsonCases
      */
     #[DataProvider('provideCanConvertToAndFromJsonCases')]
