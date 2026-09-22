@@ -23,6 +23,8 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
@@ -222,6 +224,21 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
                         }
 
                         PHP,
+                    ['import_symbols' => true],
+                ),
+                new VersionSpecificCodeSample(
+                    <<<'PHP'
+                        <?php
+
+                        namespace Foo\Test;
+
+                        #[\Some\Attribute]
+                        class Foo
+                        {
+                        }
+
+                        PHP,
+                    new VersionSpecification(8_00_00),
                     ['import_symbols' => true],
                 ),
             ],
