@@ -42,7 +42,7 @@ abstract class AbstractTypeTransformer extends AbstractTransformer
     private $originalToken;
 
     /**
-     * @var _PhpTokenPrototype
+     * @var Token
      *
      * @readonly
      */
@@ -55,7 +55,7 @@ abstract class AbstractTypeTransformer extends AbstractTransformer
     public function __construct($originalToken, $replacementToken)
     {
         $this->originalToken = $originalToken;
-        $this->replacementToken = $replacementToken;
+        $this->replacementToken = new Token($replacementToken);
     }
 
     public function process(Tokens $tokens): void
@@ -65,7 +65,7 @@ abstract class AbstractTypeTransformer extends AbstractTransformer
                 $tokens[$index]->equals($this->originalToken)
                 && $this->isPartOfType($tokens, $index)
             ) {
-                $tokens[$index] = new Token($this->replacementToken);
+                $tokens[$index] = clone $this->replacementToken;
             }
         }
     }
