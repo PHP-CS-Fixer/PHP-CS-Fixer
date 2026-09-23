@@ -42,11 +42,9 @@ abstract class AbstractTypeTransformer extends AbstractTransformer
     private $originalToken;
 
     /**
-     * @var Token
-     *
      * @readonly
      */
-    private $replacementToken;
+    private Token $replacementToken;
 
     /**
      * @param _PhpTokenPrototype $originalToken
