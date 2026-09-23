@@ -62,7 +62,7 @@ abstract class AbstractTypeTransformer extends AbstractTransformer
     {
         foreach ($tokens as $index => $token) {
             if (
-                $tokens[$index]->equals($this->originalToken)
+                $token->equals($this->originalToken)
                 && $this->isPartOfType($tokens, $index)
             ) {
                 $tokens[$index] = clone $this->replacementToken;
