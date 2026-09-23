@@ -3,6 +3,16 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.27
+----------------------
+
+* fix: refuse a symlinked cache path in FileHandler to avoid arbitrary file overwrite (#9856)
+* fix: validate value types in Cache::fromJson so a corrupt cache rebuilds instead of crashing (#9855)
+* fix: `SimplifiedIfReturnFixer` - fix whitespace before `;` as well (#9857)
+* refactor: more moderate permissions for newly created cache file/directory (#9852)
+* chore: add TODO to split class with too many responsibilities (#9853)
+* docs: `FullyQualifiedStrictTypesFixer` - document attribute handling in example (#9859)
+
 Changelog for v3.95.26
 ----------------------
 
