@@ -46,7 +46,7 @@ final class UseArrowFunctionsFixer extends AbstractFixer
                         SAMPLE,
                 ),
             ],
-            'Closures in constant expressions (attributes, constants, and property or parameter defaults) are not converted.',
+            'Closures in constant expressions (attributes, constants, and property or parameter defaults) are not converted: PHP 8.5 allows only static closures without `use` there, and rejects arrow functions, as they implicitly capture variables from the enclosing scope.',
             'Risky when using `isset()` on outside variables that are not imported with `use ()`.',
         );
     }

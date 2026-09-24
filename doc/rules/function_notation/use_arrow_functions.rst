@@ -8,7 +8,9 @@ Description
 -----------
 
 Closures in constant expressions (attributes, constants, and property or
-parameter defaults) are not converted.
+parameter defaults) are not converted: PHP 8.5 allows only static closures
+without ``use`` there, and rejects arrow functions, as they implicitly capture
+variables from the enclosing scope.
 
 Warning
 -------
