@@ -335,6 +335,11 @@ $load = function ($path) use ($data) {
             '<?php const CALLBACK = static function () { return 1; }; $runtime = static function () { return 2; };',
         ];
 
+        yield 'convert runtime closure after a constant declaration ended by close tag' => [
+            '<?php const CALLBACK = static function () { return 1; } ?><?php $runtime = static fn () => 2;',
+            '<?php const CALLBACK = static function () { return 1; } ?><?php $runtime = static function () { return 2; };',
+        ];
+
         yield 'convert enclosing runtime closure but preserve its default' => [
             '<?php $take = fn ($callback = static function () { return 1; }) => $callback;',
             '<?php $take = function ($callback = static function () { return 1; }) { return $callback; };',
