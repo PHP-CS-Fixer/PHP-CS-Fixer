@@ -163,7 +163,8 @@ final class UseArrowFunctionsFixer extends AbstractFixer
                 continue;
             }
 
-            $constantExpressionClosures ??= $this->getConstantExpressionClosures($tokens);
+            // collected once, before the first transformation; converting backwards keeps preceding indices valid
+            $constantExpressionClosures ??= $this->findConstantExpressionClosures($tokens);
 
             if (isset($constantExpressionClosures[$index])) {
                 continue;
@@ -175,80 +176,80 @@ final class UseArrowFunctionsFixer extends AbstractFixer
     }
 
     /**
-     * Constant-expression restrictions do not extend into closure bodies or
-     * property hooks: these contain ordinary executable code. Collect nested
-     * scopes before fixing, then classify each closure in its innermost scope.
-     * The backward fixing pass leaves earlier closure indices unchanged.
+     * Finds `function` tokens that are part of a constant expression: attribute arguments,
+     * `const` declarations, class bodies (constants and property defaults) and parameter lists.
+     * Class bodies also yield method declarations, which is harmless as only closures are looked up.
      *
      * @return array<int, true>
      */
-    private function getConstantExpressionClosures(Tokens $tokens): array
+    private function findConstantExpressionClosures(Tokens $tokens): array
     {
-        /** @var list<array{start: int, end: int, constant: bool}> $scopes */
-        $scopes = [];
-
-        foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(FCT::T_ATTRIBUTE)) {
-                $scopes[] = ['start' => $index + 1, 'end' => $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index) - 1, 'constant' => true];
-            } elseif ($token->isClassy()) {
-                /** @var int $bodyOpen */
-                $bodyOpen = $tokens->getNextTokenOfKind($index, ['{', '(', [CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN]]);
-
-                if (!$tokens[$bodyOpen]->equals('{')) {
-                    $blockType = $tokens[$bodyOpen]->equals('(') ? Tokens::BLOCK_TYPE_PARENTHESIS : Tokens::BLOCK_TYPE_CLASS_INSTANTIATION_PARENTHESIS;
-                    $argumentsEnd = $tokens->findBlockEnd($blockType, $bodyOpen);
-
-                    /** @var int $bodyOpen */
-                    $bodyOpen = $tokens->getNextTokenOfKind($argumentsEnd, ['{']);
-                }
-
-                $scopes[] = ['start' => $bodyOpen + 1, 'end' => $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $bodyOpen) - 1, 'constant' => true];
-            } elseif ($token->isGivenKind([\T_FUNCTION, \T_FN])) {
-                /** @var int $parametersOpen */
-                $parametersOpen = $tokens->getNextTokenOfKind($index, ['(']);
-                $parametersEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $parametersOpen);
-                $scopes[] = ['start' => $parametersOpen + 1, 'end' => $parametersEnd - 1, 'constant' => true];
-
-                if ($token->isGivenKind(\T_FUNCTION)) {
-                    /** @var int $bodyOpen */
-                    $bodyOpen = $tokens->getNextTokenOfKind($parametersEnd, ['{', ';']);
-
-                    if ($tokens[$bodyOpen]->equals('{')) {
-                        $scopes[] = ['start' => $bodyOpen + 1, 'end' => $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $bodyOpen) - 1, 'constant' => false];
-                    }
-                }
-            } elseif ($token->isGivenKind(\T_CONST)) {
-                $scopes[] = ['start' => $index + 1, 'end' => $this->findConstantDeclarationEnd($tokens, $index) - 1, 'constant' => true];
-            } elseif ($token->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
-                $scopes[] = ['start' => $index + 1, 'end' => $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PROPERTY_HOOK, $index) - 1, 'constant' => false];
-            }
-        }
-
-        $scopes = array_filter($scopes, static fn (array $scope): bool => $scope['start'] <= $scope['end']);
-        usort($scopes, static fn (array $left, array $right): int => $left['start'] <=> $right['start']);
-
-        $stack = [['end' => $tokens->count(), 'constant' => false]];
-        $scopeIndex = 0;
         $closures = [];
 
         foreach ($tokens as $index => $token) {
-            while (\count($stack) > 1 && $stack[\count($stack) - 1]['end'] < $index) {
-                array_pop($stack);
+            if ($token->isGivenKind(FCT::T_ATTRIBUTE)) {
+                $start = $index;
+                $end = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $start);
+            } elseif ($token->isGivenKind(\T_CONST)) {
+                $start = $index;
+                $end = $this->findConstantDeclarationEnd($tokens, $start);
+            } elseif ($token->isGivenKind([\T_FUNCTION, \T_FN])) {
+                /** @var int $start */
+                $start = $tokens->getNextTokenOfKind($index, ['(']);
+                $end = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $start);
+            } elseif ($token->isClassy()) {
+                $start = $this->findClassyBodyStart($tokens, $index);
+                $end = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $start);
+            } else {
+                continue;
             }
 
-            while (isset($scopes[$scopeIndex]) && $scopes[$scopeIndex]['start'] === $index) {
-                $stack[] = $scopes[$scopeIndex];
-                ++$scopeIndex;
-            }
-
-            if ($token->isGivenKind(\T_FUNCTION) && $stack[\count($stack) - 1]['constant']) {
-                $closures[$index] = true;
-            }
+            $closures += $this->findFunctionsOutsideOfBraces($tokens, $start, $end);
         }
 
         return $closures;
     }
 
+    /**
+     * Braces inside a constant expression can only open function bodies or property hooks.
+     * These contain runtime code, so closures there are not part of the constant expression.
+     *
+     * @return array<int, true>
+     */
+    private function findFunctionsOutsideOfBraces(Tokens $tokens, int $start, int $end): array
+    {
+        $functions = [];
+
+        for ($index = $start + 1; $index < $end; ++$index) {
+            if ($tokens[$index]->equals('{')) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
+            } elseif ($tokens[$index]->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PROPERTY_HOOK, $index);
+            } elseif ($tokens[$index]->isGivenKind(\T_FUNCTION)) {
+                $functions[$index] = true;
+            }
+        }
+
+        return $functions;
+    }
+
+    private function findClassyBodyStart(Tokens $tokens, int $index): int
+    {
+        /** @var int $index */
+        $index = $tokens->getNextTokenOfKind($index, ['{', '(']);
+
+        if ($tokens[$index]->equals('(')) {
+            // skip anonymous class arguments, which may contain closure bodies
+            /** @var int $index */
+            $index = $tokens->getNextTokenOfKind($tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index), ['{']);
+        }
+
+        return $index;
+    }
+
+    /**
+     * A constant declaration ends with `;` or with `?>`, which implies one.
+     */
     private function findConstantDeclarationEnd(Tokens $tokens, int $index): int
     {
         while (!$tokens[$index]->equals(';') && !$tokens[$index]->isGivenKind(\T_CLOSE_TAG)) {
