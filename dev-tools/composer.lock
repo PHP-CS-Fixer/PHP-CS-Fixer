@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "119fe768bbba5f818e72b90b83e9752a",
+    "content-hash": "36187d96e21c4676ac01c9049fdf2d49",
     "packages": [
         {
             "name": "composer/pcre",
@@ -106,16 +106,16 @@
         },
         {
             "name": "ergebnis/composer-normalize",
-            "version": "2.53.0",
+            "version": "2.54.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ergebnis/composer-normalize.git",
-                "reference": "f6592a43065f558322d2f1418f68a7bb8f009ed1"
+                "reference": "6a247926bc4e85b06bb12fa23d9593bc973be8d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ergebnis/composer-normalize/zipball/f6592a43065f558322d2f1418f68a7bb8f009ed1",
-                "reference": "f6592a43065f558322d2f1418f68a7bb8f009ed1"
+                "url": "https://api.github.com/repos/ergebnis/composer-normalize/zipball/6a247926bc4e85b06bb12fa23d9593bc973be8d9",
+                "reference": "6a247926bc4e85b06bb12fa23d9593bc973be8d9"
             },
             "require": {
                 "composer-plugin-api": "^2.0.0",
@@ -126,13 +126,13 @@
                 "ext-json": "*",
                 "justinrainbow/json-schema": "^5.2.12 || ^6.0.0",
                 "localheinz/diff": "^1.3.0",
-                "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0"
+                "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0 || ~8.6.0"
             },
             "type": "composer-plugin",
             "extra": {
                 "class": "Ergebnis\\Composer\\Normalize\\NormalizePlugin",
                 "branch-alias": {
-                    "dev-main": "2.53-dev"
+                    "dev-main": "2.54-dev"
                 },
                 "plugin-optional": true,
                 "composer-normalize": {
@@ -152,20 +152,20 @@
         },
         {
             "name": "ergebnis/json",
-            "version": "1.6.0",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ergebnis/json.git",
-                "reference": "7b56d2b5d9e897e75b43e2e753075a0904c921b1"
+                "reference": "829ce8b25c5e452249492c824f1d227777709403"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ergebnis/json/zipball/7b56d2b5d9e897e75b43e2e753075a0904c921b1",
-                "reference": "7b56d2b5d9e897e75b43e2e753075a0904c921b1"
+                "url": "https://api.github.com/repos/ergebnis/json/zipball/829ce8b25c5e452249492c824f1d227777709403",
+                "reference": "829ce8b25c5e452249492c824f1d227777709403"
             },
             "require": {
                 "ext-json": "*",
-                "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0"
+                "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0 || ~8.6.0"
             },
             "type": "library",
             "extra": {
@@ -189,16 +189,16 @@
         },
         {
             "name": "ergebnis/json-normalizer",
-            "version": "4.10.1",
+            "version": "4.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ergebnis/json-normalizer.git",
-                "reference": "77961faf2c651c3f05977b53c6c68e8434febf62"
+                "reference": "db539052df534709ca899620844bf046d0fa34f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ergebnis/json-normalizer/zipball/77961faf2c651c3f05977b53c6c68e8434febf62",
-                "reference": "77961faf2c651c3f05977b53c6c68e8434febf62"
+                "url": "https://api.github.com/repos/ergebnis/json-normalizer/zipball/db539052df534709ca899620844bf046d0fa34f2",
+                "reference": "db539052df534709ca899620844bf046d0fa34f2"
             },
             "require": {
                 "ergebnis/json": "^1.2.0",
@@ -207,7 +207,7 @@
                 "ergebnis/json-schema-validator": "^4.2.0",
                 "ext-json": "*",
                 "justinrainbow/json-schema": "^5.2.12 || ^6.0.0",
-                "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0"
+                "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0 || ~8.6.0"
             },
             "type": "library",
             "extra": {
@@ -231,24 +231,24 @@
         },
         {
             "name": "ergebnis/json-pointer",
-            "version": "3.8.0",
+            "version": "3.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ergebnis/json-pointer.git",
-                "reference": "b58c3c468a7ff109fdf9a255f17de29ecbe5276c"
+                "reference": "414a90039cdf458eeb71297315a2be6de195697a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ergebnis/json-pointer/zipball/b58c3c468a7ff109fdf9a255f17de29ecbe5276c",
-                "reference": "b58c3c468a7ff109fdf9a255f17de29ecbe5276c"
+                "url": "https://api.github.com/repos/ergebnis/json-pointer/zipball/414a90039cdf458eeb71297315a2be6de195697a",
+                "reference": "414a90039cdf458eeb71297315a2be6de195697a"
             },
             "require": {
-                "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0"
+                "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0 || ~8.6.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "3.8-dev"
+                    "dev-main": "3.9-dev"
                 },
                 "composer-normalize": {
                     "indent-size": 2,
@@ -267,21 +267,21 @@
         },
         {
             "name": "ergebnis/json-printer",
-            "version": "3.8.1",
+            "version": "3.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ergebnis/json-printer.git",
-                "reference": "211d73fc7ec6daf98568ee6ed6e6d133dee8503e"
+                "reference": "7c8f49d86229947b4034e4637da95cb4390073e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ergebnis/json-printer/zipball/211d73fc7ec6daf98568ee6ed6e6d133dee8503e",
-                "reference": "211d73fc7ec6daf98568ee6ed6e6d133dee8503e"
+                "url": "https://api.github.com/repos/ergebnis/json-printer/zipball/7c8f49d86229947b4034e4637da95cb4390073e6",
+                "reference": "7c8f49d86229947b4034e4637da95cb4390073e6"
             },
             "require": {
                 "ext-json": "*",
                 "ext-mbstring": "*",
-                "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0"
+                "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0 || ~8.6.0"
             },
             "type": "library",
             "extra": {
@@ -305,23 +305,23 @@
         },
         {
             "name": "ergebnis/json-schema-validator",
-            "version": "4.5.1",
+            "version": "4.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ergebnis/json-schema-validator.git",
-                "reference": "b739527a480a9e3651360ad351ea77e7e9019df2"
+                "reference": "228bf86d963c06c863a3143c9d8531bb3ef72fbe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ergebnis/json-schema-validator/zipball/b739527a480a9e3651360ad351ea77e7e9019df2",
-                "reference": "b739527a480a9e3651360ad351ea77e7e9019df2"
+                "url": "https://api.github.com/repos/ergebnis/json-schema-validator/zipball/228bf86d963c06c863a3143c9d8531bb3ef72fbe",
+                "reference": "228bf86d963c06c863a3143c9d8531bb3ef72fbe"
             },
             "require": {
                 "ergebnis/json": "^1.2.0",
                 "ergebnis/json-pointer": "^3.4.0",
                 "ext-json": "*",
                 "justinrainbow/json-schema": "^5.2.12 || ^6.0.0",
-                "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0"
+                "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0 || ~8.6.0"
             },
             "type": "library",
             "extra": {
@@ -345,16 +345,16 @@
         },
         {
             "name": "justinrainbow/json-schema",
-            "version": "6.12.0",
+            "version": "6.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jsonrainbow/json-schema.git",
-                "reference": "8ef236a1a37df364b518b7411a4b5bb95b040d79"
+                "reference": "30de5e9b3fa04253af272a7d932a38cd026c311b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jsonrainbow/json-schema/zipball/8ef236a1a37df364b518b7411a4b5bb95b040d79",
-                "reference": "8ef236a1a37df364b518b7411a4b5bb95b040d79"
+                "url": "https://api.github.com/repos/jsonrainbow/json-schema/zipball/30de5e9b3fa04253af272a7d932a38cd026c311b",
+                "reference": "30de5e9b3fa04253af272a7d932a38cd026c311b"
             },
             "require": {
                 "ext-filter": "*",
@@ -814,11 +814,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.2.14",
+            "version": "2.2.16",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/9c672e7a8e791dfc3d30e55f683e73fc0b63a3ac",
-                "reference": "9c672e7a8e791dfc3d30e55f683e73fc0b63a3ac"
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/46a6d9060e5a7763adfcc21ebcb8b504ebdbcb92",
+                "reference": "46a6d9060e5a7763adfcc21ebcb8b504ebdbcb92"
             },
             "require": {
                 "php": "^7.4|^8.0"
@@ -1080,16 +1080,16 @@
         },
         {
             "name": "shipmonk/dead-code-detector",
-            "version": "1.4.1",
+            "version": "1.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shipmonk-rnd/dead-code-detector.git",
-                "reference": "92b56812a002559a56746d444c4cbc2b86080f87"
+                "reference": "431c13453eeb1790e15c8674ad4d6318218849bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shipmonk-rnd/dead-code-detector/zipball/92b56812a002559a56746d444c4cbc2b86080f87",
-                "reference": "92b56812a002559a56746d444c4cbc2b86080f87"
+                "url": "https://api.github.com/repos/shipmonk-rnd/dead-code-detector/zipball/431c13453eeb1790e15c8674ad4d6318218849bc",
+                "reference": "431c13453eeb1790e15c8674ad4d6318218849bc"
             },
             "require": {
                 "php": "^8.1",
