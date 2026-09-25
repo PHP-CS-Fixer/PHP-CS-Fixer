@@ -133,6 +133,23 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
                         <?php
                         class Sample
                         {
+                            /** @var int|null */
+                            private $foo1;
+
+                            /** @var string|null */
+                            private $foo2;
+
+                            private $foo3;
+                        }
+
+                        PHP,
+                    ['elements' => ['property' => self::SPACING_NONE]],
+                ),
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        class Sample
+                        {
                             /** @var int */
                             const SECOND = 1;
                             /** @var int */
@@ -335,7 +352,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
             $nonWhiteAbove = $this->findCommentBlockStart($tokens, $nonWhiteAbove, $elementAboveEnd);
             $nonWhiteAboveComment = $tokens->getPrevNonWhitespace($nonWhiteAbove);
 
-            $this->correctLineBreaks($tokens, $nonWhiteAboveComment, $nonWhiteAbove, $nonWhiteAboveComment === $class['open'] ? 1 : 2);
+            $this->correctLineBreaks($tokens, $nonWhiteAboveComment, $nonWhiteAbove, $nonWhiteAboveComment === $class['open'] ? 1 : $this->determineRequiredLineCount($tokens, $class, $elementIndex));
 
             return;
         }
@@ -361,19 +378,13 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
             \assert(isset($class['elements'][$elementIndex + 1]));
             $aboveElement = $class['elements'][$elementIndex + 1];
 
-            if ($aboveElement['type'] !== $type) {
-                return 2;
-            }
-
-            $aboveElementDocCandidateIndex = $tokens->getPrevNonWhitespace($aboveElement['start']);
-
-            return $tokens[$aboveElementDocCandidateIndex]->isGivenKind([\T_DOC_COMMENT, CT::T_ATTRIBUTE_CLOSE]) ? 2 : 1;
+            return $aboveElement['type'] !== $type ? 2 : 1;
         }
 
         // self::SPACING_ONLY_IF_META === $spacing
-        $aboveElementDocCandidateIndex = $tokens->getPrevNonWhitespace($class['elements'][$elementIndex]['start']);
+        $currentElementDocCandidateIndex = $tokens->getPrevNonWhitespace($class['elements'][$elementIndex]['start']);
 
-        return $tokens[$aboveElementDocCandidateIndex]->isGivenKind([\T_DOC_COMMENT, CT::T_ATTRIBUTE_CLOSE]) ? 2 : 1;
+        return $tokens[$currentElementDocCandidateIndex]->isGivenKind([\T_DOC_COMMENT, CT::T_ATTRIBUTE_CLOSE]) ? 2 : 1;
     }
 
     /**
