@@ -146,6 +146,14 @@ final class ComposerJsonReader
             $version[] = $composerJson['require']['php'];
         }
 
+        if (isset($composerJson['require-dev']['php-64bit'])) {
+            $version[] = $composerJson['require-dev']['php-64bit'];
+        }
+
+        if (isset($composerJson['require']['php-64bit'])) {
+            $version[] = $composerJson['require']['php-64bit'];
+        }
+
         if (\count($version) > 0) {
             return implode(' || ', $version);
         }

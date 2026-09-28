@@ -379,5 +379,29 @@ final class ComposerJsonReaderTest extends TestCase
     "require": { "php": ">= 8.2" }
 }',
         ];
+
+        yield 'php-64bit' => [
+            '7.4',
+            '{
+    "require": { "php-64bit": "^7.4 || ^8.0" }
+}',
+        ];
+
+        yield 'php-64bit in require-dev' => [
+            '8.1',
+            '{
+    "require-dev": { "php-64bit": "^8.1" }
+}',
+        ];
+
+        yield 'php mixed with php-64bit' => [
+            '8.0',
+            '{
+    "require": {
+        "php": "^8.2",
+        "php-64bit": "^8.0"
+    }
+}',
+        ];
     }
 }
