@@ -124,7 +124,7 @@ final class StaticPrivateMethodFixer extends AbstractFixer
             }
 
             $methodNameIndex = $tokens->getNextMeaningfulToken($functionKeywordIndex);
-            $methodName = $tokens[$methodNameIndex]->getContent();
+            $methodName = strtolower($tokens[$methodNameIndex]->getContent());
             $fixedMethods[$methodName] = true;
 
             $tokens->insertSlices([$functionKeywordIndex => [new Token([\T_STATIC, 'static']), new Token([\T_WHITESPACE, ' '])]]);
@@ -184,7 +184,7 @@ final class StaticPrivateMethodFixer extends AbstractFixer
 
                 if (
                     !$tokens[$operatorIndex]->isGivenKind(\T_OBJECT_OPERATOR)
-                    || $methodName !== $tokens[$methodNameIndex]->getContent()
+                    || $methodName !== strtolower($tokens[$methodNameIndex]->getContent())
                     || !$tokens[$argumentsBraceIndex]->equals('(')
                 ) {
                     return true;
@@ -240,7 +240,7 @@ final class StaticPrivateMethodFixer extends AbstractFixer
                 continue;
             }
 
-            $currentMethodName = $tokens[$methodNameIndex]->getContent();
+            $currentMethodName = strtolower($tokens[$methodNameIndex]->getContent());
             if (!isset($fixedMethods[$currentMethodName])) {
                 continue;
             }
