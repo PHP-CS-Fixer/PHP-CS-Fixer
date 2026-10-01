@@ -45,16 +45,23 @@ final class BraceTransformer extends AbstractTransformer
         return 5_00_00;
     }
 
-    public function process(Tokens $tokens, Token $token, int $index): void
+    public function isCandidate(Tokens $tokens): bool
     {
-        $this->transformIntoCurlyCloseBrace($tokens, $index);
-        $this->transformIntoDollarCloseBrace($tokens, $index);
-        $this->transformIntoDynamicPropBraces($tokens, $index);
-        $this->transformIntoDynamicVarBraces($tokens, $index);
-        $this->transformIntoPropertyHookBraces($tokens, $index);
-        $this->transformIntoCurlyIndexBraces($tokens, $index);
-        $this->transformIntoGroupUseBraces($tokens, $index);
-        $this->transformIntoDynamicClassConstantFetchBraces($tokens, $index);
+        return $tokens->isAnyTokenKindsFound([\T_CURLY_OPEN, \T_DOLLAR_OPEN_CURLY_BRACES, '{']);
+    }
+
+    public function process(Tokens $tokens): void
+    {
+        foreach ($tokens as $index => $token) {
+            $this->transformIntoCurlyCloseBrace($tokens, $index);
+            $this->transformIntoDollarCloseBrace($tokens, $index);
+            $this->transformIntoDynamicPropBraces($tokens, $index);
+            $this->transformIntoDynamicVarBraces($tokens, $index);
+            $this->transformIntoPropertyHookBraces($tokens, $index);
+            $this->transformIntoCurlyIndexBraces($tokens, $index);
+            $this->transformIntoGroupUseBraces($tokens, $index);
+            $this->transformIntoDynamicClassConstantFetchBraces($tokens, $index);
+        }
     }
 
     public function getCustomTokens(): array

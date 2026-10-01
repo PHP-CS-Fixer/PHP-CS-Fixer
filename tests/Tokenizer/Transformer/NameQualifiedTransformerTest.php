@@ -57,11 +57,9 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
             ? Tokens::fromArray($expected)
             : Tokens::fromArray($input);
 
-        $tokenCount = \count($tokens);
+        $this->transformer->process($tokens);
 
-        for ($i = 0; $i < $tokenCount; ++$i) {
-            $this->transformer->process($tokens, $tokens[$i], $i);
-        }
+        $tokens->clearEmptyTokens();
 
         self::assertTokens($expectedTokens, $tokens);
 

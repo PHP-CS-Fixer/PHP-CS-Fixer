@@ -34,28 +34,35 @@ final class WhitespacyCommentTransformer extends AbstractTransformer
         return 5_00_00;
     }
 
-    public function process(Tokens $tokens, Token $token, int $index): void
+    public function isCandidate(Tokens $tokens): bool
     {
-        if (!$token->isComment()) {
-            return;
-        }
+        return $tokens->isAnyTokenKindsFound([\T_COMMENT, \T_DOC_COMMENT]);
+    }
 
-        $content = $token->getContent();
-        $trimmedContent = rtrim($content);
+    public function process(Tokens $tokens): void
+    {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isComment()) {
+                continue;
+            }
 
-        // nothing trimmed, nothing to do
-        if ($content === $trimmedContent) {
-            return;
-        }
+            $content = $token->getContent();
+            $trimmedContent = rtrim($content);
 
-        $whitespaces = substr($content, \strlen($trimmedContent));
+            // nothing trimmed, nothing to do
+            if ($content === $trimmedContent) {
+                continue;
+            }
 
-        $tokens[$index] = new Token([$token->getId(), $trimmedContent]);
+            $whitespaces = substr($content, \strlen($trimmedContent));
 
-        if (isset($tokens[$index + 1]) && $tokens[$index + 1]->isWhitespace()) {
-            $tokens[$index + 1] = new Token([\T_WHITESPACE, $whitespaces.$tokens[$index + 1]->getContent()]);
-        } else {
-            $tokens->insertAt($index + 1, new Token([\T_WHITESPACE, $whitespaces]));
+            $tokens[$index] = new Token([$token->getId(), $trimmedContent]);
+
+            if (isset($tokens[$index + 1]) && $tokens[$index + 1]->isWhitespace()) {
+                $tokens[$index + 1] = new Token([\T_WHITESPACE, $whitespaces.$tokens[$index + 1]->getContent()]);
+            } else {
+                $tokens->insertAt($index + 1, new Token([\T_WHITESPACE, $whitespaces]));
+            }
         }
     }
 

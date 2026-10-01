@@ -33,6 +33,8 @@ use Symfony\Component\Finder\SplFileInfo;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
+ * @TODO split this class into 2: one representing the factory itself and one representing the collection of fixers
+ *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.

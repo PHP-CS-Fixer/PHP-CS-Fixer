@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Test;
 
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @internal
@@ -24,6 +25,14 @@ use PhpCsFixer\FixerFactory;
  */
 final class TestCaseUtils
 {
+    public static function createTemporaryDirectory(): string
+    {
+        $directory = sys_get_temp_dir().'/php-cs-fixer-test-'.bin2hex(random_bytes(8));
+        (new Filesystem())->mkdir($directory);
+
+        return $directory;
+    }
+
     public static function getFixerByName(string $name): FixerInterface
     {
         static $fixers = null;

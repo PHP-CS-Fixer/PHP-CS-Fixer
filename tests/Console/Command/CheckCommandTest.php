@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Console\Command;
 
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\CheckCommand;
+use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -61,8 +62,7 @@ final class CheckCommandTest extends TestCase
     public function testOutputWithCacheFileInSubdirectory(): void
     {
         $filesystem = new Filesystem();
-        $tmpDir = sys_get_temp_dir().'/php-cs-fixer-test-'.bin2hex(random_bytes(8));
-        $filesystem->mkdir($tmpDir);
+        $tmpDir = TestCaseUtils::createTemporaryDirectory();
         $filesystem->mkdir($tmpDir.'/var');
 
         $originalCwd = (string) getcwd();
