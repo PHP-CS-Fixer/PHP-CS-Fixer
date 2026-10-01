@@ -122,6 +122,39 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
             ['annotations' => ['author']],
         ];
 
+        yield 'closing boundary on annotation continuation' => [
+            <<<'PHP'
+                <?php
+                /**
+                 * @author Alpha
+                 * description
+                 * @author Zed
+                 */
+                class Foo {}
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
+                 * @author Zed
+                 * @author Alpha
+                 * description */
+                class Foo {}
+                PHP,
+            ['annotations' => ['author']],
+        ];
+
+        yield 'ordered annotations with continuation stay compact' => [
+            <<<'PHP'
+                <?php
+                /** @author Alpha
+                 * @author Zed
+                 * description */
+                class Foo {}
+                PHP,
+            null,
+            ['annotations' => ['author']],
+        ];
+
         yield 'author - skip on 1 or 0 occurrences' => [
             '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase {

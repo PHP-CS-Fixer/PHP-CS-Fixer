@@ -128,6 +128,21 @@ final class DocBlockTest extends TestCase
             "/**\n     * @return array<string, mixed> */",
         ];
 
+        yield 'closing boundary on annotation continuation' => [
+            "/**\n     * @throws RuntimeException\n     * description\n     */",
+            "/**\n     * @throws RuntimeException\n     * description */",
+        ];
+
+        yield 'closing boundary on multiline type' => [
+            "/**\n     * @return array{\n     *     key: string,\n     * }\n     */",
+            "/**\n     * @return array{\n     *     key: string,\n     * } */",
+        ];
+
+        yield 'description without annotations stays compact' => [
+            "/** Description\n     * continued */",
+            "/** Description\n     * continued */",
+        ];
+
         yield 'standalone boundaries' => [
             "/**\n     * @return array<string, mixed>\n     */",
             "/**\n     * @return array<string, mixed>\n     */",

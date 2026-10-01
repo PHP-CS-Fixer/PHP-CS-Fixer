@@ -176,12 +176,13 @@ final class DocBlock implements \Stringable
     {
         $content = $initialContent = $this->getContent();
         $firstLine = $this->getLine(0);
-        $lastLine = $this->getLine(\count($this->lines) - 1);
+        $annotations = $this->getAnnotations();
+        $lastAnnotation = end($annotations);
 
         if (null !== $firstLine && $firstLine->containsATag()) {
             $content = Preg::replace('/\A\/\*\*/', '/**'.$lineEnd.$indent.' *', $content);
         }
-        if (null !== $lastLine && $lastLine->containsATag()) {
+        if (false !== $lastAnnotation && $lastAnnotation->getEnd() === \count($this->lines) - 1) {
             $content = Preg::replace('/\h*\*\/\z/', $lineEnd.$indent.' */', $content);
         }
 
