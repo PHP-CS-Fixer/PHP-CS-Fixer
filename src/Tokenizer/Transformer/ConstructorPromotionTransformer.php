@@ -35,29 +35,36 @@ final class ConstructorPromotionTransformer extends AbstractTransformer
         return 8_00_00;
     }
 
-    public function process(Tokens $tokens, Token $token, int $index): void
+    public function isCandidate(Tokens $tokens): bool
     {
-        if (!$tokens[$index]->isGivenKind(\T_FUNCTION)) {
-            return;
-        }
+        return $tokens->isTokenKindFound(\T_FUNCTION);
+    }
 
-        $functionNameIndex = $tokens->getNextMeaningfulToken($index);
+    public function process(Tokens $tokens): void
+    {
+        foreach ($tokens as $index => $token) {
+            if (!$tokens[$index]->isGivenKind(\T_FUNCTION)) {
+                continue;
+            }
 
-        if (!$tokens[$functionNameIndex]->isGivenKind(\T_STRING) || '__construct' !== strtolower($tokens[$functionNameIndex]->getContent())) {
-            return;
-        }
+            $functionNameIndex = $tokens->getNextMeaningfulToken($index);
 
-        /** @var int $openParenthesisIndex */
-        $openParenthesisIndex = $tokens->getNextMeaningfulToken($functionNameIndex); // we are @ '(' now
-        $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openParenthesisIndex);
+            if (!$tokens[$functionNameIndex]->isGivenKind(\T_STRING) || '__construct' !== strtolower($tokens[$functionNameIndex]->getContent())) {
+                continue;
+            }
 
-        for ($argsIndex = $openParenthesisIndex; $argsIndex < $closeParenthesisIndex; ++$argsIndex) {
-            if ($tokens[$argsIndex]->isGivenKind(\T_PUBLIC)) {
-                $tokens[$argsIndex] = new Token([CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, $tokens[$argsIndex]->getContent()]);
-            } elseif ($tokens[$argsIndex]->isGivenKind(\T_PROTECTED)) {
-                $tokens[$argsIndex] = new Token([CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, $tokens[$argsIndex]->getContent()]);
-            } elseif ($tokens[$argsIndex]->isGivenKind(\T_PRIVATE)) {
-                $tokens[$argsIndex] = new Token([CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE, $tokens[$argsIndex]->getContent()]);
+            /** @var int $openParenthesisIndex */
+            $openParenthesisIndex = $tokens->getNextMeaningfulToken($functionNameIndex); // we are @ '(' now
+            $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openParenthesisIndex);
+
+            for ($argsIndex = $openParenthesisIndex; $argsIndex < $closeParenthesisIndex; ++$argsIndex) {
+                if ($tokens[$argsIndex]->isGivenKind(\T_PUBLIC)) {
+                    $tokens[$argsIndex] = new Token([CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, $tokens[$argsIndex]->getContent()]);
+                } elseif ($tokens[$argsIndex]->isGivenKind(\T_PROTECTED)) {
+                    $tokens[$argsIndex] = new Token([CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, $tokens[$argsIndex]->getContent()]);
+                } elseif ($tokens[$argsIndex]->isGivenKind(\T_PRIVATE)) {
+                    $tokens[$argsIndex] = new Token([CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE, $tokens[$argsIndex]->getContent()]);
+                }
             }
         }
     }

@@ -39,21 +39,28 @@ final class AttributeTransformer extends AbstractTransformer
         return 8_00_00;
     }
 
-    public function process(Tokens $tokens, Token $token, int $index): void
+    public function isCandidate(Tokens $tokens): bool
     {
-        if (!$tokens[$index]->isGivenKind(\T_ATTRIBUTE)) {
-            return;
-        }
+        return $tokens->isTokenKindFound(\T_ATTRIBUTE);
+    }
 
-        do {
-            ++$index;
-
-            if ($tokens[$index]->equals('(')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index) + 1;
+    public function process(Tokens $tokens): void
+    {
+        foreach ($tokens as $index => $token) {
+            if (!$tokens[$index]->isGivenKind(\T_ATTRIBUTE)) {
+                continue;
             }
-        } while (!$tokens[$index]->equals(']'));
 
-        $tokens[$index] = new Token([CT::T_ATTRIBUTE_CLOSE, ']']);
+            do {
+                ++$index;
+
+                if ($tokens[$index]->equals('(')) {
+                    $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index) + 1;
+                }
+            } while (!$tokens[$index]->equals(']'));
+
+            $tokens[$index] = new Token([CT::T_ATTRIBUTE_CLOSE, ']']);
+        }
     }
 
     public function getCustomTokens(): array

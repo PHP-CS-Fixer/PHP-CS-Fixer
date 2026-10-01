@@ -46,39 +46,50 @@ final class UseTransformer extends AbstractTransformer
         return 5_03_00;
     }
 
-    public function process(Tokens $tokens, Token $token, int $index): void
+    public function isCandidate(Tokens $tokens): bool
     {
-        if ($token->isGivenKind(\T_USE) && $this->isUseForLambda($tokens, $index)) {
-            $tokens[$index] = new Token([CT::T_USE_LAMBDA, $token->getContent()]);
+        return $tokens->isTokenKindFound(\T_USE);
+    }
 
-            return;
-        }
+    public function process(Tokens $tokens): void
+    {
+        $count = $tokens->count();
 
-        // Only search inside class/trait body for `T_USE` for traits.
-        // Cannot import traits inside interfaces or anywhere else
+        for ($index = 0; $index < $count; ++$index) {
+            $token = $tokens[$index];
 
-        if ($token->isGivenKind(\T_CLASS)) {
-            if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(\T_DOUBLE_COLON)) {
-                return;
-            }
-        } elseif (!$token->isGivenKind(self::CLASS_TYPES)) {
-            return;
-        }
+            if ($token->isGivenKind(\T_USE) && $this->isUseForLambda($tokens, $index)) {
+                $tokens[$index] = new Token([CT::T_USE_LAMBDA, $token->getContent()]);
 
-        $index = $tokens->getNextTokenOfKind($index, ['{']);
-        $innerLimit = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
-
-        while ($index < $innerLimit) {
-            $token = $tokens[++$index];
-
-            if (!$token->isGivenKind(\T_USE)) {
                 continue;
             }
 
-            if ($this->isUseForLambda($tokens, $index)) {
-                $tokens[$index] = new Token([CT::T_USE_LAMBDA, $token->getContent()]);
-            } else {
-                $tokens[$index] = new Token([CT::T_USE_TRAIT, $token->getContent()]);
+            // Only search inside class/trait body for `T_USE` for traits.
+            // Cannot import traits inside interfaces or anywhere else
+
+            if ($token->isGivenKind(\T_CLASS)) {
+                if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(\T_DOUBLE_COLON)) {
+                    continue;
+                }
+            } elseif (!$token->isGivenKind(self::CLASS_TYPES)) {
+                continue;
+            }
+
+            $index = $tokens->getNextTokenOfKind($index, ['{']);
+            $innerLimit = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
+
+            while ($index < $innerLimit) {
+                $token = $tokens[++$index];
+
+                if (!$token->isGivenKind(\T_USE)) {
+                    continue;
+                }
+
+                if ($this->isUseForLambda($tokens, $index)) {
+                    $tokens[$index] = new Token([CT::T_USE_LAMBDA, $token->getContent()]);
+                } else {
+                    $tokens[$index] = new Token([CT::T_USE_TRAIT, $token->getContent()]);
+                }
             }
         }
     }

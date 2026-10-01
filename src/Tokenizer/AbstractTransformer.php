@@ -38,5 +38,7 @@ abstract class AbstractTransformer implements TransformerInterface
         return 0;
     }
 
+    abstract public function process(Tokens $tokens): void;
+
     abstract public function getCustomTokens(): array;
 }

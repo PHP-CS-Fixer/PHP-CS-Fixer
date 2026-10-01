@@ -359,10 +359,12 @@ final class Runner
                 $fileChunk = $getFileChunk();
 
                 if (0 === \count($fileChunk)) {
+                    // @codeCoverageIgnoreStart
                     $process->request(['action' => ParallelAction::RUNNER_THANK_YOU]);
                     $processPool->endProcessIfKnown($identifier);
 
                     return;
+                    // @codeCoverageIgnoreEnd
                 }
 
                 $process->request(['action' => ParallelAction::RUNNER_REQUEST_ANALYSIS, 'files' => $fileChunk]);
@@ -459,9 +461,11 @@ final class Runner
                             return;
                         }
 
+                        // @codeCoverageIgnoreStart
                         $process->request(['action' => ParallelAction::RUNNER_REQUEST_ANALYSIS, 'files' => $fileChunk]);
 
                         return;
+                        // @codeCoverageIgnoreEnd
                     }
 
                     if (ParallelAction::WORKER_ERROR_REPORT === $workerResponse['action']) {

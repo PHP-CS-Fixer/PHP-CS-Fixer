@@ -33,14 +33,19 @@ abstract class AbstractFixer implements FixerInterface
 
     /**
      * @readonly
+     *
+     * @var non-empty-string
      */
     private string $name;
 
     public function __construct()
     {
         $nameParts = explode('\\', static::class);
-        $name = substr(end($nameParts), 0, -\strlen('Fixer'));
-        $this->name = Utils::camelCaseToUnderscore($name);
+        $name = Utils::camelCaseToUnderscore(
+            substr(end($nameParts), 0, -\strlen('Fixer')),
+        );
+        \assert('' !== $name);
+        $this->name = $name;
 
         if ($this instanceof ConfigurableFixerInterface) {
             try {

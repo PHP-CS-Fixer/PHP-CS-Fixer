@@ -353,7 +353,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             }
 
             if ($oldConfigIsSet) {
-                $this->configuration[$newConfigKey] = $this->configuration[$oldConfigKey]; // @phpstan-ignore-line crazy mapping, to be removed while cleaning up deprecated options
+                $this->configuration[$newConfigKey] = $this->configuration[$oldConfigKey];
                 $this->checkAttributes = false; // run in old mode
             }
 

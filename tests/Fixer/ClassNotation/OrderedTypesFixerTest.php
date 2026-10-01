@@ -283,6 +283,11 @@ try {
         ];
 
         yield [
+            '<?php $foo = function () use ($bar): null|int {};',
+            '<?php $foo = function () use ($bar): int|null {};',
+        ];
+
+        yield [
             "<?php\ntry {\n    foo();\n} catch (\\Error|\\TypeError) {\n}\n",
             "<?php\ntry {\n    foo();\n} catch (\\TypeError|\\Error) {\n}\n",
         ];
