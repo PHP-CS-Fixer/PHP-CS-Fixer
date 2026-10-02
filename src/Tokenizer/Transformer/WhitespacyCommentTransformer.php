@@ -41,6 +41,8 @@ final class WhitespacyCommentTransformer extends AbstractTransformer
 
     public function process(Tokens $tokens): void
     {
+        $slices = [];
+
         foreach ($tokens as $index => $token) {
             if (!$token->isComment()) {
                 continue;
@@ -61,8 +63,12 @@ final class WhitespacyCommentTransformer extends AbstractTransformer
             if (isset($tokens[$index + 1]) && $tokens[$index + 1]->isWhitespace()) {
                 $tokens[$index + 1] = new Token([\T_WHITESPACE, $whitespaces.$tokens[$index + 1]->getContent()]);
             } else {
-                $tokens->insertAt($index + 1, new Token([\T_WHITESPACE, $whitespaces]));
+                $slices[$index + 1] = new Token([\T_WHITESPACE, $whitespaces]);
             }
+        }
+
+        if ([] !== $slices) {
+            $tokens->insertSlices($slices);
         }
     }
 
