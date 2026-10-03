@@ -18,6 +18,7 @@ use PhpCsFixer\Fixer\ClassNotation\StaticPrivateMethodFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -288,6 +289,72 @@ final class StaticPrivateMethodFixerTest extends AbstractFixerTestCase
                 PHP,
         ];
 
+        yield 'camelCase method calling itself' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    private static function fooBar()
+                    {
+                        return self::fooBar();
+                    }
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    private function fooBar()
+                    {
+                        return $this->fooBar();
+                    }
+                }
+                PHP,
+        ];
+
+        yield 'camelCase method calling itself, called from other private method' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public function run()
+                    {
+                        return self::buildList();
+                    }
+
+                    private static function buildList()
+                    {
+                        return self::fooBar();
+                    }
+
+                    private static function fooBar()
+                    {
+                        return self::fooBar();
+                    }
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public function run()
+                    {
+                        return $this->buildList();
+                    }
+
+                    private function buildList()
+                    {
+                        return $this->fooBar();
+                    }
+
+                    private function fooBar()
+                    {
+                        return $this->fooBar();
+                    }
+                }
+                PHP,
+        ];
+
         yield 'trait' => [
             <<<'PHP'
                 <?php
@@ -549,6 +616,57 @@ final class StaticPrivateMethodFixerTest extends AbstractFixerTestCase
                     abstract protected static function abstractFunction();
                 }
 
+                PHP,
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     *
+     * @requires PHP >= 8.1.0
+     */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function provideFix81Cases(): iterable
+    {
+        yield 'camelCase method calling itself as first-class callable' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public function run(array $values): array
+                    {
+                        return self::buildValue($values);
+                    }
+
+                    private static function buildValue(array $values): array
+                    {
+                        return array_map(self::buildValue(...), $values);
+                    }
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public function run(array $values): array
+                    {
+                        return $this->buildValue($values);
+                    }
+
+                    private function buildValue(array $values): array
+                    {
+                        return array_map($this->buildValue(...), $values);
+                    }
+                }
                 PHP,
         ];
     }
