@@ -92,6 +92,27 @@ With configuration: ``['elements' => ['const' => 'one']]``.
 Example #4
 ~~~~~~~~~~
 
+With configuration: ``['elements' => ['property' => 'none']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    class Sample
+    {
+        /** @var int|null */
+        private $foo1;
+   -
+        /** @var string|null */
+        private $foo2;
+   -
+        private $foo3;
+    }
+
+Example #5
+~~~~~~~~~~
+
 With configuration: ``['elements' => ['const' => 'only_if_meta']]``.
 
 .. code-block:: diff
@@ -112,7 +133,7 @@ With configuration: ``['elements' => ['const' => 'only_if_meta']]``.
         const DAY = 86400;
     }
 
-Example #5
+Example #6
 ~~~~~~~~~~
 
 With configuration: ``['elements' => ['property' => 'only_if_meta']]``.
