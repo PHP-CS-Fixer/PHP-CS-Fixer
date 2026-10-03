@@ -955,6 +955,9 @@ Whitespace
 - `array_indentation <./whitespace/array_indentation.rst>`_
 
   Each element of an array must be indented exactly once.
+- `blank_line_after_statement <./whitespace/blank_line_after_statement.rst>`_ *(configurable)*
+
+  An empty line feed must follow any configured statement.
 - `blank_line_before_statement <./whitespace/blank_line_before_statement.rst>`_ *(configurable)*
 
   An empty line feed must precede any configured statement.

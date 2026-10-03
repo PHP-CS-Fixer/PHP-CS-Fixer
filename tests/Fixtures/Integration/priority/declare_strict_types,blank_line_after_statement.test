@@ -1,0 +1,12 @@
+--TEST--
+Integration of fixers: declare_strict_types,blank_line_after_statement.
+--RULESET--
+{"blank_line_after_statement": true, "declare_strict_types": true}
+--EXPECT--
+<?php declare(strict_types=1);
+
+echo "Foo";
+
+--INPUT--
+<?php
+echo "Foo";
