@@ -47,6 +47,62 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
      */
     public static function provideFixCases(): iterable
     {
+        yield 'annotations on DocBlock boundary lines' => [
+            <<<'EOT'
+                <?php
+                /**
+                 * @param string $first
+                 * @param string $second
+                 */
+                function example($first, $second): void {}
+                EOT,
+            <<<'EOT'
+                <?php
+                /** @param string $second
+                 * @param string $first */
+                function example($first, $second): void {}
+                EOT,
+        ];
+
+        yield 'ordered annotations on DocBlock boundary lines stay compact' => [
+            <<<'EOT'
+                <?php
+                /** @param string $first
+                 * @param string $second */
+                function example($first, $second): void {}
+                EOT,
+        ];
+
+        yield 'closing boundary on annotation continuation' => [
+            <<<'EOT'
+                <?php
+                /**
+                 * @param string $first
+                 * description
+                 * @param string $second
+                 */
+                function example($first, $second): void {}
+                EOT,
+            <<<'EOT'
+                <?php
+                /**
+                 * @param string $second
+                 * @param string $first
+                 * description */
+                function example($first, $second): void {}
+                EOT,
+        ];
+
+        yield 'ordered annotations with continuation stay compact' => [
+            <<<'EOT'
+                <?php
+                /** @param string $first
+                 * @param string $second
+                 * description */
+                function example($first, $second): void {}
+                EOT,
+        ];
+
         yield 'no changes' => [<<<'EOT'
             <?php
             class C {
