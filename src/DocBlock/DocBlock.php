@@ -51,10 +51,7 @@ final class DocBlock implements \Stringable
      */
     public function __construct(string $content, ?NamespaceAnalysis $namespace = null, array $namespaceUses = [])
     {
-        foreach (Preg::split('/([^\n\r]+\R*)/', $content, -1, \PREG_SPLIT_NO_EMPTY | \PREG_SPLIT_DELIM_CAPTURE) as $line) {
-            $this->lines[] = new Line($line);
-        }
-
+        $this->setContent($content);
         $this->namespace = $namespace;
         $this->namespaceUses = $namespaceUses;
     }
@@ -126,6 +123,21 @@ final class DocBlock implements \Stringable
     public function makeMultiLine(string $indent, string $lineEnd): void
     {
         if ($this->isMultiLine()) {
+            $content = $initialContent = $this->getContent();
+            $firstLine = $this->getLine(0);
+            $lastLine = $this->getLine(\count($this->lines) - 1);
+
+            if (null !== $firstLine && $firstLine->containsUsefulContent()) {
+                $content = Preg::replace('/\A\/\*\*/', '/**'.$lineEnd.$indent.' *', $content);
+            }
+            if (null !== $lastLine && $lastLine->containsUsefulContent()) {
+                $content = Preg::replace('/\h*\*\/\z/', $lineEnd.$indent.' */', $content);
+            }
+
+            if ($content !== $initialContent) {
+                $this->setContent($content);
+            }
+
             return;
         }
 
@@ -231,6 +243,16 @@ final class DocBlock implements \Stringable
         }
 
         return $index - $start;
+    }
+
+    private function setContent(string $content): void
+    {
+        $this->lines = [];
+        foreach (Preg::split('/([^\n\r]+\R*)/', $content, -1, \PREG_SPLIT_NO_EMPTY | \PREG_SPLIT_DELIM_CAPTURE) as $line) {
+            $this->lines[] = new Line($line);
+        }
+
+        $this->annotations = null;
     }
 
     private function getSingleLineDocBlockEntry(Line $line): string
