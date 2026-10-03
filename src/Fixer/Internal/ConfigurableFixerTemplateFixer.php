@@ -20,6 +20,7 @@ use PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer;
 use PhpCsFixer\Console\Command\HelpCommand;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Doctrine\Annotation\Tokens as DoctrineAnnotationTokens;
+use PhpCsFixer\Fixer\AttributeNotation\GeneralAttributeRemoveFixer;
 use PhpCsFixer\Fixer\AttributeNotation\OrderedAttributesFixer;
 use PhpCsFixer\Fixer\Casing\ConstantCaseFixer;
 use PhpCsFixer\Fixer\ClassNotation\FinalInternalClassFixer;
@@ -285,6 +286,8 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                 } elseif ($fixer instanceof NoBreakCommentFixer && 'comment_text' === $optionName) {
                     // nothing to do
                 } elseif ($fixer instanceof TrailingCommaInMultilineFixer && 'elements' === $optionName) {
+                    // nothing to do
+                } elseif ($fixer instanceof GeneralAttributeRemoveFixer && 'attributes' === $optionName) {
                     // nothing to do
                 } elseif ($fixer instanceof OrderedAttributesFixer && 'sort_algorithm' === $optionName) {
                     // nothing to do
