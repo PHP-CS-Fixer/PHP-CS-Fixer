@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9b09ac6e7142b47d0cc41bb6243b7242",
+    "content-hash": "d8b1d2cbadce27e95d49f1e2ca7c6acf",
     "packages": [
         {
             "name": "composer/pcre",
@@ -515,17 +515,11 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/nette/neon/zipball/9009f99ce1396b366a88ca16c90177148352b7d3",
-                "reference": "9009f99ce1396b366a88ca16c90177148352b7d3",
-                "shasum": ""
+                "reference": "9009f99ce1396b366a88ca16c90177148352b7d3"
             },
             "require": {
                 "ext-json": "*",
                 "php": "8.0 - 8.5"
-            },
-            "require-dev": {
-                "nette/tester": "^2.4",
-                "phpstan/phpstan-nette": "^2.0@stable",
-                "tracy/tracy": "^2.7"
             },
             "bin": [
                 "bin/neon-lint"
@@ -544,36 +538,12 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause",
                 "GPL-2.0-only",
                 "GPL-3.0-only"
             ],
-            "authors": [
-                {
-                    "name": "David Grudl",
-                    "homepage": "https://davidgrudl.com"
-                },
-                {
-                    "name": "Nette Community",
-                    "homepage": "https://nette.org/contributors"
-                }
-            ],
-            "description": "🍸 Nette NEON: encodes and decodes NEON file format.",
-            "homepage": "https://neon.nette.org",
-            "keywords": [
-                "export",
-                "import",
-                "neon",
-                "nette",
-                "yaml"
-            ],
-            "support": {
-                "issues": "https://github.com/nette/neon/issues",
-                "source": "https://github.com/nette/neon/tree/v3.4.8"
-            },
-            "time": "2026-05-11T21:34:00+00:00"
+            "description": "🍸 Nette NEON: encodes and decodes NEON file format."
         },
         {
             "name": "pdepend/pdepend",
@@ -625,8 +595,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/phar-io/version/zipball/4f7fd7836c6f332bb2933569e566a0d6c4cbed74",
-                "reference": "4f7fd7836c6f332bb2933569e566a0d6c4cbed74",
-                "shasum": ""
+                "reference": "4f7fd7836c6f332bb2933569e566a0d6c4cbed74"
             },
             "require": {
                 "php": "^7.2 || ^8.0"
@@ -637,33 +606,10 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
-                    "name": "Arne Blankerts",
-                    "email": "arne@blankerts.de",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Sebastian Heuer",
-                    "email": "sebastian@phpeople.de",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Library for handling version information and constraints",
-            "support": {
-                "issues": "https://github.com/phar-io/version/issues",
-                "source": "https://github.com/phar-io/version/tree/3.2.1"
-            },
-            "time": "2022-02-21T01:04:05+00:00"
+            "description": "Library for handling version information and constraints"
         },
         {
             "name": "phpcompatibility/php-compatibility",
@@ -803,7 +749,7 @@
         },
         {
             "name": "phpmd/phpmd",
-            "version": "dev-master",
+            "version": "2.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpmd/phpmd.git",
@@ -872,14 +818,10 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/phpstan/phpstan/zipball/46a6d9060e5a7763adfcc21ebcb8b504ebdbcb92",
-                "reference": "46a6d9060e5a7763adfcc21ebcb8b504ebdbcb92",
-                "shasum": ""
+                "reference": "46a6d9060e5a7763adfcc21ebcb8b504ebdbcb92"
             },
             "require": {
                 "php": "^7.4|^8.0"
-            },
-            "conflict": {
-                "phpstan/phpstan-shim": "*"
             },
             "bin": [
                 "phpstan",
@@ -891,44 +833,10 @@
                     "bootstrap.php"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Ondřej Mirtes"
-                },
-                {
-                    "name": "Markus Staab"
-                },
-                {
-                    "name": "Vincent Langlet"
-                }
-            ],
-            "description": "PHPStan - PHP Static Analysis Tool",
-            "keywords": [
-                "dev",
-                "static analysis"
-            ],
-            "support": {
-                "docs": "https://phpstan.org/user-guide/getting-started",
-                "forum": "https://github.com/phpstan/phpstan/discussions",
-                "issues": "https://github.com/phpstan/phpstan/issues",
-                "security": "https://github.com/phpstan/phpstan/security/policy",
-                "source": "https://github.com/phpstan/phpstan-src"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/ondrejmirtes",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/phpstan",
-                    "type": "github"
-                }
-            ],
-            "time": "2026-09-25T09:31:51+00:00"
+            "description": "PHPStan - PHP Static Analysis Tool"
         },
         {
             "name": "phpstan/phpstan-deprecation-rules",
@@ -976,24 +884,12 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/phpstan/phpstan-phpunit/zipball/33a190a5e8e69fd18308443a80d4f43f42d43604",
-                "reference": "33a190a5e8e69fd18308443a80d4f43f42d43604",
-                "shasum": ""
+                "reference": "33a190a5e8e69fd18308443a80d4f43f42d43604"
             },
             "require": {
                 "phar-io/version": "^3.2",
                 "php": "^7.4 || ^8.0",
                 "phpstan/phpstan": "^2.2.6"
-            },
-            "conflict": {
-                "phpunit/phpunit": "<7.0"
-            },
-            "require-dev": {
-                "nikic/php-parser": "^5",
-                "php-parallel-lint/php-parallel-lint": "^1.2",
-                "phpstan/phpstan-deprecation-rules": "^2.0",
-                "phpstan/phpstan-strict-rules": "^2.0",
-                "phpunit/phpunit": "^9.6",
-                "shipmonk/name-collision-detector": "^2.1"
             },
             "type": "phpstan-extension",
             "extra": {
@@ -1009,19 +905,10 @@
                     "PHPStan\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "description": "PHPUnit extensions and rules for PHPStan",
-            "keywords": [
-                "static analysis"
-            ],
-            "support": {
-                "issues": "https://github.com/phpstan/phpstan-phpunit/issues",
-                "source": "https://github.com/phpstan/phpstan-phpunit/tree/2.0.19"
-            },
-            "time": "2026-09-26T17:07:06+00:00"
+            "description": "PHPUnit extensions and rules for PHPStan"
         },
         {
             "name": "phpstan/phpstan-strict-rules",
@@ -1237,25 +1124,12 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/shipmonk-rnd/phpstan-baseline-per-identifier/zipball/9a4b5c3e8fa0af801fc575ab80cd6d657a38ba8e",
-                "reference": "9a4b5c3e8fa0af801fc575ab80cd6d657a38ba8e",
-                "shasum": ""
+                "reference": "9a4b5c3e8fa0af801fc575ab80cd6d657a38ba8e"
             },
             "require": {
                 "nette/neon": "^3.3.3 || ^4.0",
                 "php": "^8.1",
                 "phpstan/phpstan": "^2"
-            },
-            "require-dev": {
-                "editorconfig-checker/editorconfig-checker": "10.7.0",
-                "ergebnis/composer-normalize": "^2.45",
-                "phpstan/phpstan-phpunit": "2.0.6",
-                "phpstan/phpstan-strict-rules": "2.0.4",
-                "phpunit/phpunit": "^10.5.46",
-                "shipmonk/coding-standard": "^0.2.0",
-                "shipmonk/composer-dependency-analyser": "1.8.3",
-                "shipmonk/dead-code-detector": "^1.0",
-                "shipmonk/name-collision-detector": "2.1.1",
-                "shipmonk/phpstan-rules": "4.3.5"
             },
             "bin": [
                 "bin/split-phpstan-baseline"
@@ -1273,23 +1147,10 @@
                     "ShipMonk\\PHPStan\\Baseline\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "description": "Split your PHPStan baseline into multiple files, one per error identifier. Supports both neon baseline and PHP baseline.",
-            "keywords": [
-                "PHPStan",
-                "dev",
-                "error identifier",
-                "phpstan baseline",
-                "phpstan extension"
-            ],
-            "support": {
-                "issues": "https://github.com/shipmonk-rnd/phpstan-baseline-per-identifier/issues",
-                "source": "https://github.com/shipmonk-rnd/phpstan-baseline-per-identifier/tree/2.4.0"
-            },
-            "time": "2026-09-29T08:38:20+00:00"
+            "description": "Split your PHPStan baseline into multiple files, one per error identifier. Supports both neon baseline and PHP baseline."
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -1659,7 +1520,7 @@
     "aliases": [
         {
             "package": "phpmd/phpmd",
-            "version": "9999999-dev",
+            "version": "2.9999999.9999999.9999999-dev",
             "alias": "2.16.0",
             "alias_normalized": "2.16.0.0"
         }
