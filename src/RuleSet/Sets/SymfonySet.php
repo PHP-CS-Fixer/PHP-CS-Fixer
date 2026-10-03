@@ -80,6 +80,9 @@ final class SymfonySet extends AbstractRuleSetDefinition
                 'after_heredoc' => true,
                 'on_multiline' => 'ignore',
             ],
+            'modifier_keywords' => [ // overrides @PER-CS3.0
+                'general_visibility_when_set_visibility_present' => 'require',
+            ],
             'native_function_casing' => true,
             'native_type_declaration_casing' => true,
             'no_alias_language_construct_call' => true,

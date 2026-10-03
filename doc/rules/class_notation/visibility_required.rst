@@ -20,7 +20,8 @@ You should use ``modifier_keywords`` instead.
 This rule is CONFIGURABLE
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can configure this rule using the following option: ``elements``.
+You can configure this rule using the following options: ``elements``,
+``general_visibility_when_set_visibility_present``.
 
 Configuration
 -------------
@@ -33,6 +34,17 @@ The structural elements to fix.
 Allowed values: a subset of ``['const', 'method', 'property']``
 
 Default value: ``['const', 'method', 'property']``
+
+``general_visibility_when_set_visibility_present``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+How to handle the general visibility modifier of a property that also declares a
+set-visibility modifier: ``require`` to always declare it, ``omit`` to drop the
+redundant ``public``, ``keep`` to leave it as it is.
+
+Allowed values: ``'keep'``, ``'omit'`` and ``'require'``
+
+Default value: ``'require'``
 
 Examples
 --------
@@ -152,6 +164,22 @@ Example #3
     }
 
 Example #4
+~~~~~~~~~~
+
+With configuration: ``['general_visibility_when_set_visibility_present' => 'omit']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    class Sample
+    {
+   -    public private(set) $baz;
+   +    private(set) $baz;
+    }
+
+Example #5
 ~~~~~~~~~~
 
 With configuration: ``['elements' => ['const']]``.
