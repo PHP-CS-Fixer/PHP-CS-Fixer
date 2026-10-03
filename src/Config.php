@@ -30,7 +30,7 @@ use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
  *
  * @api-extendable
  */
-class Config implements ConfigInterface, ParallelAwareConfigInterface, UnsupportedPhpVersionAllowedConfigInterface, CustomRulesetsAwareConfigInterface, RuleCustomisationPolicyAwareConfigInterface
+class Config implements ConfigInterface, ParallelAwareConfigInterface, UnsupportedPhpVersionAllowedConfigInterface, CustomRulesetsAwareConfigInterface, RuleCustomisationPolicyAwareConfigInterface, MinimumPhpVersionAwareConfigInterface
 {
     /**
      * @var non-empty-string
@@ -73,6 +73,11 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     private ParallelConfig $parallelConfig;
 
     private ?string $phpExecutable = null;
+
+    /**
+     * @var null|non-empty-string
+     */
+    private ?string $minimumPhpVersion = null;
 
     /**
      * @TODO: 4.0 - update to @PER
@@ -188,6 +193,11 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
         return $this->ruleCustomisationPolicy;
     }
 
+    public function getMinimumPhpVersion(): ?string
+    {
+        return $this->minimumPhpVersion;
+    }
+
     public function registerCustomFixers(iterable $fixers): ConfigInterface
     {
         foreach ($fixers as $fixer) {
@@ -298,6 +308,13 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     public function setUnsupportedPhpVersionAllowed(bool $isUnsupportedPhpVersionAllowed): ConfigInterface
     {
         $this->isUnsupportedPhpVersionAllowed = $isUnsupportedPhpVersionAllowed;
+
+        return $this;
+    }
+
+    public function setMinimumPhpVersion(?string $minimumPhpVersion): ConfigInterface
+    {
+        $this->minimumPhpVersion = $minimumPhpVersion;
 
         return $this;
     }
