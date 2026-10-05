@@ -71,10 +71,10 @@ final class PhpdocToCommentFixer extends AbstractFixer implements ConfigurableFi
     public function getPriority(): int
     {
         /*
-     * Should be run before all other docblock fixers so that these fixers
-     * don't touch doc comments which are meant to be converted to regular
-     * comments.
-     */
+         * Should be run before all other docblock fixers so that these fixers
+         * don't touch doc comments which are meant to be converted to regular
+         * comments.
+         */
         return 25;
     }
 

@@ -111,14 +111,14 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer implements Config
     public function getPriority(): int
     {
         /*
-     * Should be run before all other docblock fixers apart from the
-     * phpdoc_to_comment and phpdoc_indent fixer to make sure all fixers
-     * apply correct indentation to new code they add. This should run
-     * before alignment of params is done since this fixer might change
-     * the type and thereby un-aligning the params. We also must run after
-     * the phpdoc_types_fixer because it can convert types to things that
-     * we can fix.
-     */
+         * Should be run before all other docblock fixers apart from the
+         * phpdoc_to_comment and phpdoc_indent fixer to make sure all fixers
+         * apply correct indentation to new code they add. This should run
+         * before alignment of params is done since this fixer might change
+         * the type and thereby un-aligning the params. We also must run after
+         * the phpdoc_types_fixer because it can convert types to things that
+         * we can fix.
+         */
         return 15;
     }
 

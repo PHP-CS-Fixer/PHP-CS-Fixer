@@ -164,12 +164,12 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
     public function getPriority(): int
     {
         /*
-     * Should be run after all other docblock fixers. This because they
-     * modify other annotations to change their type and or separation
-     * which totally change the behaviour of this fixer. It's important that
-     * annotations are of the correct type, and are grouped correctly
-     * before running this fixer.
-     */
+         * Should be run after all other docblock fixers. This because they
+         * modify other annotations to change their type and or separation
+         * which totally change the behaviour of this fixer. It's important that
+         * annotations are of the correct type, and are grouped correctly
+         * before running this fixer.
+         */
         return -42;
     }
 
