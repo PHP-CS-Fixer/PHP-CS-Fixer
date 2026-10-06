@@ -426,6 +426,9 @@ final class FixerFactoryTest extends TestCase
                 'no_spaces_inside_parenthesis',
                 'spaces_inside_parentheses',
             ],
+            'comment_to_phpdoc' => [
+                'phpdoc_nullable_type',
+            ],
             'control_structure_braces' => [
                 'braces_position',
                 'control_structure_continuation_position',
@@ -865,6 +868,9 @@ final class FixerFactoryTest extends TestCase
                 'no_empty_phpdoc',
                 'no_trailing_whitespace_in_comment',
             ],
+            'phpdoc_nullable_type' => [
+                'phpdoc_align',
+            ],
             'phpdoc_order' => [
                 'phpdoc_separation',
                 'phpdoc_trim',
@@ -884,6 +890,7 @@ final class FixerFactoryTest extends TestCase
             'phpdoc_to_comment' => [
                 'no_empty_comment',
                 'phpdoc_no_useless_inheritdoc',
+                'phpdoc_nullable_type',
                 'single_line_comment_spacing',
                 'single_line_comment_style',
             ],
