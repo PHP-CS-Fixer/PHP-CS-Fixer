@@ -45,6 +45,9 @@ Array Notation
 - `array_syntax <./array_notation/array_syntax.rst>`_ *(configurable)*
 
   PHP arrays should be declared using the configured syntax.
+- `multiline_array <./array_notation/multiline_array.rst>`_ *(configurable)*
+
+  Arrays with at least a configured number of elements MUST be split across multiple lines, with one element per line.
 - `no_multiline_whitespace_around_double_arrow <./array_notation/no_multiline_whitespace_around_double_arrow.rst>`_
 
   Operator ``=>`` should not be surrounded by multi-line whitespaces.
