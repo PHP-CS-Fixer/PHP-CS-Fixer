@@ -1,0 +1,21 @@
+--TEST--
+Integration of fixers: comment_to_phpdoc,phpdoc_nullable_type.
+--RULESET--
+{"comment_to_phpdoc": true, "phpdoc_nullable_type": true}
+--EXPECT--
+<?php
+function foo ($fo) {
+    /**
+     * @var ?Foo $x
+     */
+    $x = $fo;
+}
+
+--INPUT--
+<?php
+function foo ($fo) {
+    /*
+     * @var null|Foo $x
+     */
+    $x = $fo;
+}
