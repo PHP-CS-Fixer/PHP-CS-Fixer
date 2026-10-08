@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Console;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Cache\NullCacheManager;
+use PhpCsFixer\ComposerJsonReader;
 use PhpCsFixer\Config;
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
@@ -122,6 +123,19 @@ final class ConfigurationResolverTest extends TestCase
         ], $config);
 
         self::assertSame('none', $resolver->getProgressType());
+    }
+
+    public function testResolveConfigMinimumPhpVersionOverridesComposerDetection(): void
+    {
+        try {
+            $config = (new Config())->setMinimumPhpVersion('8.1');
+
+            $this->createConfigurationResolver([], $config)->getConfig();
+
+            self::assertSame('8.1', ComposerJsonReader::createSingleton()->getPhp());
+        } finally {
+            ComposerJsonReader::setPhpOverride(null);
+        }
     }
 
     public function testResolveProgressWithNegativeConfigAndPositiveOption(): void
