@@ -376,6 +376,17 @@ echo DocumentStats::DRAFT->getStatusName();
                 protected function noop(): void{}
             }',
         ];
+
+        yield 'property with DNF type' => [
+            '<?php
+            final class Foo {
+                private (Bar&Baz)|Qux $x;
+            }',
+            '<?php
+            final class Foo {
+                protected (Bar&Baz)|Qux $x;
+            }',
+        ];
     }
 
     /**
