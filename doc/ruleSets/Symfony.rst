@@ -61,6 +61,10 @@ Rules
 
   ``['after_heredoc' => true, 'on_multiline' => 'ignore']``
 
+- `modifier_keywords <./../rules/class_notation/modifier_keywords.rst>`_ with config:
+
+  ``['general_visibility_when_set_visibility_present' => 'require']``
+
 - `native_function_casing <./../rules/casing/native_function_casing.rst>`_
 - `native_type_declaration_casing <./../rules/casing/native_type_declaration_casing.rst>`_
 - `no_alias_language_construct_call <./../rules/alias/no_alias_language_construct_call.rst>`_
