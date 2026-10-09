@@ -788,6 +788,9 @@ PHPDoc
 - `phpdoc_list_type <./phpdoc/phpdoc_list_type.rst>`_ *(risky)*
 
   PHPDoc ``list`` type must be used instead of ``array`` without a key.
+- `phpdoc_multi_line_throws <./phpdoc/phpdoc_multi_line_throws.rst>`_ *(configurable)*
+
+  Throws annotations should be either in union or multiline format.
 - `phpdoc_no_access <./phpdoc/phpdoc_no_access.rst>`_
 
   ``@access`` annotations must be removed from PHPDoc.
