@@ -82,7 +82,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
         \T_WHILE,
         \T_DO,
     ];
-    private const BLOCK_FIRST_TOKENS = ['{', [CT::T_DESTRUCTURING_BRACKET_OPEN], [CT::T_USE_TRAIT], [CT::T_GROUP_IMPORT_BRACE_OPEN], [CT::T_PROPERTY_HOOK_BRACE_OPEN], [FCT::T_ATTRIBUTE]];
+    private const BLOCK_FIRST_TOKENS = [CT::T_DESTRUCTURING_BRACKET_OPEN, CT::T_USE_TRAIT, CT::T_GROUP_IMPORT_BRACE_OPEN, CT::T_PROPERTY_HOOK_BRACE_OPEN, FCT::T_ATTRIBUTE];
     private const PROPERTY_KEYWORDS = [\T_VAR, \T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_STATIC, FCT::T_READONLY];
 
     private AlternativeSyntaxAnalyzer $alternativeSyntaxAnalyzer;
@@ -235,7 +235,8 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
             }
 
             if (
-                $token->equalsAny(self::BLOCK_FIRST_TOKENS)
+                $token->isGivenKind(self::BLOCK_FIRST_TOKENS)
+                || $token->equals('{')
                 || ($token->equals('(') && !$tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(\T_ARRAY))
                 || isset($alternativeBlockStarts[$index])
                 || isset($caseBlockStarts[$index])
@@ -343,7 +344,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                         continue;
                     }
 
-                    if ($endToken->equalsAny(['{', ';', [\T_DOUBLE_ARROW], [\T_IMPLEMENTS]])) {
+                    if ($endToken->equalsAny(['{', ';']) || $endToken->isGivenKind([\T_DOUBLE_ARROW, \T_IMPLEMENTS])) {
                         break;
                     }
 
@@ -411,7 +412,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                         continue;
                     }
 
-                    if ($tokens[$endIndex]->equalsAny(['{', ';'])) {
+                    if ($tokens[$endIndex]->equals('{') || $tokens[$endIndex]->equals(';')) {
                         break;
                     }
                 }
@@ -581,7 +582,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 --$currentScope;
             }
 
-            if ($token->isComment() || $token->equalsAny([';', ',', '}', [\T_OPEN_TAG], [\T_CLOSE_TAG], [CT::T_ATTRIBUTE_CLOSE]])) {
+            if ($token->isComment() || $token->equalsAny([';', ',', '}']) || $token->isGivenKind([\T_OPEN_TAG, \T_CLOSE_TAG, CT::T_ATTRIBUTE_CLOSE])) {
                 continue;
             }
 
@@ -629,10 +630,13 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 continue;
             }
 
-            if ($searchEndToken->equalsAny(['(', '{', [CT::T_ARRAY_BRACKET_OPEN]])) {
-                if ($searchEndToken->equals('(')) {
+            $paren = $searchEndToken->equals('(');
+            $brace = $searchEndToken->equals('{');
+
+            if ($paren || $brace || $searchEndToken->isGivenKind([CT::T_ARRAY_BRACKET_OPEN])) {
+                if ($paren) {
                     $blockType = Tokens::BLOCK_TYPE_PARENTHESIS;
-                } elseif ($searchEndToken->equals('{')) {
+                } elseif ($brace) {
                     $blockType = Tokens::BLOCK_TYPE_BRACE;
                 } else {
                     $blockType = Tokens::BLOCK_TYPE_ARRAY_BRACKET;
@@ -642,7 +646,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 $searchEndToken = $tokens[$searchEndIndex];
             }
 
-            if (!$searchEndToken->equalsAny([';', ',', '}', [\T_CLOSE_TAG]])) {
+            if (!$searchEndToken->equalsAny([';', ',', '}']) && !$searchEndToken->isGivenKind([\T_CLOSE_TAG])) {
                 continue;
             }
 
@@ -717,7 +721,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 return [$index, true];
             }
 
-            if ($tokens[$index]->equalsAny(['}', [\T_ENDSWITCH]])) {
+            if ($tokens[$index]->equals('}') || $tokens[$index]->isGivenKind(\T_ENDSWITCH)) {
                 return [$tokens->getPrevNonWhitespace($index), false];
             }
         }
