@@ -218,6 +218,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
         $noBracesBlockStarts = [];
         $alternativeBlockStarts = [];
         $caseBlockStarts = [];
+        $indentUnit = $this->whitespacesConfig->getIndent();
 
         foreach ($tokens as $index => $token) {
             $currentScope = \count($scopes) - 1;
@@ -440,7 +441,8 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
 
                 $content = $previousOpenTagContent.($token->isWhitespace() ? $token->getContent() : '');
 
-                if (!Preg::match('/\R/', $content)) {
+                // whitespace only ever consists of spaces, tabs, `\r` and `\n`, so no need for a regex here
+                if (false === strpbrk($content, "\r\n")) {
                     continue;
                 }
 
@@ -472,7 +474,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                                 continue;
                             }
 
-                            if (Preg::match('/\R/', $searchToken->getContent())) {
+                            if (false !== strpbrk($searchToken->getContent(), "\r\n")) {
                                 $nextNewlineIndex = $searchIndex;
 
                                 break;
@@ -490,10 +492,12 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                             || (null !== $nextNewlineIndex && $nextNewlineIndex < $endIndex)
                         ) {
                             // do we touch whitespace directly before comment...
-                            $commentFollowedByClosingBrace = null !== $firstNonWhitespaceTokenIndex
+                            $afterCommentIndex = null !== $firstNonWhitespaceTokenIndex
                                 && $tokens[$firstNonWhitespaceTokenIndex]->isGivenKind(\T_COMMENT)
-                                // ...and afterwards, there is only comment or `}`
-                                && null !== ($afterCommentIndex = $tokens->getNextMeaningfulToken($firstNonWhitespaceTokenIndex))
+                                ? $tokens->getNextMeaningfulToken($firstNonWhitespaceTokenIndex)
+                                : null;
+                            // ...and afterwards, there is only comment or `}`
+                            $commentFollowedByClosingBrace = null !== $afterCommentIndex
                                 && $tokens[$afterCommentIndex]->equals('}');
 
                             if ($commentFollowedByClosingBrace) {
@@ -509,7 +513,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                                 } else {
                                     // or it was dedicated comment for next control loop
                                     // ^^ we need to check if there is a control group afterwards, and in that case don't make extra indent level
-                                    $nextIndex = $tokens->getNextMeaningfulToken($firstNonWhitespaceTokenIndex);
+                                    $nextIndex = $afterCommentIndex;
                                     $nextNextIndex = null !== $nextIndex ? $tokens->getNextMeaningfulToken($nextIndex) : null;
 
                                     if (null !== $nextNextIndex && $tokens[$nextNextIndex]->isGivenKind([\T_ELSE, \T_ELSEIF])) {
@@ -518,6 +522,15 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                                         $indent = true;
                                     }
                                 }
+                            } elseif (
+                                true === $this->configuration['stick_comment_to_next_continuous_control_statement']
+                                && null !== $afterCommentIndex
+                                // ...and afterwards, the next `case`/`default` closes the current case block,
+                                // so the comment is a dedicated comment for that next case
+                                && $scopes[$currentScope]['end_index'] === $afterCommentIndex
+                                && $tokens[$scopes[$currentScope]['end_index']]->isGivenKind([\T_CASE, \T_DEFAULT])
+                            ) {
+                                $indent = false;
                             } else {
                                 $indent = true;
                             }
@@ -529,7 +542,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                     if ($scopes[$currentScope]['skip']) {
                         $whitespaces = $previousLineInitialIndent;
                     } else {
-                        $whitespaces = $scopes[$currentScope]['initial_indent'].($indent ? $this->whitespacesConfig->getIndent() : '');
+                        $whitespaces = $scopes[$currentScope]['initial_indent'].($indent ? $indentUnit : '');
                     }
 
                     $content = Preg::replace(
@@ -554,12 +567,16 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 }
 
                 if ('' !== $content) {
-                    $tokens->ensureWhitespaceAtIndex($index, 0, $content);
+                    // nothing to write when the whitespace is already as it should be
+                    if (!$token->isWhitespace() || $content !== $token->getContent()) {
+                        $tokens->ensureWhitespaceAtIndex($index, 0, $content);
+                    }
                 } elseif ($token->isWhitespace()) {
                     $tokens->clearAt($index);
                 }
 
-                if (null !== $nextToken && $nextToken->isComment()) {
+                // the replacement below is a no-op when the indentation did not change
+                if (null !== $nextToken && $nextToken->isComment() && $previousLineInitialIndent !== $previousLineNewIndent) {
                     $tokens[$index + 1] = new Token([
                         $nextToken->getId(),
                         Preg::replace(
@@ -854,7 +871,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
 
         $newLines = 0;
         for ($i = min($siblingIndex, $index) + 1, $max = max($siblingIndex, $index); $i < $max; ++$i) {
-            if ($tokens[$i]->isWhitespace() && Preg::match('/\R/', $tokens[$i]->getContent())) {
+            if ($tokens[$i]->isWhitespace() && false !== strpbrk($tokens[$i]->getContent(), "\r\n")) {
                 if (1 === $newLines || Preg::match('/\R.*\R/', $tokens[$i]->getContent())) {
                     return null;
                 }
