@@ -249,10 +249,6 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                         [$endIndex, $endIndexInclusive] = $this->findCaseBlockEnd($tokens, $index);
                     } elseif ($this->alternativeSyntaxAnalyzer->belongsToAlternativeSyntax($tokens, $index)) {
                         $endIndex = $this->alternativeSyntaxAnalyzer->findAlternativeSyntaxBlockEnd($tokens, $alternativeBlockStarts[$index]);
-                    } else {
-                        // not an alternative syntax block after all: do not open a scope
-                        // (otherwise `$endIndex` would be stale, left over from a previous iteration)
-                        continue;
                     }
                 } elseif ($token->isGivenKind(CT::T_DESTRUCTURING_BRACKET_OPEN)) {
                     $endIndex = $tokens->getNextTokenOfKind($index, [[CT::T_DESTRUCTURING_BRACKET_CLOSE]]);
