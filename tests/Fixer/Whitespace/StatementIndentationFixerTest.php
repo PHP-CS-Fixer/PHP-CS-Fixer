@@ -855,6 +855,36 @@ class Foo {
 }',
         ];
 
+        yield 'multiline group import' => [
+            '<?php
+use Foo\{
+    Bar,
+    Baz
+};',
+            '<?php
+use Foo\{
+        Bar,
+  Baz
+   };',
+        ];
+
+        yield 'multiline group import inside a namespace block' => [
+            '<?php
+namespace Foo {
+    use Bar\{
+        Baz,
+        Qux as Quux
+    };
+}',
+            '<?php
+namespace Foo {
+  use Bar\{
+ Baz,
+          Qux as Quux
+      };
+}',
+        ];
+
         yield 'multiline class definition' => [
             '<?php
 class Foo
@@ -1084,6 +1114,56 @@ if ($foo) {
     // baz
 }',
             ['stick_comment_to_next_continuous_control_statement' => true],
+        ];
+
+        yield 'comments before next case/default WITH stick_comment_to_next_continuous_control_statement' => [
+            '<?php
+switch ($foo) {
+    case 1:
+        // about one
+        // still about one
+        echo "one";
+    // about two
+    // still about two
+    case 2:
+    case 3:
+    // about default
+    default:
+        echo "other";
+}',
+            '<?php
+switch ($foo) {
+    case 1:
+            // about one
+  // still about one
+        echo "one";
+            // about two
+  // still about two
+    case 2:
+    case 3:
+        // about default
+    default:
+        echo "other";
+}',
+            ['stick_comment_to_next_continuous_control_statement' => true],
+        ];
+
+        yield 'comment before next case WITHOUT stick_comment_to_next_continuous_control_statement' => [
+            '<?php
+switch ($foo) {
+    case 1:
+        // about the body of one
+    case 2:
+        echo "two";
+}',
+            '<?php
+switch ($foo) {
+    case 1:
+    // about the body of one
+    case 2:
+        echo "two";
+}',
+            ['stick_comment_to_next_continuous_control_statement' => false],
         ];
 
         yield 'if-elseif-else without braces' => [
