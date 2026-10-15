@@ -223,6 +223,11 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
         foreach ($tokens as $index => $token) {
             $currentScope = \count($scopes) - 1;
 
+            // Only array tokens have an id and only the other ones can be a single character, so get
+            // the id or the content once instead of calling `equals()` and `isGivenKind()` repeatedly.
+            $id = $token->getId();
+            $char = null === $id ? $token->getContent() : null;
+
             if (isset($noBracesBlockStarts[$index])) {
                 $scopes[] = [
                     'type' => 'block',
@@ -235,31 +240,34 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 ++$currentScope;
             }
 
+            $isArrayParenthesis = '(' === $char && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(\T_ARRAY);
+
             if (
-                $token->equals('{') || $token->isGivenKind(self::BLOCK_FIRST_TOKENS)
-                || ($token->equals('(') && !$tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(\T_ARRAY))
+                '{' === $char
+                || (null !== $id && $token->isGivenKind(self::BLOCK_FIRST_TOKENS))
+                || ('(' === $char && !$isArrayParenthesis)
                 || isset($alternativeBlockStarts[$index])
                 || isset($caseBlockStarts[$index])
             ) {
                 $endIndexInclusive = true;
 
-                if ($token->isGivenKind(CT::T_USE_TRAIT)) {
+                if (CT::T_USE_TRAIT === $id) {
                     $endIndex = $tokens->getNextTokenOfKind($index, [';']);
-                } elseif ($token->equals(':')) {
+                } elseif (':' === $char) {
                     if (isset($caseBlockStarts[$index])) {
                         [$endIndex, $endIndexInclusive] = $this->findCaseBlockEnd($tokens, $index);
                     } elseif ($this->alternativeSyntaxAnalyzer->belongsToAlternativeSyntax($tokens, $index)) {
                         $endIndex = $this->alternativeSyntaxAnalyzer->findAlternativeSyntaxBlockEnd($tokens, $alternativeBlockStarts[$index]);
                     }
-                } elseif ($token->isGivenKind(CT::T_DESTRUCTURING_BRACKET_OPEN)) {
+                } elseif (CT::T_DESTRUCTURING_BRACKET_OPEN === $id) {
                     $endIndex = $tokens->getNextTokenOfKind($index, [[CT::T_DESTRUCTURING_BRACKET_CLOSE]]);
-                } elseif ($token->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
+                } elseif (CT::T_GROUP_IMPORT_BRACE_OPEN === $id) {
                     $endIndex = $tokens->getNextTokenOfKind($index, [[CT::T_GROUP_IMPORT_BRACE_CLOSE]]);
-                } elseif ($token->equals('{')) {
+                } elseif ('{' === $char) {
                     $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
-                } elseif ($token->equals('(')) {
+                } elseif ('(' === $char) {
                     $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
-                } elseif ($token->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
+                } elseif (CT::T_PROPERTY_HOOK_BRACE_OPEN === $id) {
                     $endIndex = $tokens->getNextTokenOfKind($index, [[CT::T_PROPERTY_HOOK_BRACE_CLOSE]]);
                 } else {
                     $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
@@ -305,11 +313,8 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 continue;
             }
 
-            if (
-                $token->isGivenKind(CT::T_ARRAY_BRACKET_OPEN)
-                || ($token->equals('(') && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(\T_ARRAY))
-            ) {
-                $blockType = $token->equals('(') ? Tokens::BLOCK_TYPE_PARENTHESIS : Tokens::BLOCK_TYPE_ARRAY_BRACKET;
+            if (CT::T_ARRAY_BRACKET_OPEN === $id || $isArrayParenthesis) {
+                $blockType = '(' === $char ? Tokens::BLOCK_TYPE_PARENTHESIS : Tokens::BLOCK_TYPE_ARRAY_BRACKET;
 
                 $scopes[] = [
                     'type' => 'statement',
@@ -324,39 +329,42 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 continue;
             }
 
-            $isPropertyStart = $this->isPropertyStart($tokens, $index);
-            if ($isPropertyStart || $token->isGivenKind(self::BLOCK_SIGNATURE_FIRST_TOKENS)) {
+            // a property start is always one of the property keywords, so never a single character
+            $isPropertyStart = null !== $id && $this->isPropertyStart($tokens, $index);
+            if ($isPropertyStart || (null !== $id && $token->isGivenKind(self::BLOCK_SIGNATURE_FIRST_TOKENS))) {
                 $lastWhitespaceIndex = null;
                 $closingParenthesisIndex = null;
                 $ternaryLevel = 0;
 
                 for ($endIndex = $index + 1, $max = \count($tokens); $endIndex < $max; ++$endIndex) {
                     $endToken = $tokens[$endIndex];
+                    $endId = $endToken->getId();
+                    $endChar = null === $endId ? $endToken->getContent() : null;
 
-                    if ($endToken->equals('(')) {
+                    if ('(' === $endChar) {
                         $closingParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $endIndex);
                         $endIndex = $closingParenthesisIndex;
 
                         continue;
                     }
 
-                    if ($endToken->isGivenKind(CT::T_ARRAY_BRACKET_OPEN)) {
+                    if (CT::T_ARRAY_BRACKET_OPEN === $endId) {
                         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $endIndex);
 
                         continue;
                     }
 
-                    if ($endToken->equalsAny(['{', ';']) || $endToken->isGivenKind([\T_DOUBLE_ARROW, \T_IMPLEMENTS])) {
+                    if ('{' === $endChar || ';' === $endChar || \T_DOUBLE_ARROW === $endId || \T_IMPLEMENTS === $endId) {
                         break;
                     }
 
-                    if ($endToken->equals('?')) {
+                    if ('?' === $endChar) {
                         ++$ternaryLevel;
 
                         continue;
                     }
 
-                    if ($endToken->equals(':')) {
+                    if (':' === $endChar) {
                         if ($ternaryLevel > 0) {
                             --$ternaryLevel;
 
@@ -404,17 +412,20 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 continue;
             }
 
-            if ($token->isGivenKind(\T_FUNCTION)) {
+            if (\T_FUNCTION === $id) {
                 $endIndex = $index + 1;
 
                 for ($max = \count($tokens); $endIndex < $max; ++$endIndex) {
-                    if ($tokens[$endIndex]->equals('(')) {
+                    $endToken = $tokens[$endIndex];
+                    $endChar = null === $endToken->getId() ? $endToken->getContent() : null;
+
+                    if ('(' === $endChar) {
                         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $endIndex);
 
                         continue;
                     }
 
-                    if ($tokens[$endIndex]->equalsAny(['{', ';'])) {
+                    if ('{' === $endChar || ';' === $endChar) {
                         break;
                     }
                 }
@@ -606,7 +617,11 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 --$currentScope;
             }
 
-            if ($token->isComment() || $token->equalsAny([';', ',', '}']) || $token->isGivenKind([\T_OPEN_TAG, \T_CLOSE_TAG, CT::T_ATTRIBUTE_CLOSE])) {
+            if (
+                null === $id
+                    ? (';' === $char || ',' === $char || '}' === $char)
+                    : ($token->isComment() || $token->isGivenKind([\T_OPEN_TAG, \T_CLOSE_TAG, CT::T_ATTRIBUTE_CLOSE]))
+            ) {
                 continue;
             }
 
@@ -638,9 +653,11 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
         $doWhileLevel = 0;
         for ($searchEndIndex = $index; $searchEndIndex <= $parentScopeEndIndex; ++$searchEndIndex) {
             $searchEndToken = $tokens[$searchEndIndex];
+            $searchEndId = $searchEndToken->getId();
+            $searchEndChar = null === $searchEndId ? $searchEndToken->getContent() : null;
 
             if (
-                $searchEndToken->isGivenKind(\T_IF)
+                \T_IF === $searchEndId
                 && !$tokens[$tokens->getPrevMeaningfulToken($searchEndIndex)]->isGivenKind(\T_ELSE)
             ) {
                 ++$ifLevel;
@@ -648,16 +665,16 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 continue;
             }
 
-            if ($searchEndToken->isGivenKind(\T_DO)) {
+            if (\T_DO === $searchEndId) {
                 ++$doWhileLevel;
 
                 continue;
             }
 
-            if ($searchEndToken->equalsAny(['(', '{']) || $searchEndToken->isGivenKind(CT::T_ARRAY_BRACKET_OPEN)) {
-                if ($searchEndToken->equals('(')) {
+            if ('(' === $searchEndChar || '{' === $searchEndChar || CT::T_ARRAY_BRACKET_OPEN === $searchEndId) {
+                if ('(' === $searchEndChar) {
                     $blockType = Tokens::BLOCK_TYPE_PARENTHESIS;
-                } elseif ($searchEndToken->equals('{')) {
+                } elseif ('{' === $searchEndChar) {
                     $blockType = Tokens::BLOCK_TYPE_BRACE;
                 } else {
                     $blockType = Tokens::BLOCK_TYPE_ARRAY_BRACKET;
@@ -665,9 +682,11 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
 
                 $searchEndIndex = $tokens->findBlockEnd($blockType, $searchEndIndex);
                 $searchEndToken = $tokens[$searchEndIndex];
+                $searchEndId = $searchEndToken->getId();
+                $searchEndChar = null === $searchEndId ? $searchEndToken->getContent() : null;
             }
 
-            if (!$searchEndToken->equalsAny([';', ',', '}']) && !$searchEndToken->isGivenKind(\T_CLOSE_TAG)) {
+            if (';' !== $searchEndChar && ',' !== $searchEndChar && '}' !== $searchEndChar && \T_CLOSE_TAG !== $searchEndId) {
                 continue;
             }
 
@@ -715,7 +734,10 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
     private function findCaseBlockEnd(Tokens $tokens, int $index): array
     {
         for ($max = \count($tokens); $index < $max; ++$index) {
-            if ($tokens[$index]->isGivenKind(\T_SWITCH)) {
+            $id = $tokens[$index]->getId();
+            $char = null === $id ? $tokens[$index]->getContent() : null;
+
+            if (\T_SWITCH === $id) {
                 $braceIndex = $tokens->getNextMeaningfulToken(
                     $tokens->findBlockEnd(
                         Tokens::BLOCK_TYPE_PARENTHESIS,
@@ -732,17 +754,17 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 continue;
             }
 
-            if ($tokens[$index]->equals('{')) {
+            if ('{' === $char) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
 
                 continue;
             }
 
-            if ($tokens[$index]->isGivenKind([\T_CASE, \T_DEFAULT])) {
+            if (\T_CASE === $id || \T_DEFAULT === $id) {
                 return [$index, true];
             }
 
-            if ($tokens[$index]->equals('}') || $tokens[$index]->isGivenKind(\T_ENDSWITCH)) {
+            if ('}' === $char || \T_ENDSWITCH === $id) {
                 return [$tokens->getPrevNonWhitespace($index), false];
             }
         }
