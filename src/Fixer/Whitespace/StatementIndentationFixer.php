@@ -303,10 +303,6 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 while ($index >= $scopes[$currentScope]['end_index']) {
                     array_pop($scopes);
 
-                    if ([] === $scopes) {
-                        return;
-                    }
-
                     --$currentScope;
                 }
 
