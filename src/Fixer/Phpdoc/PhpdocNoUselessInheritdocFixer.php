@@ -19,6 +19,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -70,7 +71,7 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
     private function fixClassy(Tokens $tokens, int $index): int
     {
         // figure out where the classy starts
-        $classOpenIndex = $tokens->getNextTokenOfKind($index, ['{']);
+        $classOpenIndex = ClassyAnalyzer::findOpeningBrace($tokens, $index);
 
         // figure out where the classy ends
         $classEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $classOpenIndex);
@@ -88,6 +89,7 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
             $extendingOrImplementing = true;
         }
 
+        $this->fixClassyInside($tokens, $index + 1, $classOpenIndex, false);
         $this->fixClassyInside($tokens, $classOpenIndex, $classEndIndex, !$extendingOrImplementing);
 
         return $classEndIndex;
@@ -131,6 +133,12 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
     private function isExtendingOrImplementing(Tokens $tokens, int $classIndex, int $classOpenIndex): bool
     {
         for ($index = $classIndex; $index < $classOpenIndex; ++$index) {
+            if ($tokens[$index]->equals('(')) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
+
+                continue;
+            }
+
             if ($tokens[$index]->isGivenKind([\T_EXTENDS, \T_IMPLEMENTS])) {
                 return true;
             }

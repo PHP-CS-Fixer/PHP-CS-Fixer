@@ -23,6 +23,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -144,7 +145,7 @@ final class PhpUnitDedicateAssertInternalTypeFixer extends AbstractPhpUnitFixer 
                 continue;
             }
 
-            $openingBraceIndex = $tokens->getNextTokenOfKind($index, ['{']);
+            $openingBraceIndex = ClassyAnalyzer::findOpeningBrace($tokens, $index);
             $closingBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $openingBraceIndex);
 
             $anonymousClassIndices[$closingBraceIndex] = $openingBraceIndex;

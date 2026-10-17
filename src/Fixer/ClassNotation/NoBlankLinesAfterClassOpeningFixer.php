@@ -19,6 +19,7 @@ use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -73,7 +74,7 @@ final class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer implements 
                 continue;
             }
 
-            $startBraceIndex = $tokens->getNextTokenOfKind($index, ['{']);
+            $startBraceIndex = ClassyAnalyzer::findOpeningBrace($tokens, $index);
             if (!$tokens[$startBraceIndex + 1]->isWhitespace()) {
                 continue;
             }

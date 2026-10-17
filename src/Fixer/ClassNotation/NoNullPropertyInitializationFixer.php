@@ -18,6 +18,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -65,13 +66,19 @@ final class NoNullPropertyInitializationFixer extends AbstractFixer
     {
         $inClass = [];
         $classLevel = 0;
+        $classOpenings = [];
 
         for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
             if ($tokens[$index]->isGivenKind([\T_CLASS, \T_TRAIT])) { // Enums and interfaces do not have properties
+                $classOpenings[ClassyAnalyzer::findOpeningBrace($tokens, $index)] = true;
+
+                continue;
+            }
+
+            if (isset($classOpenings[$index])) {
+                unset($classOpenings[$index]);
                 ++$classLevel;
                 $inClass[$classLevel] = 1;
-
-                $index = $tokens->getNextTokenOfKind($index, ['{']);
 
                 continue;
             }

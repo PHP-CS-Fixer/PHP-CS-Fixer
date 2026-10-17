@@ -23,6 +23,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
@@ -284,13 +285,13 @@ Custom values:
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        for ($i = 1, $count = $tokens->count(); $i < $count; ++$i) {
+        for ($i = $tokens->count() - 1; $i > 0; --$i) {
             if (!$tokens[$i]->isClassy()) {
                 continue;
             }
 
-            $i = $tokens->getNextTokenOfKind($i, ['{']);
-            $elements = $this->getElements($tokens, $i);
+            $classOpenIndex = ClassyAnalyzer::findOpeningBrace($tokens, $i);
+            $elements = $this->getElements($tokens, $classOpenIndex);
 
             if (0 === \count($elements)) {
                 continue;
@@ -301,10 +302,8 @@ Custom values:
             $sorted = $this->sortElements($elements);
 
             if ($sorted !== $elements) {
-                $this->sortTokens($tokens, $i, $endIndex, $sorted);
+                $this->sortTokens($tokens, $classOpenIndex, $endIndex, $sorted);
             }
-
-            $i = $endIndex;
         }
     }
 

@@ -18,6 +18,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer;
 use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -68,7 +69,9 @@ final class SingleLineEmptyBodyFixer extends AbstractFixer
                 continue;
             }
 
-            $openBraceIndex = $tokens->getNextTokenOfKind($index, ['{', ';']);
+            $openBraceIndex = $tokens[$index]->isClassy()
+                ? ClassyAnalyzer::findOpeningBrace($tokens, $index)
+                : $tokens->getNextTokenOfKind($index, ['{', ';']);
             if (!$tokens[$openBraceIndex]->equals('{')) {
                 continue;
             }

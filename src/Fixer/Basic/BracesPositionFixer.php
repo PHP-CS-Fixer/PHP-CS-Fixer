@@ -27,6 +27,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Future;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
@@ -239,7 +240,7 @@ final class BracesPositionFixer extends AbstractFixer implements ConfigurableFix
             $allowSingleLineIfEmpty = false;
 
             if ($token->isGivenKind($classyTokens)) {
-                $openBraceIndex = $tokens->getNextTokenOfKind($index, ['{']);
+                $openBraceIndex = ClassyAnalyzer::findOpeningBrace($tokens, $index);
 
                 if ($tokensAnalyzer->isAnonymousClass($index)) {
                     $allowSingleLineIfEmpty = true === $this->configuration['allow_single_line_empty_anonymous_classes'];
