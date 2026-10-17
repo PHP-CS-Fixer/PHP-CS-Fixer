@@ -435,5 +435,10 @@ $b->abc();
             '<?php return static fn () => new class { function f() { return $this->x; } };',
             '<?php return fn () => new class { function f() { return $this->x; } };',
         ];
+
+        yield 'anonymous class with a closure constructor argument' => [
+            '<?php $f = static function () { return new class(static function () {}) { public function foo() { return $this; } }; };',
+            '<?php $f = function () { return new class(function () {}) { public function foo() { return $this; } }; };',
+        ];
     }
 }

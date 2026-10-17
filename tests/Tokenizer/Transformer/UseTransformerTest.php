@@ -145,6 +145,14 @@ public function __construct($bar)
             ],
         ];
 
+        yield 'anonymous class with a closure constructor argument' => [
+            '<?php new class(function () use ($foo) {}) { use Bar; };',
+            [
+                10 => CT::T_USE_LAMBDA,
+                22 => CT::T_USE_TRAIT,
+            ],
+        ];
+
         yield [
             '<?php
 use A\{B,};

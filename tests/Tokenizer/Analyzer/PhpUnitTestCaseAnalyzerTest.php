@@ -191,6 +191,16 @@ final class PhpUnitTestCaseAnalyzerTest extends TestCase
             '<?php $a = new class {};',
         ];
 
+        yield 'anonymous test class with a closure constructor argument' => [
+            [[18, 31]],
+            '<?php new class(function () {}) extends FooTestCase { public function testFoo() {} };',
+        ];
+
+        yield 'test class in constructor arguments' => [
+            [[13, 14]],
+            '<?php new class(new class extends FooTestCase {}) {};',
+        ];
+
         yield 'test class that does not extends' => [
             [],
             '<?php final class MyTest {}',

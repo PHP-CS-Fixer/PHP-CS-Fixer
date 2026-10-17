@@ -45,7 +45,7 @@ final class NoBlankLinesAfterClassOpeningFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -182,6 +182,11 @@ trait Good
      */
     public function firstMethod() {}
 }',
+        ];
+
+        yield 'anonymous class with a closure constructor argument' => [
+            "<?php new class(function () {\n\n    return 1;\n}) {\n    public \$foo;\n};",
+            "<?php new class(function () {\n\n    return 1;\n}) {\n\n    public \$foo;\n};",
         ];
     }
 

@@ -268,6 +268,11 @@ class Foo extends Bar
             ',
         ];
 
+        yield 'anonymous class with nested constructor arguments' => [
+            '<?php new class(function () {}, new class { public function __construct() {} }) { public function __construct() {} };',
+            '<?php new class(function () {}, new class { public function __CONSTRUCT() {} }) { public function __CONSTRUCT() {} };',
+        ];
+
         yield [
             '<?php $foo->__invoke(1, );',
             '<?php $foo->__INVOKE(1, );',

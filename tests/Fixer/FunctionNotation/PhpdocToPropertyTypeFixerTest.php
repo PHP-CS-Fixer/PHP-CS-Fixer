@@ -532,6 +532,11 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
             '<?php new class { /** @var int */ private $foo; };',
         ];
 
+        yield 'anonymous class with a closure constructor argument' => [
+            '<?php new class(function () {}) { /** @var int */ public int $x; };',
+            '<?php new class(function () {}) { /** @var int */ public $x; };',
+        ];
+
         yield 'intersection types' => [
             '<?php class Foo { /** @var Bar&Baz */ private $x; }',
         ];

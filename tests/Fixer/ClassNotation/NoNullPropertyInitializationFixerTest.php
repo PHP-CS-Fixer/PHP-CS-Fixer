@@ -44,7 +44,7 @@ final class NoNullPropertyInitializationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -330,6 +330,11 @@ null;#13
 
         yield [
             '<?php function foo() { return new class() { public function foo() { static $foo = null; } }; }',
+        ];
+
+        yield 'anonymous class with nested constructor arguments' => [
+            '<?php new class(function () { static $local = null; }, new class { public $inner; }) { public $outer; };',
+            '<?php new class(function () { static $local = null; }, new class { public $inner = null; }) { public $outer = null; };',
         ];
 
         yield [

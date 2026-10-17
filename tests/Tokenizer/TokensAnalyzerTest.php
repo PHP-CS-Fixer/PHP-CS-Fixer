@@ -122,6 +122,14 @@ final class TokensAnalyzerTest extends TestCase
             }',
         ];
 
+        yield 'anonymous class with nested constructor arguments' => [
+            [
+                32 => ['classIndex' => 26, 'type' => 'property'],
+                42 => ['classIndex' => 3, 'type' => 'property'],
+            ],
+            '<?php new class(function () { function notAMethod() {} }, new class { public $inner; }) { public $outer; };',
+        ];
+
         yield [
             [
                 9 => [
@@ -3169,12 +3177,12 @@ class MyTestWithAnonymousClass extends TestCase
                 'type' => 'const',
             ],
             115 => [
-                'classIndex' => 65,
+                'classIndex' => 76,
                 'token' => $tokens[115], // const B
                 'type' => 'const',
             ],
             124 => [
-                'classIndex' => 65, // $a
+                'classIndex' => 76,
                 'token' => $tokens[124],
                 'type' => 'method', // foo
             ],
@@ -3186,6 +3194,11 @@ class MyTestWithAnonymousClass extends TestCase
             161 => [
                 'classIndex' => 158,
                 'token' => $tokens[161], // const AB
+                'type' => 'const',
+            ],
+            180 => [
+                'classIndex' => 65,
+                'token' => $tokens[180], // const C
                 'type' => 'const',
             ],
         ], $elements);

@@ -243,6 +243,11 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
             ',
         ];
 
+        yield 'anonymous class with a closure constructor argument' => [
+            '<?php new class(function () {}) extends Foo {};',
+            "<?php new class(function () {}) extends Foo {\n};",
+        ];
+
         yield 'anonymous function' => [
             '<?php
                 $x = function () {};

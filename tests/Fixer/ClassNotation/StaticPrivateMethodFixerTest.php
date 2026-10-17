@@ -507,6 +507,20 @@ final class StaticPrivateMethodFixerTest extends AbstractFixerTestCase
                 PHP,
         ];
 
+        yield 'anonymous class with a closure constructor argument' => [
+            '<?php new class(function () {}) { private static function foo() { return 1; } };',
+            '<?php new class(function () {}) { private function foo() { return 1; } };',
+        ];
+
+        yield 'skip anonymous class methods after constructor arguments' => [
+            '<?php class Bar { private static function foo() { return 1; } private static function create() { return new class(new class {}, self::foo()) { public function foo() { return $this->foo(); } }; } }',
+            '<?php class Bar { private function foo() { return 1; } private function create() { return new class(new class {}, $this->foo()) { public function foo() { return $this->foo(); } }; } }',
+        ];
+
+        yield 'constructor argument uses the enclosing instance' => [
+            '<?php class Foo { private function create() { return new class($this) {}; } }',
+        ];
+
         yield 'nested calls' => [
             <<<'PHP'
                 <?php class Foo {

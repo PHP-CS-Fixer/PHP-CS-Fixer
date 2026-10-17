@@ -482,6 +482,26 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_functions' => true],
         ];
 
+        yield 'anonymous class members are not namespace declarations' => [
+            <<<'PHP'
+                <?php
+                namespace Foo;
+                use function strlen;
+                use const PHP_VERSION;
+                $object = new class(function () {}) { const PHP_VERSION = "foo"; public function strlen() {} };
+                echo PHP_VERSION;
+                strlen("foo");
+                PHP,
+            <<<'PHP'
+                <?php
+                namespace Foo;
+                $object = new class(function () {}) { const PHP_VERSION = "foo"; public function strlen() {} };
+                echo \PHP_VERSION;
+                \strlen("foo");
+                PHP,
+            ['import_constants' => true, 'import_functions' => true],
+        ];
+
         yield 'import_classes (true) - non-global names' => [
             <<<'EXPECTED'
                 <?php
