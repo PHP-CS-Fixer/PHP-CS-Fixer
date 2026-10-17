@@ -41,7 +41,7 @@ final class PhpdocNoDuplicateTypesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int, array{0: string, 1?: null|string}>
+     * @return iterable<array{0: string, 1?: null|string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -87,6 +87,16 @@ final class PhpdocNoDuplicateTypesFixerTest extends AbstractFixerTestCase
         yield [
             '<?php /** @var string|\Foo\Baz|\Foo\Bar|Foo\Baz */',
             '<?php /** @var string|\Foo\Baz|\Foo\Bar|\Foo\Baz|Foo\Baz */',
+        ];
+
+        yield 'static method return type and parameters' => [
+            '<?php /** @method static string foo(int $value) description */',
+            '<?php /** @method static string|string foo(int|int $value) description */',
+        ];
+
+        yield 'static return type with a method call in the description' => [
+            '<?php /** @method static foo(int $value) description(int|int) */',
+            '<?php /** @method static foo(int|int $value) description(int|int) */',
         ];
     }
 }
