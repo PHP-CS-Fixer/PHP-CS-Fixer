@@ -81,6 +81,8 @@ final class Annotation implements \Stringable
      */
     private ?string $typesContent = null;
 
+    private string $typesContentPrefix = '';
+
     /**
      * The cached types.
      *
@@ -239,7 +241,7 @@ final class Annotation implements \Stringable
 
         foreach ($newTypesLines as $index => $line) {
             \assert(isset($originalTypesLines[$index]));
-            $pattern = '/'.preg_quote($originalTypesLines[$index], '/').'/';
+            $pattern = '/'.(0 === $index ? '^'.preg_quote($this->typesContentPrefix, '/').'\K' : '').preg_quote($originalTypesLines[$index], '/').'/';
 
             \assert(isset($this->lines[$index]));
             $this->lines[$index]->setContent(Preg::replace($pattern, $line, $this->lines[$index]->getContent(), 1));
@@ -323,13 +325,17 @@ final class Annotation implements \Stringable
                 throw new \RuntimeException('This tag does not support types.');
             }
 
+            // A static modifier needs a return type and method; a callable return type needs ":" to distinguish it from the method signature.
+            $staticModifier = 'method' === $name ? '(?:static\h+(?!(?&name)(?&callable_template)\h*\(\h*(?&callable_arguments)\h*\)(?!\h*:))(?=(?&types)\h+(?&name)(?&callable_template)\h*\())?' : '';
+
             if (Preg::match(
-                '{^(?:\h*\*|/\*\*)[\h*]*@'.$name.'\h+'.TypeExpression::REGEX_TYPES.'(?:(?:[*\h\v]|\&?[\.\$\s]).*)?\r?$}is',
+                '{(?<prefix>^(?:\h*\*|/\*\*)[\h*]*@'.$name.'\h+'.$staticModifier.')'.TypeExpression::REGEX_TYPES.'(?:(?:[*\h\v]|\&?[\.\$\s]).*)?\r?$}is',
                 $this->getContent(),
                 $matches,
             )) {
-                \assert(isset($matches['types']));
+                \assert(isset($matches['types'], $matches['prefix']));
                 $this->typesContent = $matches['types'];
+                $this->typesContentPrefix = $matches['prefix'];
             }
         }
 
@@ -340,5 +346,6 @@ final class Annotation implements \Stringable
     {
         $this->types = null;
         $this->typesContent = null;
+        $this->typesContentPrefix = '';
     }
 }
