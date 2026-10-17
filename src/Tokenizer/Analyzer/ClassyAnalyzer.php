@@ -24,6 +24,20 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class ClassyAnalyzer
 {
+    public static function findOpeningBrace(Tokens $tokens, int $index): int
+    {
+        $index = $tokens->getNextTokenOfKind($index, ['(', '{']);
+
+        if ($tokens[$index]->equals('(')) { // anonymous class
+            $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
+            $index = $tokens->getNextTokenOfKind($index, ['{']);
+        }
+
+        \assert(\is_int($index));
+
+        return $index;
+    }
+
     public function isClassyInvocation(Tokens $tokens, int $index): bool
     {
         $token = $tokens[$index];

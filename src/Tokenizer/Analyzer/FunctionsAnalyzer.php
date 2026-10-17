@@ -247,13 +247,7 @@ final class FunctionsAnalyzer
             for ($i = 0; $i < $end; ++$i) {
                 // skip classy, we are looking for functions not methods
                 if ($tokens[$i]->isGivenKind(Token::getClassyTokenKinds())) {
-                    $i = $tokens->getNextTokenOfKind($i, ['(', '{']);
-
-                    if ($tokens[$i]->equals('(')) { // anonymous class
-                        $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $i);
-                        $i = $tokens->getNextTokenOfKind($i, ['{']);
-                    }
-
+                    $i = ClassyAnalyzer::findOpeningBrace($tokens, $i);
                     $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $i);
 
                     continue;
