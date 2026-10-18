@@ -5,7 +5,7 @@ Integration of fixers: semicolon_after_instruction,simplified_if_return.
 --EXPECT--
 <?php
 
-return (bool) ($foo)      ; ?>
+return (bool) ($foo); ?>
 --INPUT--
 <?php
 

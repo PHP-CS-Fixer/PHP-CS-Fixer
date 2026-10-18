@@ -42,7 +42,10 @@ final class FileHandler implements FileHandlerInterface
 
     public function read(): ?CacheInterface
     {
-        if (!$this->fileInfo->isFile() || !$this->fileInfo->isReadable()) {
+        // Refuse to follow a symlinked cache path: a checkout-supplied symlink at the predictable
+        // default cache location could otherwise be read/written through, reaching a file outside
+        // the intended cache location.
+        if ($this->fileInfo->isLink() || !$this->fileInfo->isFile() || !$this->fileInfo->isReadable()) {
             return null;
         }
 
@@ -135,6 +138,18 @@ final class FileHandler implements FileHandlerInterface
 
     private function ensureFileIsWriteable(): void
     {
+        if ($this->fileInfo->isLink()) {
+            // Do not write through a symbolic link: a checkout-supplied symlink at the predictable
+            // default cache path would otherwise be followed and its target truncated/overwritten
+            // (this also fires for `check`/`--dry-run`, which still writes the cache).
+            throw new IOException(
+                \sprintf('Cannot write cache file "%s" as it is a symbolic link.', $this->fileInfo->getPathname()),
+                0,
+                null,
+                $this->fileInfo->getPathname(),
+            );
+        }
+
         if ($this->fileInfo->isFile() && $this->fileInfo->isWritable()) {
             // all good
             return;
@@ -168,7 +183,7 @@ final class FileHandler implements FileHandlerInterface
         // Ensure path is created, but ignore if already exists. FYI: ignore EA suggestion in IDE,
         // `mkdir()` returns `false` for existing paths, so we can't mix it with `is_dir()` in one condition.
         if (!@is_dir($dir)) {
-            @mkdir($dir, 0777, true);
+            @mkdir($dir, 0755, true);
         }
 
         if (!@is_dir($dir)) {
@@ -180,7 +195,6 @@ final class FileHandler implements FileHandlerInterface
             );
         }
 
-        @touch($file);
-        @chmod($file, 0666);
+        @touch($file); // with default 0644 file mode
     }
 }
