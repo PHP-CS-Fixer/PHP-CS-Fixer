@@ -5,7 +5,7 @@ Integration of fixers: no_unneeded_curly_braces,simplified_if_return.
 --EXPECT--
 <?php
 
-return ! ($foo)      ;
+return ! ($foo);
 
 --INPUT--
 <?php

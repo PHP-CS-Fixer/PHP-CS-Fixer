@@ -103,7 +103,6 @@ parameters:
 
         -
             path: tests/
-            rawMessage: 'Version requirement will always evaluate to false.'
             identifier: phpunit.attributeRequiresPhpVersion
     tipsOfTheDay: false
     symfony:

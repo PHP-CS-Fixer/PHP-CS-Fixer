@@ -17,7 +17,7 @@ Example #1
    +++ New
     <?php
    -if ($foo) { return true; } return false;
-   +return (bool) ($foo)      ;
+   +return (bool) ($foo);
 
 References
 ----------

@@ -301,6 +301,33 @@ switch(foo()) {
 }',
         ];
 
+        yield 'nested for with parentheses in condition' => [
+            '<?php
+switch ($a) {
+    case 1:
+        for ($i = 1; ($n + 1) > $i; ++$i) {
+            if ($b) {
+                continue;
+            }
+        }
+
+        break;
+}
+',
+            '<?php
+switch ($a) {
+    case 1:
+        for ($i = 1; ($n + 1) > $i; ++$i) {
+            if ($b) {
+                continue;
+            }
+        }
+
+        continue;
+}
+',
+        ];
+
         yield 'do not fix cases' => [
             '<?php
 switch($a) {

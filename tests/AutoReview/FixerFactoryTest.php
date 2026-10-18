@@ -930,10 +930,6 @@ final class FixerFactoryTest extends TestCase
             'semicolon_after_instruction' => [
                 'simplified_if_return',
             ],
-            'simplified_if_return' => [
-                'multiline_whitespace_before_semicolons',
-                'no_singleline_whitespace_before_semicolons',
-            ],
             'simplified_null_return' => [
                 'no_useless_return',
                 'void_return',
