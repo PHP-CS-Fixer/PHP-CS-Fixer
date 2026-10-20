@@ -69,5 +69,10 @@ argumentsMultilineWithoutComma(
     1,
     2
 );
-
+$singleLineArray = [1, 2,];
+$singleLineLongArray = array(1, 2,);
+[$singleLineA, $singleLineB,] = $singleLineArray;
+list($singleLineC, $singleLineD,) = $singleLineArray;
+singleLineCall($singleLineA, $singleLineB,);
+$singleLineNew = new Foo($singleLineA,);
 ?>

@@ -28,6 +28,10 @@ Rules
 
   ``['anonymous_class' => false]``
 
+- `no_trailing_comma_in_singleline <./../rules/basic/no_trailing_comma_in_singleline.rst>`_ with config:
+
+  ``['elements' => ['arguments', 'array', 'array_destructuring', 'attribute_arguments', 'group_import']]``
+
 - `single_line_empty_body <./../rules/basic/single_line_empty_body.rst>`_
 - `single_space_around_construct <./../rules/language_construct/single_space_around_construct.rst>`_ with config:
 
