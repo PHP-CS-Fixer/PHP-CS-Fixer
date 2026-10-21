@@ -937,6 +937,12 @@ $foo;',
         ];
 
         yield [
+            '<?php clone ($foo);',
+            '<?php clone   ($foo);',
+            ['constructs_followed_by_a_single_space' => ['clone']],
+        ];
+
+        yield [
             '<?php do {} while (true);',
             '<?php do{} while (true);',
             ['constructs_followed_by_a_single_space' => ['do']],
