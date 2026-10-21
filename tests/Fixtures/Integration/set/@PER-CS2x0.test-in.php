@@ -75,4 +75,5 @@ $singleLineLongArray = array(1, 2,);
 list($singleLineC, $singleLineD,) = $singleLineArray;
 singleLineCall($singleLineA, $singleLineB,);
 $singleLineNew = new Foo($singleLineA,);
+
 ?>
