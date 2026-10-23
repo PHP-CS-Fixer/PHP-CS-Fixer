@@ -179,6 +179,7 @@ final class CacheTest extends TestCase
             'lineEnding' => "\n",
             'rules' => ['foo' => true],
             'ruleCustomisationPolicyVersion' => '1.2.3',
+            'fixerAnnotationMode' => FixerAnnotationMode::MATCHING,
             'hashes' => [],
         ];
 
