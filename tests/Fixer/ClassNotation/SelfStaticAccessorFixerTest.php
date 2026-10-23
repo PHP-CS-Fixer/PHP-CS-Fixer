@@ -383,6 +383,84 @@ $a = static function() { return static::class; };
 $b = function() { return static::class; };
 ',
         ];
+
+        yield 'do not fix inside static lambda in class' => [
+            '<?php
+final class Foo
+{
+    public function Bar()
+    {
+        return static function() {
+            return static::class;
+        };
+    }
+}
+',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP >= 8.0.0
+     */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
+    public function testFix80(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function provideFix80Cases(): iterable
+    {
+        yield 'after method with static return type' => [
+            '<?php
+final class Foo
+{
+    public function bar(): static
+    {
+        return $this;
+    }
+
+    public function baz()
+    {
+        return new self();
+    }
+
+    public function qux()
+    {
+        return self::class;
+    }
+}
+',
+            '<?php
+final class Foo
+{
+    public function bar(): static
+    {
+        return $this;
+    }
+
+    public function baz()
+    {
+        return new static();
+    }
+
+    public function qux()
+    {
+        return static::class;
+    }
+}
+',
+        ];
+
+        yield 'after method with nullable static return type' => [
+            '<?php final class Foo { public function bar(): ?static { return $this; } public function baz() { return self::class; } }',
+            '<?php final class Foo { public function bar(): ?static { return $this; } public function baz() { return static::class; } }',
+        ];
     }
 
     /**

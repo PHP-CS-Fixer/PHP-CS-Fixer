@@ -21,7 +21,7 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * Transform NAME_QUALIFIED, T_NAME_FULLY_QUALIFIED and T_NAME_RELATIVE into T_NAMESPACE T_NS_SEPARATOR T_STRING.
+ * Transform T_NAME_QUALIFIED, T_NAME_FULLY_QUALIFIED and T_NAME_RELATIVE into T_NAMESPACE T_NS_SEPARATOR T_STRING.
  *
  * @internal
  *
@@ -39,34 +39,44 @@ final class NameQualifiedTransformer extends AbstractTransformer
         return 8_00_00;
     }
 
-    public function process(Tokens $tokens, Token $token, int $index): void
+    public function isCandidate(Tokens $tokens): bool
     {
-        if ($token->isGivenKind([FCT::T_NAME_QUALIFIED, FCT::T_NAME_FULLY_QUALIFIED])) {
-            $this->transformQualified($tokens, $token, $index);
-        } elseif ($token->isGivenKind(FCT::T_NAME_RELATIVE)) {
-            $this->transformRelative($tokens, $token, $index);
+        return $tokens->isAnyTokenKindsFound([FCT::T_NAME_QUALIFIED, FCT::T_NAME_FULLY_QUALIFIED, FCT::T_NAME_RELATIVE]);
+    }
+
+    public function process(Tokens $tokens): void
+    {
+        $slices = [];
+
+        foreach ($tokens as $index => $token) {
+            $id = $token->getId();
+
+            if (
+                FCT::T_NAME_QUALIFIED !== $id
+                && FCT::T_NAME_FULLY_QUALIFIED !== $id
+                && FCT::T_NAME_RELATIVE !== $id
+            ) {
+                continue;
+            }
+
+            $content = $token->getContent();
+            \assert('' !== $content);
+
+            $newTokens = ImportProcessor::tokenizeName($content);
+
+            if (FCT::T_NAME_RELATIVE === $id) {
+                $newTokens[0] = new Token([\T_NAMESPACE, 'namespace']);
+            }
+
+            $slices[$index] = $newTokens;
+            $tokens->clearAt($index);
         }
+
+        $tokens->insertSlices($slices);
     }
 
     public function getCustomTokens(): array
     {
         return [];
-    }
-
-    private function transformQualified(Tokens $tokens, Token $token, int $index): void
-    {
-        \assert('' !== $token->getContent());
-        $newTokens = ImportProcessor::tokenizeName($token->getContent());
-
-        $tokens->overrideRange($index, $index, $newTokens);
-    }
-
-    private function transformRelative(Tokens $tokens, Token $token, int $index): void
-    {
-        \assert('' !== $token->getContent());
-        $newTokens = ImportProcessor::tokenizeName($token->getContent());
-        $newTokens[0] = new Token([\T_NAMESPACE, 'namespace']);
-
-        $tokens->overrideRange($index, $index, $newTokens);
     }
 }

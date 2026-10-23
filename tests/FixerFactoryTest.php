@@ -577,12 +577,22 @@ final class FixerFactoryTest extends TestCase
         ]));
     }
 
+    /**
+     * @param non-empty-string $name
+     */
     private function createFixerDouble(string $name, int $priority = 0): FixerInterface
     {
         return new class($name, $priority) implements FixerInterface {
+            /**
+             * @var non-empty-string
+             */
             private string $name;
+
             private int $priority;
 
+            /**
+             * @param non-empty-string $name
+             */
             public function __construct(string $name, int $priority)
             {
                 $this->name = $name;

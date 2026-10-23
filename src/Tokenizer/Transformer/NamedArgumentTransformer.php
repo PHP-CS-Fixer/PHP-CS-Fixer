@@ -39,30 +39,37 @@ final class NamedArgumentTransformer extends AbstractTransformer
         return 8_00_00;
     }
 
-    public function process(Tokens $tokens, Token $token, int $index): void
+    public function isCandidate(Tokens $tokens): bool
     {
-        if (!$tokens[$index]->equals(':')) {
-            return;
+        return $tokens->isAllTokenKindsFound([\T_STRING, ':']);
+    }
+
+    public function process(Tokens $tokens): void
+    {
+        foreach ($tokens as $index => $token) {
+            if (!$tokens[$index]->equals(':')) {
+                continue;
+            }
+
+            $stringIndex = $tokens->getPrevMeaningfulToken($index);
+
+            if (!$tokens[$stringIndex]->isGivenKind(\T_STRING)) {
+                continue;
+            }
+
+            $preStringIndex = $tokens->getPrevMeaningfulToken($stringIndex);
+
+            // if equals any [';', '{', '}', [T_OPEN_TAG]] than it is a goto label
+            // if equals ')' than likely it is a type colon, but sure not a name argument
+            // if equals '?' than it is part of ternary statement
+
+            if (!$tokens[$preStringIndex]->equalsAny([',', '('])) {
+                continue;
+            }
+
+            $tokens[$stringIndex] = new Token([CT::T_NAMED_ARGUMENT_NAME, $tokens[$stringIndex]->getContent()]);
+            $tokens[$index] = new Token([CT::T_NAMED_ARGUMENT_COLON, ':']);
         }
-
-        $stringIndex = $tokens->getPrevMeaningfulToken($index);
-
-        if (!$tokens[$stringIndex]->isGivenKind(\T_STRING)) {
-            return;
-        }
-
-        $preStringIndex = $tokens->getPrevMeaningfulToken($stringIndex);
-
-        // if equals any [';', '{', '}', [T_OPEN_TAG]] than it is a goto label
-        // if equals ')' than likely it is a type colon, but sure not a name argument
-        // if equals '?' than it is part of ternary statement
-
-        if (!$tokens[$preStringIndex]->equalsAny([',', '('])) {
-            return;
-        }
-
-        $tokens[$stringIndex] = new Token([CT::T_NAMED_ARGUMENT_NAME, $tokens[$stringIndex]->getContent()]);
-        $tokens[$index] = new Token([CT::T_NAMED_ARGUMENT_COLON, ':']);
     }
 
     public function getCustomTokens(): array

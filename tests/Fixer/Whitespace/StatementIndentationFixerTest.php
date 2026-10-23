@@ -1517,6 +1517,79 @@ $foo = [
                 PHP,
         ];
 
+        yield 'multiline ternary operator in class constant' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    const BAR = BAZ
+                        ? 1
+                        : 2;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    const BAR = BAZ
+                        ? 1
+                    : 2;
+                }
+                PHP,
+        ];
+
+        // @TODO the `expected` below flattens every nesting level to one indent step instead of indenting deeper
+        // per level; that's not an ideal shape, just the fixer's current (imperfect) behavior
+        yield 'multiline nested ternary operator in class constant' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    const BAR = A
+                        ? B
+                        ? C
+                        ? D
+                        : E
+                        : F
+                        : G;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    const BAR = A
+                    ? B
+                        ? C
+                            ? D
+                            : E
+                        : F
+                    : G;
+                }
+                PHP,
+        ];
+
+        yield 'multiline ternary operator in class constant with indentation to adjust' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    const BAR = A
+                        ? B
+                        : C;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    const BAR = A
+                                ? B
+                    : C;
+                }
+                PHP,
+        ];
+
         yield 'braceless if with return' => [
             <<<'PHP'
                 <?php

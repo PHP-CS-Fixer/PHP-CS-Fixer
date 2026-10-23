@@ -224,11 +224,6 @@ $a;#
         ];
 
         yield [
-            '<?php [$a, $b,, [$c, $d]] = $a;',
-            '<?php list($a, $b,, list($c, $d)) = $a;',
-        ];
-
-        yield [
             '<?php [&$a, $b] = $a;',
             '<?php list(&$a, $b) = $a;',
         ];

@@ -18,8 +18,9 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer;
 use PhpCsFixer\AbstractPhpdocTypesFixer;
 use PhpCsFixer\AbstractProxyFixer;
+use PhpCsFixer\Compat\Symfony\Component\Console\Style\SymfonyStyle;
+use PhpCsFixer\Compat\Symfony\Component\Console\Style\SymfonyStyleCompat;
 use PhpCsFixer\Console\Command\FixCommand;
-use PhpCsFixer\Console\Command\InitCommand;
 use PhpCsFixer\Console\Internal\Command\ParseCommand;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
@@ -121,9 +122,10 @@ final class ProjectCodeTest extends TestCase
         $testClassName = 'PhpCsFixer\Tests'.substr($className, 10).'Test';
 
         $exceptions = [
-            InitCommand::class,
             DocumentationTag::class,
             DocumentationTagGenerator::class,
+            SymfonyStyle::class,
+            SymfonyStyleCompat::class,
         ];
 
         // we allow exceptions to _not_ follow the rule,
@@ -876,6 +878,16 @@ final class ProjectCodeTest extends TestCase
             self::markTestSkipped(\sprintf("Classy '%s' is deprecated alias and thus exception.", $className));
         }
 
+        if (\in_array(
+            $className,
+            [
+                SymfonyStyle::class,
+            ],
+            true,
+        )) {
+            self::markTestSkipped(\sprintf("Classy '%s' is compat polyfill and thus exception.", $className));
+        }
+
         $headerTypes = [
             \T_ABSTRACT,
             \T_AS,
@@ -1066,7 +1078,7 @@ final class ProjectCodeTest extends TestCase
                 }
             }
             if (!$foundInDuplicates) {
-                $alreadyFoundCases[$candidateKey] = $candidateData;
+                $alreadyFoundCases[$candidateKey] = $serializedCandidateData;
             }
         }
 
@@ -1329,6 +1341,17 @@ final class ProjectCodeTest extends TestCase
                 $serialized[$key] = 'Closure#'.spl_object_id($value);
             } elseif ($value instanceof \SplFileInfo) {
                 $serialized[$key] = 'SplFileInfo('.$value->getPathname().')';
+            } elseif (\is_object($value)) {
+                // An object may hold a closure somewhere in its graph: an Error keeps the
+                // Throwable it was created from, and with zend.exception_ignore_args=Off
+                // - the default of php.ini-development - that exception's trace keeps the
+                // arguments of every frame. serialize() refuses those, so fall back to a
+                // printable representation, which is stable enough to compare cases.
+                try {
+                    $serialized[$key] = serialize($value);
+                } catch (\Exception $e) {
+                    $serialized[$key] = print_r($value, true);
+                }
             } else {
                 $serialized[$key] = $value;
             }
