@@ -63,7 +63,7 @@ final class CiConfigurationTest extends TestCase
 
         $ciVersions = CiReader::getAllPhpBuildsUsedByCiForTests();
 
-        self::assertNotEmpty($ciVersions);
+        self::assertNotSame([], $ciVersions);
 
         self::assertSupportedPhpVersionsAreCoveredByCiJobs($supportedVersions, $ciVersions);
         self::assertUpcomingPhpVersionIsCoveredByCiJob(end($supportedVersions), $ciVersions);
