@@ -58,7 +58,7 @@ final class ProjectFixerConfigurationTest extends TestCase
         $config = $this->loadConfig();
 
         self::assertContainsOnlyInstancesOf(InternalFixerInterface::class, $config->getCustomFixers());
-        self::assertNotEmpty($config->getRules());
+        self::assertNotSame([], $config->getRules());
 
         // call so the fixers get configured to reveal issue (like deprecated configuration used etc.)
         $resolver = new ConfigurationResolver(
