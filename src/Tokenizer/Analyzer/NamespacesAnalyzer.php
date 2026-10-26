@@ -87,7 +87,7 @@ final class NamespacesAnalyzer
             throw new \InvalidArgumentException(\sprintf('Token index %d does not exist.', $index));
         }
 
-        foreach ($this->getDeclarations($tokens) as $namespace) {
+        foreach ($tokens->getNamespaceDeclarations() as $namespace) {
             if ($namespace->getScopeStartIndex() <= $index && $namespace->getScopeEndIndex() >= $index) {
                 return $namespace;
             }
