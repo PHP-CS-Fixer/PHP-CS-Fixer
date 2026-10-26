@@ -346,6 +346,14 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
 
                 $this->traverseDocBlockTypes($docBlocks[$index], static function (string $type) use ($global, &$other): void {
                     if (str_contains($type, '\\')) {
+                        if ('\\' !== $type[0]) {
+                            $name = strtolower(explode('\\', $type, 2)[0]);
+
+                            if (!isset($global[$name])) {
+                                $other[$name] = true;
+                            }
+                        }
+
                         return;
                     }
 
@@ -381,6 +389,16 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
             $name = strtolower($token->getContent());
 
             if (isset($other[$name])) {
+                continue;
+            }
+
+            // a relative qualified name like `Foo\Bar` is resolved through the class imports by its first part,
+            // so importing a class with that name would change what it refers to
+            if ($this->isFirstPartOfRelativeQualifiedName($tokens, $index, $useDeclarations)) {
+                if (!isset($global[$name])) {
+                    $other[$name] = true;
+                }
+
                 continue;
             }
 
@@ -436,6 +454,28 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
         }
 
         return array_merge($imports, $this->prepareImports($tokens, $indices, $global, $other, false));
+    }
+
+    /**
+     * @param list<NamespaceUseAnalysis> $useDeclarations
+     */
+    private function isFirstPartOfRelativeQualifiedName(Tokens $tokens, int $index, array $useDeclarations): bool
+    {
+        if (!$tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind(\T_NS_SEPARATOR)) {
+            return false;
+        }
+
+        if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind([\T_NS_SEPARATOR, \T_NAMESPACE])) {
+            return false;
+        }
+
+        foreach ($useDeclarations as $useDeclaration) {
+            if ($index >= $useDeclaration->getStartIndex() && $index <= $useDeclaration->getEndIndex()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
