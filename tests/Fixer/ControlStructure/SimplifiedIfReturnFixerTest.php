@@ -273,6 +273,31 @@ final class SimplifiedIfReturnFixerTest extends AbstractFixerTestCase
             '<?php if ($bar) return $bar; elseif ($foo) return false; return true;',
         ];
 
+        yield 'else-if after a branch that does not return' => [
+            '<?php if ($bar) { $baz = 1; } else if ($foo) { return true; } return false;',
+        ];
+
+        yield 'else-if-braceless after a branch that does not return' => [
+            '<?php if ($bar) $baz = 1; else if ($foo) return false; return true;',
+        ];
+
+        yield 'elseif after a branch that does not return' => [
+            '<?php if ($bar) { $baz = 1; } elseif ($foo) { return true; } return false;',
+        ];
+
+        yield 'elseif-braceless after a branch that does not return' => [
+            '<?php if ($bar) $baz = 1; elseif ($foo) return false; return true;',
+        ];
+
+        yield 'elseif after an elseif that does not return' => [
+            '<?php if ($bar) { return $bar; } elseif ($baz) { $baz = 1; } elseif ($foo) { return true; } return false;',
+        ];
+
+        yield 'elseif after branches that end with throw and return' => [
+            '<?php if ($bar) { throw new Exception(); } elseif ($baz) { return $baz; } return (bool) ($foo);',
+            '<?php if ($bar) { throw new Exception(); } elseif ($baz) { return $baz; } elseif ($foo) { return true; } return false;',
+        ];
+
         yield 'no braces loops' => [
             '<?php
 function foo1(string $str, array $letters): bool
