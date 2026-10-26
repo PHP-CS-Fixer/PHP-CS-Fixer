@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Fixer\ControlStructure;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\AbstractNoUselessElseFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -28,7 +28,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class SimplifiedIfReturnFixer extends AbstractFixer
+final class SimplifiedIfReturnFixer extends AbstractNoUselessElseFixer
 {
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -77,6 +77,14 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
             $match = $this->matchReturnSequence($tokens, $firstCandidateIndex);
 
             if (null === $match) {
+                continue;
+            }
+
+            // the `return` after an `elseif` or `else if` is also reached from the branches above it,
+            // so it can only be merged into this branch when all of them end with `return`, `throw` and alike
+            $elseIndex = \T_ELSEIF === $id ? $ifIndex : $tokens->getPrevMeaningfulToken($ifIndex);
+
+            if ($tokens[$elseIndex]->isGivenKind([\T_ELSE, \T_ELSEIF]) && !$this->isSuperfluousElse($tokens, $elseIndex)) {
                 continue;
             }
 
