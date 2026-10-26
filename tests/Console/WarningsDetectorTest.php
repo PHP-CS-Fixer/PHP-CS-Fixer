@@ -90,7 +90,7 @@ final class WarningsDetectorTest extends TestCase
 
         $warnings = $warningsDetector->getWarnings();
 
-        self::assertNotEmpty($warnings);
+        self::assertNotSame([], $warnings);
         self::assertStringStartsWith(
             \sprintf(
                 'You are running PHP CS Fixer on PHP %s, but the minimum PHP version supported by your project in composer.json is PHP %s',
@@ -173,7 +173,7 @@ final class WarningsDetectorTest extends TestCase
 
             $warnings = $warningsDetector->getWarnings();
 
-            self::assertNotEmpty($warnings);
+            self::assertNotSame([], $warnings);
             self::assertStringContainsString('Unable to determine minimum PHP version supported by your project from composer.json:', $warnings[0]);
         } finally {
             chdir($originalDir);
@@ -213,7 +213,7 @@ final class WarningsDetectorTest extends TestCase
 
             $warnings = $warningsDetector->getWarnings();
 
-            self::assertNotEmpty($warnings);
+            self::assertNotSame([], $warnings);
             self::assertSame(
                 'No PHP version requirement found in composer.json. It is recommended to specify a minimum PHP version supported by your project.',
                 $warnings[0],
