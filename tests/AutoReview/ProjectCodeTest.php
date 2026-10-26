@@ -291,7 +291,8 @@ final class ProjectCodeTest extends TestCase
 
         sort($extraMethods);
 
-        self::assertEmpty(
+        self::assertSame(
+            [],
             $extraMethods,
             \sprintf(
                 "Class '%s' should not have public methods that are not part of implemented interfaces.\nViolations:\n%s",
@@ -364,7 +365,8 @@ final class ProjectCodeTest extends TestCase
 
         $rc = new \ReflectionClass($className);
 
-        self::assertEmpty(
+        self::assertSame(
+            [],
             $rc->getProperties(\ReflectionProperty::IS_PUBLIC),
             \sprintf('Class \'%s\' should not have public properties.', $className),
         );
@@ -401,7 +403,8 @@ final class ProjectCodeTest extends TestCase
 
         sort($extraProps);
 
-        self::assertEmpty(
+        self::assertSame(
+            [],
             $extraProps,
             \sprintf(
                 "Class '%s' should not have protected properties.\nViolations:\n%s",
@@ -452,7 +455,8 @@ final class ProjectCodeTest extends TestCase
         $rc = new \ReflectionClass($testClassName);
         $doc = new DocBlock((string) $rc->getDocComment());
 
-        self::assertNotEmpty(
+        self::assertNotSame(
+            [],
             $doc->getAnnotationsOfType('internal'),
             \sprintf('Test class %s should have internal annotation.', $testClassName),
         );
@@ -983,7 +987,8 @@ final class ProjectCodeTest extends TestCase
 
         $extraMethods = array_diff($methodsWithInheritdoc, $allowedMethods);
 
-        self::assertEmpty(
+        self::assertSame(
+            [],
             $extraMethods,
             \sprintf(
                 "Class '%s' should not have methods with '@inheritdoc' in PHPDoc that are not inheriting PHPDoc.\nViolations:\n%s",

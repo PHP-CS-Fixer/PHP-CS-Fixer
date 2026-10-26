@@ -76,7 +76,7 @@ final class DocBlockTest extends TestCase
             self::assertSame($doc->getLine($index), $line);
         }
 
-        self::assertEmpty($doc->getLine(15));
+        self::assertNull($doc->getLine(15));
     }
 
     public function testGetAnnotations(): void
@@ -90,7 +90,7 @@ final class DocBlockTest extends TestCase
             self::assertSame($doc->getAnnotation($index), $annotation);
         }
 
-        self::assertEmpty($doc->getAnnotation(5));
+        self::assertNull($doc->getAnnotation(5));
     }
 
     public function testGetAnnotationsOfTypeParam(): void
