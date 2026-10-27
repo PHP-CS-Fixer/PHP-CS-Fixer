@@ -30,12 +30,11 @@ use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 #[CoversClass(TokenizerLintingResult::class)]
 final class TokenizerLintingResultTest extends TestCase
 {
-    /**
-     * @doesNotPerformAssertions
-     */
     #[DoesNotPerformAssertions]
     public function testTokenizerLintingResultOK(): void
     {
+        $this->expectNotToPerformAssertions();
+
         $result = new TokenizerLintingResult();
         $result->check();
     }

@@ -2,6 +2,8 @@
 Integration of fixers: php_unit_does_not_perform_assertions_annotation,php_unit_attributes.
 --RULESET--
 {"php_unit_does_not_perform_assertions_annotation": true, "php_unit_attributes": true}
+--REQUIREMENTS--
+{"php": 80000}
 --EXPECT--
 <?php
 class FooTest extends \PHPUnit\Framework\TestCase
