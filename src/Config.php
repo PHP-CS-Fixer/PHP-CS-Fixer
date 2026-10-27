@@ -72,6 +72,8 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
 
     private ParallelConfig $parallelConfig;
 
+    private string $composerPath = 'composer.json';
+
     private ?string $phpExecutable = null;
 
     /**
@@ -156,6 +158,11 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     public function getParallelConfig(): ParallelConfig
     {
         return $this->parallelConfig;
+    }
+
+    public function getComposerPath(): string
+    {
+        return $this->composerPath;
     }
 
     public function getPhpExecutable(): ?string
@@ -263,6 +270,13 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     public function setParallelConfig(ParallelConfig $config): ConfigInterface
     {
         $this->parallelConfig = $config;
+
+        return $this;
+    }
+
+    public function setComposerPath(string $composerPath): ConfigInterface
+    {
+        $this->composerPath = $composerPath;
 
         return $this;
     }
