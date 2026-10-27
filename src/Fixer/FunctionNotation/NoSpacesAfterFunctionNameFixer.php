@@ -36,6 +36,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
      */
     private const FUNCTIONY_TOKEN_KINDS = [
         \T_ARRAY,
+        \T_CLONE,
         \T_ECHO,
         \T_EMPTY,
         \T_EVAL,
