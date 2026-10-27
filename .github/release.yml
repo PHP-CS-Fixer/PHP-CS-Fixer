@@ -1,0 +1,47 @@
+changelog:
+  exclude:
+    labels:
+      - ignore-for-release-notes
+  categories:
+    - title: Reverts 🔙
+      labels:
+        # following kind/* instead of type/*, as it's a meta kind of the PRs
+        - kind/revert
+    - title: Breaking Changes 💀
+      labels:
+        # following kind/* instead of type/*, as it's a meta kind of the PRs
+        - kind/BC break
+    - title: Deprecations 👀
+      labels:
+        - type/depr
+    - title: New Features 🎉
+      labels:
+        - type/feat
+    - title: Bug Fixes 🐛
+      labels:
+        - type/fix
+    - title: Documentation 📚
+      labels:
+        - type/docs
+    - title: Tests 🧪
+      labels:
+        - type/test
+    - title: CI/CD 📦
+      labels:
+        - type/CI
+    - title: DX 🛠
+      labels:
+        - type/DX
+    - title: Refactoring 💎
+      labels:
+        - type/refactor
+    - title: Chore 🧹
+      labels:
+        - type/chore
+    - title: Dependency Updates ⬆️
+      labels:
+        - type/deps
+        - dependencies # @TODO @MARKER-7305 unify into type/deps, used by dependabot
+    - title: Other Changes
+      labels:
+        - "*"
