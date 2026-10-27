@@ -520,6 +520,9 @@ Language Construct
 - `error_suppression <./language_construct/error_suppression.rst>`_ *(risky, configurable)*
 
   Error control operator should be added to deprecation notices and/or removed from other cases.
+- `exit_parentheses <./language_construct/exit_parentheses.rst>`_
+
+  Language constructs ``exit`` and ``die`` must be called with parentheses.
 - `explicit_indirect_variable <./language_construct/explicit_indirect_variable.rst>`_
 
   Add curly braces to indirect variables to make them clear to understand.

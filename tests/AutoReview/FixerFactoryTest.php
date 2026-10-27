@@ -689,6 +689,7 @@ final class FixerFactoryTest extends TestCase
             ],
             'no_unneeded_control_parentheses' => [
                 'concat_space',
+                'exit_parentheses',
                 'new_expression_parentheses',
                 'no_trailing_whitespace',
             ],
