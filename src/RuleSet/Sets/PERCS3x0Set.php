@@ -36,6 +36,10 @@ final class PERCS3x0Set extends AbstractRuleSetDefinition
     {
         return [
             '@PER-CS2x0' => true,
+            'modifier_keywords' => [ // overrides @PSR12
+                // ¶4.3 leaves the general visibility optional when a set-visibility is declared
+                'general_visibility_when_set_visibility_present' => 'keep',
+            ],
             'nullable_type_declaration' => true,
             'operator_linebreak' => true,
             'ordered_types' => [
