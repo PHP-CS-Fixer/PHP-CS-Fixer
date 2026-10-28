@@ -137,6 +137,99 @@ final class NumericLiteralSeparatorFixerTest extends AbstractFixerTestCase
         ]);
 
         yield 'do not change float to int when there is nothing after the dot' => ['<?php $x = 100.;'];
+
+        yield 'add separator only to decimal and hexadecimal' => [
+            <<<'PHP'
+                <?php
+                echo 1_234_567;
+                echo 1234.5678;
+                echo 0b0101010001101000;
+                echo 01234567;
+                echo 0x42_72_6F_77_6E;
+                PHP,
+            <<<'PHP'
+                <?php
+                echo 1234567;
+                echo 1234.5678;
+                echo 0b0101010001101000;
+                echo 01234567;
+                echo 0x42726F776E;
+                PHP,
+            ['types' => ['decimal', 'hexadecimal']],
+        ];
+
+        yield 'add separator only to float, binary and octal' => [
+            <<<'PHP'
+                <?php
+                echo 1234567;
+                echo 1_234.567_8;
+                echo 0b01010100_01101000;
+                echo 01_234_567;
+                echo 0x42726F776E;
+                PHP,
+            <<<'PHP'
+                <?php
+                echo 1234567;
+                echo 1234.5678;
+                echo 0b0101010001101000;
+                echo 01234567;
+                echo 0x42726F776E;
+                PHP,
+            ['types' => ['float', 'binary', 'octal']],
+        ];
+
+        yield 'remove separator only from decimal' => [
+            <<<'PHP'
+                <?php
+                echo 1234567;
+                echo 0x42_72_6F_77_6E;
+                PHP,
+            <<<'PHP'
+                <?php
+                echo 1_234_567;
+                echo 0x42_72_6F_77_6E;
+                PHP,
+            [
+                'strategy' => NumericLiteralSeparatorFixer::STRATEGY_NO_SEPARATOR,
+                'types' => ['decimal'],
+            ],
+        ];
+
+        yield 'treat overflowing integer as decimal' => [
+            '<?php echo 9_223_372_036_854_775_808;',
+            '<?php echo 9223372036854775808;',
+            ['types' => ['decimal']],
+        ];
+
+        yield 'do not treat overflowing integer as float' => [
+            '<?php echo 9223372036854775808;',
+            null,
+            ['types' => ['float']],
+        ];
+
+        yield 'treat overflowing hexadecimal as hexadecimal' => [
+            '<?php echo 0xFF_FF_FF_FF_FF_FF_FF_FF_FF;',
+            '<?php echo 0xFFFFFFFFFFFFFFFFFF;',
+            ['types' => ['hexadecimal']],
+        ];
+
+        yield 'do not treat overflowing hexadecimal as float' => [
+            '<?php echo 0xFFFFFFFFFFFFFFFFFF;',
+            null,
+            ['types' => ['float']],
+        ];
+
+        yield 'treat float with leading zero as float' => [
+            '<?php echo 0_123.5; echo 01_234_567e10;',
+            '<?php echo 0123.5; echo 01234567e10;',
+            ['types' => ['float']],
+        ];
+
+        yield 'do not treat float with leading zero as octal' => [
+            '<?php echo 0123.5; echo 01234567e10;',
+            null,
+            ['types' => ['octal']],
+        ];
     }
 
     /**
@@ -183,6 +276,12 @@ final class NumericLiteralSeparatorFixerTest extends AbstractFixerTestCase
                 '0o123456' => '0o123_456',
             ],
         ]);
+
+        yield 'add separator only to octal' => [
+            '<?php echo 0o12_345; echo 12345;',
+            '<?php echo 0o12345; echo 12345;',
+            ['types' => ['octal']],
+        ];
     }
 
     /**

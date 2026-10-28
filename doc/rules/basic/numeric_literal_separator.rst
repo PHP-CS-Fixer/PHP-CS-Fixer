@@ -11,7 +11,7 @@ This rule is CONFIGURABLE
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can configure this rule using the following options: ``override_existing``,
-``strategy``.
+``strategy``, ``types``.
 
 Configuration
 -------------
@@ -33,6 +33,15 @@ Whether numeric literal should be separated by underscores or not.
 Allowed values: ``'no_separator'`` and ``'use_separator'``
 
 Default value: ``'use_separator'``
+
+``types``
+~~~~~~~~~
+
+Which types of numeric literals should be processed.
+
+Allowed values: a subset of ``['binary', 'decimal', 'float', 'hexadecimal', 'octal']``
+
+Default value: ``['binary', 'decimal', 'float', 'hexadecimal', 'octal']``
 
 Examples
 --------
@@ -99,6 +108,22 @@ With configuration: ``['override_existing' => true]``.
    +++ New
    -<?php $var = 24_40_21;
    +<?php $var = 244_021;
+
+Example #5
+~~~~~~~~~~
+
+With configuration: ``['types' => ['decimal', 'hexadecimal']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -$integer = 12345678;
+   +$integer = 12_345_678;
+    $float = 1234.5678;
+   -$hexadecimal = 0x3D458F4F;
+   +$hexadecimal = 0x3D_45_8F_4F;
 
 References
 ----------
