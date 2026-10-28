@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Basic;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\Basic\NumericLiteralSeparatorFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -230,6 +231,136 @@ final class NumericLiteralSeparatorFixerTest extends AbstractFixerTestCase
             null,
             ['types' => ['octal']],
         ];
+
+        yield 'add separator to decimal only from minimum digits' => [
+            <<<'PHP'
+                <?php
+                echo 1234;
+                echo 12_345;
+                echo 123_456;
+                PHP,
+            <<<'PHP'
+                <?php
+                echo 1234;
+                echo 12345;
+                echo 123456;
+                PHP,
+            ['minimum_digits' => ['decimal' => 5]],
+        ];
+
+        yield 'apply minimum digits only to configured type' => [
+            '<?php echo 1234; echo 0xFF_FF;',
+            '<?php echo 1234; echo 0xFFFF;',
+            ['minimum_digits' => ['decimal' => 5]],
+        ];
+
+        yield 'do not count hexadecimal prefix as digits' => [
+            '<?php echo 0xFFFF; echo 0xF_FF_FF;',
+            '<?php echo 0xFFFF; echo 0xFFFFF;',
+            ['minimum_digits' => ['hexadecimal' => 5]],
+        ];
+
+        yield 'do not count binary prefix as digits' => [
+            '<?php echo 0b111100001; echo 0b1_11100001_11100001;',
+            '<?php echo 0b111100001; echo 0b11110000111100001;',
+            ['minimum_digits' => ['binary' => 10]],
+        ];
+
+        yield 'do not count legacy octal prefix as digits' => [
+            '<?php echo 01234; echo 012_345;',
+            '<?php echo 01234; echo 012345;',
+            ['minimum_digits' => ['octal' => 5]],
+        ];
+
+        yield 'apply minimum digits to each part of float' => [
+            <<<'PHP'
+                <?php
+                echo 1234.5678e1234;
+                echo 12_345.5678e1234;
+                echo 1234.567_89e1234;
+                echo 1234.5678e12_345;
+                echo 1e-1234;
+                echo 1e-12_345;
+                PHP,
+            <<<'PHP'
+                <?php
+                echo 1234.5678e1234;
+                echo 12345.5678e1234;
+                echo 1234.56789e1234;
+                echo 1234.5678e12345;
+                echo 1e-1234;
+                echo 1e-12345;
+                PHP,
+            ['minimum_digits' => ['float' => 5]],
+        ];
+
+        yield 'remove separator below minimum digits when overriding existing' => [
+            '<?php echo 1234; echo 123_456;',
+            '<?php echo 1_234; echo 12_3456;',
+            [
+                'minimum_digits' => ['decimal' => 5],
+                'override_existing' => true,
+            ],
+        ];
+
+        yield 'keep existing separator below minimum digits when not overriding existing' => [
+            '<?php echo 1_234;',
+            null,
+            ['minimum_digits' => ['decimal' => 5]],
+        ];
+
+        yield 'ignore minimum digits when removing separators' => [
+            '<?php echo 1234; echo 123456;',
+            '<?php echo 1_234; echo 123_456;',
+            [
+                'minimum_digits' => ['decimal' => 5],
+                'strategy' => NumericLiteralSeparatorFixer::STRATEGY_NO_SEPARATOR,
+            ],
+        ];
+
+        yield 'ignore minimum digits of not configured type' => [
+            '<?php echo 1_234; echo 0xFFFF;',
+            '<?php echo 1234; echo 0xFFFF;',
+            [
+                'minimum_digits' => ['hexadecimal' => 0],
+                'types' => ['decimal'],
+            ],
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $configuration
+     *
+     * @dataProvider provideInvalidConfigurationCases
+     */
+    #[DataProvider('provideInvalidConfigurationCases')]
+    public function testInvalidConfiguration(array $configuration, string $exceptionExpression): void
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches($exceptionExpression);
+
+        $this->fixer->configure($configuration); // @phpstan-ignore argument.type
+    }
+
+    /**
+     * @return iterable<string, array{array<string, mixed>, string}>
+     */
+    public static function provideInvalidConfigurationCases(): iterable
+    {
+        yield 'unknown type in minimum digits' => [
+            ['minimum_digits' => ['integer' => 5]],
+            '/^\[numeric_literal_separator\] Invalid configuration: Unexpected "minimum_digits" key, expected any of "binary", "decimal", "float", "hexadecimal" and "octal", got "integer"\.$/',
+        ];
+
+        yield 'negative minimum digits' => [
+            ['minimum_digits' => ['decimal' => -1]],
+            '/^\[numeric_literal_separator\] Invalid configuration: Unexpected "minimum_digits" value for "decimal", expected a non-negative integer, got -1\.$/',
+        ];
+
+        yield 'non-integer minimum digits' => [
+            ['minimum_digits' => ['decimal' => '5']],
+            '/^\[numeric_literal_separator\] Invalid configuration: The option "minimum_digits" with value array is expected to be of type "int\[\]", but one of the elements is of type "string"\.$/',
+        ];
     }
 
     /**
@@ -281,6 +412,12 @@ final class NumericLiteralSeparatorFixerTest extends AbstractFixerTestCase
             '<?php echo 0o12_345; echo 12345;',
             '<?php echo 0o12345; echo 12345;',
             ['types' => ['octal']],
+        ];
+
+        yield 'do not count octal prefix as digits' => [
+            '<?php echo 0o1234; echo 0o12_345;',
+            '<?php echo 0o1234; echo 0o12345;',
+            ['minimum_digits' => ['octal' => 5]],
         ];
     }
 

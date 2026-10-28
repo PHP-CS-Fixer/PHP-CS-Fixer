@@ -10,11 +10,22 @@ Warning
 This rule is CONFIGURABLE
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can configure this rule using the following options: ``override_existing``,
-``strategy``, ``types``.
+You can configure this rule using the following options: ``minimum_digits``,
+``override_existing``, ``strategy``, ``types``.
 
 Configuration
 -------------
+
+``minimum_digits``
+~~~~~~~~~~~~~~~~~~
+
+Dictionary of ``type`` => ``minimum digits`` a part of the literal (integer,
+fraction or exponent) must have to get separators; unlisted types use ``0``.
+Only applies when ``strategy`` is ``use_separator``.
+
+Allowed types: ``array<string, int>``
+
+Default value: ``[]``
 
 ``override_existing``
 ~~~~~~~~~~~~~~~~~~~~~
@@ -124,6 +135,22 @@ With configuration: ``['types' => ['decimal', 'hexadecimal']]``.
     $float = 1234.5678;
    -$hexadecimal = 0x3D458F4F;
    +$hexadecimal = 0x3D_45_8F_4F;
+
+Example #6
+~~~~~~~~~~
+
+With configuration: ``['minimum_digits' => ['decimal' => 5, 'float' => 5]]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    $integer = 1234;
+   -$largerInteger = 12345;
+   -$float = 1234.56789;
+   +$largerInteger = 12_345;
+   +$float = 1234.567_89;
 
 References
 ----------
