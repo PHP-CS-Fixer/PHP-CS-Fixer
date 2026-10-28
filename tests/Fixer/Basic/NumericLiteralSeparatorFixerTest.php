@@ -112,6 +112,9 @@ final class NumericLiteralSeparatorFixerTest extends AbstractFixerTestCase
                 '1.1e-12345' => '1.1e-12_345',
                 '1.1e-123456' => '1.1e-123_456',
                 '.1e-12345' => '.1e-12_345',
+                '01234567e10' => '01_234_567e10',
+                '0123E5' => '0_123E5',
+                '01e-12345' => '01e-12_345',
             ],
             'hexadecimal' => [
                 '0x42726F776E' => '0x42_72_6F_77_6E',
