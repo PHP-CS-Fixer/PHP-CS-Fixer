@@ -103,6 +103,7 @@ final class PERCS2x0Set extends AbstractRuleSetDefinition
                     'arguments',
                     'array_destructuring',
                     'arrays',
+                    'closure_use',
                     'match',
                     'parameters',
                 ],
