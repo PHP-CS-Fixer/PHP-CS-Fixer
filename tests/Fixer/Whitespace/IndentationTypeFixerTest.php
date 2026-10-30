@@ -290,6 +290,48 @@ if (true) {
 ",
             new WhitespacesFixerConfig('  '),
         ];
+
+        yield 'whitespace after multi-line string is not indentation' => [
+            "<?php\n\$a = 'x\ny'    . \$b;\n",
+            null,
+            new WhitespacesFixerConfig("\t", "\n"),
+        ];
+
+        yield 'whitespace after multi-line comment is not indentation' => [
+            "<?php\n/* x\n y */    \$a = 1;\n",
+            null,
+            new WhitespacesFixerConfig("\t", "\n"),
+        ];
+
+        yield 'spaces before tab are expanded to the next tab stop (tab indent)' => [
+            "<?php\n\t\t\$a = 1;\n",
+            "<?php\n      \t\$a = 1;\n",
+            new WhitespacesFixerConfig("\t", "\n"),
+        ];
+
+        yield 'spaces before tab are expanded to the next tab stop (spaces indent)' => [
+            "<?php\n        \$a = 1;\n",
+            "<?php\n      \t\$a = 1;\n",
+            new WhitespacesFixerConfig('    ', "\n"),
+        ];
+
+        yield 'spaces before tab in comment are expanded to the next tab stop' => [
+            "<?php\n/*\n         * x\n */\n",
+            "<?php\n/*\n     \t * x\n */\n",
+            new WhitespacesFixerConfig('    ', "\n"),
+        ];
+
+        yield 'spaces inside comment text are not indentation' => [
+            "<?php\n/*\n * a    b\n */\n",
+            null,
+            new WhitespacesFixerConfig("\t", "\n"),
+        ];
+
+        yield 'CRLF line endings' => [
+            "<?php\r\n\t\$a = 1;\r\n\t\t\$b = 2;\r\n",
+            "<?php\r\n    \$a = 1;\r\n        \$b = 2;\r\n",
+            new WhitespacesFixerConfig("\t", "\r\n"),
+        ];
     }
 
     /**
