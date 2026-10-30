@@ -154,11 +154,6 @@ class Tokens extends \SplFixedArray
     private array $foundTokenKinds = [];
 
     /**
-     * @var null|list<NamespaceAnalysis>
-     */
-    private ?array $namespaceDeclarations = null;
-
-    /**
      * Clone tokens collection.
      */
     public function __clone()
@@ -391,7 +386,6 @@ class Tokens extends \SplFixedArray
             self::clearAnalyzerCache($this->collectionHash);
             $this->codeHash = null;
             $this->collectionHash = null;
-            $this->namespaceDeclarations = null;
         }
 
         parent::offsetUnset($index);
@@ -440,7 +434,6 @@ class Tokens extends \SplFixedArray
             self::clearAnalyzerCache($this->collectionHash);
             $this->codeHash = null;
             $this->collectionHash = null;
-            $this->namespaceDeclarations = null;
 
             $this->registerFoundToken($newval);
         }
@@ -502,7 +495,6 @@ class Tokens extends \SplFixedArray
         }
 
         // we are moving the tokens, we need to clear the index-based Cache
-        $this->namespaceDeclarations = null;
         $this->foundTokenKinds[''] = 0;
 
         self::clearAnalyzerCache($this->collectionHash);
@@ -1040,7 +1032,6 @@ class Tokens extends \SplFixedArray
         self::clearAnalyzerCache($this->collectionHash);
         $this->codeHash = null;
         $this->collectionHash = null;
-        $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
 
@@ -1207,7 +1198,6 @@ class Tokens extends \SplFixedArray
         self::clearAnalyzerCache($this->collectionHash);
         $this->codeHash = null;
         $this->collectionHash = null;
-        $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
 
@@ -1362,14 +1352,12 @@ class Tokens extends \SplFixedArray
      * @internal This is performance-related workaround for lack of proper DI, may be removed at some point
      *
      * @return list<NamespaceAnalysis>
+     *
+     * @deprecated use `NamespacesAnalyzer` directly
      */
     public function getNamespaceDeclarations(): array
     {
-        if (null === $this->namespaceDeclarations) {
-            $this->namespaceDeclarations = (new NamespacesAnalyzer())->getDeclarations($this);
-        }
-
-        return $this->namespaceDeclarations;
+        return (new NamespacesAnalyzer())->getDeclarations($this);
     }
 
     /**
@@ -1402,7 +1390,6 @@ class Tokens extends \SplFixedArray
         self::clearAnalyzerCache($this->collectionHash);
         $this->codeHash = null;
         $this->collectionHash = null;
-        $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
 
