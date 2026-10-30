@@ -163,11 +163,11 @@ final class BracesFixer extends AbstractProxyFixer implements ConfigurableFixerI
      * {@inheritdoc}
      *
      * Must run before HeredocIndentationFixer.
-     * Must run after ClassAttributesSeparationFixer, ClassDefinitionFixer, EmptyLoopBodyFixer, NoAlternativeSyntaxFixer, NoEmptyStatementFixer, NoUselessElseFixer, SingleLineThrowFixer, SingleSpaceAfterConstructFixer, SingleSpaceAroundConstructFixer, SingleTraitInsertPerStatementFixer.
+     * Must run after ClassAttributesSeparationFixer, ClassDefinitionFixer, EmptyLoopBodyFixer, MethodArgumentSpaceFixer, NoAlternativeSyntaxFixer, NoEmptyStatementFixer, NoUselessElseFixer, SingleLineThrowFixer, SingleSpaceAfterConstructFixer, SingleSpaceAroundConstructFixer, SingleTraitInsertPerStatementFixer.
      */
     public function getPriority(): int
     {
-        return 35;
+        return 29;
     }
 
     public function getSuccessorsNames(): array
