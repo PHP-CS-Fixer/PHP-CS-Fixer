@@ -353,6 +353,10 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
                 continue;
             }
 
+            if ($token->isGivenKind(\T_CLONE) && $tokens[$whitespaceTokenIndex]->equals('(')) {
+                continue;
+            }
+
             if ($token->isGivenKind([\T_EXTENDS, \T_IMPLEMENTS]) && $this->isMultilineExtendsOrImplementsWithMoreThanOneAncestor($tokens, $index)) {
                 continue;
             }
