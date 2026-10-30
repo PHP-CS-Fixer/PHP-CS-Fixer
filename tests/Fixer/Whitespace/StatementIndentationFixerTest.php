@@ -1086,6 +1086,56 @@ if ($foo) {
             ['stick_comment_to_next_continuous_control_statement' => true],
         ];
 
+        yield 'comments before next case/default WITH stick_comment_to_next_continuous_control_statement' => [
+            '<?php
+switch ($foo) {
+    case 1:
+        // about one
+        // still about one
+        echo "one";
+    // about two
+    // still about two
+    case 2:
+    case 3:
+    // about default
+    default:
+        echo "other";
+}',
+            '<?php
+switch ($foo) {
+    case 1:
+            // about one
+  // still about one
+        echo "one";
+            // about two
+  // still about two
+    case 2:
+    case 3:
+        // about default
+    default:
+        echo "other";
+}',
+            ['stick_comment_to_next_continuous_control_statement' => true],
+        ];
+
+        yield 'comment before next case WITHOUT stick_comment_to_next_continuous_control_statement' => [
+            '<?php
+switch ($foo) {
+    case 1:
+        // about the body of one
+    case 2:
+        echo "two";
+}',
+            '<?php
+switch ($foo) {
+    case 1:
+    // about the body of one
+    case 2:
+        echo "two";
+}',
+            ['stick_comment_to_next_continuous_control_statement' => false],
+        ];
+
         yield 'if-elseif-else without braces' => [
             '<?php
 if ($foo)
