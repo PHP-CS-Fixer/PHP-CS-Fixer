@@ -1197,25 +1197,25 @@ final class ConfigurationResolverTest extends TestCase
     {
         yield 'with config' => [
             'The rules contain unknown fixers: "blank_line_before_return" is renamed (did you mean "blank_line_before_statement"? (note: use configuration "[\'statements\' => [\'return\']]")).
-For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v3.0.0/UPGRADE-v3.md#renamed-ruless.',
+For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v3.0.0/UPGRADE-v3.md#renamed-rules',
             ['blank_line_before_return'],
         ];
 
         yield 'without config' => [
             'The rules contain unknown fixers: "final_static_access" is renamed (did you mean "self_static_accessor"?).
-For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v3.0.0/UPGRADE-v3.md#renamed-ruless.',
+For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v3.0.0/UPGRADE-v3.md#renamed-rules',
             ['final_static_access'],
         ];
 
         yield [
             'The rules contain unknown fixers: "hash_to_slash_comment" is renamed (did you mean "single_line_comment_style"? (note: use configuration "[\'comment_types\' => [\'hash\']]")).
-For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v3.0.0/UPGRADE-v3.md#renamed-ruless.',
+For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v3.0.0/UPGRADE-v3.md#renamed-rules',
             ['hash_to_slash_comment'],
         ];
 
         yield 'both renamed and unknown' => [
             'The rules contain unknown fixers: "final_static_access" is renamed (did you mean "self_static_accessor"?), "binary_operator_space" (did you mean "binary_operator_spaces"?).
-For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v3.0.0/UPGRADE-v3.md#renamed-ruless.',
+For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v3.0.0/UPGRADE-v3.md#renamed-rules',
             ['final_static_access', 'binary_operator_space'],
         ];
     }
@@ -1368,20 +1368,20 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
      */
     #[DataProvider('provideDeprecatedFixerConfiguredCases')]
     #[Group('legacy')]
-    public function testDeprecatedFixerConfigured($ruleConfig): void
+    public function testDeprecatedFixerConfigured($ruleConfig, bool $useFqcnAsRuleName = false): void
     {
         $this->expectDeprecation('Rule "Vendor4/foo" is deprecated. Use "testA" and "testB" instead.');
         $fixer = $this->createDeprecatedFixerDouble();
         $config = new Config();
         $config->registerCustomFixers([$fixer]);
-        $config->setRules([$fixer->getName() => $ruleConfig]);
+        $config->setRules([($useFqcnAsRuleName ? \get_class($fixer) : $fixer->getName()) => $ruleConfig]);
 
         $resolver = $this->createConfigurationResolver([], $config);
         $resolver->getFixers();
     }
 
     /**
-     * @return iterable<int, array{array<string, mixed>|bool}>
+     * @return iterable<array{0: array<string, mixed>|bool, 1?: bool}>
      */
     public static function provideDeprecatedFixerConfiguredCases(): iterable
     {
@@ -1390,6 +1390,8 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         yield [['foo' => true]];
 
         yield [false];
+
+        yield 'by FQCN as rule name' => [true, true];
     }
 
     public function testItCanRegisterCustomRuleSets(): void
