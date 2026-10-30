@@ -1,0 +1,32 @@
+--TEST--
+Integration of fixers: php_unit_does_not_perform_assertions_annotation,php_unit_attributes.
+--RULESET--
+{"php_unit_does_not_perform_assertions_annotation": true, "php_unit_attributes": true}
+--REQUIREMENTS--
+{"php": 80000}
+--EXPECT--
+<?php
+class FooTest extends \PHPUnit\Framework\TestCase
+{
+    /**
+     */
+    public function testFoo()
+    {
+        $this->expectNotToPerformAssertions();
+
+        foo();
+    }
+}
+
+--INPUT--
+<?php
+class FooTest extends \PHPUnit\Framework\TestCase
+{
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testFoo()
+    {
+        foo();
+    }
+}
