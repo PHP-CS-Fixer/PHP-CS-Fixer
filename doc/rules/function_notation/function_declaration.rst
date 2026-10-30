@@ -11,7 +11,8 @@ This rule is CONFIGURABLE
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can configure this rule using the following options: ``closure_fn_spacing``,
-``closure_function_spacing``, ``trailing_comma_single_line``.
+``closure_function_spacing``, ``closure_use_spacing``,
+``trailing_comma_single_line``.
 
 Configuration
 -------------
@@ -31,6 +32,15 @@ Default value (future-mode): ``'none'``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Spacing to use before open parenthesis for closures.
+
+Allowed values: ``'none'`` and ``'one'``
+
+Default value: ``'one'``
+
+``closure_use_spacing``
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Spacing to use before open parenthesis for closure ``use`` clauses.
 
 Allowed values: ``'none'`` and ``'one'``
 
@@ -99,6 +109,19 @@ With configuration: ``['closure_fn_spacing' => 'none']``.
     <?php
    -$f = fn () => null;
    +$f = fn() => null;
+
+Example #4
+~~~~~~~~~~
+
+With configuration: ``['closure_use_spacing' => 'none']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -$f = function () use ($a) {};
+   +$f = function () use($a) {};
 
 Rule sets
 ---------
