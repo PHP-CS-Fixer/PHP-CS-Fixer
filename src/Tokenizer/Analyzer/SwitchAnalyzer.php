@@ -27,6 +27,15 @@ final class SwitchAnalyzer
     /** @var array<non-empty-string, list<int>> */
     private static array $cache = [];
 
+    public static function clearCache(?string $collectionHash = null): void
+    {
+        if (null !== $collectionHash) {
+            unset(self::$cache[$collectionHash]);
+        } else {
+            self::$cache = [];
+        }
+    }
+
     public static function belongsToSwitch(Tokens $tokens, int $index): bool
     {
         if (!$tokens[$index]->equals(':')) {
@@ -35,7 +44,7 @@ final class SwitchAnalyzer
 
         $collectionHash = $tokens->getCollectionHash();
 
-        if (!\array_key_exists($collectionHash, self::$cache)) {
+        if (!isset(self::$cache[$collectionHash])) {
             self::$cache[$collectionHash] = self::getColonIndicesForSwitch(clone $tokens);
         }
 
