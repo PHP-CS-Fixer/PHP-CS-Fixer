@@ -274,7 +274,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{list<string>, string}>
+     * @return iterable<array{list<string>, string}>
      */
     public static function provideTypeParsingCases(): iterable
     {
@@ -366,6 +366,21 @@ final class AnnotationTest extends TestCase
         yield [
             ['null', 'gen<int,  gener<string, bool>>', 'int', 'array<int, string>', 'string[]'],
             ' * @method null|gen<int,  gener<string, bool>>|int|array<int, string>|string[] method() foo <a >',
+        ];
+
+        yield 'static method with a nullable intersection return type' => [
+            ['(Foo&Bar)', 'null'],
+            ' * @method static (Foo&Bar)|null method()',
+        ];
+
+        yield 'static method with a callable return type' => [
+            ['callable(int): string'],
+            ' * @method static callable(int): string method()',
+        ];
+
+        yield 'static return type without a static modifier' => [
+            ['static'],
+            ' * @method static method() description()',
         ];
 
         yield [
@@ -556,7 +571,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{list<string>, list<string>, string, string}>
+     * @return iterable<array{list<string>, list<string>, string, string}>
      */
     public static function provideTypesCases(): iterable
     {
@@ -571,6 +586,13 @@ final class AnnotationTest extends TestCase
         yield [['RUNTIMEEEEeXCEPTION'], [\Throwable::class], "*@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "*@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"];
 
         yield [['string'], ['string', 'null'], ' * @method string getString()', ' * @method string|null getString()'];
+
+        yield 'replace the return type after the static modifier' => [
+            ['static'],
+            ['self'],
+            ' * @method static static method(static $value) static',
+            ' * @method static self method(static $value) static',
+        ];
 
         yield [['Foo', 'Bar'], ['Bar', 'Foo'], ' * @param Foo&Bar $x', ' * @param Bar&Foo $x'];
     }
