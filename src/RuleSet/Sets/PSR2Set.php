@@ -32,6 +32,7 @@ final class PSR2Set extends AbstractRuleSetDefinition
                 'allow_single_line_anonymous_functions' => false,
             ],
             'class_definition' => true,
+            'colon_space' => true,
             'constant_case' => true,
             'control_structure_braces' => true,
             'control_structure_continuation_position' => true,
@@ -100,7 +101,6 @@ final class PSR2Set extends AbstractRuleSetDefinition
             'spaces_inside_parentheses' => true,
             'statement_indentation' => true,
             'switch_case_semicolon_to_colon' => true,
-            'switch_case_space' => true,
         ];
     }
 
