@@ -18,6 +18,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -105,7 +106,7 @@ final class StaticPrivateMethodFixer extends AbstractFixer
                     continue;
                 }
 
-                $classOpen = $tokens->getNextTokenOfKind($index, ['{']);
+                $classOpen = ClassyAnalyzer::findOpeningBrace($tokens, $index);
                 $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $classOpen);
 
                 $anythingChanged = $this->fixClass($tokens, $tokensAnalyzer, $classOpen, $classClose) || $anythingChanged;
@@ -167,7 +168,12 @@ final class StaticPrivateMethodFixer extends AbstractFixer
 
         for ($index = $methodOpen + 1; $index < $methodClose - 1; ++$index) {
             if ($tokens[$index]->isGivenKind(\T_CLASS) && $tokensAnalyzer->isAnonymousClass($index)) {
-                $anonymousClassOpen = $tokens->getNextTokenOfKind($index, ['{']);
+                $anonymousClassOpen = ClassyAnalyzer::findOpeningBrace($tokens, $index);
+
+                if ($this->skipMethod($tokens, $tokensAnalyzer, $functionKeywordIndex, $index, $anonymousClassOpen + 1)) {
+                    return true;
+                }
+
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $anonymousClassOpen);
 
                 continue;
@@ -219,7 +225,8 @@ final class StaticPrivateMethodFixer extends AbstractFixer
             }
 
             if ($tokens[$index]->isGivenKind(\T_CLASS) && $tokensAnalyzer->isAnonymousClass($index)) {
-                $anonymousClassOpen = $tokens->getNextTokenOfKind($index, ['{']);
+                $anonymousClassOpen = ClassyAnalyzer::findOpeningBrace($tokens, $index);
+                $this->fixReferencesInFunction($tokens, $tokensAnalyzer, $index, $anonymousClassOpen + 1, $fixedMethods);
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $anonymousClassOpen);
 
                 continue;

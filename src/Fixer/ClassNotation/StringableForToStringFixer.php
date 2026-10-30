@@ -19,6 +19,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -94,8 +95,7 @@ final class StringableForToStringFixer extends AbstractFixer
                 continue;
             }
 
-            $classStartIndex = $tokens->getNextTokenOfKind($index, ['{']);
-            \assert(\is_int($classStartIndex));
+            $classStartIndex = ClassyAnalyzer::findOpeningBrace($tokens, $index);
 
             $classEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $classStartIndex);
 
@@ -103,11 +103,11 @@ final class StringableForToStringFixer extends AbstractFixer
                 continue;
             }
 
-            if (self::doesImplementStringable($tokens, $index, $classStartIndex, $stringableInterfaces)) {
+            if (self::doesImplementStringable($tokens, $classStartIndex, $stringableInterfaces)) {
                 continue;
             }
 
-            self::addStringableInterface($tokens, $index);
+            self::addStringableInterface($tokens, $classStartIndex);
         }
     }
 
@@ -170,11 +170,10 @@ final class StringableForToStringFixer extends AbstractFixer
      */
     private static function doesImplementStringable(
         Tokens $tokens,
-        int $classKeywordIndex,
         int $classOpenBraceIndex,
         array $stringableInterfaces
     ): bool {
-        $implementedInterfaces = self::getInterfaces($tokens, $classKeywordIndex, $classOpenBraceIndex);
+        $implementedInterfaces = self::getInterfaces($tokens, $classOpenBraceIndex);
         if ([] === $implementedInterfaces) {
             return false;
         }
@@ -194,10 +193,14 @@ final class StringableForToStringFixer extends AbstractFixer
     /**
      * @return list<string>
      */
-    private static function getInterfaces(Tokens $tokens, int $classKeywordIndex, int $classOpenBraceIndex): array
+    private static function getInterfaces(Tokens $tokens, int $classOpenBraceIndex): array
     {
-        $implementsIndex = $tokens->getNextTokenOfKind($classKeywordIndex, ['{', [\T_IMPLEMENTS]]);
+        $implementsIndex = $tokens->getPrevTokenOfKind($classOpenBraceIndex, [')', [\T_CLASS], [\T_IMPLEMENTS]]);
         \assert(\is_int($implementsIndex));
+
+        if (!$tokens[$implementsIndex]->isGivenKind(\T_IMPLEMENTS)) {
+            return [];
+        }
 
         $interfaces = [];
         $interface = '';
@@ -222,13 +225,13 @@ final class StringableForToStringFixer extends AbstractFixer
         return $interfaces;
     }
 
-    private static function addStringableInterface(Tokens $tokens, int $classIndex): void
+    private static function addStringableInterface(Tokens $tokens, int $classOpenBraceIndex): void
     {
-        $implementsIndex = $tokens->getNextTokenOfKind($classIndex, ['{', [\T_IMPLEMENTS]]);
+        $implementsIndex = $tokens->getPrevTokenOfKind($classOpenBraceIndex, [')', [\T_CLASS], [\T_IMPLEMENTS]]);
         \assert(\is_int($implementsIndex));
 
-        if ($tokens[$implementsIndex]->equals('{')) {
-            $prevIndex = $tokens->getPrevMeaningfulToken($implementsIndex);
+        if (!$tokens[$implementsIndex]->isGivenKind(\T_IMPLEMENTS)) {
+            $prevIndex = $tokens->getPrevMeaningfulToken($classOpenBraceIndex);
             \assert(\is_int($prevIndex));
 
             $tokens->insertSlices([

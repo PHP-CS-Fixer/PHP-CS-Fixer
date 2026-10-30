@@ -18,6 +18,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -182,7 +183,7 @@ final class StaticLambdaFixer extends AbstractFixer
             }
 
             if ($tokens[$i]->isClassy()) {
-                $openBraceIndex = $tokens->getNextTokenOfKind($i, ['{']);
+                $openBraceIndex = ClassyAnalyzer::findOpeningBrace($tokens, $i);
                 $i = $tokens->getNextMeaningfulToken($i);
                 if ($i <= $openBraceIndex && $this->hasPossibleReferenceToThis(
                     $tokens,

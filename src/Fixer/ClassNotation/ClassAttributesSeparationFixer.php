@@ -27,6 +27,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
@@ -479,7 +480,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
                 }
 
                 $classIndex = $element['classIndex'];
-                $classOpen = $tokens->getNextTokenOfKind($classIndex, ['{']);
+                $classOpen = ClassyAnalyzer::findOpeningBrace($tokens, $classIndex);
                 $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $classOpen);
                 $class = [
                     'index' => $element['classIndex'],

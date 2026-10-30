@@ -179,6 +179,10 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
                 } }',
         ];
 
+        yield 'anonymous class with a closure constructor argument' => [
+            '<?php class Foo { function create() { return new class(function () {}) { function y() { return Foo::class; } }; } }',
+        ];
+
         yield [
             '<?php class Foo { protected $foo; function bar() { return $this->foo::find(2); } }',
         ];

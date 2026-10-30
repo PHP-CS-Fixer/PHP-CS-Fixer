@@ -218,7 +218,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
             $token = $tokens[$index];
 
             if ($token->isClassy()) {
-                $index = $tokens->getNextTokenOfKind($index, ['{']);
+                $index = ClassyAnalyzer::findOpeningBrace($tokens, $index);
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
 
                 continue;
@@ -651,7 +651,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
             $token = $tokens[$index];
 
             if ($token->isClassy()) {
-                $classStart = $tokens->getNextTokenOfKind($index, ['{']);
+                $classStart = ClassyAnalyzer::findOpeningBrace($tokens, $index);
                 $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $classStart);
 
                 for ($index = $classStart; $index <= $classEnd; ++$index) {

@@ -48,7 +48,7 @@ final class StringableForToStringFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -284,6 +284,16 @@ final class StringableForToStringFixerTest extends AbstractFixerTestCase
                 public function __toString() {}
             };
             ',
+        ];
+
+        yield 'anonymous class with a closure constructor argument' => [
+            '<?php new class(function () {}) implements \Stringable { public function __toString(): string { return "foo"; } };',
+            '<?php new class(function () {}) { public function __toString(): string { return "foo"; } };',
+        ];
+
+        yield 'anonymous class with nested constructor arguments' => [
+            '<?php new class(new class implements \Stringable { public function __toString(): string { return "inner"; } }) implements \Stringable, Foo { public function __toString(): string { return "outer"; } };',
+            '<?php new class(new class implements \Stringable { public function __toString(): string { return "inner"; } }) implements Foo { public function __toString(): string { return "outer"; } };',
         ];
 
         yield [

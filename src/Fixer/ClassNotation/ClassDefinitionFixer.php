@@ -24,6 +24,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
@@ -317,7 +318,7 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
             $spacing = $this->whitespacesConfig->getLineEnding();
         }
 
-        $openIndex = $tokens->getNextTokenOfKind($classDefInfo['classy'], ['{']);
+        $openIndex = ClassyAnalyzer::findOpeningBrace($tokens, $classDefInfo['classy']);
 
         if (' ' !== $spacing && str_contains($tokens[$openIndex - 1]->getContent(), "\n")) {
             return $openIndex;
@@ -342,7 +343,11 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
     private function getClassyDefinitionInfo(Tokens $tokens, int $classyIndex): array
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $openIndex = $tokens->getNextTokenOfKind($classyIndex, ['{']);
+        $openIndex = ClassyAnalyzer::findOpeningBrace($tokens, $classyIndex);
+        $signatureIndex = $tokens->getNextMeaningfulToken($classyIndex);
+        if ($tokens[$signatureIndex]->equals('(')) {
+            $signatureIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $signatureIndex);
+        }
         $def = [
             'classy' => $classyIndex,
             'open' => $openIndex,
@@ -355,11 +360,11 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
         ];
 
         if (!$tokens[$classyIndex]->isGivenKind(\T_TRAIT)) {
-            $extends = $tokens->findGivenKind(\T_EXTENDS, $classyIndex, $openIndex);
+            $extends = $tokens->findGivenKind(\T_EXTENDS, $signatureIndex, $openIndex);
             $def['extends'] = [] !== $extends ? $this->getClassyInheritanceInfo($tokens, array_key_first($extends)) : false;
 
             if (!$tokens[$classyIndex]->isGivenKind(\T_INTERFACE)) {
-                $implements = $tokens->findGivenKind(\T_IMPLEMENTS, $classyIndex, $openIndex);
+                $implements = $tokens->findGivenKind(\T_IMPLEMENTS, $signatureIndex, $openIndex);
                 $def['implements'] = [] !== $implements ? $this->getClassyInheritanceInfo($tokens, array_key_first($implements)) : false;
                 $def['anonymousClass'] = $tokensAnalyzer->isAnonymousClass($classyIndex);
             }
@@ -414,6 +419,12 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
     private function makeClassyDefinitionSingleLine(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         for ($i = $endIndex; $i >= $startIndex; --$i) {
+            if ($tokens[$i]->equals('}')) {
+                $i = $tokens->findBlockStart(Tokens::BLOCK_TYPE_BRACE, $i);
+
+                continue;
+            }
+
             if ($tokens[$i]->isWhitespace()) {
                 if (str_contains($tokens[$i]->getContent(), "\n")) {
                     if ($tokens[$i - 1]->isGivenKind(CT::T_ATTRIBUTE_CLOSE) || $tokens[$i + 1]->isGivenKind(FCT::T_ATTRIBUTE)) {

@@ -499,22 +499,7 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
 
         if (AbstractPhpdocToTypeDeclarationFixer::class === $className) {
             return new class extends AbstractPhpdocToTypeDeclarationFixer {
-                protected function isSkippedType(string $type): bool
-                {
-                    throw new \LogicException('Not implemented.');
-                }
-
-                protected function createTokensFromRawType(string $type): Tokens
-                {
-                    throw new \LogicException('Not implemented.');
-                }
-
                 public function getDefinition(): FixerDefinitionInterface
-                {
-                    throw new \LogicException('Not implemented.');
-                }
-
-                protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
                 {
                     throw new \LogicException('Not implemented.');
                 }
@@ -523,9 +508,7 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                 {
                     throw new \LogicException('Not implemented.');
                 }
-            };
-        } elseif (AbstractDoctrineAnnotationFixer::class === $className) {
-            return new class extends AbstractDoctrineAnnotationFixer {
+
                 protected function isSkippedType(string $type): bool
                 {
                     throw new \LogicException('Not implemented.');
@@ -536,12 +519,14 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                     throw new \LogicException('Not implemented.');
                 }
 
-                public function getDefinition(): FixerDefinitionInterface
+                protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
                 {
                     throw new \LogicException('Not implemented.');
                 }
-
-                protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
+            };
+        } elseif (AbstractDoctrineAnnotationFixer::class === $className) {
+            return new class extends AbstractDoctrineAnnotationFixer {
+                public function getDefinition(): FixerDefinitionInterface
                 {
                     throw new \LogicException('Not implemented.');
                 }
@@ -556,14 +541,29 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                     // void
                 }
 
-                protected function fixAnnotations(DoctrineAnnotationTokens $doctrineAnnotationTokens): void
+                public function getConfigurationDefinition(): FixerConfigurationResolverInterface
+                {
+                    return $this->createConfigurationDefinition();
+                }
+
+                protected function isSkippedType(string $type): bool
                 {
                     throw new \LogicException('Not implemented.');
                 }
 
-                public function getConfigurationDefinition(): FixerConfigurationResolverInterface
+                protected function createTokensFromRawType(string $type): Tokens
                 {
-                    return $this->createConfigurationDefinition();
+                    throw new \LogicException('Not implemented.');
+                }
+
+                protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
+                {
+                    throw new \LogicException('Not implemented.');
+                }
+
+                protected function fixAnnotations(DoctrineAnnotationTokens $doctrineAnnotationTokens): void
+                {
+                    throw new \LogicException('Not implemented.');
                 }
             };
         }

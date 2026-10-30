@@ -21,6 +21,7 @@ use PhpCsFixer\Fixer\ExperimentalFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -162,7 +163,7 @@ final class PhpdocToPropertyTypeFixer extends AbstractPhpdocToTypeDeclarationFix
     {
         $tokensToInsert = [];
 
-        $index = $tokens->getNextTokenOfKind($index, ['{']);
+        $index = ClassyAnalyzer::findOpeningBrace($tokens, $index);
         $classEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
 
         for (; $index < $classEndIndex; ++$index) {

@@ -20,6 +20,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer;
 use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -159,7 +160,13 @@ final class SelfStaticAccessorFixer extends AbstractFixer
 
     private function fixClassy(Tokens $tokens, int $index): int
     {
-        $index = $tokens->getNextTokenOfKind($index, ['{']);
+        $classOpenIndex = ClassyAnalyzer::findOpeningBrace($tokens, $index);
+        for (++$index; $index < $classOpenIndex; ++$index) {
+            if ($tokens[$index]->isGivenKind(\T_CLASS) && $this->tokensAnalyzer->isAnonymousClass($index)) {
+                $index = $this->fixClassy($tokens, $index);
+            }
+        }
+
         $classOpenCount = 1;
 
         while ($classOpenCount > 0) {

@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer\Transformer;
 
 use PhpCsFixer\Tokenizer\AbstractTransformer;
+use PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
@@ -75,8 +76,8 @@ final class UseTransformer extends AbstractTransformer
                 continue;
             }
 
-            $index = $tokens->getNextTokenOfKind($index, ['{']);
-            $innerLimit = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
+            $classOpenIndex = ClassyAnalyzer::findOpeningBrace($tokens, $index);
+            $innerLimit = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $classOpenIndex);
 
             while ($index < $innerLimit) {
                 $token = $tokens[++$index];

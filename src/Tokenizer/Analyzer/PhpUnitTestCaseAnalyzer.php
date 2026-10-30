@@ -39,8 +39,7 @@ final class PhpUnitTestCaseAnalyzer
                 continue;
             }
 
-            $startIndex = $tokens->getNextTokenOfKind($index, ['{']);
-            \assert(\is_int($startIndex));
+            $startIndex = ClassyAnalyzer::findOpeningBrace($tokens, $index);
 
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $startIndex);
 
@@ -52,6 +51,11 @@ final class PhpUnitTestCaseAnalyzer
     {
         if (!$tokens[$index]->isGivenKind(\T_CLASS)) {
             return false;
+        }
+
+        $nextIndex = $tokens->getNextMeaningfulToken($index);
+        if ($tokens[$nextIndex]->equals('(')) {
+            $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $nextIndex);
         }
 
         $extendsIndex = $tokens->getNextTokenOfKind($index, ['{', [\T_EXTENDS]]);

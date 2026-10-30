@@ -186,5 +186,9 @@ final class MyTest extends \PhpUnit\FrameWork\TestCase
 }
 ',
         ];
+
+        yield 'anonymous class with a closure constructor argument' => [
+            '<?php class FooTest extends TestCase { public function testFoo() { return new class(function () {}) { public function foo($value) { $this->assertInternalType("string", $value); } }; } }',
+        ];
     }
 }

@@ -41,7 +41,7 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int, array{0: string, 1?: string, 2?: string}>
+     * @return iterable<array{0: string, 1?: string, 2?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -377,6 +377,16 @@ class A
     }
 }
 ',
+        ];
+
+        yield 'nested anonymous class has its own inheritance' => [
+            '<?php new class(new class { /** */ public function foo() {} }) extends Foo { /** {@inheritdoc} */ public function bar() {} };',
+            '<?php new class(new class { /** {@inheritdoc} */ public function foo() {} }) extends Foo { /** {@inheritdoc} */ public function bar() {} };',
+        ];
+
+        yield 'anonymous class with nested constructor arguments' => [
+            '<?php new class(function () {}, new class implements Foo { /** {@inheritdoc} */ public function foo() {} }) { /** */ public function bar() {} };',
+            '<?php new class(function () {}, new class implements Foo { /** {@inheritdoc} */ public function foo() {} }) { /** {@inheritdoc} */ public function bar() {} };',
         ];
     }
 }

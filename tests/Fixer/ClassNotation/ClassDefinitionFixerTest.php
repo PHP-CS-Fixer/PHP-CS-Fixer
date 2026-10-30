@@ -513,6 +513,24 @@ $a = new class implements
                     3,
                 ) {};',
         ];
+
+        yield 'anonymous class with nested constructor arguments' => [
+            <<<'PHP'
+                <?php
+                new class(function () {
+                    // comment
+                    return 1;
+                }, new class extends Foo {}) implements Bar {};
+                PHP,
+            <<<'PHP'
+                <?php
+                new class(function () {
+                    // comment
+                    return 1;
+                }, new class extends Foo {}) implements Bar
+                {};
+                PHP,
+        ];
     }
 
     /**

@@ -215,6 +215,11 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
                 }',
         ];
 
+        yield 'anonymous class with a closure constructor argument' => [
+            '<?php function foo(): void { $x = new class(function (): void {}) { public function foo() { return 1; } }; }',
+            '<?php function foo() { $x = new class(function () {}) { public function foo() { return 1; } }; }',
+        ];
+
         yield [
             '<?php
                 /**

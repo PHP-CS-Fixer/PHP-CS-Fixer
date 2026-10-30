@@ -231,6 +231,38 @@ public function A(){}
                 };',
         ];
 
+        yield 'anonymous class with a closure constructor argument and a trait import' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public function create()
+                    {
+                        return new class(function () {}) {
+                            use Bar;
+
+                            public function __construct($callback) {}
+                        };
+                    }
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public function create()
+                    {
+                        return new class(function () {}) {
+
+                            use Bar;
+                            public function __construct($callback) {}
+
+                        };
+                    }
+                }
+                PHP,
+        ];
+
         yield [
             '<?php class Foo extends X\Y { // @phpstan-ignore method.internal
                 // regular comment

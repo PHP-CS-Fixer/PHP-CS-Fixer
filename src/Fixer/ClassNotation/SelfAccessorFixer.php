@@ -19,6 +19,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -118,7 +119,7 @@ final class SelfAccessorFixer extends AbstractFixer
 
             // skip anonymous classes
             if ($token->isGivenKind(\T_CLASS) && $tokensAnalyzer->isAnonymousClass($i)) {
-                $i = $tokens->getNextTokenOfKind($i, ['{']);
+                $i = ClassyAnalyzer::findOpeningBrace($tokens, $i);
                 $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $i);
 
                 continue;

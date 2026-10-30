@@ -25,6 +25,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
@@ -244,7 +245,9 @@ final class VoidReturnFixer extends AbstractFixer implements ConfigurableFixerIn
                  // skip lambda functions
                 || ($tokens[$i]->isGivenKind(\T_FUNCTION) && $this->tokensAnalyzer->isLambda($i))
             ) {
-                $i = $tokens->getNextTokenOfKind($i, ['{']);
+                $i = $tokens[$i]->isGivenKind(\T_CLASS)
+                    ? ClassyAnalyzer::findOpeningBrace($tokens, $i)
+                    : $tokens->getNextTokenOfKind($i, ['{']);
                 $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $i);
 
                 continue;

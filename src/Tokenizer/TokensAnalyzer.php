@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer;
 
 use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer;
 
 /**
@@ -728,6 +729,7 @@ final class TokensAnalyzer
     private function findClassyElements(int $classIndex, int $index): array
     {
         $elements = [];
+        $classOpenIndex = ClassyAnalyzer::findOpeningBrace($this->tokens, $classIndex);
         $curlyBracesLevel = 0;
         $bracesLevel = 0;
         ++$index; // skip the classy index itself
@@ -740,48 +742,13 @@ final class TokensAnalyzer
             }
 
             if ($token->isGivenKind(\T_CLASS)) { // anonymous class in class
-                // check for nested anonymous classes inside the new call of an anonymous class,
-                // for example `new class(function (){new class(function (){new class(function (){}){};}){};}){};` etc.
-                // if class(XYZ) {} skip till `(` as XYZ might contain functions etc.
+                [$index, $newElements] = $this->findClassyElements($index, $index);
+                $elements += $newElements;
 
-                $nestedClassIndex = $index;
-                $index = $this->tokens->getNextMeaningfulToken($index);
+                continue;
+            }
 
-                if ($this->tokens[$index]->equals('(')) {
-                    ++$index; // move after `(`
-
-                    for ($nestedBracesLevel = 1; $index < $count; ++$index) {
-                        $token = $this->tokens[$index];
-
-                        if ($token->equals('(')) {
-                            ++$nestedBracesLevel;
-
-                            continue;
-                        }
-
-                        if ($token->equals(')')) {
-                            --$nestedBracesLevel;
-
-                            if (0 === $nestedBracesLevel) {
-                                [$index, $newElements] = $this->findClassyElements($nestedClassIndex, $index);
-                                $elements += $newElements;
-
-                                break;
-                            }
-
-                            continue;
-                        }
-
-                        if ($token->isGivenKind(\T_CLASS)) { // anonymous class in class
-                            [$index, $newElements] = $this->findClassyElements($index, $index);
-                            $elements += $newElements;
-                        }
-                    }
-                } else {
-                    [$index, $newElements] = $this->findClassyElements($nestedClassIndex, $nestedClassIndex);
-                    $elements += $newElements;
-                }
-
+            if ($index < $classOpenIndex) {
                 continue;
             }
 

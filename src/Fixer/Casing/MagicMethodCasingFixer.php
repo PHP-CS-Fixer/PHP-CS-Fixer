@@ -18,6 +18,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -85,12 +86,19 @@ final class MagicMethodCasingFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $inClass = 0;
+        $classOpenings = [];
         $tokenCount = \count($tokens);
 
         for ($index = 1; $index < $tokenCount - 2; ++$index) {
-            if (0 === $inClass && $tokens[$index]->isClassy()) {
-                $inClass = 1;
-                $index = $tokens->getNextTokenOfKind($index, ['{']);
+            if ($tokens[$index]->isClassy()) {
+                $classOpenings[ClassyAnalyzer::findOpeningBrace($tokens, $index)] = true;
+
+                continue;
+            }
+
+            if (isset($classOpenings[$index])) {
+                unset($classOpenings[$index]);
+                ++$inClass;
 
                 continue;
             }

@@ -795,6 +795,11 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
                 PHP,
         ];
 
+        yield 'anonymous class with a closure constructor argument' => [
+            "<?php new class(function () {}) {\n};",
+            "<?php new class(function () {})\n{\n};",
+        ];
+
         yield 'confirm {$foo} does not cause harm' => [
             <<<'PHP'
                 <?php

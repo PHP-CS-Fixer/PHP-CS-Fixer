@@ -32,6 +32,31 @@ use PHPUnit\Framework\Attributes\RequiresPhp;
 final class ClassyAnalyzerTest extends TestCase
 {
     /**
+     * @dataProvider provideFindOpeningBraceCases
+     */
+    #[DataProvider('provideFindOpeningBraceCases')]
+    public function testFindOpeningBrace(string $source, int $classIndex, int $expectedIndex): void
+    {
+        self::assertSame($expectedIndex, ClassyAnalyzer::findOpeningBrace(Tokens::fromCode($source), $classIndex));
+    }
+
+    /**
+     * @return iterable<string, array{string, int, int}>
+     */
+    public static function provideFindOpeningBraceCases(): iterable
+    {
+        yield 'named class' => ['<?php class Foo extends Bar {}', 1, 9];
+
+        yield 'anonymous class without arguments' => ['<?php new class {};', 3, 5];
+
+        yield 'anonymous class with nested constructor arguments' => [
+            '<?php new class(foo(function () {}, new class {})) extends Foo {};',
+            3,
+            29,
+        ];
+    }
+
+    /**
      * @param array<int, bool> $expected
      *
      * @dataProvider provideIsClassyInvocationCases

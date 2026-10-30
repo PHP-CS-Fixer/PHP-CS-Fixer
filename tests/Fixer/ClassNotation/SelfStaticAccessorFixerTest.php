@@ -363,6 +363,16 @@ final class Foo
 ',
         ];
 
+        yield 'anonymous class with a nested class constructor argument' => [
+            '<?php new class(new class { public function foo() { return new self(); } }) { public function bar() { return new self(); } };',
+            '<?php new class(new class { public function foo() { return new static(); } }) { public function bar() { return new static(); } };',
+        ];
+
+        yield 'anonymous class with a closure constructor argument' => [
+            '<?php new class(function () {}) { public function bar() { return new self(); } };',
+            '<?php new class(function () {}) { public function bar() { return new static(); } };',
+        ];
+
         yield 'no scope' => [
             '<?php echo static::class;',
         ];
