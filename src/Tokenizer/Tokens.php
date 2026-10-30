@@ -20,6 +20,7 @@ use PhpCsFixer\Hasher;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\SwitchAnalyzer;
 
 /**
  * Collection of code tokens.
@@ -189,6 +190,7 @@ class Tokens extends \SplFixedArray
     public function clearAnalyzerCache(?string $collectionHash = null): void
     {
         NamespacesAnalyzer::clearCache($collectionHash);
+        SwitchAnalyzer::clearCache($collectionHash);
     }
 
     /**
