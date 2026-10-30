@@ -19,7 +19,7 @@ Alias
   Replace non multibyte-safe functions with corresponding mb function.
 - `modernize_strpos <./alias/modernize_strpos.rst>`_ *(risky, configurable)*
 
-  Replace ``strpos()`` and ``stripos()`` calls with ``str_starts_with()`` or ``str_contains()`` if possible.
+  Replace ``strpos()|mb_strpos()`` and ``stripos()|mb_stripos()`` calls with ``str_starts_with()`` or ``str_contains()`` if possible.
 - `no_alias_functions <./alias/no_alias_functions.rst>`_ *(risky, configurable)*
 
   Master functions shall be used instead of aliases.

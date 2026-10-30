@@ -2,8 +2,8 @@
 Rule ``modernize_strpos``
 =========================
 
-Replace ``strpos()`` and ``stripos()`` calls with ``str_starts_with()`` or
-``str_contains()`` if possible.
+Replace ``strpos()|mb_strpos()`` and ``stripos()|mb_stripos()`` calls with
+``str_starts_with()`` or ``str_contains()`` if possible.
 
 Warnings
 --------
@@ -11,8 +11,9 @@ Warnings
 This rule is RISKY
 ~~~~~~~~~~~~~~~~~~
 
-Risky if ``strpos``, ``stripos``, ``str_starts_with``, ``str_contains`` or
-``strtolower`` functions are overridden.
+Risky if ``strpos``, ``stripos``, ``mb_strpos``, ``mb_stripos``,
+``str_starts_with``, ``str_contains``, ``strtolower`` or ``mb_strtolower``
+functions are overridden.
 
 This rule is CONFIGURABLE
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -50,6 +51,14 @@ Example #1
    -if (strpos($haystack, $needle) !== 0) {}
    -if (strpos($haystack, $needle) !== false) {}
    -if (strpos($haystack, $needle) === false) {}
+   -if (mb_strpos($haystack, $needle) === 0) {}
+   -if (mb_strpos($haystack, $needle) !== 0) {}
+   -if (mb_strpos($haystack, $needle) !== false) {}
+   -if (mb_strpos($haystack, $needle) === false) {}
+   +if (str_starts_with($haystack, $needle)  ) {}
+   +if (!str_starts_with($haystack, $needle)  ) {}
+   +if (str_contains($haystack, $needle)  ) {}
+   +if (!str_contains($haystack, $needle)  ) {}
    +if (str_starts_with($haystack, $needle)  ) {}
    +if (!str_starts_with($haystack, $needle)  ) {}
    +if (str_contains($haystack, $needle)  ) {}
@@ -73,6 +82,14 @@ With configuration: ``['modernize_stripos' => true]``.
    -if (stripos($haystack, $needle) !== 0) {}
    -if (stripos($haystack, $needle) !== false) {}
    -if (stripos($haystack, $needle) === false) {}
+   -if (mb_strpos($haystack, $needle) === 0) {}
+   -if (mb_strpos($haystack, $needle) !== 0) {}
+   -if (mb_strpos($haystack, $needle) !== false) {}
+   -if (mb_strpos($haystack, $needle) === false) {}
+   -if (mb_stripos($haystack, $needle) === 0) {}
+   -if (mb_stripos($haystack, $needle) !== 0) {}
+   -if (mb_stripos($haystack, $needle) !== false) {}
+   -if (mb_stripos($haystack, $needle) === false) {}
    +if (str_starts_with($haystack, $needle)  ) {}
    +if (!str_starts_with($haystack, $needle)  ) {}
    +if (str_contains($haystack, $needle)  ) {}
@@ -81,6 +98,14 @@ With configuration: ``['modernize_stripos' => true]``.
    +if (!str_starts_with(strtolower($haystack), strtolower($needle))  ) {}
    +if (str_contains(strtolower($haystack), strtolower($needle))  ) {}
    +if (!str_contains(strtolower($haystack), strtolower($needle))  ) {}
+   +if (str_starts_with($haystack, $needle)  ) {}
+   +if (!str_starts_with($haystack, $needle)  ) {}
+   +if (str_contains($haystack, $needle)  ) {}
+   +if (!str_contains($haystack, $needle)  ) {}
+   +if (str_starts_with(mb_strtolower($haystack), mb_strtolower($needle))  ) {}
+   +if (!str_starts_with(mb_strtolower($haystack), mb_strtolower($needle))  ) {}
+   +if (str_contains(mb_strtolower($haystack), mb_strtolower($needle))  ) {}
+   +if (!str_contains(mb_strtolower($haystack), mb_strtolower($needle))  ) {}
 
 Rule sets
 ---------
