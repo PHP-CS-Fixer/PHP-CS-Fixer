@@ -198,6 +198,25 @@ final class Token
     }
 
     /**
+     * Check if token is a single character that is one of the given characters.
+     *
+     * It is a faster alternative to `equalsAny()` for a set of single-character
+     * strings: `equalsAny([';', ',', ')'])` becomes `equalsAnyChar(';,)')`.
+     * Array tokens never match. The ampersand is not supported, because `equals('&')`
+     * also matches the ampersand array tokens; use `equals()` or `equalsAny()` for it.
+     *
+     * @param non-empty-string $characters the characters to look for, for example ";,(){}"
+     */
+    public function equalsAnyChar(string $characters): bool
+    {
+        \assert('' !== $characters && !str_contains($characters, '&'));
+
+        return !$this->isArray
+            && 1 === \strlen($this->content)
+            && false !== strpbrk($this->content, $characters);
+    }
+
+    /**
      * A helper method used to find out whether a certain input token has to be case-sensitively matched.
      *
      * @param array<int, bool>|bool $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
