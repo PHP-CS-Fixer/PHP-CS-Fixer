@@ -184,6 +184,14 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * @internal
+     */
+    public function clearAnalyzerCache(?string $collectionHash = null): void
+    {
+        NamespacesAnalyzer::clearCache($collectionHash);
+    }
+
+    /**
      * Detect type of block.
      *
      * @return null|array{type: self::BLOCK_TYPE_*, isStart: bool}
@@ -377,9 +385,10 @@ class Tokens extends \SplFixedArray
             $this->unregisterFoundToken($this[$index]);
 
             $this->changed = true;
-            $this->collectionHash = null;
             self::clearCache($this->codeHash);
+            self::clearAnalyzerCache($this->collectionHash);
             $this->codeHash = null;
+            $this->collectionHash = null;
             $this->namespaceDeclarations = null;
         }
 
@@ -425,9 +434,10 @@ class Tokens extends \SplFixedArray
             }
 
             $this->changed = true;
-            $this->collectionHash = null;
             self::clearCache($this->codeHash);
+            self::clearAnalyzerCache($this->collectionHash);
             $this->codeHash = null;
+            $this->collectionHash = null;
             $this->namespaceDeclarations = null;
 
             $this->registerFoundToken($newval);
@@ -493,6 +503,7 @@ class Tokens extends \SplFixedArray
         $this->namespaceDeclarations = null;
         $this->foundTokenKinds[''] = 0;
 
+        self::clearAnalyzerCache($this->collectionHash);
         $this->collectionHash = null;
 
         $this->updateSizeByTrimmingTrailingEmptyTokens();
@@ -1023,9 +1034,10 @@ class Tokens extends \SplFixedArray
         }
 
         $this->changed = true;
-        $this->collectionHash = null;
         self::clearCache($this->codeHash);
+        self::clearAnalyzerCache($this->collectionHash);
         $this->codeHash = null;
+        $this->collectionHash = null;
         $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
@@ -1189,9 +1201,10 @@ class Tokens extends \SplFixedArray
         }
 
         $this->changed = true;
-        $this->collectionHash = null;
         self::clearCache($this->codeHash);
+        self::clearAnalyzerCache($this->collectionHash);
         $this->codeHash = null;
+        $this->collectionHash = null;
         $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
@@ -1383,9 +1396,10 @@ class Tokens extends \SplFixedArray
         }
 
         $this->changed = true;
-        $this->collectionHash = null;
         self::clearCache($this->codeHash);
+        self::clearAnalyzerCache($this->collectionHash);
         $this->codeHash = null;
+        $this->collectionHash = null;
         $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
