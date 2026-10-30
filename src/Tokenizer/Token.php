@@ -126,17 +126,18 @@ final class Token
      */
     public function equals($other, bool $caseSensitive = true): bool
     {
-        if ('&' === $other) {
-            return '&' === $this->content && (null === $this->id || $this->isGivenKind([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]));
-        }
-        if (null === $this->id && '&' === $this->content) {
-            return $other instanceof self && '&' === $other->content && (null === $other->id || $other->isGivenKind([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]));
+        if ('&' === $this->content) {
+            if ('&' === $other) {
+                return null === $this->id || $this->isGivenKind([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]);
+            }
+            if (null === $this->id) {
+                return $other instanceof self && '&' === $other->content && (null === $other->id || $other->isGivenKind([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]));
+            }
         }
 
         if ($other instanceof self) {
             // We access the private properties of $other directly to save function call overhead.
-            // This is only possible because $other is of the same class as `self`.Collapse comment
-
+            // This is only possible because $other is of the same class as `self`.
             if ($this->isArray !== $other->isArray) {
                 return false;
             }
