@@ -102,6 +102,27 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
             '<?php
                 switch ($a) {
                     case "prod":
+                    case "stg":
+                    case "dev":
+                    case "test":
+                    default:
+                }
+                ',
+            '<?php
+                switch ($a) {
+                    case "prod" :
+                    case "stg"   :
+                    case "dev":
+                    case "test"    :
+                    default:
+                }
+                ',
+        ];
+
+        yield [
+            '<?php
+                switch ($a) {
+                    case "prod":
                         break;
                 }
                 ',
