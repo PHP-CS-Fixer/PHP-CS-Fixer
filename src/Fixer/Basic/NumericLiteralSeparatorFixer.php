@@ -175,7 +175,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
             // Octal
             return $this->insertEveryRight($value, 3, 2);
         }
-        if (str_starts_with($lowerValue, '0') && !str_contains($lowerValue, '.')) {
+        if (str_starts_with($lowerValue, '0') && !str_contains($lowerValue, '.') && !str_contains($lowerValue, 'e')) {
             // Octal notation prior PHP 8.1 but still valid
             return $this->insertEveryRight($value, 3, 1);
         }
