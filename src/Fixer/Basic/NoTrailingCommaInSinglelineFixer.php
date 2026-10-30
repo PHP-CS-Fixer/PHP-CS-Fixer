@@ -24,7 +24,6 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -145,12 +144,8 @@ final class NoTrailingCommaInSinglelineFixer extends AbstractFixer implements Co
             return \in_array('array_destructuring', $elements, true);
         }
 
-        if ($tokens[$beforeOpen]->isGivenKind([\T_UNSET, \T_ISSET, \T_VARIABLE, \T_CLASS])) {
+        if ($tokens[$beforeOpen]->isGivenKind([\T_UNSET, \T_ISSET, \T_VARIABLE, \T_CLASS, \T_STRING])) {
             return \in_array('arguments', $elements, true);
-        }
-
-        if ($tokens[$beforeOpen]->isGivenKind(\T_STRING)) {
-            return !AttributeAnalyzer::isAttribute($tokens, $beforeOpen) && \in_array('arguments', $elements, true);
         }
 
         if ($tokens[$beforeOpen]->equalsAny([')', ']', [CT::T_DYNAMIC_VAR_BRACE_CLOSE], [CT::T_ARRAY_INDEX_BRACE_CLOSE]])) {

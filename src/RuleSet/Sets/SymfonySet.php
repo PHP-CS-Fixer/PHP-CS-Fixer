@@ -115,7 +115,6 @@ final class SymfonySet extends AbstractRuleSetDefinition
                 'allow_hidden_params' => true,
                 'remove_inheritdoc' => true,
             ],
-            'no_trailing_comma_in_singleline' => true,
             'no_unneeded_braces' => [
                 'namespaces' => true,
             ],

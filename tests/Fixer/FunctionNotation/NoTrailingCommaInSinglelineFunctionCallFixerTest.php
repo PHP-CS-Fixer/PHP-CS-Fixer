@@ -224,11 +224,17 @@ $g["e"](1,); // foo',
     }
 
     /**
-     * @return iterable<int, array{string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFix80Cases(): iterable
     {
         yield [
+            '<?php function foo(
+    #[MyAttr(1, 2)] Type $myParam,
+) {}
+
+$foo1b = function() use ($bar, ) {};
+',
             '<?php function foo(
     #[MyAttr(1, 2,)] Type $myParam,
 ) {}
