@@ -1,0 +1,23 @@
+--TEST--
+Integration of fixers: phpdoc_to_comment,phpdoc_nullable_type.
+--RULESET--
+{"phpdoc_to_comment": true, "phpdoc_nullable_type": true}
+--EXPECT--
+<?php
+
+$first = true;// needed because by default first docblock is never fixed.
+
+/*
+ * @param null|Foo $fo
+ */
+echo $foo;
+
+--INPUT--
+<?php
+
+$first = true;// needed because by default first docblock is never fixed.
+
+/**
+ * @param null|Foo $fo
+ */
+echo $foo;
