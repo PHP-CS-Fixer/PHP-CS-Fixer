@@ -1353,7 +1353,7 @@ class Tokens extends \SplFixedArray
      *
      * @return list<NamespaceAnalysis>
      *
-     * @deprecated use `NamespacesAnalyzer` directly
+     * @TODO deprecate me: use `NamespacesAnalyzer` directly
      */
     public function getNamespaceDeclarations(): array
     {
