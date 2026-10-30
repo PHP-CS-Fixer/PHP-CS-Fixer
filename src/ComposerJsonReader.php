@@ -36,6 +36,11 @@ final class ComposerJsonReader
 
     private static ?self $singleton = null;
 
+    /**
+     * @var null|non-empty-string
+     */
+    private static ?string $phpOverride = null;
+
     public static function createSingleton(): self
     {
         if (null === self::$singleton) {
@@ -45,8 +50,20 @@ final class ComposerJsonReader
         return self::$singleton;
     }
 
+    /**
+     * @param null|non-empty-string $php major.minor version, e.g. "8.1", or null to rely on composer.json detection
+     */
+    public static function setPhpOverride(?string $php): void
+    {
+        self::$phpOverride = $php;
+    }
+
     public function getPhp(): ?string
     {
+        if (null !== self::$phpOverride) {
+            return self::$phpOverride;
+        }
+
         $this->processFile();
 
         return $this->php;

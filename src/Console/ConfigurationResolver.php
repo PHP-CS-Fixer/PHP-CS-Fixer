@@ -22,6 +22,7 @@ use PhpCsFixer\Cache\FileCacheManager;
 use PhpCsFixer\Cache\FileHandler;
 use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Cache\Signature;
+use PhpCsFixer\ComposerJsonReader;
 use PhpCsFixer\Config\NullRuleCustomisationPolicy;
 use PhpCsFixer\Config\RuleCustomisationPolicyAwareConfigInterface;
 use PhpCsFixer\Config\RuleCustomisationPolicyInterface;
@@ -41,6 +42,7 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Future;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
+use PhpCsFixer\MinimumPhpVersionAwareConfigInterface;
 use PhpCsFixer\ParallelAwareConfigInterface;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSetInterface;
@@ -296,6 +298,10 @@ final class ConfigurationResolver
                 foreach ($this->config->getCustomRuleSets() as $ruleSet) {
                     RuleSets::registerCustomRuleSet($ruleSet);
                 }
+            }
+
+            if ($this->config instanceof MinimumPhpVersionAwareConfigInterface) {
+                ComposerJsonReader::setPhpOverride($this->config->getMinimumPhpVersion());
             }
         }
 

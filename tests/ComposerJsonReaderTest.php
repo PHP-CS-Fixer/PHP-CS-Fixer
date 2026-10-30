@@ -37,6 +37,17 @@ final class ComposerJsonReaderTest extends TestCase
         self::assertSame($instance, ComposerJsonReader::createSingleton());
     }
 
+    public function testGetPhpReturnsConfiguredOverrideWithoutReadingComposerJson(): void
+    {
+        try {
+            ComposerJsonReader::setPhpOverride('8.1');
+
+            self::assertSame('8.1', (new ComposerJsonReader())->getPhp());
+        } finally {
+            ComposerJsonReader::setPhpOverride(null);
+        }
+    }
+
     /**
      * @dataProvider provideGetPhpUnitCases
      */
