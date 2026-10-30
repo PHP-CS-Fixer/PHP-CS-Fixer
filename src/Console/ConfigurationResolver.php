@@ -22,6 +22,8 @@ use PhpCsFixer\Cache\FileCacheManager;
 use PhpCsFixer\Cache\FileHandler;
 use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Cache\Signature;
+use PhpCsFixer\Config\FixerAnnotationAwareConfigInterface;
+use PhpCsFixer\Config\FixerAnnotationMode;
 use PhpCsFixer\Config\NullRuleCustomisationPolicy;
 use PhpCsFixer\Config\RuleCustomisationPolicyAwareConfigInterface;
 use PhpCsFixer\Config\RuleCustomisationPolicyInterface;
@@ -63,6 +65,7 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  *
  * @phpstan-type _Options array{
  *      allow-risky: null|string,
+ *      fixer-annotation-mode: null|string,
  *      cache-file: null|string,
  *      config: null|string,
  *      diff: null|string,
@@ -140,6 +143,7 @@ final class ConfigurationResolver
      */
     private array $options = [
         'allow-risky' => null,
+        'fixer-annotation-mode' => null,
         'cache-file' => null,
         'config' => null,
         'diff' => null,
@@ -194,6 +198,11 @@ final class ConfigurationResolver
     private ?FixerFactory $fixerFactory = null;
 
     /**
+     * @var null|FixerAnnotationMode::ALL|FixerAnnotationMode::FORBIDDEN|FixerAnnotationMode::MATCHING
+     */
+    private ?string $fixerAnnotationMode = null;
+
+    /**
      * @param array<string, mixed> $options
      */
     public function __construct(
@@ -245,6 +254,7 @@ final class ConfigurationResolver
                         $this->getConfig()->getLineEnding(),
                         $this->getRules(),
                         $this->getRuleCustomisationPolicy()->getPolicyVersionForCache(),
+                        $this->getFixerAnnotationMode(),
                     ),
                     $this->isDryRun(),
                     $this->getDirectory(),
@@ -552,6 +562,35 @@ final class ConfigurationResolver
         }
 
         return $this->finder;
+    }
+
+    /**
+     * @return FixerAnnotationMode::ALL|FixerAnnotationMode::FORBIDDEN|FixerAnnotationMode::MATCHING
+     */
+    public function getFixerAnnotationMode(): string
+    {
+        if (null === $this->fixerAnnotationMode) {
+            $mode = $this->options['fixer-annotation-mode'];
+
+            if (null === $mode) {
+                $config = $this->getConfig();
+                $mode = $config instanceof FixerAnnotationAwareConfigInterface
+                    ? $config->getFixerAnnotationMode()
+                    : FixerAnnotationMode::getDefault();
+            }
+
+            if (!\in_array($mode, FixerAnnotationMode::all(), true)) {
+                throw new InvalidConfigurationException(\sprintf(
+                    'The fixer annotation mode "%s" is not defined, supported are %s.',
+                    $mode,
+                    Utils::naturalLanguageJoin(FixerAnnotationMode::all()),
+                ));
+            }
+
+            $this->fixerAnnotationMode = $mode;
+        }
+
+        return $this->fixerAnnotationMode;
     }
 
     /**

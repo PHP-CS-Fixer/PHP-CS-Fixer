@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Runner\Parallel;
 
+use PhpCsFixer\Config\FixerAnnotationMode;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
@@ -169,6 +170,14 @@ final class ProcessFactoryTest extends TestCase
             self::IS_WINDOWS
                 ? '--allow-risky="yes"'
                 : '--allow-risky=\'yes\'',
+        ];
+
+        yield 'fixer annotation mode' => [
+            ['--fixer-annotation-mode' => FixerAnnotationMode::FORBIDDEN],
+            self::createRunnerConfig(false),
+            self::IS_WINDOWS
+                ? '--fixer-annotation-mode="forbidden"'
+                : '--fixer-annotation-mode=\'forbidden\'',
         ];
 
         yield 'config' => [
