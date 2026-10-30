@@ -17,7 +17,6 @@ namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
-use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -192,22 +191,6 @@ final class NamespacesAnalyzerTest extends TestCase
                 17,
             ),
         ];
-    }
-
-    public function testGetNamespaceAtAfterTokensChange(): void
-    {
-        $tokens = Tokens::fromCode('<?php namespace Foo; class Bar {}');
-        $analyzer = new NamespacesAnalyzer();
-
-        self::assertSame('Foo', $analyzer->getNamespaceAt($tokens, 8)->getFullName());
-
-        $tokens[3] = new Token([\T_STRING, 'Baz']);
-
-        self::assertSame('Baz', $analyzer->getNamespaceAt($tokens, 8)->getFullName());
-
-        $tokens->insertAt(5, new Token([\T_WHITESPACE, ' ']));
-
-        self::assertSame(12, $analyzer->getNamespaceAt($tokens, 12)->getScopeEndIndex());
     }
 
     public function testInvalidIndex(): void

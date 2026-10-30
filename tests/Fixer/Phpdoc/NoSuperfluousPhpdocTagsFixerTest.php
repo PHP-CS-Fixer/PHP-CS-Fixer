@@ -293,6 +293,42 @@ class Foo {
 }',
         ];
 
+        yield 'same type declaration in one of multiple namespaces' => [
+            '<?php
+namespace Aaa {
+    class Foo {
+        /**
+         */
+        public function doFoo(Bar $bar) {}
+    }
+}
+namespace Bbb {
+    class Foo {
+        /**
+         * @param \Aaa\Bar $bar
+         */
+        public function doFoo(Bar $bar) {}
+    }
+}',
+            '<?php
+namespace Aaa {
+    class Foo {
+        /**
+         * @param \Aaa\Bar $bar
+         */
+        public function doFoo(Bar $bar) {}
+    }
+}
+namespace Bbb {
+    class Foo {
+        /**
+         * @param \Aaa\Bar $bar
+         */
+        public function doFoo(Bar $bar) {}
+    }
+}',
+        ];
+
         yield 'same type declaration with null implied from native type - param type' => [
             '<?php
 class Foo {
