@@ -827,6 +827,38 @@ $b = 2;
             ['statements' => ['foreach', 'switch']],
         ];
 
+        yield 'same line - blank line inserted when code follows declare without whitespace' => [
+            "<?php declare(strict_types=1);\n\n\$a = 1;\n",
+            "<?php declare(strict_types=1);\$a = 1;\n",
+        ];
+
+        yield 'same line - blank line inserted when code follows declare after a space' => [
+            "<?php declare(strict_types=1);\n\n\$a = 1;\n",
+            "<?php declare(strict_types=1); \$a = 1;\n",
+        ];
+
+        yield 'closing tag - declare terminated by closing tag is out of scope and left unchanged' => [
+            "<?php declare(ticks=1) ?>\n<?php \$a = 1;\n\$b = 2;\n",
+        ];
+
+        yield 'closing tag - no blank line when next token is closing tag' => [
+            "<?php if (\$a) { foo(); } ?>\nhtml\n",
+            null,
+            ['statements' => ['if']],
+        ];
+
+        yield 'closing tag - single-statement body terminated by closing tag is out of scope and left unchanged' => [
+            "<?php if (\$a) echo 1 ?>\n<?php \$b = 2;\n\$c = 3;\n",
+            null,
+            ['statements' => ['if']],
+        ];
+
+        yield 'closing tag - do-while terminated by closing tag is out of scope and left unchanged' => [
+            "<?php do { --\$a; } while (\$a) ?>\n<?php \$b = 2;\n\$c = 3;\n",
+            null,
+            ['statements' => ['do']],
+        ];
+
         yield 'CRLF line endings preserved' => [
             "<?php\r\n\r\ndeclare(strict_types=1);\r\n\r\nuse Foo\\Bar;\r\n",
             "<?php\r\n\r\ndeclare(strict_types=1);\r\nuse Foo\\Bar;\r\n",
@@ -973,6 +1005,10 @@ match ($a) {
 };
 $c = 2;
 ',
+        ];
+
+        yield 'match - terminated by closing tag is out of scope and left unchanged' => [
+            "<?php match (\$a) { 1 => handleA() } ?>\n<?php \$b = 2;\n\$c = 3;\n",
         ];
     }
 }
