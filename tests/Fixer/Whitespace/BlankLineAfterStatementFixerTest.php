@@ -15,8 +15,11 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\Whitespace\BlankLineAfterStatementFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -31,6 +34,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(BlankLineAfterStatementFixer::class)]
 final class BlankLineAfterStatementFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -38,6 +42,7 @@ final class BlankLineAfterStatementFixerTest extends AbstractFixerTestCase
      *
      * @param mixed $controlStatement
      */
+    #[DataProvider('provideInvalidConfigurationCases')]
     public function testInvalidConfiguration($controlStatement): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
@@ -78,6 +83,7 @@ final class BlankLineAfterStatementFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = [], ?WhitespacesFixerConfig $whitespacesConfig = null): void
     {
         $this->fixer->configure($configuration);
