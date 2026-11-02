@@ -465,6 +465,81 @@ $b = 2;
             ['statements' => ['try']],
         ];
 
+        yield 'try-catch-catch - blank line inserted after the end of the whole chain' => [
+            '<?php
+try {
+    $a = 1;
+} catch (\InvalidArgumentException $e) {
+    $a = 0;
+} catch (\RuntimeException $e) {
+    $a = -1;
+}
+
+$b = 2;
+',
+            '<?php
+try {
+    $a = 1;
+} catch (\InvalidArgumentException $e) {
+    $a = 0;
+} catch (\RuntimeException $e) {
+    $a = -1;
+}
+$b = 2;
+',
+            ['statements' => ['try']],
+        ];
+
+        yield 'try-catch-catch-finally - blank line inserted after the end of the whole chain' => [
+            '<?php
+try {
+    $a = 1;
+} catch (\InvalidArgumentException $e) {
+    $a = 0;
+} catch (\RuntimeException $e) {
+    $a = -1;
+} finally {
+    $a = -2;
+}
+
+$b = 2;
+',
+            '<?php
+try {
+    $a = 1;
+} catch (\InvalidArgumentException $e) {
+    $a = 0;
+} catch (\RuntimeException $e) {
+    $a = -1;
+} finally {
+    $a = -2;
+}
+$b = 2;
+',
+            ['statements' => ['try']],
+        ];
+
+        yield 'try-finally - blank line inserted after the end of the whole chain' => [
+            '<?php
+try {
+    $a = 1;
+} finally {
+    $a = -1;
+}
+
+$b = 2;
+',
+            '<?php
+try {
+    $a = 1;
+} finally {
+    $a = -1;
+}
+$b = 2;
+',
+            ['statements' => ['try']],
+        ];
+
         yield 'nested if with declare default is unaffected' => [
             '<?php
 if (true) {
