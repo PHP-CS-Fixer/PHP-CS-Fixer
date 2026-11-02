@@ -240,7 +240,7 @@ final class BlankLineAfterStatementFixer extends AbstractFixer implements Config
                 continue;
             }
 
-            if ($tokens[$nextMeaningfulIndex]->equals('}')) {
+            if ($tokens[$nextMeaningfulIndex]->equals('}') || $tokens[$nextMeaningfulIndex]->isGivenKind(\T_CLOSE_TAG)) {
                 continue;
             }
 
@@ -268,33 +268,28 @@ final class BlankLineAfterStatementFixer extends AbstractFixer implements Config
      *
      * @see https://github.com/erickskrauch/php-cs-fixer-custom-fixers/blob/1.3.1/src/Fixer/Whitespace/LineBreakAfterStatementsFixer.php
      *
-     * Returns null when the construct uses alternative syntax (e.g. `if: ... endif;`), which is
-     * currently out of scope — the caller should skip such constructs.
+     * Returns null when the construct uses alternative syntax (e.g. `if: ... endif;`), or when it
+     * is terminated by a closing tag instead of a semicolon, which are currently out of scope —
+     * the caller should skip such constructs.
      */
     private function findStatementEnd(Tokens $tokens, int $index): ?int
     {
         $nextIndex = $tokens->getNextMeaningfulToken($index);
-
-        if (null === $nextIndex) {
-            return $index;
-        }
+        \assert(null !== $nextIndex); // token must exist otherwise $tokens is not valid syntax
 
         $nextToken = $tokens[$nextIndex];
 
         if ($nextToken->equals('(')) {
             $parenthesisEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $nextIndex);
             $possibleBeginBraceIndex = $tokens->getNextNonWhitespace($parenthesisEndIndex);
+            \assert(null !== $possibleBeginBraceIndex); // token must exist otherwise $tokens is not valid syntax
         } else {
             $possibleBeginBraceIndex = $nextIndex;
         }
 
-        if (null === $possibleBeginBraceIndex) {
-            return $nextIndex;
-        }
-
         $possibleBeginBrace = $tokens[$possibleBeginBraceIndex];
 
-        if ($possibleBeginBrace->equals(':')) {
+        if ($possibleBeginBrace->equals(':') || $possibleBeginBrace->isGivenKind(\T_CLOSE_TAG)) {
             return null;
         }
 
@@ -303,17 +298,19 @@ final class BlankLineAfterStatementFixer extends AbstractFixer implements Config
         } elseif ($possibleBeginBrace->equals('{')) {
             $blockEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $possibleBeginBraceIndex);
         } else {
-            $blockEnd = $tokens->getNextTokenOfKind($possibleBeginBraceIndex, [';']);
+            $blockEnd = $tokens->getNextTokenOfKind($possibleBeginBraceIndex, [';', [\T_CLOSE_TAG]]);
+            \assert(null !== $blockEnd); // token must exist otherwise $tokens is not valid syntax
 
-            if (null === $blockEnd) {
-                return $possibleBeginBraceIndex;
+            if ($tokens[$blockEnd]->isGivenKind(\T_CLOSE_TAG)) {
+                return null;
             }
         }
 
         if ($tokens[$index]->isGivenKind(FCT::T_MATCH)) {
             $semicolonIndex = $tokens->getNextMeaningfulToken($blockEnd);
+            \assert(null !== $semicolonIndex); // token must exist otherwise $tokens is not valid syntax
 
-            if (null === $semicolonIndex || !$tokens[$semicolonIndex]->equals(';')) {
+            if (!$tokens[$semicolonIndex]->equals(';')) {
                 return null;
             }
 
@@ -322,21 +319,20 @@ final class BlankLineAfterStatementFixer extends AbstractFixer implements Config
 
         if ($tokens[$index]->isGivenKind(\T_DO)) {
             $whileIndex = $tokens->getNextMeaningfulToken($blockEnd);
+            \assert(null !== $whileIndex); // token must exist otherwise $tokens is not valid syntax
 
-            if (null !== $whileIndex && $tokens[$whileIndex]->isGivenKind(\T_WHILE)) {
-                $conditionStartIndex = $tokens->getNextMeaningfulToken($whileIndex);
+            $conditionStartIndex = $tokens->getNextMeaningfulToken($whileIndex);
+            \assert(null !== $conditionStartIndex); // token must exist otherwise $tokens is not valid syntax
 
-                if (null !== $conditionStartIndex && $tokens[$conditionStartIndex]->equals('(')) {
-                    $conditionEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $conditionStartIndex);
-                    $semicolonIndex = $tokens->getNextTokenOfKind($conditionEndIndex, [';']);
+            $conditionEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $conditionStartIndex);
+            $semicolonIndex = $tokens->getNextMeaningfulToken($conditionEndIndex);
+            \assert(null !== $semicolonIndex); // token must exist otherwise $tokens is not valid syntax
 
-                    if (null !== $semicolonIndex) {
-                        return $semicolonIndex;
-                    }
-                }
+            if (!$tokens[$semicolonIndex]->equals(';')) {
+                return null;
             }
 
-            return $blockEnd;
+            return $semicolonIndex;
         }
 
         $nextStatementIndex = $tokens->getNextMeaningfulToken($blockEnd);
@@ -373,10 +369,7 @@ final class BlankLineAfterStatementFixer extends AbstractFixer implements Config
     private function isAtStatementStart(Tokens $tokens, int $index): bool
     {
         $previousIndex = $tokens->getPrevMeaningfulToken($index);
-
-        if (null === $previousIndex) {
-            return false;
-        }
+        \assert(null !== $previousIndex); // token must exist, as the opening tag precedes any statement
 
         $previousToken = $tokens[$previousIndex];
 
@@ -412,11 +405,6 @@ final class BlankLineAfterStatementFixer extends AbstractFixer implements Config
     private function ensureBlankLineAfter(Tokens $tokens, int $index): void
     {
         $nextIndex = $index + 1;
-
-        if (!isset($tokens[$nextIndex])) {
-            return;
-        }
-
         $nextToken = $tokens[$nextIndex];
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
