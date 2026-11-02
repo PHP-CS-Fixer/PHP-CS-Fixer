@@ -20,7 +20,7 @@ Configuration
 
 List of statements which must be followed by an empty line.
 
-Allowed values: a subset of ``['declare', 'do', 'for', 'foreach', 'if', 'switch', 'try', 'while']``
+Allowed values: a subset of ``['declare', 'do', 'for', 'foreach', 'if', 'match', 'switch', 'try', 'while']``
 
 Default value: ``['declare']``
 

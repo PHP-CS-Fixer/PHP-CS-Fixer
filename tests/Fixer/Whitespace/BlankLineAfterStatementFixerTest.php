@@ -20,6 +20,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -831,6 +832,147 @@ $b = 2;
             "<?php\r\n\r\ndeclare(strict_types=1);\r\nuse Foo\\Bar;\r\n",
             [],
             new WhitespacesFixerConfig('    ', "\r\n"),
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP >= 8.0.0
+     */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->testFix($expected, $input, ['statements' => ['match']]);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix80Cases(): iterable
+    {
+        yield 'match - blank line inserted after trailing semicolon when match starts a statement' => [
+            '<?php
+match ($event) {
+    "a" => handleA(),
+    "b" => handleB(),
+};
+
+$b = 2;
+',
+            '<?php
+match ($event) {
+    "a" => handleA(),
+    "b" => handleB(),
+};
+$b = 2;
+',
+        ];
+
+        yield 'match - blank line inserted when match follows another statement' => [
+            '<?php
+$a = 1;
+match ($a) {
+    1 => handleA(),
+    default => handleB(),
+};
+
+$b = 2;
+',
+            '<?php
+$a = 1;
+match ($a) {
+    1 => handleA(),
+    default => handleB(),
+};
+$b = 2;
+',
+        ];
+
+        yield 'match - trailing inline comment stays on the line of the semicolon' => [
+            '<?php
+match ($a) {
+    1 => handleA(),
+}; // handled
+
+$b = 2;
+',
+            '<?php
+match ($a) {
+    1 => handleA(),
+}; // handled
+$b = 2;
+',
+        ];
+
+        yield 'match - no blank line when next token is closing brace of enclosing scope' => [
+            '<?php
+function foo($a) {
+    match ($a) {
+        1 => handleA(),
+    };
+}
+',
+        ];
+
+        yield 'match - existing blank line is unchanged' => [
+            '<?php
+match ($a) {
+    1 => handleA(),
+};
+
+$b = 2;
+',
+        ];
+
+        yield 'match - assigned result is out of scope and left unchanged' => [
+            '<?php
+$a = match ($b) {
+    1 => "a",
+};
+$c = 2;
+',
+        ];
+
+        yield 'match - returned result is out of scope and left unchanged' => [
+            '<?php
+function foo($b) {
+    return match ($b) {
+        1 => "a",
+    };
+    $c = 2;
+}
+',
+        ];
+
+        yield 'match - argument is out of scope and left unchanged' => [
+            '<?php
+foo(match ($b) {
+    1 => "a",
+});
+$c = 2;
+',
+        ];
+
+        yield 'match - nested in a statement-position match only fixes the outer one' => [
+            '<?php
+match ($a) {
+    1 => match ($b) {
+        2 => handleB(),
+    },
+};
+
+$c = 2;
+',
+            '<?php
+match ($a) {
+    1 => match ($b) {
+        2 => handleB(),
+    },
+};
+$c = 2;
+',
         ];
     }
 }
