@@ -276,7 +276,7 @@ final class BlankLineAfterStatementFixer extends AbstractFixer implements Config
         $nextToken = $tokens[$nextIndex];
 
         if ($nextToken->equals('(')) {
-            $parenthesisEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextIndex);
+            $parenthesisEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $nextIndex);
             $possibleBeginBraceIndex = $tokens->getNextNonWhitespace($parenthesisEndIndex);
         } else {
             $possibleBeginBraceIndex = $nextIndex;
@@ -295,7 +295,7 @@ final class BlankLineAfterStatementFixer extends AbstractFixer implements Config
         if ($possibleBeginBrace->equals(';')) {
             $blockEnd = $possibleBeginBraceIndex;
         } elseif ($possibleBeginBrace->equals('{')) {
-            $blockEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $possibleBeginBraceIndex);
+            $blockEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $possibleBeginBraceIndex);
         } else {
             $blockEnd = $tokens->getNextTokenOfKind($possibleBeginBraceIndex, [';']);
 
@@ -311,7 +311,7 @@ final class BlankLineAfterStatementFixer extends AbstractFixer implements Config
                 $conditionStartIndex = $tokens->getNextMeaningfulToken($whileIndex);
 
                 if (null !== $conditionStartIndex && $tokens[$conditionStartIndex]->equals('(')) {
-                    $conditionEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $conditionStartIndex);
+                    $conditionEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $conditionStartIndex);
                     $semicolonIndex = $tokens->getNextTokenOfKind($conditionEndIndex, [';']);
 
                     if (null !== $semicolonIndex) {
