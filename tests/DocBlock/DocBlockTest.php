@@ -189,6 +189,23 @@ final class DocBlockTest extends TestCase
             "/**\n\t *@foo\n\t */",
         ];
 
+        yield 'It separates annotations from both boundaries of a multi line doc block' => [
+            "/** @param string \$first\n * @param string \$second */",
+            "/**\n * @param string \$first\n * @param string \$second\n */",
+        ];
+
+        yield 'It separates content from the opening boundary of a multi line doc block' => [
+            "/** Description\n * continued\n */",
+            "/**\n * Description\n * continued\n */",
+        ];
+
+        yield 'It separates content from the closing boundary with indentation and configured line ending' => [
+            "/**\r\n     * Description */",
+            "/**\r\n     * Description\r\n     */",
+            '    ',
+            "\r\n",
+        ];
+
         yield 'It Converts a single line to multi line with no indentation' => [
             '/** Hello */',
             "/**\n * Hello\n */",
