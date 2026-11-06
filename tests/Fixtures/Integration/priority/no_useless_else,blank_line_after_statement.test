@@ -1,0 +1,24 @@
+--TEST--
+Integration of fixers: no_useless_else,blank_line_after_statement.
+--RULESET--
+{"no_useless_else": true, "blank_line_after_statement": {"statements": ["if"]}}
+--EXPECT--
+<?php
+
+if (f1()) {
+    return 1;
+}
+  
+    return 2;
+
+$c = 3;
+
+--INPUT--
+<?php
+
+if (f1()) {
+    return 1;
+} else {
+    return 2;
+}
+$c = 3;
