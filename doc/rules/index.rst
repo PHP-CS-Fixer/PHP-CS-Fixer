@@ -351,7 +351,7 @@ Control Structure
 - `switch_case_semicolon_to_colon <./control_structure/switch_case_semicolon_to_colon.rst>`_
 
   A case should be followed by a colon and not a semicolon.
-- `switch_case_space <./control_structure/switch_case_space.rst>`_
+- `switch_case_space <./control_structure/switch_case_space.rst>`_ *(deprecated)*
 
   Removes extra spaces between colon and case value.
 - `switch_continue_to_break <./control_structure/switch_continue_to_break.rst>`_
@@ -446,7 +446,7 @@ Function Notation
 - `regular_callable_call <./function_notation/regular_callable_call.rst>`_ *(risky)*
 
   Callables must be called without using ``call_user_func*`` when possible.
-- `return_type_declaration <./function_notation/return_type_declaration.rst>`_ *(configurable)*
+- `return_type_declaration <./function_notation/return_type_declaration.rst>`_ *(deprecated, configurable)*
 
   Adjust spacing around colon in return type declarations and backed enum types.
 - `single_line_throw <./function_notation/single_line_throw.rst>`_
@@ -961,6 +961,9 @@ Whitespace
 - `blank_line_between_import_groups <./whitespace/blank_line_between_import_groups.rst>`_
 
   Putting blank lines between ``use`` statement groups.
+- `colon_space <./whitespace/colon_space.rst>`_ *(configurable)*
+
+  Adjust spacing around the colon in return type declarations, backed enum types, named arguments, and switch case statements.
 - `compact_nullable_type_declaration <./whitespace/compact_nullable_type_declaration.rst>`_
 
   Remove extra spaces in a nullable type declaration.

@@ -4,8 +4,13 @@ Rule ``return_type_declaration``
 
 Adjust spacing around colon in return type declarations and backed enum types.
 
-Warning
--------
+Warnings
+--------
+
+This rule is DEPRECATED and will be removed in the next major version 4.0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You should use ``colon_space`` instead.
 
 This rule is CONFIGURABLE
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -65,23 +70,6 @@ With configuration: ``['space_before' => 'one']``.
     <?php
    -function foo(int $a):string {};
    +function foo(int $a) : string {};
-
-Rule sets
----------
-
-The rule is part of the following rule sets:
-
-- `@PER <./../../ruleSets/PER.rst>`_ *(deprecated)*
-- `@PER-CS <./../../ruleSets/PER-CS.rst>`_
-- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ *(deprecated)*
-- `@PER-CS1x0 <./../../ruleSets/PER-CS1x0.rst>`_
-- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ *(deprecated)*
-- `@PER-CS2x0 <./../../ruleSets/PER-CS2x0.rst>`_
-- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ *(deprecated)*
-- `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
-- `@PSR12 <./../../ruleSets/PSR12.rst>`_
-- `@Symfony <./../../ruleSets/Symfony.rst>`_
 
 References
 ----------
