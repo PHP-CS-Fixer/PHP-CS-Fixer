@@ -19,6 +19,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -45,7 +46,7 @@ final class UseArrowFunctionsFixer extends AbstractFixer
                         SAMPLE,
                 ),
             ],
-            null,
+            'Closures in constant expressions (attributes, constants, and property or parameter defaults) are not converted: PHP 8.5 allows only static closures without `use` there, and rejects arrow functions, as they implicitly capture variables from the enclosing scope.',
             'Risky when using `isset()` on outside variables that are not imported with `use ()`.',
         );
     }
@@ -73,14 +74,9 @@ final class UseArrowFunctionsFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $analyzer = new TokensAnalyzer($tokens);
+        $constantExpressionClosures = null;
 
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
-            if ($tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
-                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
-
-                continue;
-            }
-
             if (!$tokens[$index]->isGivenKind(\T_FUNCTION) || !$analyzer->isLambda($index)) {
                 continue;
             }
@@ -167,9 +163,106 @@ final class UseArrowFunctionsFixer extends AbstractFixer
                 continue;
             }
 
+            // collected once, before the first transformation; converting backwards keeps preceding indices valid
+            $constantExpressionClosures ??= $this->findConstantExpressionClosures($tokens);
+
+            if (isset($constantExpressionClosures[$index])) {
+                continue;
+            }
+
             // Transform the function to an arrow function
             $this->transform($tokens, $index, $useStart, $useEnd, $braceOpen, $return, $semicolon, $braceClose);
         }
+    }
+
+    /**
+     * Finds `function` tokens that are part of a constant expression: attribute arguments,
+     * `const` declarations, class bodies (constants and property defaults) and parameter lists.
+     * Class bodies also yield method declarations, which is harmless as only closures are looked up.
+     *
+     * @return array<int, true>
+     */
+    private function findConstantExpressionClosures(Tokens $tokens): array
+    {
+        $closures = [];
+
+        foreach ($tokens as $index => $token) {
+            if ($token->isGivenKind(FCT::T_ATTRIBUTE)) {
+                $start = $index;
+                $end = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $start);
+            } elseif ($token->isGivenKind(\T_CONST)) {
+                $start = $index;
+                $end = $this->findConstantDeclarationEnd($tokens, $start);
+            } elseif ($token->isGivenKind([\T_FUNCTION, \T_FN])) {
+                /** @var int $start */
+                $start = $tokens->getNextTokenOfKind($index, ['(']);
+                $end = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $start);
+            } elseif ($token->isClassy()) {
+                $start = $this->findClassyBodyStart($tokens, $index);
+                $end = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $start);
+            } else {
+                continue;
+            }
+
+            $closures += $this->findFunctionsOutsideOfBraces($tokens, $start, $end);
+        }
+
+        return $closures;
+    }
+
+    /**
+     * Braces inside a constant expression can only open function bodies or property hooks.
+     * These contain runtime code, so closures there are not part of the constant expression.
+     *
+     * @return array<int, true>
+     */
+    private function findFunctionsOutsideOfBraces(Tokens $tokens, int $start, int $end): array
+    {
+        $functions = [];
+
+        for ($index = $start + 1; $index < $end; ++$index) {
+            if ($tokens[$index]->equals('{')) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
+            } elseif ($tokens[$index]->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PROPERTY_HOOK, $index);
+            } elseif ($tokens[$index]->isGivenKind(\T_FUNCTION)) {
+                $functions[$index] = true;
+            }
+        }
+
+        return $functions;
+    }
+
+    private function findClassyBodyStart(Tokens $tokens, int $index): int
+    {
+        /** @var int $index */
+        $index = $tokens->getNextTokenOfKind($index, ['{', '(']);
+
+        if ($tokens[$index]->equals('(')) {
+            // skip anonymous class arguments, which may contain closure bodies
+            /** @var int $index */
+            $index = $tokens->getNextTokenOfKind($tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index), ['{']);
+        }
+
+        return $index;
+    }
+
+    /**
+     * A constant declaration ends with `;` or with `?>`, which implies one.
+     */
+    private function findConstantDeclarationEnd(Tokens $tokens, int $index): int
+    {
+        while (!$tokens[$index]->equals(';') && !$tokens[$index]->isGivenKind(\T_CLOSE_TAG)) {
+            $block = Tokens::detectBlockType($tokens[$index]);
+
+            if (null !== $block && $block['isStart']) {
+                $index = $tokens->findBlockEnd($block['type'], $index);
+            }
+
+            ++$index;
+        }
+
+        return $index;
     }
 
     private function transform(Tokens $tokens, int $index, ?int $useStart, ?int $useEnd, int $braceOpen, int $return, int $semicolon, int $braceClose): void
