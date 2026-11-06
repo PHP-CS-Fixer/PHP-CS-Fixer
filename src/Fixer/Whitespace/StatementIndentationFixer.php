@@ -73,7 +73,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
         FCT::T_MATCH,
         FCT::T_ENUM,
     ];
-    private const CONTROL_STRUCTURE_POSSIBIBLY_WITHOUT_BRACES_TOKENS = [
+    private const CONTROL_STRUCTURE_POSSIBLY_WITHOUT_BRACES_TOKENS = [
         \T_IF,
         \T_ELSE,
         \T_ELSEIF,
@@ -82,7 +82,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
         \T_WHILE,
         \T_DO,
     ];
-    private const BLOCK_FIRST_TOKENS = ['{', [CT::T_DESTRUCTURING_BRACKET_OPEN], [CT::T_USE_TRAIT], [CT::T_GROUP_IMPORT_BRACE_OPEN], [CT::T_PROPERTY_HOOK_BRACE_OPEN], [FCT::T_ATTRIBUTE]];
+    private const BLOCK_FIRST_TOKENS = [CT::T_DESTRUCTURING_BRACKET_OPEN, CT::T_USE_TRAIT, CT::T_GROUP_IMPORT_BRACE_OPEN, CT::T_PROPERTY_HOOK_BRACE_OPEN, FCT::T_ATTRIBUTE];
     private const PROPERTY_KEYWORDS = [\T_VAR, \T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_STATIC, FCT::T_READONLY];
 
     private AlternativeSyntaxAnalyzer $alternativeSyntaxAnalyzer;
@@ -92,6 +92,8 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
     public function __construct(bool $bracesFixerCompatibility = false)
     {
         parent::__construct();
+
+        $this->alternativeSyntaxAnalyzer = new AlternativeSyntaxAnalyzer();
 
         $this->bracesFixerCompatibility = $bracesFixerCompatibility;
     }
@@ -178,8 +180,6 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $this->alternativeSyntaxAnalyzer = new AlternativeSyntaxAnalyzer();
-
         $endIndex = \count($tokens) - 1;
         if ($tokens[$endIndex]->isWhitespace()) {
             --$endIndex;
@@ -218,9 +218,15 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
         $noBracesBlockStarts = [];
         $alternativeBlockStarts = [];
         $caseBlockStarts = [];
+        $indentUnit = $this->whitespacesConfig->getIndent();
 
         foreach ($tokens as $index => $token) {
             $currentScope = \count($scopes) - 1;
+
+            // Only array tokens have an id and only the other ones can be a single character, so get
+            // the id or the content once instead of calling `equals()` and `isGivenKind()` repeatedly.
+            $id = $token->getId();
+            $char = null === $id ? $token->getContent() : null;
 
             if (isset($noBracesBlockStarts[$index])) {
                 $scopes[] = [
@@ -234,33 +240,34 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 ++$currentScope;
             }
 
+            $isArrayParenthesis = '(' === $char && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(\T_ARRAY);
+
             if (
-                $token->equalsAny(self::BLOCK_FIRST_TOKENS)
-                || ($token->equals('(') && !$tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(\T_ARRAY))
+                '{' === $char
+                || (null !== $id && $token->isGivenKind(self::BLOCK_FIRST_TOKENS))
+                || ('(' === $char && !$isArrayParenthesis)
                 || isset($alternativeBlockStarts[$index])
                 || isset($caseBlockStarts[$index])
             ) {
                 $endIndexInclusive = true;
 
-                if ($token->isGivenKind([\T_EXTENDS, \T_IMPLEMENTS])) {
-                    $endIndex = $tokens->getNextTokenOfKind($index, ['{']);
-                } elseif ($token->isGivenKind(CT::T_USE_TRAIT)) {
+                if (CT::T_USE_TRAIT === $id) {
                     $endIndex = $tokens->getNextTokenOfKind($index, [';']);
-                } elseif ($token->equals(':')) {
+                } elseif (':' === $char) {
                     if (isset($caseBlockStarts[$index])) {
                         [$endIndex, $endIndexInclusive] = $this->findCaseBlockEnd($tokens, $index);
                     } elseif ($this->alternativeSyntaxAnalyzer->belongsToAlternativeSyntax($tokens, $index)) {
                         $endIndex = $this->alternativeSyntaxAnalyzer->findAlternativeSyntaxBlockEnd($tokens, $alternativeBlockStarts[$index]);
                     }
-                } elseif ($token->isGivenKind(CT::T_DESTRUCTURING_BRACKET_OPEN)) {
+                } elseif (CT::T_DESTRUCTURING_BRACKET_OPEN === $id) {
                     $endIndex = $tokens->getNextTokenOfKind($index, [[CT::T_DESTRUCTURING_BRACKET_CLOSE]]);
-                } elseif ($token->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
+                } elseif (CT::T_GROUP_IMPORT_BRACE_OPEN === $id) {
                     $endIndex = $tokens->getNextTokenOfKind($index, [[CT::T_GROUP_IMPORT_BRACE_CLOSE]]);
-                } elseif ($token->equals('{')) {
+                } elseif ('{' === $char) {
                     $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
-                } elseif ($token->equals('(')) {
+                } elseif ('(' === $char) {
                     $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
-                } elseif ($token->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
+                } elseif (CT::T_PROPERTY_HOOK_BRACE_OPEN === $id) {
                     $endIndex = $tokens->getNextTokenOfKind($index, [[CT::T_PROPERTY_HOOK_BRACE_CLOSE]]);
                 } else {
                     $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
@@ -302,11 +309,8 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 continue;
             }
 
-            if (
-                $token->isGivenKind(CT::T_ARRAY_BRACKET_OPEN)
-                || ($token->equals('(') && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(\T_ARRAY))
-            ) {
-                $blockType = $token->equals('(') ? Tokens::BLOCK_TYPE_PARENTHESIS : Tokens::BLOCK_TYPE_ARRAY_BRACKET;
+            if (CT::T_ARRAY_BRACKET_OPEN === $id || $isArrayParenthesis) {
+                $blockType = '(' === $char ? Tokens::BLOCK_TYPE_PARENTHESIS : Tokens::BLOCK_TYPE_ARRAY_BRACKET;
 
                 $scopes[] = [
                     'type' => 'statement',
@@ -321,39 +325,42 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 continue;
             }
 
-            $isPropertyStart = $this->isPropertyStart($tokens, $index);
-            if ($isPropertyStart || $token->isGivenKind(self::BLOCK_SIGNATURE_FIRST_TOKENS)) {
+            // a property start is always one of the property keywords, so never a single character
+            $isPropertyStart = null !== $id && $this->isPropertyStart($tokens, $index);
+            if ($isPropertyStart || (null !== $id && $token->isGivenKind(self::BLOCK_SIGNATURE_FIRST_TOKENS))) {
                 $lastWhitespaceIndex = null;
                 $closingParenthesisIndex = null;
                 $ternaryLevel = 0;
 
                 for ($endIndex = $index + 1, $max = \count($tokens); $endIndex < $max; ++$endIndex) {
                     $endToken = $tokens[$endIndex];
+                    $endId = $endToken->getId();
+                    $endChar = null === $endId ? $endToken->getContent() : null;
 
-                    if ($endToken->equals('(')) {
+                    if ('(' === $endChar) {
                         $closingParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $endIndex);
                         $endIndex = $closingParenthesisIndex;
 
                         continue;
                     }
 
-                    if ($endToken->isGivenKind(CT::T_ARRAY_BRACKET_OPEN)) {
+                    if (CT::T_ARRAY_BRACKET_OPEN === $endId) {
                         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $endIndex);
 
                         continue;
                     }
 
-                    if ($endToken->equalsAny(['{', ';', [\T_DOUBLE_ARROW], [\T_IMPLEMENTS]])) {
+                    if ('{' === $endChar || ';' === $endChar || \T_DOUBLE_ARROW === $endId || \T_IMPLEMENTS === $endId) {
                         break;
                     }
 
-                    if ($endToken->equals('?')) {
+                    if ('?' === $endChar) {
                         ++$ternaryLevel;
 
                         continue;
                     }
 
-                    if ($endToken->equals(':')) {
+                    if (':' === $endChar) {
                         if ($ternaryLevel > 0) {
                             --$ternaryLevel;
 
@@ -369,7 +376,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                         break;
                     }
 
-                    if (!$token->isGivenKind(self::CONTROL_STRUCTURE_POSSIBIBLY_WITHOUT_BRACES_TOKENS)) {
+                    if (!$token->isGivenKind(self::CONTROL_STRUCTURE_POSSIBLY_WITHOUT_BRACES_TOKENS)) {
                         continue;
                     }
 
@@ -401,17 +408,20 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 continue;
             }
 
-            if ($token->isGivenKind(\T_FUNCTION)) {
+            if (\T_FUNCTION === $id) {
                 $endIndex = $index + 1;
 
                 for ($max = \count($tokens); $endIndex < $max; ++$endIndex) {
-                    if ($tokens[$endIndex]->equals('(')) {
+                    $endToken = $tokens[$endIndex];
+                    $endChar = null === $endToken->getId() ? $endToken->getContent() : null;
+
+                    if ('(' === $endChar) {
                         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $endIndex);
 
                         continue;
                     }
 
-                    if ($tokens[$endIndex]->equalsAny(['{', ';'])) {
+                    if ('{' === $endChar || ';' === $endChar) {
                         break;
                     }
                 }
@@ -438,7 +448,8 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
 
                 $content = $previousOpenTagContent.($token->isWhitespace() ? $token->getContent() : '');
 
-                if (!Preg::match('/\R/', $content)) {
+                // whitespace only ever consists of spaces, tabs, `\r` and `\n`, so no need for a regex here
+                if (false === strpbrk($content, "\r\n")) {
                     continue;
                 }
 
@@ -470,7 +481,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                                 continue;
                             }
 
-                            if (Preg::match('/\R/', $searchToken->getContent())) {
+                            if (false !== strpbrk($searchToken->getContent(), "\r\n")) {
                                 $nextNewlineIndex = $searchIndex;
 
                                 break;
@@ -487,22 +498,30 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                             (null !== $firstNonWhitespaceTokenIndex && $firstNonWhitespaceTokenIndex < $endIndex)
                             || (null !== $nextNewlineIndex && $nextNewlineIndex < $endIndex)
                         ) {
-                            if (
-                                // do we touch whitespace directly before comment...
-                                $tokens[$firstNonWhitespaceTokenIndex]->isGivenKind(\T_COMMENT)
-                                // ...and afterwards, there is only comment or `}`
-                                && $tokens[$tokens->getNextMeaningfulToken($firstNonWhitespaceTokenIndex)]->equals('}')
-                            ) {
+                            // do we touch whitespace directly before comment...
+                            $afterCommentIndex = null !== $firstNonWhitespaceTokenIndex
+                                && $tokens[$firstNonWhitespaceTokenIndex]->isGivenKind(\T_COMMENT)
+                                ? $tokens->getNextMeaningfulToken($firstNonWhitespaceTokenIndex)
+                                : null;
+                            // ...and afterwards, there is only comment or `}`
+                            $commentFollowedByClosingBrace = null !== $afterCommentIndex
+                                && $tokens[$afterCommentIndex]->equals('}');
+
+                            if ($commentFollowedByClosingBrace) {
+                                \assert(null !== $firstNonWhitespaceTokenIndex);
+                                $beforeCommentIndex = $tokens->getPrevMeaningfulToken($firstNonWhitespaceTokenIndex);
+
                                 if (
                                     // ... and the comment was only content in docblock
-                                    $tokens[$tokens->getPrevMeaningfulToken($firstNonWhitespaceTokenIndex)]->equals('{')
+                                    null !== $beforeCommentIndex
+                                    && $tokens[$beforeCommentIndex]->equals('{')
                                 ) {
                                     $indent = true;
                                 } else {
                                     // or it was dedicated comment for next control loop
                                     // ^^ we need to check if there is a control group afterwards, and in that case don't make extra indent level
-                                    $nextIndex = $tokens->getNextMeaningfulToken($firstNonWhitespaceTokenIndex);
-                                    $nextNextIndex = $tokens->getNextMeaningfulToken($nextIndex);
+                                    $nextIndex = $afterCommentIndex;
+                                    $nextNextIndex = null !== $nextIndex ? $tokens->getNextMeaningfulToken($nextIndex) : null;
 
                                     if (null !== $nextNextIndex && $tokens[$nextNextIndex]->isGivenKind([\T_ELSE, \T_ELSEIF])) {
                                         $indent = true !== $this->configuration['stick_comment_to_next_continuous_control_statement'];
@@ -510,6 +529,15 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                                         $indent = true;
                                     }
                                 }
+                            } elseif (
+                                true === $this->configuration['stick_comment_to_next_continuous_control_statement']
+                                && null !== $afterCommentIndex
+                                // ...and afterwards, the next `case`/`default` closes the current case block,
+                                // so the comment is a dedicated comment for that next case
+                                && $scopes[$currentScope]['end_index'] === $afterCommentIndex
+                                && $tokens[$scopes[$currentScope]['end_index']]->isGivenKind([\T_CASE, \T_DEFAULT])
+                            ) {
+                                $indent = false;
                             } else {
                                 $indent = true;
                             }
@@ -521,7 +549,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                     if ($scopes[$currentScope]['skip']) {
                         $whitespaces = $previousLineInitialIndent;
                     } else {
-                        $whitespaces = $scopes[$currentScope]['initial_indent'].($indent ? $this->whitespacesConfig->getIndent() : '');
+                        $whitespaces = $scopes[$currentScope]['initial_indent'].($indent ? $indentUnit : '');
                     }
 
                     $content = Preg::replace(
@@ -533,7 +561,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                     $previousLineNewIndent = $this->extractIndent($content);
                 } else {
                     $content = Preg::replace(
-                        '/(\R)'.$scopes[$currentScope]['initial_indent'].'(\h*)$/D',
+                        '/(\R)'.preg_quote($scopes[$currentScope]['initial_indent'], '/').'(\h*)$/D',
                         '$1'.$scopes[$currentScope]['new_indent'].'$2',
                         $content,
                     );
@@ -542,16 +570,20 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 $lastIndent = $this->extractIndent($content);
 
                 if ('' !== $previousOpenTagContent) {
-                    $content = Preg::replace("/^{$previousOpenTagContent}/", '', $content);
+                    $content = Preg::replace('/^'.preg_quote($previousOpenTagContent, '/').'/', '', $content);
                 }
 
                 if ('' !== $content) {
-                    $tokens->ensureWhitespaceAtIndex($index, 0, $content);
+                    // nothing to write when the whitespace is already as it should be
+                    if (!$token->isWhitespace() || $content !== $token->getContent()) {
+                        $tokens->ensureWhitespaceAtIndex($index, 0, $content);
+                    }
                 } elseif ($token->isWhitespace()) {
                     $tokens->clearAt($index);
                 }
 
-                if (null !== $nextToken && $nextToken->isComment()) {
+                // the replacement below is a no-op when the indentation did not change
+                if (null !== $nextToken && $nextToken->isComment() && $previousLineInitialIndent !== $previousLineNewIndent) {
                     $tokens[$index + 1] = new Token([
                         $nextToken->getId(),
                         Preg::replace(
@@ -581,7 +613,11 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 --$currentScope;
             }
 
-            if ($token->isComment() || $token->equalsAny([';', ',', '}', [\T_OPEN_TAG], [\T_CLOSE_TAG], [CT::T_ATTRIBUTE_CLOSE]])) {
+            if (
+                null === $id
+                    ? (';' === $char || ',' === $char || '}' === $char)
+                    : ($token->isComment() || $token->isGivenKind([\T_OPEN_TAG, \T_CLOSE_TAG, CT::T_ATTRIBUTE_CLOSE]))
+            ) {
                 continue;
             }
 
@@ -613,9 +649,11 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
         $doWhileLevel = 0;
         for ($searchEndIndex = $index; $searchEndIndex <= $parentScopeEndIndex; ++$searchEndIndex) {
             $searchEndToken = $tokens[$searchEndIndex];
+            $searchEndId = $searchEndToken->getId();
+            $searchEndChar = null === $searchEndId ? $searchEndToken->getContent() : null;
 
             if (
-                $searchEndToken->isGivenKind(\T_IF)
+                \T_IF === $searchEndId
                 && !$tokens[$tokens->getPrevMeaningfulToken($searchEndIndex)]->isGivenKind(\T_ELSE)
             ) {
                 ++$ifLevel;
@@ -623,16 +661,16 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 continue;
             }
 
-            if ($searchEndToken->isGivenKind(\T_DO)) {
+            if (\T_DO === $searchEndId) {
                 ++$doWhileLevel;
 
                 continue;
             }
 
-            if ($searchEndToken->equalsAny(['(', '{', [CT::T_ARRAY_BRACKET_OPEN]])) {
-                if ($searchEndToken->equals('(')) {
+            if ('(' === $searchEndChar || '{' === $searchEndChar || CT::T_ARRAY_BRACKET_OPEN === $searchEndId) {
+                if ('(' === $searchEndChar) {
                     $blockType = Tokens::BLOCK_TYPE_PARENTHESIS;
-                } elseif ($searchEndToken->equals('{')) {
+                } elseif ('{' === $searchEndChar) {
                     $blockType = Tokens::BLOCK_TYPE_BRACE;
                 } else {
                     $blockType = Tokens::BLOCK_TYPE_ARRAY_BRACKET;
@@ -640,9 +678,11 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
 
                 $searchEndIndex = $tokens->findBlockEnd($blockType, $searchEndIndex);
                 $searchEndToken = $tokens[$searchEndIndex];
+                $searchEndId = $searchEndToken->getId();
+                $searchEndChar = null === $searchEndId ? $searchEndToken->getContent() : null;
             }
 
-            if (!$searchEndToken->equalsAny([';', ',', '}', [\T_CLOSE_TAG]])) {
+            if (';' !== $searchEndChar && ',' !== $searchEndChar && '}' !== $searchEndChar && \T_CLOSE_TAG !== $searchEndId) {
                 continue;
             }
 
@@ -690,7 +730,10 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
     private function findCaseBlockEnd(Tokens $tokens, int $index): array
     {
         for ($max = \count($tokens); $index < $max; ++$index) {
-            if ($tokens[$index]->isGivenKind(\T_SWITCH)) {
+            $id = $tokens[$index]->getId();
+            $char = null === $id ? $tokens[$index]->getContent() : null;
+
+            if (\T_SWITCH === $id) {
                 $braceIndex = $tokens->getNextMeaningfulToken(
                     $tokens->findBlockEnd(
                         Tokens::BLOCK_TYPE_PARENTHESIS,
@@ -707,17 +750,17 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 continue;
             }
 
-            if ($tokens[$index]->equals('{')) {
+            if ('{' === $char) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
 
                 continue;
             }
 
-            if ($tokens[$index]->isGivenKind([\T_CASE, \T_DEFAULT])) {
+            if (\T_CASE === $id || \T_DEFAULT === $id) {
                 return [$index, true];
             }
 
-            if ($tokens[$index]->equalsAny(['}', [\T_ENDSWITCH]])) {
+            if ('}' === $char || \T_ENDSWITCH === $id) {
                 return [$tokens->getPrevNonWhitespace($index), false];
             }
         }
@@ -747,6 +790,11 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
      */
     private function isPropertyStart(Tokens $tokens, int $index): bool
     {
+        // a property start is always one of the property keywords itself
+        if (!$tokens[$index]->isGivenKind(self::PROPERTY_KEYWORDS)) {
+            return false;
+        }
+
         $nextIndex = $tokens->getNextMeaningfulToken($index);
         if (
             null === $nextIndex
@@ -771,9 +819,9 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
      * Returns whether the token at given index is a comment whose indentation
      * can be fixed.
      *
-     * Indentation of a comment is not changed when the comment is part of a
-     * multi-line message whose lines are all single-line comments and at least
-     * one line has meaningful content.
+     * Indentation of a comment is not changed when it is a single-line comment
+     * whose text is empty or starts with an indentation, as such a comment is
+     * most likely a line of a multi-line message that relies on its own alignment.
      */
     private function isCommentWithFixableIndentation(Tokens $tokens, int $index): bool
     {
@@ -841,7 +889,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
 
         $newLines = 0;
         for ($i = min($siblingIndex, $index) + 1, $max = max($siblingIndex, $index); $i < $max; ++$i) {
-            if ($tokens[$i]->isWhitespace() && Preg::match('/\R/', $tokens[$i]->getContent())) {
+            if ($tokens[$i]->isWhitespace() && false !== strpbrk($tokens[$i]->getContent(), "\r\n")) {
                 if (1 === $newLines || Preg::match('/\R.*\R/', $tokens[$i]->getContent())) {
                     return null;
                 }
