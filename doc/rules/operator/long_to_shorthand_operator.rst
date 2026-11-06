@@ -4,15 +4,6 @@ Rule ``long_to_shorthand_operator``
 
 Shorthand notation for operators should be used if possible.
 
-Warning
--------
-
-This rule is RISKY
-~~~~~~~~~~~~~~~~~~
-
-Risky when applying for string offsets (e.g. ``<?php $text = "foo"; $text[0] =
-$text[0] & "\x7F";``).
-
 Examples
 --------
 
@@ -32,8 +23,8 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
-- `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+- `@Symfony <./../../ruleSets/Symfony.rst>`_
 
 References
 ----------
