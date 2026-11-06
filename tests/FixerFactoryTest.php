@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\InternalFixerInterface;
@@ -306,6 +307,40 @@ final class FixerFactoryTest extends TestCase
         $factory->useRuleSet(new RuleSet(['f2' => true]));
         self::assertFalse($factory->hasRule('f1'), 'Should not have f1 fixer');
         self::assertTrue($factory->hasRule('f2'), 'Should have f2 fixer');
+    }
+
+    public function testGetRegisteredFixerNames(): void
+    {
+        $factory = new FixerFactory();
+        $factory->registerFixer($this->createFixerDouble('f3'), false);
+        $factory->registerFixer($this->createFixerDouble('f1'), false);
+        $factory->registerFixer($this->createFixerDouble('f2'), false);
+
+        self::assertSame(['f1', 'f2', 'f3'], $factory->getRegisteredFixerNames());
+    }
+
+    public function testGetRule(): void
+    {
+        $factory = new FixerFactory();
+        $f1 = $this->createFixerDouble('f1');
+        $factory->registerFixer($f1, false);
+
+        self::assertSame($f1, $factory->getRule('f1'));
+    }
+
+    public function testGetRuleWithFqcn(): void
+    {
+        $factory = (new FixerFactory())->registerBuiltInFixers();
+
+        self::assertInstanceOf(ArraySyntaxFixer::class, $factory->getRule(ArraySyntaxFixer::class));
+    }
+
+    public function testGetRuleThrowsForNonExistentRule(): void
+    {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessage('Rule "non_existing_rule" does not exist.');
+
+        (new FixerFactory())->getRule('non_existing_rule');
     }
 
     /**
