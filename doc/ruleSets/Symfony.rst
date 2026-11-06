@@ -85,7 +85,6 @@ Rules
 
   ``['allow_hidden_params' => true, 'remove_inheritdoc' => true]``
 
-- `no_trailing_comma_in_singleline <./../rules/basic/no_trailing_comma_in_singleline.rst>`_
 - `no_unneeded_braces <./../rules/control_structure/no_unneeded_braces.rst>`_ with config:
 
   ``['namespaces' => true]``
