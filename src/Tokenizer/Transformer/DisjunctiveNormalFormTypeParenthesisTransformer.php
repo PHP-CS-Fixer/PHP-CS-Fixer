@@ -49,18 +49,28 @@ final class DisjunctiveNormalFormTypeParenthesisTransformer extends AbstractTran
     public function process(Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if ($token->equals('(') && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(CT::T_TYPE_ALTERNATION)) {
-                $openIndex = $index;
-                $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
-            } elseif ($token->equals(')') && $tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind(CT::T_TYPE_ALTERNATION)) {
-                $openIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
-                $closeIndex = $index;
-            } else {
+            if (!$token->isGivenKind(CT::T_TYPE_ALTERNATION)) {
                 continue;
             }
 
-            $tokens[$openIndex] = new Token([CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, '(']);
-            $tokens[$closeIndex] = new Token([CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE, ')']);
+            $prevIndex = $tokens->getPrevMeaningfulToken($index);
+            $nextIndex = $tokens->getNextMeaningfulToken($index);
+
+            if ($tokens[$prevIndex]->equals(')')) {
+                $closeIndex = $prevIndex;
+                $openIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $prevIndex);
+
+                $tokens[$openIndex] = new Token([CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, '(']);
+                $tokens[$closeIndex] = new Token([CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE, ')']);
+            }
+
+            if ($tokens[$nextIndex]->equals('(')) {
+                $openIndex = $nextIndex;
+                $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $nextIndex);
+
+                $tokens[$openIndex] = new Token([CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, '(']);
+                $tokens[$closeIndex] = new Token([CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE, ')']);
+            }
         }
     }
 
