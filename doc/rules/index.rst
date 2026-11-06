@@ -17,6 +17,9 @@ Alias
 - `mb_str_functions <./alias/mb_str_functions.rst>`_ *(risky)*
 
   Replace non multibyte-safe functions with corresponding mb function.
+- `modernize_array_key_functions <./alias/modernize_array_key_functions.rst>`_ *(risky)*
+
+  Replace ``$array[array_key_first($array)]`` with ``array_first($array)`` and ``$array[array_key_last($array)]`` with ``array_last($array)``.
 - `modernize_strpos <./alias/modernize_strpos.rst>`_ *(risky, configurable)*
 
   Replace ``strpos()`` and ``stripos()`` calls with ``str_starts_with()`` or ``str_contains()`` if possible.
