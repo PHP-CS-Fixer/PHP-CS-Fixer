@@ -173,7 +173,7 @@ final class StaticPrivateMethodFixer extends AbstractFixer
                 continue;
             }
 
-            if ($tokens[$index]->isGivenKind(\T_FUNCTION)) {
+            if ($tokens[$index]->isGivenKind(\T_FUNCTION) && !$tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(\T_STATIC)) {
                 return true;
             }
 

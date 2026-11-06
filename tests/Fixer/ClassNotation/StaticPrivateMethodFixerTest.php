@@ -18,6 +18,7 @@ use PhpCsFixer\Fixer\ClassNotation\StaticPrivateMethodFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -160,9 +161,182 @@ final class StaticPrivateMethodFixerTest extends AbstractFixerTestCase
                         return function() {};
                     }
 
+                    private static function baz()
+                    {
+                        return static function() {};
+                    }
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    private function bar()
+                    {
+                        return function() {};
+                    }
+
                     private function baz()
                     {
                         return static function() {};
+                    }
+                }
+                PHP,
+        ];
+
+        yield 'method containing static closure' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public function run(array $values)
+                    {
+                        return self::normalize($values);
+                    }
+
+                    private static function normalize(array $values)
+                    {
+                        array_walk_recursive($values, static function (&$value) {
+                            $value = (string) $value;
+                        });
+
+                        return $values;
+                    }
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public function run(array $values)
+                    {
+                        return $this->normalize($values);
+                    }
+
+                    private function normalize(array $values)
+                    {
+                        array_walk_recursive($values, static function (&$value) {
+                            $value = (string) $value;
+                        });
+
+                        return $values;
+                    }
+                }
+                PHP,
+        ];
+
+        yield 'method containing static closure with use and return type' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public function run(string $prefix)
+                    {
+                        return self::createHelper($prefix);
+                    }
+
+                    private static function createHelper(string $prefix): callable
+                    {
+                        $helper = static function (string $dir) use ($prefix): iterable {
+                            yield $prefix.$dir;
+                        };
+
+                        return $helper;
+                    }
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public function run(string $prefix)
+                    {
+                        return $this->createHelper($prefix);
+                    }
+
+                    private function createHelper(string $prefix): callable
+                    {
+                        $helper = static function (string $dir) use ($prefix): iterable {
+                            yield $prefix.$dir;
+                        };
+
+                        return $helper;
+                    }
+                }
+                PHP,
+        ];
+
+        yield 'method containing nested static closures' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    private static function bar()
+                    {
+                        return static function () {
+                            return static function () {
+                                return 1;
+                            };
+                        };
+                    }
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    private function bar()
+                    {
+                        return static function () {
+                            return static function () {
+                                return 1;
+                            };
+                        };
+                    }
+                }
+                PHP,
+        ];
+
+        yield 'method containing non-static closure' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    private function bar(array $values)
+                    {
+                        return array_map(function ($value) { return $value; }, $values);
+                    }
+                }
+                PHP,
+        ];
+
+        yield 'method containing static closure and instance reference' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    private $baz;
+
+                    private function bar(array $values)
+                    {
+                        $values = array_map(static function ($value) { return (string) $value; }, $values);
+
+                        return $this->baz;
+                    }
+                }
+                PHP,
+        ];
+
+        yield 'method containing static closure with debug_backtrace' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    private function bar()
+                    {
+                        return (static function () {
+                            return debug_backtrace()[1]['object'];
+                        })();
                     }
                 }
                 PHP,
@@ -549,6 +723,92 @@ final class StaticPrivateMethodFixerTest extends AbstractFixerTestCase
                     abstract protected static function abstractFunction();
                 }
 
+                PHP,
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP >= 8.0.0
+     */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function provideFix80Cases(): iterable
+    {
+        yield 'method containing static closure with typed by-reference parameter' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public function run(array $values): array
+                    {
+                        return self::normalize($values);
+                    }
+
+                    private static function normalize(array $values): array
+                    {
+                        array_walk_recursive($values, static function (mixed &$value): void {
+                            $value = (string) $value;
+                        });
+
+                        return $values;
+                    }
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public function run(array $values): array
+                    {
+                        return $this->normalize($values);
+                    }
+
+                    private function normalize(array $values): array
+                    {
+                        array_walk_recursive($values, static function (mixed &$value): void {
+                            $value = (string) $value;
+                        });
+
+                        return $values;
+                    }
+                }
+                PHP,
+        ];
+
+        yield 'method containing static closure with attribute' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    private static function bar()
+                    {
+                        return #[Pure] static function () {
+                            return 1;
+                        };
+                    }
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    private function bar()
+                    {
+                        return #[Pure] static function () {
+                            return 1;
+                        };
+                    }
+                }
                 PHP,
         ];
     }
