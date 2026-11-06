@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Cache;
 
+use PhpCsFixer\Config\FixerAnnotationMode;
 use PhpCsFixer\Future;
 
 /**
@@ -43,9 +44,15 @@ final class Signature implements SignatureInterface
     private string $ruleCustomisationPolicyVersion;
 
     /**
-     * @param array<string, array<string, mixed>|bool> $rules
+     * @var FixerAnnotationMode::ALL|FixerAnnotationMode::FORBIDDEN|FixerAnnotationMode::MATCHING
      */
-    public function __construct(string $phpVersion, string $fixerVersion, string $indent, string $lineEnding, array $rules, string $ruleCustomisationPolicyVersion)
+    private string $fixerAnnotationMode;
+
+    /**
+     * @param array<string, array<string, mixed>|bool>                                              $rules
+     * @param FixerAnnotationMode::ALL|FixerAnnotationMode::FORBIDDEN|FixerAnnotationMode::MATCHING $fixerAnnotationMode
+     */
+    public function __construct(string $phpVersion, string $fixerVersion, string $indent, string $lineEnding, array $rules, string $ruleCustomisationPolicyVersion, string $fixerAnnotationMode = FixerAnnotationMode::MATCHING)
     {
         $this->phpVersion = $phpVersion;
         $this->fixerVersion = $fixerVersion;
@@ -53,6 +60,7 @@ final class Signature implements SignatureInterface
         $this->lineEnding = $lineEnding;
         $this->rules = self::makeJsonEncodable($rules);
         $this->ruleCustomisationPolicyVersion = $ruleCustomisationPolicyVersion;
+        $this->fixerAnnotationMode = $fixerAnnotationMode;
     }
 
     public function getPhpVersion(): string
@@ -85,6 +93,11 @@ final class Signature implements SignatureInterface
         return $this->ruleCustomisationPolicyVersion;
     }
 
+    public function getFixerAnnotationMode(): string
+    {
+        return $this->fixerAnnotationMode;
+    }
+
     public function equals(SignatureInterface $signature): bool
     {
         return $this->phpVersion === $signature->getPhpVersion()
@@ -92,7 +105,8 @@ final class Signature implements SignatureInterface
             && $this->indent === $signature->getIndent()
             && $this->lineEnding === $signature->getLineEnding()
             && $this->rules === $signature->getRules()
-            && $this->ruleCustomisationPolicyVersion === $signature->getRuleCustomisationPolicyVersion();
+            && $this->ruleCustomisationPolicyVersion === $signature->getRuleCustomisationPolicyVersion()
+            && $this->fixerAnnotationMode === $signature->getFixerAnnotationMode();
     }
 
     /**

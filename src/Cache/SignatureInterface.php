@@ -38,5 +38,7 @@ interface SignatureInterface
 
     public function getRuleCustomisationPolicyVersion(): string;
 
+    public function getFixerAnnotationMode(): string;
+
     public function equals(self $signature): bool;
 }
