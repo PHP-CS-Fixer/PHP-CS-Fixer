@@ -219,6 +219,30 @@ final class ConfigTest extends TestCase
         self::assertSame($config, $config->setCacheFile('some-directory/some.file'));
     }
 
+    public function testThatComposerPathHasDefaultValue(): void
+    {
+        $config = new Config();
+
+        self::assertSame('composer.json', $config->getComposerPath());
+    }
+
+    public function testThatComposerPathCanBeMutated(): void
+    {
+        $composerPath = 'some-directory/composer.json';
+
+        $config = new Config();
+        $config->setComposerPath($composerPath);
+
+        self::assertSame($composerPath, $config->getComposerPath());
+    }
+
+    public function testThatSetComposerPathHasFluentInterface(): void
+    {
+        $config = new Config();
+
+        self::assertSame($config, $config->setComposerPath('some-directory/composer.json'));
+    }
+
     /**
      * @param list<FixerInterface>     $expected
      * @param iterable<FixerInterface> $suite
@@ -264,6 +288,7 @@ final class ConfigTest extends TestCase
         $config = new Config();
 
         self::assertSame('.php-cs-fixer.cache', $config->getCacheFile());
+        self::assertSame('composer.json', $config->getComposerPath());
         self::assertSame([], $config->getCustomFixers());
         self::assertSame('txt', $config->getFormat());
         self::assertFalse($config->getHideProgress());
