@@ -552,6 +552,68 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => true],
         ];
 
+        yield 'import_classes (true) - name already used as first part of qualified name [1]' => [
+            <<<'EXPECTED'
+                <?php
+                namespace Test;
+                new Foo\Bar();
+
+                /** @var \Foo $foo */
+                $foo = new \Foo();
+                EXPECTED,
+            null,
+            ['import_classes' => true],
+        ];
+
+        yield 'import_classes (true) - name already used as first part of qualified name [2]' => [
+            <<<'EXPECTED'
+                <?php
+                namespace Test;
+                foo\bar();
+
+                /** @var \Foo $foo */
+                $foo = new \Foo();
+                EXPECTED,
+            null,
+            ['import_classes' => true],
+        ];
+
+        yield 'import_classes (true) - name already used as first part of qualified name [3]' => [
+            <<<'EXPECTED'
+                <?php
+                namespace Test;
+
+                /** @throws Foo\Bar */
+                function x() {}
+
+                /** @var \Foo $foo */
+                $foo = new \Foo();
+                EXPECTED,
+            null,
+            ['import_classes' => true],
+        ];
+
+        yield 'import_classes (true) - first part of qualified name in import or namespace is not a conflict' => [
+            <<<'EXPECTED'
+                <?php
+                namespace Foo\Test;
+                use Foo\Bar;
+                use Foo;
+
+                /** @var Foo $foo */
+                $foo = new Foo();
+                EXPECTED,
+            <<<'INPUT'
+                <?php
+                namespace Foo\Test;
+                use Foo\Bar;
+
+                /** @var \Foo $foo */
+                $foo = new \Foo();
+                INPUT,
+            ['import_classes' => true],
+        ];
+
         yield 'import_classes (true) - without namespace / do not import' => [
             <<<'INPUT'
                 <?php
