@@ -1110,6 +1110,62 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
             $configuration,
         ];
 
+        yield 'wrapped operation as assigned value' => [
+            '<?php
+                $foo = 1 * $bar / self::BAZ;
+                $a = $b || $c;
+                $d = $e ? $f : $g;
+                $h = $i ?? $j;
+                $k = !$l;
+                $h = new Foo($i);
+                $j = new Foo;
+                $p = foo($q and $r) + 1;
+                $d = $b && $c instanceof Foo;
+                $m = $n . $o ?>',
+            '<?php
+                $foo = (1 * $bar / self::BAZ);
+                $a = ($b || $c);
+                $d = ($e ? $f : $g);
+                $h = ($i ?? $j);
+                $k = (!$l);
+                $h = (new Foo($i));
+                $j = (new Foo);
+                $p = (foo($q and $r) + 1);
+                $d = ($b && $c instanceof Foo);
+                $m = ($n . $o) ?>',
+            $configuration,
+        ];
+
+        yield 'wrapped multi-line operation as assigned value' => [
+            "<?php\n\$a = \n    \$b\n    && \$c\n;",
+            "<?php\n\$a = (\n    \$b\n    && \$c\n);",
+            $configuration,
+        ];
+
+        yield 'wrapped operation as assigned value, not with others' => [
+            '<?php $foo = (1 * $bar / self::BAZ);',
+            null,
+            ['statements' => ['return']],
+        ];
+
+        yield 'wrapped operation as assigned value, keep where precedence or readability matter' => [
+            '<?php
+                $a = ($b and $c);
+                $d = ($e or $f);
+                $g = ($h xor $i);
+                $j = ($k = $l);
+                $m = ($n .= $o);
+                $k = ($l ??= $m);
+                $p = ($q++);
+                $r = (--$s);
+                $anonymous = (new class {});
+                $g = ($b instanceof Foo and $c);
+                $t = ($u + $v) * $w;
+                $x += ($y + $z);',
+            null,
+            $configuration,
+        ];
+
         yield 'wrapped function call, op + call as arg' => [
             '<?php $bk = foo(1 + bar()) ?>',
             '<?php $bk = (foo(1 + bar())) ?>',
