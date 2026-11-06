@@ -293,7 +293,7 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
 
         $tokensToInsert = [];
         for ($index = $start; $index < $end; ++$index) {
-            if (!$functionsAnalyzer->isGlobalFunctionCall($tokens, $index)) {
+            if (!$functionsAnalyzer->isGlobalFunctionUsage($tokens, $index)) {
                 continue;
             }
 
