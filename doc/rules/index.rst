@@ -806,6 +806,9 @@ PHPDoc
 - `phpdoc_no_useless_inheritdoc <./phpdoc/phpdoc_no_useless_inheritdoc.rst>`_
 
   Classy that does not inherit must not have ``@inheritdoc`` tags.
+- `phpdoc_nullable_type <./phpdoc/phpdoc_nullable_type.rst>`_ *(configurable)*
+
+  Nullable PHPDoc types should be standardised using configured syntax.
 - `phpdoc_order_by_value <./phpdoc/phpdoc_order_by_value.rst>`_ *(configurable)*
 
   Order PHPDoc tags by value.
