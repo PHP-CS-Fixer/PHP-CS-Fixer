@@ -32,7 +32,23 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
+    /**
+     * Width (in columns) of one indentation level in the source being fixed,
+     * also used as the tab stop width when expanding tabs.
+     */
+    private const SOURCE_INDENT_WIDTH = 4;
+
     private string $indent;
+
+    private bool $useTabs;
+
+    /**
+     * Memoized results of {@see convertIndent()}; only a handful of distinct
+     * indentation strings occur in a file.
+     *
+     * @var array<string, string>
+     */
+    private array $convertedIndents = [];
 
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -63,79 +79,130 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $this->indent = $this->whitespacesConfig->getIndent();
+        $this->useTabs = "\t" === $this->indent;
+        $this->convertedIndents = [];
 
         foreach ($tokens as $index => $token) {
-            if ($token->isComment()) {
-                $tokens[$index] = $this->fixIndentInComment($tokens, $index);
+            // Comparing ids avoids Token::isWhitespace() (a trim() on every
+            // punctuation token) and Token::isComment() (an in_array()).
+            $id = $token->getId();
 
+            if (\T_WHITESPACE === $id) {
+                $content = $this->fixIndentInWhitespace($tokens, $index, $token->getContent());
+            } elseif (\T_COMMENT === $id || \T_DOC_COMMENT === $id) {
+                $content = $this->fixIndentInComment($token->getContent());
+            } else {
                 continue;
             }
 
-            if ($token->isWhitespace()) {
-                $tokens[$index] = $this->fixIndentToken($tokens, $index);
-
-                continue;
+            if (null !== $content) {
+                $tokens[$index] = new Token([$id, $content]);
             }
         }
-    }
-
-    private function fixIndentInComment(Tokens $tokens, int $index): Token
-    {
-        $content = Preg::replace('/^(?:(?<! ) {1,3})?\t/m', '\1    ', $tokens[$index]->getContent(), -1, $count);
-
-        // Also check for more tabs.
-        while (0 !== $count) {
-            $content = Preg::replace('/^(\ +)?\t/m', '\1    ', $content, -1, $count);
-        }
-
-        $indent = $this->indent;
-
-        // change indent to expected one
-        $content = Preg::replaceCallback('/^(?:    )+/m', fn (array $matches): string => $this->getExpectedIndent($matches[0], $indent), $content);
-
-        return new Token([$tokens[$index]->getId(), $content]);
-    }
-
-    private function fixIndentToken(Tokens $tokens, int $index): Token
-    {
-        $content = $tokens[$index]->getContent();
-        $previousTokenHasTrailingLinebreak = false;
-
-        // @TODO this can be removed when we have a transformer for "T_OPEN_TAG" to "T_OPEN_TAG + T_WHITESPACE"
-        if (str_contains($tokens[$index - 1]->getContent(), "\n")) {
-            $content = "\n".$content;
-            $previousTokenHasTrailingLinebreak = true;
-        }
-
-        $indent = $this->indent;
-        $newContent = Preg::replaceCallback(
-            '/(\R)(\h+)/', // find indent
-            function (array $matches) use ($indent): string {
-                // normalize mixed indent
-                $content = Preg::replace('/(?:(?<! ) {1,3})?\t/', '    ', $matches[2]);
-
-                // change indent to expected one
-                return $matches[1].$this->getExpectedIndent($content, $indent);
-            },
-            $content,
-        );
-
-        if ($previousTokenHasTrailingLinebreak) {
-            $newContent = substr($newContent, 1);
-        }
-
-        return new Token([\T_WHITESPACE, $newContent]);
     }
 
     /**
-     * @return string mixed
+     * @return null|string new content, or null when nothing needs to change
      */
-    private function getExpectedIndent(string $content, string $indent): string
+    private function fixIndentInComment(string $content): ?string
     {
-        if ("\t" === $indent) {
-            $content = str_replace('    ', $indent, $content);
+        // The indentation of a comment's first line is a separate whitespace
+        // token, so only comments spanning several lines can contain any.
+        if (false === strpbrk($content, "\r\n")) {
+            return null;
         }
 
-        return $content;
+        // Without a configured tab there is nothing to do for space-only indentation.
+        if (!$this->useTabs && !str_contains($content, "\t")) {
+            return null;
+        }
+
+        $newContent = Preg::replaceCallback(
+            '/^[ \t]+/m',
+            fn (array $matches): string => $this->convertIndent($matches[0]),
+            $content,
+        );
+
+        return $newContent === $content ? null : $newContent;
+    }
+
+    /**
+     * @return null|string new content, or null when nothing needs to change
+     */
+    private function fixIndentInWhitespace(Tokens $tokens, int $index, string $content): ?string
+    {
+        // Most whitespace tokens are single spaces between tokens.
+        if (!$this->useTabs) {
+            // Spaces are kept as they are, so only tabs can need conversion.
+            if (!str_contains($content, "\t")) {
+                return null;
+            }
+        } elseif (\strlen($content) === strspn($content, "\r\n\t")) {
+            // Tab indentation that is already tabs only.
+            return null;
+        }
+
+        $previousTokenEndsWithLinebreak = false;
+
+        if ($index > 0) {
+            $previousContent = $tokens[$index - 1]->getContent();
+
+            // whitespace is indentation only when it starts a line, i.e. the
+            // previous token ENDS with a line break (not merely contains one)
+            if ('' !== $previousContent && ("\n" === $previousContent[-1] || "\r" === $previousContent[-1])) {
+                $previousTokenEndsWithLinebreak = true;
+            }
+        }
+
+        // mid-line whitespace: no line break inside and not at the start of a line
+        if (!$previousTokenEndsWithLinebreak && false === strpbrk($content, "\r\n")) {
+            return null;
+        }
+
+        $subject = $previousTokenEndsWithLinebreak ? "\n".$content : $content;
+        $newContent = Preg::replaceCallback(
+            '/(\R)([ \t]+)/', // find indent
+            fn (array $matches): string => $matches[1].$this->convertIndent($matches[2]),
+            $subject,
+        );
+
+        if ($previousTokenEndsWithLinebreak) {
+            $newContent = substr($newContent, 1);
+        }
+
+        return $newContent === $content ? null : $newContent;
+    }
+
+    /**
+     * Converts leading whitespace (any mix of spaces and tabs, starting at
+     * column 0) to the configured indentation type.
+     *
+     * Tabs are first expanded to the next tab stop. When the configured indent
+     * is a tab, each whole level becomes a tab and any remainder is kept as
+     * alignment spaces. For any other configured indent, the result is plain
+     * spaces of the same width: existing spaces are left untouched and a tab
+     * becomes one level of SOURCE_INDENT_WIDTH spaces.
+     */
+    private function convertIndent(string $leadingWhitespace): string
+    {
+        return $this->convertedIndents[$leadingWhitespace] ??= $this->computeIndent($leadingWhitespace);
+    }
+
+    private function computeIndent(string $leadingWhitespace): string
+    {
+        $width = 0;
+
+        for ($i = 0, $length = \strlen($leadingWhitespace); $i < $length; ++$i) {
+            $width += "\t" === $leadingWhitespace[$i]
+                ? self::SOURCE_INDENT_WIDTH - ($width % self::SOURCE_INDENT_WIDTH)
+                : 1;
+        }
+
+        if (!$this->useTabs) {
+            return str_repeat(' ', $width);
+        }
+
+        return str_repeat("\t", intdiv($width, self::SOURCE_INDENT_WIDTH))
+            .str_repeat(' ', $width % self::SOURCE_INDENT_WIDTH);
     }
 }
