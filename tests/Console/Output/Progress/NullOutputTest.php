@@ -29,12 +29,11 @@ use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 #[CoversClass(NullOutput::class)]
 final class NullOutputTest extends TestCase
 {
-    /**
-     * @doesNotPerformAssertions
-     */
     #[DoesNotPerformAssertions]
     public function testNullOutput(): void
     {
+        $this->expectNotToPerformAssertions();
+
         $output = new NullOutput();
         $output->printLegend();
     }

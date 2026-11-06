@@ -148,14 +148,14 @@ final class FileRemovalTest extends TestCase
      * @runInSeparateProcess
      *
      * @preserveGlobalState disabled
-     *
-     * @doesNotPerformAssertions
      */
     #[RunInSeparateProcess]
     #[PreserveGlobalState(false)]
     #[DoesNotPerformAssertions]
     public function testShutdownRemovesObservedFilesSetup(): void
     {
+        $this->expectNotToPerformAssertions();
+
         self::$removeFilesOnTearDown = false;
 
         $fileToBeDeleted = sys_get_temp_dir().'/cs_fixer_foo.php';
