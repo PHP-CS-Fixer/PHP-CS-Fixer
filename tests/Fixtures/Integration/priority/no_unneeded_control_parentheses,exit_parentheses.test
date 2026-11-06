@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: no_unneeded_control_parentheses,exit_parentheses.
+--RULESET--
+{"no_unneeded_control_parentheses": {"statements": ["others"]}, "exit_parentheses": true}
+--EXPECT--
+<?php
+exit();
+die();
+
+--INPUT--
+<?php
+exit();
+die;
