@@ -680,6 +680,12 @@ final class ConfigurationResolver
             $this->format = $parts[0];
 
             if ('@auto' === $this->format) {
+                if (filter_var(getenv('GITHUB_ACTIONS'), \FILTER_VALIDATE_BOOL)) {
+                    $this->format = 'github';
+
+                    return $this->format;
+                }
+
                 if (filter_var(getenv('GITLAB_CI'), \FILTER_VALIDATE_BOOL)) {
                     $this->format = 'gitlab';
 
