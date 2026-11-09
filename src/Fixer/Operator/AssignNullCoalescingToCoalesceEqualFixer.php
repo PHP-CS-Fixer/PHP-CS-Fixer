@@ -71,4 +71,15 @@ final class AssignNullCoalescingToCoalesceEqualFixer extends AbstractShortOperat
     {
         return new Token([\T_COALESCE_EQUAL, '??=']);
     }
+
+    /**
+     * Any assignment target is eligible for `??=`; unlike the shorthand
+     * arithmetic rewrites, this rule never adds an evaluation of the target.
+     *
+     * @param array{start: int, end: int} $assignRange
+     */
+    protected function isAssignTargetCandidate(Tokens $tokens, array $assignRange): bool
+    {
+        return true;
+    }
 }
