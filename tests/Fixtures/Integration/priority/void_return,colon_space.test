@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: void_return,colon_space.
+--RULESET--
+{"void_return": true, "colon_space": {"space_before_return_type": "one"}}
+--EXPECT--
+<?php
+function test() : void {}
+
+--INPUT--
+<?php
+function test() {}

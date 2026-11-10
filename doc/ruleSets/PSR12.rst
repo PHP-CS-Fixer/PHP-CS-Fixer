@@ -47,7 +47,6 @@ Rules
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
 
-- `return_type_declaration <./../rules/function_notation/return_type_declaration.rst>`_
 - `short_scalar_cast <./../rules/cast_notation/short_scalar_cast.rst>`_
 - `single_import_per_statement <./../rules/import/single_import_per_statement.rst>`_ with config:
 
