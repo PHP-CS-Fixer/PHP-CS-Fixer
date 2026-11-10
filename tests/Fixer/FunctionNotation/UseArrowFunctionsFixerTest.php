@@ -345,5 +345,57 @@ $load = function ($path) use ($data) {
                 }
                 PHP,
         ];
+
+        yield 'do not convert closure on the right-hand side of pipe operator' => [
+            <<<'PHP'
+                <?php
+                $result = 5
+                    |> function ($v) { return $v + 1; }
+                    |> strval(...);
+                PHP,
+        ];
+
+        yield 'do not convert static closure on the right-hand side of pipe operator' => [
+            <<<'PHP'
+                <?php
+                $result = $value |> static function (int $v): int { return $v * 2; };
+                PHP,
+        ];
+
+        yield 'do not convert closure with attribute on the right-hand side of pipe operator' => [
+            <<<'PHP'
+                <?php
+                $result = $value |> #[Pure] static function (int $v): int { return $v * 2; };
+                PHP,
+        ];
+
+        yield 'do not convert closure on the left-hand side of pipe operator' => [
+            <<<'PHP'
+                <?php
+                $double = static function (int $v): int { return $v * 2; } |> memoize(...);
+                PHP,
+        ];
+
+        yield 'convert parenthesized closure in pipe chain' => [
+            <<<'PHP'
+                <?php
+                $result = 5 |> (fn ($v) => $v + 1) |> strval(...);
+                PHP,
+            <<<'PHP'
+                <?php
+                $result = 5 |> (function ($v) { return $v + 1; }) |> strval(...);
+                PHP,
+        ];
+
+        yield 'convert closure used as argument in pipe chain' => [
+            <<<'PHP'
+                <?php
+                $result = 5 |> wrap(fn ($v) => $v + 1) |> strval(...);
+                PHP,
+            <<<'PHP'
+                <?php
+                $result = 5 |> wrap(function ($v) { return $v + 1; }) |> strval(...);
+                PHP,
+        ];
     }
 }
