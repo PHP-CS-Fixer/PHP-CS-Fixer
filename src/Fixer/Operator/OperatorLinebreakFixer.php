@@ -105,6 +105,16 @@ final class OperatorLinebreakFixer extends AbstractFixer implements Configurable
         );
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run before NoLineBreakNearBinaryOperatorFixer.
+     */
+    public function getPriority(): int
+    {
+        return 32;
+    }
+
     public function isCandidate(Tokens $tokens): bool
     {
         return true;
