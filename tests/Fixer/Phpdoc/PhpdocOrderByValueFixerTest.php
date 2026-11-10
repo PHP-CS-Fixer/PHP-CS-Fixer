@@ -93,6 +93,68 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
      */
     public static function provideFixCases(): iterable
     {
+        yield 'annotations on DocBlock boundary lines' => [
+            <<<'PHP'
+                <?php
+                /**
+                 * @author Alpha
+                 * @author Zed
+                 */
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+            <<<'PHP'
+                <?php
+                /** @author Zed
+                 * @author Alpha */
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+            ['annotations' => ['author']],
+        ];
+
+        yield 'ordered annotations on DocBlock boundary lines stay compact' => [
+            <<<'PHP'
+                <?php
+                /** @author Alpha
+                 * @author Zed */
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+            null,
+            ['annotations' => ['author']],
+        ];
+
+        yield 'closing boundary on annotation continuation' => [
+            <<<'PHP'
+                <?php
+                /**
+                 * @author Alpha
+                 * description
+                 * @author Zed
+                 */
+                class Foo {}
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
+                 * @author Zed
+                 * @author Alpha
+                 * description */
+                class Foo {}
+                PHP,
+            ['annotations' => ['author']],
+        ];
+
+        yield 'ordered annotations with continuation stay compact' => [
+            <<<'PHP'
+                <?php
+                /** @author Alpha
+                 * @author Zed
+                 * description */
+                class Foo {}
+                PHP,
+            null,
+            ['annotations' => ['author']],
+        ];
+
         yield 'author - skip on 1 or 0 occurrences' => [
             '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase {
