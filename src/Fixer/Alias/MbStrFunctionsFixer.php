@@ -152,23 +152,10 @@ final class MbStrFunctionsFixer extends AbstractFixer implements ConfigurableFix
 
     protected function configurePostNormalisation(): void
     {
-        $this->functions = [];
-
-        foreach ($this->configuration['functions'] as $functionName) {
-            \assert(isset(self::$functionsMap[$functionName]));
-
-            $mapping = self::$functionsMap[$functionName];
-
-            if (!\function_exists($mapping['alternativeName'])) {
-                continue;
-            }
-
-            if (!(new \ReflectionFunction($mapping['alternativeName']))->isInternal()) {
-                continue;
-            }
-
-            $this->functions[$functionName] = $mapping;
-        }
+        $this->functions = array_filter(
+            array_intersect_key(self::$functionsMap, array_flip($this->configuration['functions'])),
+            static fn (array $mapping): bool => \function_exists($mapping['alternativeName']) && (new \ReflectionFunction($mapping['alternativeName']))->isInternal(),
+        );
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
