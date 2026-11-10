@@ -507,16 +507,45 @@ $a#
     }
 
     /**
-     * @return iterable<int, array{string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFix80Cases(): iterable
     {
         yield [
             '<?php function foo(
+    #[MyAttr(1, 2)] Type $myParam,
+) {}
+
+$foo1b = function() use ($bar, ) {};
+',
+            '<?php function foo(
     #[MyAttr(1, 2,)] Type $myParam,
 ) {}
 
 $foo1b = function() use ($bar, ) {};
+',
+        ];
+
+        yield [
+            '<?php
+#[Foo(1, 2)]
+#[A, B(1), C(x: 1)]
+#[\Foo\Bar(1)]
+class Foo {}
+#[Foo(
+    1,
+)]
+class Bar {}
+',
+            '<?php
+#[Foo(1, 2,)]
+#[A, B(1,), C(x: 1,)]
+#[\Foo\Bar(1,)]
+class Foo {}
+#[Foo(
+    1,
+)]
+class Bar {}
 ',
         ];
     }
