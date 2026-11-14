@@ -838,6 +838,25 @@ switch (true) {
 ',
         ];
 
+        yield 'comment right after open tag inside block' => [
+            '<?php if ($a) { ?>
+<?php
+    // c
+    $t = 1;
+    ?>
+<div></div>
+<?php } ?>
+',
+            '<?php if ($a) { ?>
+<?php
+// c
+$t = 1;
+?>
+<div></div>
+<?php } ?>
+',
+        ];
+
         yield 'trait import with conflict resolution' => [
             '<?php
 class Foo {

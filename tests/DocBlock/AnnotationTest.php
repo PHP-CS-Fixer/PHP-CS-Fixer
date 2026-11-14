@@ -647,7 +647,7 @@ final class AnnotationTest extends TestCase
 
         foreach ($tags as $tag) {
             self::assertIsString($tag);
-            self::assertNotEmpty($tag);
+            self::assertNotSame('', $tag);
         }
     }
 

@@ -132,7 +132,7 @@ abstract class AbstractFixerTestCase extends TestCase
         }
 
         $samples = $definition->getCodeSamples();
-        self::assertNotEmpty($samples, \sprintf('[%s] Code samples are required.', $fixerName));
+        self::assertNotSame([], $samples, \sprintf('[%s] Code samples are required.', $fixerName));
 
         $configSamplesProvided = [];
         $dummyFileInfo = new StdinFileInfo();
@@ -140,7 +140,7 @@ abstract class AbstractFixerTestCase extends TestCase
         foreach ($samples as $sampleCounter => $sample) {
             $code = $sample->getCode();
 
-            self::assertNotEmpty($code, \sprintf('[%s] Sample #%d', $fixerName, $sampleCounter));
+            self::assertNotSame('', $code, \sprintf('[%s] Sample #%d', $fixerName, $sampleCounter));
 
             self::assertStringStartsNotWith("\n", $code, \sprintf('[%s] Sample #%d must not start with linebreak', $fixerName, $sampleCounter));
 
@@ -600,7 +600,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
     private static function assertOption(FixerOptionInterface $option, FixerInterface $fixer): void
     {
-        self::assertNotEmpty($option->getDescription());
+        self::assertNotSame('', $option->getDescription());
         self::assertValidDescription($fixer->getName(), 'option:'.$option->getName(), $option->getDescription());
 
         self::assertSame(
