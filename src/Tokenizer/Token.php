@@ -130,6 +130,7 @@ final class Token
             if ('&' === $other) {
                 return null === $this->id || $this->isGivenKind([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]);
             }
+
             if (null === $this->id) {
                 return $other instanceof self && '&' === $other->content && (null === $other->id || $other->isGivenKind([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]));
             }
