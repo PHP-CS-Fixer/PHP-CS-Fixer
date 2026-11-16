@@ -2761,6 +2761,19 @@ interface SomeClass
 define(\'FOO_BAR\', true);',
         ];
 
+        yield 'ignore @see with function reference' => [
+            '<?php
+
+use Foo\Bar;
+
+/**
+ * @see bar()
+ * {@see bar()}
+ * @see \Foo\Bar()
+ */
+function baz(Bar $bar): void {}',
+        ];
+
         yield 'Respect whitespace between phpDoc annotation and value' => [
             '<?php
 
