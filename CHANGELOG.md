@@ -3,6 +3,15 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.31
+----------------------
+
+* fix: `FullyQualifiedStrictTypesFixer` - do not treat function references in `@see` as types (#9937)
+* fix: `SingleSpaceAroundConstructFixer` - do not add space after `clone` followed by `(` (#9900)
+* perf: Optimize `BracesPositionFixer` performance (#9924)
+* perf: Skip ampersand special-casing in `Token::equals()` for other tokens (#9891)
+* deps: bump crate-ci/typos from 1.52.0 to 1.52.2 in /.github/workflows in the all group across 1 directory (#9935)
+
 Changelog for v3.95.30
 ----------------------
 
