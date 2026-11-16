@@ -1,0 +1,16 @@
+dev-tools/composer.json
+  h_44235ea8856697 12
+dev-tools/composer.lock
+  h_44235ea8856697 7,817,820-821
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "d399ab544c9ffa45f5c42fad0a9f94d46d108bea",
+  "prompts": {},
+  "humans": {
+    "h_44235ea8856697": {
+      "author": "Dariusz Ruminski <dariusz.ruminski@gmail.com>"
+    }
+  }
+}
