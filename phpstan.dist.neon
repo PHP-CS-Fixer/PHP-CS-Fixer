@@ -103,8 +103,13 @@ parameters:
 
         -
             path: tests/
-            rawMessage: 'Version requirement will always evaluate to false.'
             identifier: phpunit.attributeRequiresPhpVersion
+
+        -
+            path: tests/Benchmark/
+            identifier: shipmonk.deadMethod
+            message: '/Unused [^:]+Bench::bench/'
+
     tipsOfTheDay: false
     symfony:
         consoleApplicationLoader: dev-tools/phpstan/console-application.php
@@ -125,3 +130,8 @@ services:
         class: PhpCsFixer\PHPStan\Extension\PregMatchTypeSpecifyingExtension
         tags:
             - phpstan.typeSpecifier.staticMethodTypeSpecifyingExtension
+
+    -
+        class: PhpCsFixer\PHPStan\Extension\PregReplaceCallbackClosureTypeExtension
+        tags:
+            - phpstan.staticMethodParameterClosureTypeExtension

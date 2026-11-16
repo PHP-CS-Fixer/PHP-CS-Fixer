@@ -25,6 +25,8 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
@@ -222,6 +224,21 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
                         }
 
                         PHP,
+                    ['import_symbols' => true],
+                ),
+                new VersionSpecificCodeSample(
+                    <<<'PHP'
+                        <?php
+
+                        namespace Foo\Test;
+
+                        #[\Some\Attribute]
+                        class Foo
+                        {
+                        }
+
+                        PHP,
+                    new VersionSpecification(8_00_00),
                     ['import_symbols' => true],
                 ),
             ],
@@ -670,7 +687,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
         $phpDoc = $tokens[$index];
         $phpDocContent = $phpDoc->getContent();
         $phpDocContentNew = Preg::replaceCallback('/([*{]\h*@)(\S+)(\h+)('.TypeExpression::REGEX_TYPES.')(?!(?!\})\S)/', function ($matches) use ($allowedTags, $uses, $namespaceName) {
-            if (!\in_array($matches[2], $allowedTags, true)) {
+            if (!\in_array($matches[2], $allowedTags, true) || ('see' === $matches[2] && str_ends_with($matches[4], '()'))) {
                 return $matches[0];
             }
 

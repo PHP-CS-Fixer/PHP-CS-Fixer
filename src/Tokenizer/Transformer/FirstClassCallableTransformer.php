@@ -31,14 +31,21 @@ final class FirstClassCallableTransformer extends AbstractTransformer
         return 8_01_00;
     }
 
-    public function process(Tokens $tokens, Token $token, int $index): void
+    public function isCandidate(Tokens $tokens): bool
     {
-        if (
-            $token->isGivenKind(\T_ELLIPSIS)
-            && $tokens[$tokens->getPrevMeaningfulToken($index)]->equals('(')
-            && $tokens[$tokens->getNextMeaningfulToken($index)]->equals(')')
-        ) {
-            $tokens[$index] = new Token([CT::T_FIRST_CLASS_CALLABLE, '...']);
+        return $tokens->isTokenKindFound(\T_ELLIPSIS);
+    }
+
+    public function process(Tokens $tokens): void
+    {
+        foreach ($tokens as $index => $token) {
+            if (
+                $token->isGivenKind(\T_ELLIPSIS)
+                && $tokens[$tokens->getPrevMeaningfulToken($index)]->equals('(')
+                && $tokens[$tokens->getNextMeaningfulToken($index)]->equals(')')
+            ) {
+                $tokens[$index] = new Token([CT::T_FIRST_CLASS_CALLABLE, '...']);
+            }
         }
     }
 

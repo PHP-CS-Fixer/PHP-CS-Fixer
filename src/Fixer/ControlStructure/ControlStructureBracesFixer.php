@@ -42,6 +42,17 @@ final class ControlStructureBracesFixer extends AbstractFixer
         \T_SWITCH,
     ];
 
+    /**
+     * Control structures that take no condition, so that a parenthesis
+     * following one of them opens their body rather than closing a condition.
+     */
+    private const CONDITIONLESS_CONTROL_TOKENS = [
+        \T_DO,
+        \T_ELSE,
+        \T_FINALLY,
+        \T_TRY,
+    ];
+
     private const CONTROL_CONTINUATION_TOKENS = [
         \T_IF => [\T_ELSE, \T_ELSEIF],
         \T_DO => [\T_WHILE],
@@ -146,6 +157,10 @@ final class ControlStructureBracesFixer extends AbstractFixer
 
     private function findParenthesisEnd(Tokens $tokens, int $structureTokenIndex): int
     {
+        if ($tokens[$structureTokenIndex]->isGivenKind(self::CONDITIONLESS_CONTROL_TOKENS)) {
+            return $structureTokenIndex;
+        }
+
         $nextIndex = $tokens->getNextMeaningfulToken($structureTokenIndex);
         $nextToken = $tokens[$nextIndex];
 

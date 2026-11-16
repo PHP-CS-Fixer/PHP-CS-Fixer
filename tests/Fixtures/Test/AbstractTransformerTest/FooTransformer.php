@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,32 +15,27 @@
 namespace PhpCsFixer\Tests\Fixtures\Test\AbstractTransformerTest;
 
 use PhpCsFixer\Tokenizer\AbstractTransformer;
-use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FooTransformer extends AbstractTransformer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getRequiredPhpVersionId(): int
     {
-        return 50000;
+        return 50_000;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process(Tokens $tokens, Token $token, int $index): void
+    public function isCandidate(Tokens $tokens): bool
     {
+        return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function process(Tokens $tokens): void {}
+
     public function getCustomTokens(): array
     {
         return [];

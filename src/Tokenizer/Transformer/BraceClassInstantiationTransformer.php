@@ -42,37 +42,44 @@ final class BraceClassInstantiationTransformer extends AbstractTransformer
         return 5_00_00;
     }
 
-    public function process(Tokens $tokens, Token $token, int $index): void
+    public function isCandidate(Tokens $tokens): bool
     {
-        if (!$tokens[$index]->equals('(') || !$tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind(\T_NEW)) {
-            return;
+        return $tokens->isTokenKindFound(\T_NEW);
+    }
+
+    public function process(Tokens $tokens): void
+    {
+        foreach ($tokens as $index => $token) {
+            if (!$tokens[$index]->equals('(') || !$tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind(\T_NEW)) {
+                continue;
+            }
+
+            if ($tokens[$tokens->getPrevMeaningfulToken($index)]->equalsAny([
+                ')',
+                ']',
+                [CT::T_ARRAY_INDEX_BRACE_CLOSE],
+                [CT::T_ARRAY_BRACKET_CLOSE],
+                [CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE],
+                [\T_ARRAY],
+                [\T_CLASS],
+                [\T_ELSEIF],
+                [\T_FOR],
+                [\T_FOREACH],
+                [\T_IF],
+                [\T_STATIC],
+                [\T_STRING],
+                [\T_SWITCH],
+                [\T_VARIABLE],
+                [\T_WHILE],
+            ])) {
+                continue;
+            }
+
+            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
+
+            $tokens[$index] = new Token([CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN, '(']);
+            $tokens[$closeIndex] = new Token([CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE, ')']);
         }
-
-        if ($tokens[$tokens->getPrevMeaningfulToken($index)]->equalsAny([
-            ')',
-            ']',
-            [CT::T_ARRAY_INDEX_BRACE_CLOSE],
-            [CT::T_ARRAY_BRACKET_CLOSE],
-            [CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE],
-            [\T_ARRAY],
-            [\T_CLASS],
-            [\T_ELSEIF],
-            [\T_FOR],
-            [\T_FOREACH],
-            [\T_IF],
-            [\T_STATIC],
-            [\T_STRING],
-            [\T_SWITCH],
-            [\T_VARIABLE],
-            [\T_WHILE],
-        ])) {
-            return;
-        }
-
-        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
-
-        $tokens[$index] = new Token([CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN, '(']);
-        $tokens[$closeIndex] = new Token([CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE, ')']);
     }
 
     public function getCustomTokens(): array

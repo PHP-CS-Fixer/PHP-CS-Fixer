@@ -195,6 +195,18 @@ final class AssignNullCoalescingToCoalesceEqualFixerTest extends AbstractFixerTe
             ',
         ];
 
+        yield 'do not fix, no ";", "?" nor close tag after "??"' => [
+            '<?php
+                foreach ($a ?? [] as $b) {}
+                while ($a ?? false) {}
+            ',
+        ];
+
+        yield 'assignment, no ";", "?" nor close tag after "??"' => [
+            '<?php if ($a ??= 1) {}',
+            '<?php if ($a = $a ?? 1) {}',
+        ];
+
         yield 'do not fix because of precedence 1' => [
             '<?php $a = $a ?? $b ? $c : $d;',
         ];

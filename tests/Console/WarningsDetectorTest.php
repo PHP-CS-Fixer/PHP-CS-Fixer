@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Console;
 
 use PhpCsFixer\ComposerJsonReader;
 use PhpCsFixer\Console\WarningsDetector;
+use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfoInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -89,7 +90,7 @@ final class WarningsDetectorTest extends TestCase
 
         $warnings = $warningsDetector->getWarnings();
 
-        self::assertNotEmpty($warnings);
+        self::assertNotSame([], $warnings);
         self::assertStringStartsWith(
             \sprintf(
                 'You are running PHP CS Fixer on PHP %s, but the minimum PHP version supported by your project in composer.json is PHP %s',
@@ -113,8 +114,7 @@ final class WarningsDetectorTest extends TestCase
             throw new \RuntimeException('Unable to determine current working directory');
         }
 
-        $tempDir = sys_get_temp_dir().\DIRECTORY_SEPARATOR.'phpcsfixer_test_'.uniqid('', true);
-        mkdir($tempDir);
+        $tempDir = TestCaseUtils::createTemporaryDirectory();
 
         try {
             // Change to temp directory so ComposerJsonReader looks for composer.json there.
@@ -160,8 +160,7 @@ final class WarningsDetectorTest extends TestCase
             throw new \RuntimeException('Unable to determine current working directory');
         }
 
-        $tempDir = sys_get_temp_dir().\DIRECTORY_SEPARATOR.'phpcsfixer_test_'.uniqid('', true);
-        mkdir($tempDir);
+        $tempDir = TestCaseUtils::createTemporaryDirectory();
 
         try {
             // Change to temp directory so ComposerJsonReader looks for composer.json there.
@@ -174,7 +173,7 @@ final class WarningsDetectorTest extends TestCase
 
             $warnings = $warningsDetector->getWarnings();
 
-            self::assertNotEmpty($warnings);
+            self::assertNotSame([], $warnings);
             self::assertStringContainsString('Unable to determine minimum PHP version supported by your project from composer.json:', $warnings[0]);
         } finally {
             chdir($originalDir);
@@ -195,8 +194,7 @@ final class WarningsDetectorTest extends TestCase
             throw new \RuntimeException('Unable to determine current working directory');
         }
 
-        $tempDir = sys_get_temp_dir().\DIRECTORY_SEPARATOR.'phpcsfixer_test_'.uniqid('', true);
-        mkdir($tempDir);
+        $tempDir = TestCaseUtils::createTemporaryDirectory();
 
         try {
             // Change to temp directory so ComposerJsonReader looks for composer.json there.
@@ -215,7 +213,7 @@ final class WarningsDetectorTest extends TestCase
 
             $warnings = $warningsDetector->getWarnings();
 
-            self::assertNotEmpty($warnings);
+            self::assertNotSame([], $warnings);
             self::assertSame(
                 'No PHP version requirement found in composer.json. It is recommended to specify a minimum PHP version supported by your project.',
                 $warnings[0],

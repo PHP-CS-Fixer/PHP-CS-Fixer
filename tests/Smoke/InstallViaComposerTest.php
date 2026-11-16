@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\Smoke;
 use Keradus\CliExecutor\CommandExecutor;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Large;
@@ -132,9 +133,7 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
             self::fail('No zip extension available.');
         }
 
-        $tmpArtifactPath = tempnam(sys_get_temp_dir(), 'cs_fixer_tmp_');
-        unlink($tmpArtifactPath);
-        $this->fs->mkdir($tmpArtifactPath);
+        $tmpArtifactPath = TestCaseUtils::createTemporaryDirectory();
 
         $fakeVersion = Preg::replace('/\-.+/', '', Application::VERSION, 1).'-alpha987654321';
 
@@ -196,14 +195,7 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
      */
     private function createFakeComposerProject(array $initialComposerFileState): string
     {
-        $tmpPath = tempnam(sys_get_temp_dir(), 'cs_fixer_tmp_');
-
-        if (false === $tmpPath) {
-            throw new \RuntimeException('Creating directory for fake Composer project has failed.');
-        }
-
-        unlink($tmpPath);
-        $this->fs->mkdir($tmpPath);
+        $tmpPath = TestCaseUtils::createTemporaryDirectory();
 
         try {
             file_put_contents(

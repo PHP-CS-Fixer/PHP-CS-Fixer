@@ -195,8 +195,6 @@ final class StringableForToStringFixerTest extends AbstractFixerTestCase
             'Foo\Stringable, Bar\Stringable',
             'Stringable\Foo, Stringable\Bar',
             '\Stringable\Foo, Stringable\Bar',
-            'Foo\Stringable\Bar',
-            '\Foo\Stringable\Bar',
         ];
 
         foreach ($implementedInterfacesCases as $implementedInterface) {

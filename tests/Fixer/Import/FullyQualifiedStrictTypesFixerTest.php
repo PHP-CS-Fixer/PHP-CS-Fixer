@@ -2761,6 +2761,19 @@ interface SomeClass
 define(\'FOO_BAR\', true);',
         ];
 
+        yield 'ignore @see with function reference' => [
+            '<?php
+
+use Foo\Bar;
+
+/**
+ * @see bar()
+ * {@see bar()}
+ * @see \Foo\Bar()
+ */
+function baz(Bar $bar): void {}',
+        ];
+
         yield 'Respect whitespace between phpDoc annotation and value' => [
             '<?php
 
@@ -2829,6 +2842,23 @@ function foo($a) {}',
                 <?php
                 namespace Foo;
                 $function = fn (): \Lib\Package\Bar => new \Lib\Package\Bar();
+                PHP,
+            ['import_symbols' => true],
+        ];
+
+        yield 'fix closure return type when closure has a use clause' => [
+            <<<'PHP'
+                <?php
+                namespace Foo;
+                use Lib\Package\Bar;
+                $bar = new Bar();
+                $function = function () use ($bar): ?Bar { return $bar; };
+                PHP,
+            <<<'PHP'
+                <?php
+                namespace Foo;
+                $bar = new \Lib\Package\Bar();
+                $function = function () use ($bar): ?\Lib\Package\Bar { return $bar; };
                 PHP,
             ['import_symbols' => true],
         ];

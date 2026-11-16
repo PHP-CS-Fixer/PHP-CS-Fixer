@@ -180,6 +180,18 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
             ['inline_constructor_arguments' => false],
         ];
 
+        yield 'anonymous class with both extends and implements keeps multiline constructor arguments (#9539)' => [
+            "<?php \$a = new class(\n\t\$a,\n\t\$b,\n) extends Foo implements A, B {};",
+            "<?php \$a = new   class  (\n\t\$a,\n\t\$b,\n)    extends  Foo   implements  A, \t B{};",
+            ['inline_constructor_arguments' => false],
+        ];
+
+        yield 'anonymous class with extends only keeps multiline constructor arguments' => [
+            "<?php \$a = new class(\n\t\$a,\n\t\$b,\n) extends Foo {};",
+            "<?php \$a = new   class  (\n\t\$a,\n\t\$b,\n)    extends  Foo  {};",
+            ['inline_constructor_arguments' => false],
+        ];
+
         yield [
             '<?php $a = new class($this->prop, $v[3], 4) {};',
             '<?php $a = new class(   $this->prop,$v[3],   4)         {};',

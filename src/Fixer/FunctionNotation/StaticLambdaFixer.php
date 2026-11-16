@@ -105,6 +105,10 @@ final class StaticLambdaFixer extends AbstractFixer
                 continue;
             }
 
+            if ($this->isDirectSubjectOfBinding($tokens, $index, $lambdaEndIndex)) {
+                continue; // "(function () {})->bindTo($foo)" would warn ("Cannot bind an instance to a static closure") once made static
+            }
+
             // make the lambda static
             $tokens->insertAt(
                 $index,
@@ -116,6 +120,44 @@ final class StaticLambdaFixer extends AbstractFixer
 
             $index -= 4; // fixed after a lambda, closes candidate is at least 4 tokens before that
         }
+    }
+
+    /**
+     * Returns 'true' if the lambda itself, wrapped in parentheses, is the direct subject
+     * of a '->bindTo(...)' or '->call(...)' invocation: making such a lambda static would
+     * produce "Cannot bind an instance to a static closure" (deprecated in PHP 8.5).
+     *
+     * @see https://wiki.php.net/rfc/deprecations_php_8_5#deprecate_closure_binding_issues
+     */
+    private function isDirectSubjectOfBinding(Tokens $tokens, int $lambdaIndex, int $lambdaEndIndex): bool
+    {
+        $afterLambdaIndex = $tokens->getNextMeaningfulToken($lambdaEndIndex);
+
+        if (null === $afterLambdaIndex || !$tokens[$afterLambdaIndex]->equals(')')) {
+            return false;
+        }
+
+        $wrapStartIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $afterLambdaIndex);
+
+        if ($tokens->getNextMeaningfulToken($wrapStartIndex) !== $lambdaIndex) {
+            return false; // the parentheses contain more than the lambda
+        }
+
+        $beforeWrapIndex = $tokens->getPrevMeaningfulToken($wrapStartIndex);
+
+        if (null !== $beforeWrapIndex && $tokens[$beforeWrapIndex]->equalsAny([')', ']', [\T_STRING], [\T_VARIABLE], [CT::T_ARRAY_INDEX_BRACE_CLOSE]])) {
+            return false; // the lambda is an argument of a call, whose return value is the subject instead
+        }
+
+        $objectOperatorIndex = $tokens->getNextMeaningfulToken($afterLambdaIndex);
+
+        if (!$tokens[$objectOperatorIndex]->isObjectOperator()) {
+            return false;
+        }
+
+        $methodIndex = $tokens->getNextMeaningfulToken($objectOperatorIndex);
+
+        return $tokens[$methodIndex]->equalsAny([[\T_STRING, 'bindTo'], [\T_STRING, 'call']], false);
     }
 
     /**

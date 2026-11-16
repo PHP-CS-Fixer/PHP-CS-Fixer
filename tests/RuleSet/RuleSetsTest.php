@@ -85,7 +85,7 @@ final class RuleSetsTest extends TestCase
         $supportedPhpVersions = CiReader::getAllPhpVersionsUsedByCiForTests();
 
         $sets = RuleSets::getSetDefinitions();
-        self::assertNotEmpty($supportedPhpVersions);
+        self::assertNotSame([], $supportedPhpVersions);
         foreach ($supportedPhpVersions as $version) {
             foreach (['', ':risky'] as $suffix) {
                 $setName = \sprintf('@PHP%sMigration%s', str_replace('.', 'x', $version), $suffix);

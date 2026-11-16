@@ -11,6 +11,9 @@ inputs:
     description: Enable coverage driver
     required: false
     default: 'no'
+  extensions:
+    description: PHP extensions
+    required: false
   tools:
     description: tools
     required: false
@@ -50,6 +53,7 @@ runs:
         version: ${{ inputs.php }}
         coverage: ${{ steps.setup-php-resolve-coverage.outputs.result }}
         tools: ${{ steps.setup-php-resolve-tools.outputs.result }}, ${{ inputs.tools }}
+        extensions: ${{ inputs.extensions }}
 
     - name: Configure Symfony Flex
       if: inputs.composer-flex-with-symfony-version

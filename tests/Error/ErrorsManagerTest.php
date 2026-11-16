@@ -34,9 +34,9 @@ final class ErrorsManagerTest extends TestCase
         $errorsManager = new ErrorsManager();
 
         self::assertTrue($errorsManager->isEmpty());
-        self::assertEmpty($errorsManager->getInvalidErrors());
-        self::assertEmpty($errorsManager->getExceptionErrors());
-        self::assertEmpty($errorsManager->getLintErrors());
+        self::assertCount(0, $errorsManager->getInvalidErrors());
+        self::assertCount(0, $errorsManager->getExceptionErrors());
+        self::assertCount(0, $errorsManager->getLintErrors());
     }
 
     public function testThatCanReportAndRetrieveInvalidErrors(): void

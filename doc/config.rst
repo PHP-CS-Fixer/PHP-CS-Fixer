@@ -19,7 +19,7 @@ which lets you configure the rules, finder (the files and directories that
 need to be analysed), select output format and even configure path to ``PHP``.
 
 You may also create ``.php-cs-fixer.php`` file, which is
-the local configuration that will be used instead of the project configuration.
+the local configuration that will take precedence over default.
 You can use it to customise for your environment (like path to ``PHP``) or preference (like output format or progress indicator),
 while ruleset / finder shall be re-imported from project configuration.
 It is a good practice to add that file into your ``.gitignore`` file.

@@ -90,7 +90,6 @@ final class DocumentationTest extends TestCase
                 )
             /x',
             static function (array $matches) use ($actual): string {
-                /** @var array{before: string, after: string} $matches */
                 $before = preg_quote($matches['before'], '/');
                 $after = preg_quote($matches['after'], '/');
 

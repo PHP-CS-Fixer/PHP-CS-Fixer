@@ -14,9 +14,10 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests;
 
-use org\bovigo\vfs\vfsStream;
 use PhpCsFixer\FileReader;
+use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PHPUnit\Framework\Attributes\CoversClass;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @author ntzm
@@ -30,6 +31,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(FileReader::class)]
 final class FileReaderTest extends TestCase
 {
+    private string $directory;
+
     public static function tearDownAfterClass(): void
     {
         parent::tearDownAfterClass();
@@ -38,6 +41,20 @@ final class FileReaderTest extends TestCase
         // php://stdin. Restore the original stream wrapper after this class so
         // we don't affect other tests running after it
         stream_wrapper_restore('php');
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->directory = TestCaseUtils::createTemporaryDirectory();
+    }
+
+    protected function tearDown(): void
+    {
+        (new Filesystem())->remove($this->directory);
+
+        parent::tearDown();
     }
 
     public function testCreateSingleton(): void
@@ -49,13 +66,11 @@ final class FileReaderTest extends TestCase
 
     public function testRead(): void
     {
-        $fs = vfsStream::setup('root', null, [
-            'foo.php' => '<?php echo "hi";',
-        ]);
+        file_put_contents($this->directory.'/foo.php', '<?php echo "hi";');
 
         $reader = new FileReader();
 
-        self::assertSame('<?php echo "hi";', $reader->read($fs->url().'/foo.php'));
+        self::assertSame('<?php echo "hi";', $reader->read($this->directory.'/foo.php'));
     }
 
     public function testReadStdinCaches(): void
@@ -73,8 +88,7 @@ final class FileReaderTest extends TestCase
 
     public function testThrowsExceptionOnFail(): void
     {
-        $fs = vfsStream::setup();
-        $nonExistentFilePath = $fs->url().'/non-existent.php';
+        $nonExistentFilePath = $this->directory.'/non-existent.php';
 
         $reader = new FileReader();
 

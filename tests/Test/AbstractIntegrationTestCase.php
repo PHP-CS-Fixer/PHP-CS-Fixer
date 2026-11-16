@@ -21,10 +21,7 @@ use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FileRemoval;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
-use PhpCsFixer\Linter\CachingLinter;
-use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
-use PhpCsFixer\Linter\ProcessLinter;
 use PhpCsFixer\PhpunitConstraintIsIdenticalString\Constraint\IsIdenticalString;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\Tests\TestCase;
@@ -81,6 +78,8 @@ use Symfony\Component\Finder\Finder;
  */
 abstract class AbstractIntegrationTestCase extends TestCase
 {
+    use LinterProviderTrait;
+
     protected ?LinterInterface $linter = null;
 
     private static ?FileRemoval $fileRemoval = null;
@@ -270,17 +269,17 @@ abstract class AbstractIntegrationTestCase extends TestCase
 
         if (!$errorsManager->isEmpty()) {
             $errors = $errorsManager->getExceptionErrors();
-            self::assertEmpty($errors, \sprintf('Errors reported during fixing of file "%s": %s', $case->getFileName(), $this->implodeErrors($errors)));
+            self::assertSame([], $errors, \sprintf('Errors reported during fixing of file "%s": %s', $case->getFileName(), $this->implodeErrors($errors)));
 
             $errors = $errorsManager->getInvalidErrors();
-            self::assertEmpty($errors, \sprintf('Errors reported during linting before fixing file "%s": %s.', $case->getFileName(), $this->implodeErrors($errors)));
+            self::assertSame([], $errors, \sprintf('Errors reported during linting before fixing file "%s": %s.', $case->getFileName(), $this->implodeErrors($errors)));
 
             $errors = $errorsManager->getLintErrors();
-            self::assertEmpty($errors, \sprintf('Errors reported during linting after fixing file "%s": %s.', $case->getFileName(), $this->implodeErrors($errors)));
+            self::assertSame([], $errors, \sprintf('Errors reported during linting after fixing file "%s": %s.', $case->getFileName(), $this->implodeErrors($errors)));
         }
 
         if (!$case->hasInputCode()) {
-            self::assertEmpty(
+            self::assertNull(
                 $changed,
                 \sprintf(
                     "Expected no changes made to test \"%s\" in \"%s\".\nFixers applied:\n%s.\nDiff.:\n%s.",
@@ -294,7 +293,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
             return;
         }
 
-        self::assertNotEmpty($changed, \sprintf('Expected changes made to test "%s" in "%s".', $case->getTitle(), $case->getFileName()));
+        self::assertNotNull($changed, \sprintf('Expected changes made to test "%s" in "%s".', $case->getTitle(), $case->getFileName()));
 
         $fixedInputCode = file_get_contents($tmpFile);
         self::assertIsString($fixedInputCode);
@@ -401,20 +400,5 @@ abstract class AbstractIntegrationTestCase extends TestCase
         }
 
         return $errorStr;
-    }
-
-    private function getLinter(): LinterInterface
-    {
-        static $linter = null;
-
-        if (null === $linter) {
-            $linter = new CachingLinter(
-                filter_var(getenv('PHP_CS_FIXER_FAST_LINT_TEST_CASES'), \FILTER_VALIDATE_BOOLEAN)
-                    ? new Linter()
-                    : new ProcessLinter(),
-            );
-        }
-
-        return $linter;
     }
 }

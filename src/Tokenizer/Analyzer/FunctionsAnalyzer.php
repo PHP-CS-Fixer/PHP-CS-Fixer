@@ -71,6 +71,12 @@ final class FunctionsAnalyzer
         $argumentsEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $argumentsStart);
         $typeColonIndex = $tokens->getNextMeaningfulToken($argumentsEnd);
 
+        if ($tokens[$typeColonIndex]->isGivenKind(CT::T_USE_LAMBDA)) {
+            $lambdaUseStart = $tokens->getNextTokenOfKind($typeColonIndex, ['(']);
+            $lambdaUseEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $lambdaUseStart);
+            $typeColonIndex = $tokens->getNextMeaningfulToken($lambdaUseEnd);
+        }
+
         if (!$tokens[$typeColonIndex]->isGivenKind(CT::T_TYPE_COLON)) {
             return null;
         }

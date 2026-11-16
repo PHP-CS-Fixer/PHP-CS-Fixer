@@ -38,7 +38,7 @@ final class NoSinglelineWhitespaceBeforeSemicolonsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run after CombineConsecutiveIssetsFixer, FunctionToConstantFixer, LongToShorthandOperatorFixer, NoEmptyStatementFixer, NoUnneededImportAliasFixer, SimplifiedIfReturnFixer, SingleImportPerStatementFixer.
+     * Must run after CombineConsecutiveIssetsFixer, FunctionToConstantFixer, LongToShorthandOperatorFixer, NoEmptyStatementFixer, NoUnneededImportAliasFixer, SingleImportPerStatementFixer.
      */
     public function getPriority(): int
     {

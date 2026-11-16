@@ -47,7 +47,6 @@ final class AutoPHPMigrationRiskySet extends AbstractRuleSetDefinition implement
     public function getRulesCandidates(): array
     {
         $sets = array_values(self::calculateCandidateSets('PHP', $this->isRisky()));
-        ksort($sets);
 
         return array_combine($sets, array_fill(0, \count($sets), true));
     }

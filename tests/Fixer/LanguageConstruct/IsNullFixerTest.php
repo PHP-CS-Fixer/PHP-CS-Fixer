@@ -301,6 +301,75 @@ final class IsNullFixerTest extends AbstractFixerTestCase
             '<?php $a === (int) (null === $x) + (int) (null !== $y);',
             '<?php $a === (int) is_null($x) + (int) !is_null($y);',
         ];
+
+        // argument unpacking
+        yield [
+            '<?php $a = is_null(...$args);',
+        ];
+
+        yield [
+            '<?php $a = !is_null(...$args);',
+        ];
+
+        yield [
+            '<?php $a = \is_null(...$args);',
+        ];
+
+        yield [
+            '<?php $a = null === strlen(...$args);',
+            '<?php $a = is_null(strlen(...$args));',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP >= 8.0.0
+     */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix80Cases(): iterable
+    {
+        yield 'named argument matching the parameter name is fixed' => [
+            '<?php $x = null === $y;',
+            '<?php $x = is_null(value: $y);',
+        ];
+
+        yield 'inverted named argument matching the parameter name is fixed' => [
+            '<?php $x = null !== $y;',
+            '<?php $x = !is_null(value: $y);',
+        ];
+
+        yield 'named argument with extra whitespace and trailing comma is fixed' => [
+            '<?php $x = null === $y;',
+            '<?php $x = is_null(  value:   $y ,  );',
+        ];
+
+        yield 'named argument wrapping an expression is fixed' => [
+            '<?php $x = null === ($y ?? $z);',
+            '<?php $x = is_null(value: $y ?? $z);',
+        ];
+
+        yield 'named argument not matching the parameter name is left untouched' => [
+            '<?php $x = is_null(notValue: $y);',
+        ];
+
+        yield 'named argument matching the parameter name only case-insensitively is left untouched' => [
+            '<?php $x = is_null(Value: $y);',
+        ];
+
+        yield 'named argument in a nested call is still fixed' => [
+            '<?php $x = null === strlen(string: $y);',
+            '<?php $x = is_null(strlen(string: $y));',
+        ];
     }
 
     /**

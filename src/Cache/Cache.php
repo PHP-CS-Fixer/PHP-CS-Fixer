@@ -120,6 +120,27 @@ final class Cache implements CacheInterface
             ));
         }
 
+        // Validate value types too, not just key presence: a syntactically-valid cache with a
+        // wrong-typed field must be treated as corrupt (rebuild) rather than crashing the process
+        // with an uncaught TypeError from the strictly-typed Signature constructor / hash mapping.
+        foreach (['php', 'version', 'indent', 'lineEnding'] as $stringKey) {
+            if (!\is_string($data[$stringKey])) {
+                throw new \InvalidArgumentException(\sprintf('JSON data key "%s" is expected to be a string.', $stringKey));
+            }
+        }
+
+        if (!\is_array($data['rules'])) {
+            throw new \InvalidArgumentException('JSON data key "rules" is expected to be an array.');
+        }
+
+        if (!\is_array($data['hashes'])) {
+            throw new \InvalidArgumentException('JSON data key "hashes" is expected to be an array.');
+        }
+
+        if (isset($data['ruleCustomisationPolicyVersion']) && !\is_string($data['ruleCustomisationPolicyVersion'])) {
+            throw new \InvalidArgumentException('JSON data key "ruleCustomisationPolicyVersion" is expected to be a string.');
+        }
+
         $signature = new Signature(
             $data['php'],
             $data['version'],

@@ -2,29 +2,9 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset 1 might not exist on array.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Console/Command/DescribeCommand.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset 2 might not exist on array.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/Command/DescribeCommand.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset string might not exist on array<string, PhpCsFixer\\RuleSet\\RuleSetDefinitionInterface>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Console/Command/DescribeCommand.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset 1 might not exist on array.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Documentation/DocumentationLocator.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset 2 might not exist on array.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Documentation/DocumentationLocator.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Offset int might not exist on non-empty-array<int, int>.',
@@ -67,26 +47,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Internal/ConfigurableFixerTemplateFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset 0 might not exist on array.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Fixer/Naming/NoHomoglyphNamesFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset 1 might not exist on array.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitMethodCasingFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset 2 might not exist on array.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitMethodCasingFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset 3 might not exist on array.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitMethodCasingFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset int might not exist on list<non-empty-string>.',
     'count' => 4,
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php',
@@ -112,11 +72,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/PhpdocAnnotationWithoutDotFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset 2 might not exist on array.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/PhpdocNoUselessInheritdocFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset int<0, max> might not exist on non-empty-list<PhpCsFixer\\Tokenizer\\Token|null>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Strict/StrictParamFixer.php',
@@ -135,11 +90,6 @@ $ignoreErrors[] = [
     'rawMessage' => 'Offset int might not exist on non-empty-list<array{type: \'array\', end_index: int, initial_indent: string}|array{type: \'expression\', end_index: int, initial_indent: string, new_indent: string}>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Whitespace/ArrayIndentationFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset 0 might not exist on array.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Whitespace/IndentationTypeFixer.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Offset \'new_indent\' might not exist on array{type: \'statement\', skip: bool, end_index: int|null, end_index_inclusive: bool, initial_indent: string, new_indent?: string, is_indented_block: bool}.',

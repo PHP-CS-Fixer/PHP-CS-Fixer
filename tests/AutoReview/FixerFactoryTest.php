@@ -345,7 +345,7 @@ final class FixerFactoryTest extends TestCase
             }
         }
 
-        self::assertEmpty($missing, 'Fixers with non-default priority and yet without priority unit tests [vide "getFixersPriorityGraph()" and "getPhpDocFixersPriorityGraph()"]: "'.implode('", "', array_keys($missing)).'."');
+        self::assertCount(0, $missing, 'Fixers with non-default priority and yet without priority unit tests [vide "getFixersPriorityGraph()" and "getPhpDocFixersPriorityGraph()"]: "'.implode('", "', array_keys($missing)).'."');
     }
 
     /**
@@ -929,10 +929,6 @@ final class FixerFactoryTest extends TestCase
             ],
             'semicolon_after_instruction' => [
                 'simplified_if_return',
-            ],
-            'simplified_if_return' => [
-                'multiline_whitespace_before_semicolons',
-                'no_singleline_whitespace_before_semicolons',
             ],
             'simplified_null_return' => [
                 'no_useless_return',
