@@ -36,6 +36,15 @@ use PhpCsFixer\Future;
 final class Token
 {
     /**
+     * Kind of token prototype. Equals to $id ?? $content.
+     *
+     * @var _PhpTokenKind
+     *
+     * @experimental
+     */
+    private int|string $kind;
+
+    /**
      * Content of token prototype.
      */
     private string $content;
@@ -79,10 +88,12 @@ final class Token
             $this->isArray = true;
             $this->id = $token[0];
             $this->content = $token[1];
+            $this->kind = $token[0];
         } elseif (\is_string($token)) {
             $this->isArray = false;
             $this->id = null;
             $this->content = $token;
+            $this->kind = $token;
         } else {
             throw new \InvalidArgumentException(\sprintf('Cannot recognize input value as valid Token prototype, got "%s".', get_debug_type($token)));
         }
@@ -128,11 +139,11 @@ final class Token
     {
         if ('&' === $this->content) {
             if ('&' === $other) {
-                return null === $this->id || $this->isGivenKind([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]);
+                return null === $this->id || $this->isGivenKindV4([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]);
             }
 
             if (null === $this->id) {
-                return $other instanceof self && '&' === $other->content && (null === $other->id || $other->isGivenKind([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]));
+                return $other instanceof self && '&' === $other->content && (null === $other->id || $other->isGivenKindV4([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]));
             }
         }
 
@@ -238,6 +249,20 @@ final class Token
             $this->id,
             $this->content,
         ];
+    }
+
+    /**
+     * Get token's kind.
+     *
+     * @return _PhpTokenKind
+     *
+     * @internal
+     *
+     * @experimental
+     */
+    public function getKind(): int|string
+    {
+        return $this->kind;
     }
 
     /**
@@ -375,7 +400,7 @@ final class Token
      */
     public function isCast(): bool
     {
-        return $this->isGivenKind(self::getCastTokenKinds());
+        return $this->isGivenKindV4(self::getCastTokenKinds());
     }
 
     /**
@@ -385,7 +410,7 @@ final class Token
      */
     public function isClassy(): bool
     {
-        return $this->isGivenKind(self::getClassyTokenKinds());
+        return $this->isGivenKindV4(self::getClassyTokenKinds());
     }
 
     /**
@@ -395,7 +420,7 @@ final class Token
      */
     public function isComment(): bool
     {
-        return $this->isGivenKind([\T_COMMENT, \T_DOC_COMMENT]);
+        return $this->isGivenKindV4([\T_COMMENT, \T_DOC_COMMENT]);
     }
 
     /**
@@ -405,7 +430,7 @@ final class Token
      */
     public function isObjectOperator(): bool
     {
-        return $this->isGivenKind(self::getObjectOperatorKinds());
+        return $this->isGivenKindV4(self::getObjectOperatorKinds());
     }
 
     /**
@@ -419,6 +444,18 @@ final class Token
     public function isGivenKind($possibleKind): bool
     {
         return $this->isArray && (\is_array($possibleKind) ? \in_array($this->id, $possibleKind, true) : $this->id === $possibleKind);
+    }
+
+    /**
+     * Check if token is one of given kind.
+     *
+     * @param _PhpTokenKind|list<_PhpTokenKind> $possibleKind kind or array of kinds
+     *
+     * @experimental Will replace `isGivenKind` in v4
+     */
+    public function isGivenKindV4($possibleKind): bool
+    {
+        return \is_array($possibleKind) ? \in_array($this->kind, $possibleKind, true) : $this->kind === $possibleKind;
     }
 
     /**
@@ -468,7 +505,7 @@ final class Token
             $whitespaces = " \t\n\r\0\x0B";
         }
 
-        if ($this->isArray && !$this->isGivenKind(\T_WHITESPACE)) {
+        if ($this->isArray && !$this->isGivenKindV4(\T_WHITESPACE)) {
             return false;
         }
 

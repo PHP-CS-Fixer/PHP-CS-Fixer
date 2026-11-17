@@ -204,8 +204,7 @@ class Tokens extends \SplFixedArray
             }
         }
 
-        // inlined extractTokenKind() call on the hot path
-        $tokenKind = $token->isArray() ? $token->getId() : $token->getContent();
+        $tokenKind = $token->getKind();
 
         return $blockEdgeKinds[$tokenKind] ?? null;
     }
@@ -515,7 +514,7 @@ class Tokens extends \SplFixedArray
         $removeLastCommentLine = static function (self $tokens, int $index, int $indexOffset, string $whitespace): string {
             $token = $tokens[$index];
 
-            if (1 === $indexOffset && $token->isGivenKind(\T_OPEN_TAG)) {
+            if (1 === $indexOffset && $token->isGivenKindV4(\T_OPEN_TAG)) {
                 if (str_starts_with($whitespace, "\r\n")) {
                     $tokens[$index] = new Token([\T_OPEN_TAG, rtrim($token->getContent())."\r\n"]);
 
@@ -1588,8 +1587,7 @@ class Tokens extends \SplFixedArray
      */
     private function registerFoundToken(Token $token): void
     {
-        // inlined extractTokenKind() call on the hot path
-        $tokenKind = $token->isArray() ? $token->getId() : $token->getContent();
+        $tokenKind = $token->getKind();
 
         $this->foundTokenKinds[$tokenKind] ??= 0;
         ++$this->foundTokenKinds[$tokenKind];
@@ -1601,7 +1599,7 @@ class Tokens extends \SplFixedArray
     private function unregisterFoundToken(Token $token): void
     {
         // inlined extractTokenKind() call on the hot path
-        $tokenKind = $token->isArray() ? $token->getId() : $token->getContent();
+        $tokenKind = $token->getKind();
 
         \assert(($this->foundTokenKinds[$tokenKind] ?? 0) > 0);
         --$this->foundTokenKinds[$tokenKind];
