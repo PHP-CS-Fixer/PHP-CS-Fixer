@@ -37,4 +37,33 @@ final class ParallelisationExceptionTest extends TestCase
         self::assertSame('Unknown process identifier: php-cs-fixer_parallel_foo', $exception->getMessage());
         self::assertSame(0, $exception->getCode());
     }
+
+    public function testCreateForUnexpectedWorkerExit(): void
+    {
+        $exception = ParallelisationException::forUnexpectedWorkerExit(255, null, "  PHP Fatal error: Allowed memory size exhausted\n");
+
+        self::assertSame(
+            "Worker process exited unexpectedly (exit code: 255, signal: n/a), its files were not analysed.\nWorker output:\nPHP Fatal error: Allowed memory size exhausted",
+            $exception->getMessage(),
+        );
+    }
+
+    public function testCreateForUnexpectedWorkerExitWithSignalAndNoOutput(): void
+    {
+        $exception = ParallelisationException::forUnexpectedWorkerExit(null, 9, '');
+
+        self::assertSame(
+            'Worker process exited unexpectedly (exit code: n/a, signal: 9), its files were not analysed.',
+            $exception->getMessage(),
+        );
+    }
+
+    public function testUnexpectedWorkerExitTruncatesLongOutput(): void
+    {
+        $exception = ParallelisationException::forUnexpectedWorkerExit(1, null, 'Fatal error: boom'.str_repeat('a', 5_000));
+
+        self::assertStringContainsString("output:\nFatal error: boom", $exception->getMessage());
+        self::assertStringEndsWith('...', $exception->getMessage());
+        self::assertStringNotContainsString(str_repeat('a', 1_001), $exception->getMessage());
+    }
 }

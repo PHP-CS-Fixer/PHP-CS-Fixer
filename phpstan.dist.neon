@@ -104,6 +104,12 @@ parameters:
         -
             path: tests/
             identifier: phpunit.attributeRequiresPhpVersion
+
+        -
+            path: tests/Benchmark/
+            identifier: shipmonk.deadMethod
+            message: '/Unused [^:]+Bench::bench/'
+
     tipsOfTheDay: false
     symfony:
         consoleApplicationLoader: dev-tools/phpstan/console-application.php

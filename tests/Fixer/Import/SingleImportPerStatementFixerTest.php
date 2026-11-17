@@ -339,6 +339,10 @@ use Space\Models\ {
             [],
             new WhitespacesFixerConfig("\t", "\r\n"),
         ];
+
+        yield [
+            '<?php $foo = new class(function () use ($a, $b): void {}) {};',
+        ];
     }
 
     /**
