@@ -63,7 +63,7 @@ final class NamedArgumentTransformer extends AbstractTransformer
             // if equals ')' than likely it is a type colon, but sure not a name argument
             // if equals '?' than it is part of ternary statement
 
-            if (!$tokens[$preStringIndex]->equalsAny([',', '('])) {
+            if (!$tokens[$preStringIndex]->isGivenKindV4([',', '('])) {
                 continue;
             }
 
