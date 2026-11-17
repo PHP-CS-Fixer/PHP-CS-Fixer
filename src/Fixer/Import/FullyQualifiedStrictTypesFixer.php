@@ -687,7 +687,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
         $phpDoc = $tokens[$index];
         $phpDocContent = $phpDoc->getContent();
         $phpDocContentNew = Preg::replaceCallback('/([*{]\h*@)(\S+)(\h+)('.TypeExpression::REGEX_TYPES.')(?!(?!\})\S)/', function ($matches) use ($allowedTags, $uses, $namespaceName) {
-            if (!\in_array($matches[2], $allowedTags, true)) {
+            if (!\in_array($matches[2], $allowedTags, true) || ('see' === $matches[2] && str_ends_with($matches[4], '()'))) {
                 return $matches[0];
             }
 
