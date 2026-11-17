@@ -1,0 +1,26 @@
+src/Tokenizer/Transformer/NullableTypeTransformer.php
+  h_44235ea8856697 81
+  h_44235ea8856697 37-53
+src/Tokenizer/Transformer/BraceTransformer.php
+  h_44235ea8856697 177,184,214,287
+  h_44235ea8856697 215-217
+src/Tokenizer/Transformer/NamedArgumentTransformer.php
+  h_44235ea8856697 66
+src/Tokenizer/Transformer/BraceClassInstantiationTransformer.php
+  h_44235ea8856697 53,57
+  h_44235ea8856697 60-73
+src/Tokenizer/Transformer/SquareBraceTransformer.php
+  h_44235ea8856697 100,120,153
+  h_44235ea8856697 125-132,157-164
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "cf94d425c9d1f786939c8df2e46ed41141d16005",
+  "prompts": {},
+  "humans": {
+    "h_44235ea8856697": {
+      "author": "Dariusz Ruminski <dariusz.ruminski@gmail.com>"
+    }
+  }
+}
