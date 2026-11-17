@@ -55,21 +55,13 @@ final class BraceTransformer extends AbstractTransformer
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind(\T_CURLY_OPEN)) {
                 $this->transformIntoCurlyCloseBrace($tokens, $index);
-            }
-
-            if ($token->isGivenKind(\T_DOLLAR_OPEN_CURLY_BRACES)) {
+            } elseif ($token->isGivenKind(\T_DOLLAR_OPEN_CURLY_BRACES)) {
                 $this->transformIntoDollarCloseBrace($tokens, $index);
-            }
-
-            if ($token->isObjectOperator()) {
+            } elseif ($token->isObjectOperator()) {
                 $this->transformIntoDynamicPropBraces($tokens, $index);
-            }
-
-            if ($token->equals('$')) {
+            } elseif ($token->equals('$')) {
                 $this->transformIntoDynamicVarBraces($tokens, $index);
-            }
-
-            if ($token->equals('{')) {
+            } elseif ($token->equals('{')) {
                 $this->transformIntoPropertyHookBraces($tokens, $index);
                 $this->transformIntoCurlyIndexBraces($tokens, $index);
                 $this->transformIntoGroupUseBraces($tokens, $index);

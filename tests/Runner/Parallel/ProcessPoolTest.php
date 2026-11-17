@@ -105,6 +105,20 @@ final class ProcessPoolTest extends TestCase
         self::assertTrue($this->serverClosed);
     }
 
+    public function testIsKnown(): void
+    {
+        $identifier = ProcessIdentifier::create();
+        $processPool = $this->getProcessPool();
+
+        self::assertFalse($processPool->isKnown($identifier));
+
+        $processPool->addProcess($identifier, $this->createProcess($identifier));
+        self::assertTrue($processPool->isKnown($identifier));
+
+        $processPool->endProcessIfKnown($identifier);
+        self::assertFalse($processPool->isKnown($identifier));
+    }
+
     public function testEndAll(): void
     {
         $callbackExecuted = false;
