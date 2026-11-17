@@ -345,7 +345,7 @@ final class FixerFactoryTest extends TestCase
             }
         }
 
-        self::assertEmpty($missing, 'Fixers with non-default priority and yet without priority unit tests [vide "getFixersPriorityGraph()" and "getPhpDocFixersPriorityGraph()"]: "'.implode('", "', array_keys($missing)).'."');
+        self::assertCount(0, $missing, 'Fixers with non-default priority and yet without priority unit tests [vide "getFixersPriorityGraph()" and "getPhpDocFixersPriorityGraph()"]: "'.implode('", "', array_keys($missing)).'."');
     }
 
     /**

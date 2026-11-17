@@ -114,6 +114,16 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
+            '<?php $a = new X() . "foo";',
+            '<?php $a = new X . "foo";',
+        ];
+
+        yield [
+            '<?php $a = new X() ?? $b;',
+            '<?php $a = new X ?? $b;',
+        ];
+
+        yield [
             '<?php $self = new self();',
             '<?php $self = new self;',
         ];
@@ -341,6 +351,18 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
         yield [
             '<?php $xyz = new X(new Y(new Z(/**/ foo())));',
             null,
+            ['named_class' => false],
+        ];
+
+        yield [
+            '<?php $a = new X . "foo";',
+            '<?php $a = new X() . "foo";',
+            ['named_class' => false],
+        ];
+
+        yield [
+            '<?php $a = new X ?? $b;',
+            '<?php $a = new X() ?? $b;',
             ['named_class' => false],
         ];
 
@@ -847,6 +869,11 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
     {
         yield [
             '<?php $a = new (foo());',
+        ];
+
+        yield [
+            '<?php $a = match ($b) { 1 => new X(), default => new Y() };',
+            '<?php $a = match ($b) { 1 => new X, default => new Y };',
         ];
 
         yield [

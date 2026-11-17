@@ -228,7 +228,7 @@ jobs:
         run: (Get-Content phpunit.xml.dist) -replace 'enforceTimeLimit="true"', 'enforceTimeLimit="false"' | Out-File phpunit.xml
 
       - name: Check configuration for PHPUnit
-        if: matrix.php-version != '7.4' && matrix.php-version != '8.0' # These run PHPUnit 9, which does not have the option
+        if: matrix.run-tests == 'yes' && matrix.php-version != '7.4' && matrix.php-version != '8.0' # These run PHPUnit 9, which does not have the option
         run: vendor/bin/phpunit --check-php-configuration
 
       - name: Run tests (via PHPUnit)

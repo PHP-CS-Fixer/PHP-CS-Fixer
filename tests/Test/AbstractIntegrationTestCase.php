@@ -269,17 +269,17 @@ abstract class AbstractIntegrationTestCase extends TestCase
 
         if (!$errorsManager->isEmpty()) {
             $errors = $errorsManager->getExceptionErrors();
-            self::assertEmpty($errors, \sprintf('Errors reported during fixing of file "%s": %s', $case->getFileName(), $this->implodeErrors($errors)));
+            self::assertSame([], $errors, \sprintf('Errors reported during fixing of file "%s": %s', $case->getFileName(), $this->implodeErrors($errors)));
 
             $errors = $errorsManager->getInvalidErrors();
-            self::assertEmpty($errors, \sprintf('Errors reported during linting before fixing file "%s": %s.', $case->getFileName(), $this->implodeErrors($errors)));
+            self::assertSame([], $errors, \sprintf('Errors reported during linting before fixing file "%s": %s.', $case->getFileName(), $this->implodeErrors($errors)));
 
             $errors = $errorsManager->getLintErrors();
-            self::assertEmpty($errors, \sprintf('Errors reported during linting after fixing file "%s": %s.', $case->getFileName(), $this->implodeErrors($errors)));
+            self::assertSame([], $errors, \sprintf('Errors reported during linting after fixing file "%s": %s.', $case->getFileName(), $this->implodeErrors($errors)));
         }
 
         if (!$case->hasInputCode()) {
-            self::assertEmpty(
+            self::assertNull(
                 $changed,
                 \sprintf(
                     "Expected no changes made to test \"%s\" in \"%s\".\nFixers applied:\n%s.\nDiff.:\n%s.",
@@ -293,7 +293,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
             return;
         }
 
-        self::assertNotEmpty($changed, \sprintf('Expected changes made to test "%s" in "%s".', $case->getTitle(), $case->getFileName()));
+        self::assertNotNull($changed, \sprintf('Expected changes made to test "%s" in "%s".', $case->getTitle(), $case->getFileName()));
 
         $fixedInputCode = file_get_contents($tmpFile);
         self::assertIsString($fixedInputCode);

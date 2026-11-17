@@ -168,7 +168,7 @@ final class RuleSetTest extends TestCase
     {
         $setNames = RuleSets::getSetDefinitionNames();
 
-        self::assertNotEmpty($setNames);
+        self::assertNotSame([], $setNames);
     }
 
     public function testResolveRulesWithInvalidSet(): void
