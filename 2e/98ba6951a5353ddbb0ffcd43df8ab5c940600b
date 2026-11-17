@@ -1,0 +1,17 @@
+src/Tokenizer/Token.php
+  h_44235ea8856697 38-46,91,96,142,146,255-260,262,264,449-460
+  h_44235ea8856697 254,261,263,265-267,403,413,423,433,508
+src/Tokenizer/Tokens.php
+  h_44235ea8856697 207,517,1590,1602
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "2e98ba6951a5353ddbb0ffcd43df8ab5c940600b",
+  "prompts": {},
+  "humans": {
+    "h_44235ea8856697": {
+      "author": "Dariusz Ruminski <dariusz.ruminski@gmail.com>"
+    }
+  }
+}
