@@ -42,7 +42,7 @@ final class Token
      *
      * @experimental
      */
-    private int|string $kind;
+    private $kind;
 
     /**
      * Content of token prototype.
@@ -260,7 +260,7 @@ final class Token
      *
      * @experimental
      */
-    public function getKind(): int|string
+    public function getKind()
     {
         return $this->kind;
     }
