@@ -72,6 +72,7 @@ final class TransformerTest extends TestCase
         \assert(\array_key_exists('named_argument', $transformers));
         \assert(\array_key_exists('namespace_operator', $transformers));
         \assert(\array_key_exists('nullable_type', $transformers));
+        \assert(\array_key_exists('partial_function_application_placeholder', $transformers));
         \assert(\array_key_exists('return_ref', $transformers));
         \assert(\array_key_exists('square_brace', $transformers));
         \assert(\array_key_exists('type_alternation', $transformers));
@@ -90,6 +91,8 @@ final class TransformerTest extends TestCase
         yield [$transformers['brace'], $transformers['use']];
 
         yield [$transformers['name_qualified'], $transformers['namespace_operator']];
+
+        yield [$transformers['partial_function_application_placeholder'], $transformers['nullable_type']];
 
         yield [$transformers['return_ref'], $transformers['import']];
 

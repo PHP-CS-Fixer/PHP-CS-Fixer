@@ -122,6 +122,8 @@ final class CT
     public const T_PROPERTY_HOOK_BRACE_OPEN = 10_040;
     public const T_PROPERTY_HOOK_BRACE_CLOSE = 10_041;
 
+    public const T_PARTIAL_FUNCTION_APPLICATION_PLACEHOLDER = 10_042;
+
     private function __construct() {}
 
     /**
