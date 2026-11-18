@@ -48,6 +48,66 @@ final class FunctionsAnalyzer
     }
 
     /**
+     * Checks whether the name of the function at the given index, called without leading namespace separator,
+     * resolves to a function declared in the same namespace or imported with `use function` from another namespace.
+     */
+    public function isNamespacedFunctionInScope(Tokens $tokens, int $index): bool
+    {
+        if ($tokens->isChanged() || $tokens->getCodeHash() !== $this->functionsAnalysis['tokens']) {
+            $this->buildFunctionsAnalysis($tokens);
+        }
+
+        $functionName = strtolower($tokens[$index]->getContent());
+
+        // figure out in which namespace we are
+        $scopeStartIndex = 0;
+        $scopeEndIndex = \count($tokens) - 1;
+        $inGlobalNamespace = false;
+
+        foreach ($tokens->getNamespaceDeclarations() as $declaration) {
+            $scopeStartIndex = $declaration->getScopeStartIndex();
+            $scopeEndIndex = $declaration->getScopeEndIndex();
+
+            if ($index >= $scopeStartIndex && $index <= $scopeEndIndex) {
+                $inGlobalNamespace = $declaration->isGlobalNamespace();
+
+                break;
+            }
+        }
+
+        // check if the call is to a function declared in the same namespace as the call is done,
+        // if the call is already in the global namespace than declared functions are in the same
+        // global namespace and don't need checking
+
+        if (!$inGlobalNamespace) {
+            foreach ($this->functionsAnalysis['declarations'] as $functionNameIndex) {
+                if ($functionNameIndex < $scopeStartIndex || $functionNameIndex > $scopeEndIndex) {
+                    continue;
+                }
+
+                if (strtolower($tokens[$functionNameIndex]->getContent()) === $functionName) {
+                    return true;
+                }
+            }
+        }
+
+        foreach ($this->functionsAnalysis['imports'] as $functionUse) {
+            if ($functionUse->getStartIndex() < $scopeStartIndex || $functionUse->getEndIndex() > $scopeEndIndex) {
+                continue;
+            }
+
+            if ($functionName !== strtolower($functionUse->getShortName())) {
+                continue;
+            }
+
+            // global import like `use function \str_repeat;`
+            return $functionUse->getShortName() !== ltrim($functionUse->getFullName(), '\\');
+        }
+
+        return false;
+    }
+
+    /**
      * @return array<string, ArgumentAnalysis>
      */
     public function getFunctionArguments(Tokens $tokens, int $functionIndex): array
@@ -175,53 +235,8 @@ final class FunctionsAnalyzer
             }
         }
 
-        if ($tokens->isChanged() || $tokens->getCodeHash() !== $this->functionsAnalysis['tokens']) {
-            $this->buildFunctionsAnalysis($tokens);
-        }
-
-        // figure out in which namespace we are
-        $scopeStartIndex = 0;
-        $scopeEndIndex = \count($tokens) - 1;
-        $inGlobalNamespace = false;
-
-        foreach ($tokens->getNamespaceDeclarations() as $declaration) {
-            $scopeStartIndex = $declaration->getScopeStartIndex();
-            $scopeEndIndex = $declaration->getScopeEndIndex();
-
-            if ($index >= $scopeStartIndex && $index <= $scopeEndIndex) {
-                $inGlobalNamespace = $declaration->isGlobalNamespace();
-
-                break;
-            }
-        }
-
-        // check if the call is to a function declared in the same namespace as the call is done,
-        // if the call is already in the global namespace than declared functions are in the same
-        // global namespace and don't need checking
-
-        if (!$inGlobalNamespace) {
-            foreach ($this->functionsAnalysis['declarations'] as $functionNameIndex) {
-                if ($functionNameIndex < $scopeStartIndex || $functionNameIndex > $scopeEndIndex) {
-                    continue;
-                }
-
-                if (strtolower($tokens[$functionNameIndex]->getContent()) === $functionName) {
-                    return false;
-                }
-            }
-        }
-
-        foreach ($this->functionsAnalysis['imports'] as $functionUse) {
-            if ($functionUse->getStartIndex() < $scopeStartIndex || $functionUse->getEndIndex() > $scopeEndIndex) {
-                continue;
-            }
-
-            if ($functionName !== strtolower($functionUse->getShortName())) {
-                continue;
-            }
-
-            // global import like `use function \str_repeat;`
-            return $functionUse->getShortName() === ltrim($functionUse->getFullName(), '\\');
+        if ($this->isNamespacedFunctionInScope($tokens, $index)) {
+            return false;
         }
 
         if (AttributeAnalyzer::isAttribute($tokens, $index)) {
