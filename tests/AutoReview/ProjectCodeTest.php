@@ -1060,7 +1060,7 @@ final class ProjectCodeTest extends TestCase
         $duplicates = [];
         $keyTypes = [];
         $alreadyFoundCases = [];
-        foreach ($dataProvider->invoke($dataProvider->getDeclaringClass()->newInstanceWithoutConstructor()) as $candidateKey => $candidateData) {
+        foreach ($dataProvider->invoke(null) as $candidateKey => $candidateData) {
             $keyTypes[get_debug_type($candidateKey)] = true;
 
             if (\in_array($testClassName.'::'.$dataProviderName, $exceptionsForDuplicatesCheck, true)) {
