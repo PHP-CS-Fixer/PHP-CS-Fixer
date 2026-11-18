@@ -343,7 +343,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                         continue;
                     }
 
-                    if ($endToken->equalsAny(['{', ';', [\T_DOUBLE_ARROW], [\T_IMPLEMENTS]])) {
+                    if ($endToken->isGivenKindV4(['{', ';', \T_DOUBLE_ARROW, \T_IMPLEMENTS])) {
                         break;
                     }
 
@@ -411,7 +411,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                         continue;
                     }
 
-                    if ($tokens[$endIndex]->equalsAny(['{', ';'])) {
+                    if ($tokens[$endIndex]->isGivenKindV4(['{', ';'])) {
                         break;
                     }
                 }
@@ -581,7 +581,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 --$currentScope;
             }
 
-            if ($token->isComment() || $token->equalsAny([';', ',', '}', [\T_OPEN_TAG], [\T_CLOSE_TAG], [CT::T_ATTRIBUTE_CLOSE]])) {
+            if ($token->isComment() || $token->isGivenKindV4([';', ',', '}', \T_OPEN_TAG, \T_CLOSE_TAG, CT::T_ATTRIBUTE_CLOSE])) {
                 continue;
             }
 
@@ -629,7 +629,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 continue;
             }
 
-            if ($searchEndToken->equalsAny(['(', '{', [CT::T_ARRAY_BRACKET_OPEN]])) {
+            if ($searchEndToken->isGivenKindV4(['(', '{', CT::T_ARRAY_BRACKET_OPEN])) {
                 if ($searchEndToken->equals('(')) {
                     $blockType = Tokens::BLOCK_TYPE_PARENTHESIS;
                 } elseif ($searchEndToken->equals('{')) {
@@ -642,7 +642,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 $searchEndToken = $tokens[$searchEndIndex];
             }
 
-            if (!$searchEndToken->equalsAny([';', ',', '}', [\T_CLOSE_TAG]])) {
+            if (!$searchEndToken->isGivenKindV4([';', ',', '}', \T_CLOSE_TAG])) {
                 continue;
             }
 
@@ -717,7 +717,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 return [$index, true];
             }
 
-            if ($tokens[$index]->equalsAny(['}', [\T_ENDSWITCH]])) {
+            if ($tokens[$index]->isGivenKindV4(['}', \T_ENDSWITCH])) {
                 return [$tokens->getPrevNonWhitespace($index), false];
             }
         }

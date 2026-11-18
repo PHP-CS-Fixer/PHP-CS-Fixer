@@ -66,7 +66,7 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer implements Configura
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->equalsAny(['[', [CT::T_ARRAY_INDEX_BRACE_OPEN]])) {
+            if (!$token->isGivenKindV4(['[', CT::T_ARRAY_INDEX_BRACE_OPEN])) {
                 continue;
             }
 

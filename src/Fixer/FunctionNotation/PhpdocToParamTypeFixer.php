@@ -261,6 +261,6 @@ final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer 
     {
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-        return !$tokens[$prevIndex]->equalsAny([',', '(']);
+        return !$tokens[$prevIndex]->isGivenKindV4([',', '(']);
     }
 }

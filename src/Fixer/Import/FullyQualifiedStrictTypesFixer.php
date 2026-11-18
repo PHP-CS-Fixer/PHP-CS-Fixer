@@ -753,7 +753,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
         $typeEndIndex = null;
 
         while (true) {
-            if ($tokens[$index]->equalsAny([',', '{', [\T_IMPLEMENTS]])) {
+            if ($tokens[$index]->isGivenKindV4([',', '{', \T_IMPLEMENTS])) {
                 if (null !== $typeStartIndex) {
                     $index += $this->shortenClassIfPossible($tokens, $typeStartIndex, $typeEndIndex, $uses, $namespaceName);
                 }
@@ -785,7 +785,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
         $typeEndIndex = null;
 
         while (true) {
-            if ($tokens[$index]->equalsAny([')', [\T_VARIABLE], [CT::T_TYPE_ALTERNATION]])) {
+            if ($tokens[$index]->isGivenKindV4([')', \T_VARIABLE, CT::T_TYPE_ALTERNATION])) {
                 if (null === $typeStartIndex) {
                     break;
                 }

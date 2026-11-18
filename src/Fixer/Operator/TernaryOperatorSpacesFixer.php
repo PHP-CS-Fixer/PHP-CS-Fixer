@@ -61,7 +61,7 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
         $ternaryOperatorIndices = [];
 
         foreach ($tokens as $index => $token) {
-            if (!$token->equalsAny(['?', ':'])) {
+            if (!$token->isGivenKindV4(['?', ':'])) {
                 continue;
             }
 

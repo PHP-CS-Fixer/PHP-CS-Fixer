@@ -83,7 +83,7 @@ final class IncludeFixer extends AbstractFixer
                 $nextIndex = $tokens->getNextMeaningfulToken($braces['close']);
 
                 // Include is also legal as function parameter or condition statement but requires being wrapped then.
-                if (!$tokens[$nextIndex]->equalsAny([';', [\T_CLOSE_TAG]]) && !$blocksAnalyzer->isBlock($tokens, $prevIndex, $nextIndex)) {
+                if (!$tokens[$nextIndex]->isGivenKindV4([';', \T_CLOSE_TAG]) && !$blocksAnalyzer->isBlock($tokens, $prevIndex, $nextIndex)) {
                     continue;
                 }
 

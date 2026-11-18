@@ -458,7 +458,7 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
                     continue;
                 }
 
-                if (!$tokens[$i - 1]->equals(',') && $tokens[$i + 1]->equalsAny([',', ')']) || $tokens[$i - 1]->equals('(')) {
+                if (!$tokens[$i - 1]->equals(',') && $tokens[$i + 1]->isGivenKindV4([',', ')']) || $tokens[$i - 1]->equals('(')) {
                     $tokens->clearAt($i);
 
                     continue;

@@ -122,7 +122,7 @@ final class RegularCallableCallFixer extends AbstractFixer
         if ($firstArgToken->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
             $afterFirstArgIndex = $tokens->getNextMeaningfulToken($firstArgIndex);
 
-            if (!$tokens[$afterFirstArgIndex]->equalsAny([',', ')'])) {
+            if (!$tokens[$afterFirstArgIndex]->isGivenKindV4([',', ')'])) {
                 return; // first argument is an expression like `call_user_func("foo"."bar", ...)`, not supported!
             }
 

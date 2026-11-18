@@ -173,7 +173,7 @@ final class SelfAccessorFixer extends AbstractFixer
                 || (
                     null !== $insideMethodSignatureUntil
                     && $i < $insideMethodSignatureUntil
-                    && $prevToken->equalsAny(['(', ',', [CT::T_NULLABLE_TYPE], [CT::T_TYPE_ALTERNATION], [CT::T_TYPE_COLON]])
+                    && $prevToken->isGivenKindV4(['(', ',', CT::T_NULLABLE_TYPE, CT::T_TYPE_ALTERNATION, CT::T_TYPE_COLON])
                 )
             ) {
                 for ($j = $classStartIndex; $j < $i; ++$j) {

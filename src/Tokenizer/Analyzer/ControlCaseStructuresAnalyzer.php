@@ -271,7 +271,7 @@ final class ControlCaseStructuresAnalyzer
             while (true) {
                 ++$index;
 
-                if ($tokens[$index]->equalsAny(['(', '{'])) { // skip constructs
+                if ($tokens[$index]->isGivenKindV4(['(', '{'])) { // skip constructs
                     $type = Tokens::detectBlockType($tokens[$index]);
                     $index = $tokens->findBlockEnd($type['type'], $index);
 
@@ -284,7 +284,7 @@ final class ControlCaseStructuresAnalyzer
                     continue;
                 }
 
-                if ($tokens[$index]->equalsAny([':', ';'])) {
+                if ($tokens[$index]->isGivenKindV4([':', ';'])) {
                     if (0 === $ternariesCount) {
                         break;
                     }

@@ -89,7 +89,7 @@ final class SetTypeToCastFixer extends AbstractFunctionReferenceFixer
 
             $prev = $tokens->getPrevMeaningfulToken($functionNameIndex);
 
-            if (!$tokens[$prev]->equalsAny([';', '{', '}', [\T_OPEN_TAG]])) {
+            if (!$tokens[$prev]->isGivenKindV4([';', '{', '}', \T_OPEN_TAG])) {
                 continue; // return value of the function is used
             }
 

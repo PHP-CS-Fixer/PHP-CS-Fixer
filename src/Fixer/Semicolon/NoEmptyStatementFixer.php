@@ -84,7 +84,7 @@ final class NoEmptyStatementFixer extends AbstractFixer
             $previousMeaningfulIndex = $tokens->getPrevMeaningfulToken($index);
 
             // A semicolon can always be removed if it follows a semicolon, '{' or opening tag.
-            if ($tokens[$previousMeaningfulIndex]->equalsAny(['{', ';', [\T_OPEN_TAG]])) {
+            if ($tokens[$previousMeaningfulIndex]->isGivenKindV4(['{', ';', \T_OPEN_TAG])) {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index);
 
                 continue;
@@ -106,7 +106,7 @@ final class NoEmptyStatementFixer extends AbstractFixer
             $prePreviousMeaningfulIndex = $tokens->getPrevMeaningfulToken($previousMeaningfulIndex);
 
             if (
-                $tokens[$prePreviousMeaningfulIndex]->equalsAny([';', '{', '}', [\T_OPEN_TAG]])
+                $tokens[$prePreviousMeaningfulIndex]->isGivenKindV4([';', '{', '}', \T_OPEN_TAG])
                 && $tokens[$previousMeaningfulIndex]->isGivenKind([\T_CONSTANT_ENCAPSED_STRING, \T_DNUMBER, \T_LNUMBER, \T_STRING, \T_VARIABLE])
             ) {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index);
@@ -136,7 +136,7 @@ final class NoEmptyStatementFixer extends AbstractFixer
         $curlyOpeningIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_BRACE, $curlyCloseIndex);
         $beforeCurlyOpeningIndex = $tokens->getPrevMeaningfulToken($curlyOpeningIndex);
 
-        if ($tokens[$beforeCurlyOpeningIndex]->isGivenKind([\T_ELSE, \T_FINALLY, \T_NAMESPACE, \T_OPEN_TAG]) || $tokens[$beforeCurlyOpeningIndex]->equalsAny([';', '{', '}'])) {
+        if ($tokens[$beforeCurlyOpeningIndex]->isGivenKind([\T_ELSE, \T_FINALLY, \T_NAMESPACE, \T_OPEN_TAG]) || $tokens[$beforeCurlyOpeningIndex]->isGivenKindV4([';', '{', '}'])) {
             $tokens->clearTokenAndMergeSurroundingWhitespace($index);
 
             return;

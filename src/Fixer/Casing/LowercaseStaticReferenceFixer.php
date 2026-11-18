@@ -104,7 +104,7 @@ final class LowercaseStaticReferenceFixer extends AbstractFixer
         if ($tokens[$nextIndex]->isGivenKind(\T_DOUBLE_COLON)) {
             return true;
         }
-        if (!$tokens[$nextIndex]->isGivenKind([\T_VARIABLE, CT::T_TYPE_ALTERNATION]) && !$tokens[$nextIndex]->equalsAny(['(', ')', '{', ';'])) {
+        if (!$tokens[$nextIndex]->isGivenKind([\T_VARIABLE, CT::T_TYPE_ALTERNATION]) && !$tokens[$nextIndex]->isGivenKindV4(['(', ')', '{', ';'])) {
             return false;
         }
 
@@ -115,7 +115,7 @@ final class LowercaseStaticReferenceFixer extends AbstractFixer
         if ($tokens[$prevIndex]->isGivenKind(\T_CASE)) {
             return !$tokens[$nextIndex]->equals(';');
         }
-        if (!$tokens[$prevIndex]->isGivenKind([\T_NEW, \T_PRIVATE, \T_PROTECTED, \T_PUBLIC, CT::T_NULLABLE_TYPE, CT::T_TYPE_COLON, CT::T_TYPE_ALTERNATION]) && !$tokens[$prevIndex]->equalsAny(['(', '{'])) {
+        if (!$tokens[$prevIndex]->isGivenKind([\T_NEW, \T_PRIVATE, \T_PROTECTED, \T_PUBLIC, CT::T_NULLABLE_TYPE, CT::T_TYPE_COLON, CT::T_TYPE_ALTERNATION]) && !$tokens[$prevIndex]->isGivenKindV4(['(', '{'])) {
             return false;
         }
 

@@ -180,7 +180,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
         for ($searchEndIndex = $index + 1; $searchEndIndex < $parentScopeEndIndex; ++$searchEndIndex) {
             $searchEndToken = $tokens[$searchEndIndex];
 
-            if ($searchEndToken->equalsAny(['(', '{'])
+            if ($searchEndToken->isGivenKindV4(['(', '{'])
                 || $searchEndToken->isGivenKind([CT::T_ARRAY_BRACKET_OPEN, CT::T_DESTRUCTURING_BRACKET_OPEN])
             ) {
                 $type = Tokens::detectBlockType($searchEndToken);

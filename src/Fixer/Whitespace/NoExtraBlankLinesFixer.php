@@ -438,7 +438,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
     {
         $prevIndex = $this->tokens->getPrevMeaningfulToken($index);
 
-        if (!$this->tokens[$prevIndex]->equalsAny([';', '{', '}', ':', [\T_OPEN_TAG]])) {
+        if (!$this->tokens[$prevIndex]->isGivenKindV4([';', '{', '}', ':', \T_OPEN_TAG])) {
             return;
         }
 

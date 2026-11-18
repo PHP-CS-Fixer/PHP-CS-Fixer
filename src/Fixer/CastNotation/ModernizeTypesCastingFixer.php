@@ -116,7 +116,7 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
 
                 $afterCloseParenthesisIndex = $tokens->getNextMeaningfulToken($closeParenthesis);
                 $afterCloseParenthesisToken = $tokens[$afterCloseParenthesisIndex];
-                $wrapInParentheses = $afterCloseParenthesisToken->equalsAny(['[', '{']) || $afterCloseParenthesisToken->isGivenKind(\T_POW);
+                $wrapInParentheses = $afterCloseParenthesisToken->isGivenKindV4(['[', '{']) || $afterCloseParenthesisToken->isGivenKind(\T_POW);
 
                 // analyse namespace specification (root one or none) and decide what to do
                 $prevTokenIndex = $tokens->getPrevMeaningfulToken($functionName);

@@ -97,7 +97,7 @@ final class GetClassToClassKeywordFixer extends AbstractFixer
             $variableTokensIndices = [];
 
             for ($i = $braceOpenIndex + 1; $i < $braceCloseIndex; ++$i) {
-                if (!$tokens[$i]->equalsAny([[\T_WHITESPACE], [\T_COMMENT], [\T_DOC_COMMENT], '(', ')'])) {
+                if (!$tokens[$i]->isGivenKindV4([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT, '(', ')'])) {
                     ++$meaningfulTokensCount;
                 }
 

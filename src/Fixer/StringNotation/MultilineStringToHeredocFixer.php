@@ -74,7 +74,7 @@ final class MultilineStringToHeredocFixer extends AbstractFixer
             if (null === $complexStringStartIndex) {
                 if ($token->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
                     $this->convertStringToHeredoc($tokens, $index, $index);
-                } elseif ($token->equalsAny(['"', 'b"', 'B"'])) {
+                } elseif ($token->isGivenKindV4(['"', 'b"', 'B"'])) {
                     $complexStringStartIndex = $index;
                 }
             } elseif ($token->equals('"')) {

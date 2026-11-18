@@ -135,7 +135,7 @@ final class NoUnneededBracesFixer extends AbstractFixer implements ConfigurableF
     private function findBraceOpen(Tokens $tokens): iterable
     {
         for ($i = \count($tokens) - 1; $i > 0; --$i) {
-            if ($tokens[$i]->equalsAny(['{', [CT::T_GROUP_IMPORT_BRACE_OPEN]])) {
+            if ($tokens[$i]->isGivenKindV4(['{', CT::T_GROUP_IMPORT_BRACE_OPEN])) {
                 yield $i;
             }
         }
@@ -157,7 +157,7 @@ final class NoUnneededBracesFixer extends AbstractFixer implements ConfigurableF
             return $tokens[$commaOrCloseBraceIndex]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE);
         }
 
-        return $tokens[$tokens->getPrevMeaningfulToken($index)]->equalsAny(['{', '}', [\T_OPEN_TAG], ':', ';']);
+        return $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKindV4(['{', '}', \T_OPEN_TAG, ':', ';']);
     }
 
     private function clearIfIsOverCompleteNamespaceBlock(Tokens $tokens): void

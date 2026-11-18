@@ -164,7 +164,7 @@ final class OrderedTraitsFixer extends AbstractFixer implements ConfigurableFixe
                 continue;
             }
 
-            if ($token->equalsAny([',', ';', '{'])) {
+            if ($token->isGivenKindV4([',', ';', '{'])) {
                 \assert(null !== $indexOfName);
                 $traits[$indexOfName] = Tokens::fromArray($name);
 
@@ -189,7 +189,7 @@ final class OrderedTraitsFixer extends AbstractFixer implements ConfigurableFixe
             $string = '';
 
             foreach ($use as $token) {
-                if ($token->equalsAny([';', '{'])) {
+                if ($token->isGivenKindV4([';', '{'])) {
                     break;
                 }
 

@@ -112,11 +112,11 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
                 if (!$tokens[$possibleDefinitionIndex]->isGivenKind(\T_FUNCTION)) {
                     $this->fixFunctionCall($tokens, $index);
                 }
-            } elseif ($tokens[$lastTokenIndex]->equalsAny([
+            } elseif ($tokens[$lastTokenIndex]->isGivenKindV4([
                 ')',
                 ']',
-                [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
-                [CT::T_ARRAY_INDEX_BRACE_CLOSE],
+                CT::T_DYNAMIC_VAR_BRACE_CLOSE,
+                CT::T_ARRAY_INDEX_BRACE_CLOSE,
             ])) {
                 $block = Tokens::detectBlockType($tokens[$lastTokenIndex]);
                 if (

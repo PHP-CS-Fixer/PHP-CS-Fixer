@@ -330,7 +330,7 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
 
             $whitespaceTokenIndex = $index + 1;
 
-            if ($tokens[$whitespaceTokenIndex]->equalsAny([',', ':', ';', ')', [CT::T_ARRAY_BRACKET_CLOSE], [CT::T_DESTRUCTURING_BRACKET_CLOSE]])) {
+            if ($tokens[$whitespaceTokenIndex]->isGivenKindV4([',', ':', ';', ')', CT::T_ARRAY_BRACKET_CLOSE, CT::T_DESTRUCTURING_BRACKET_CLOSE])) {
                 continue;
             }
 
@@ -441,7 +441,7 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
                 ++$nestedCount;
             } elseif ($tokens[$index]->equals('}')) {
                 --$nestedCount;
-            } elseif (0 === $nestedCount && $tokens[$index]->equalsAny([';', [\T_CLOSE_TAG]])) {
+            } elseif (0 === $nestedCount && $tokens[$index]->isGivenKindV4([';', \T_CLOSE_TAG])) {
                 break;
             }
         }
@@ -480,7 +480,7 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
         $isMultilineConstant = false;
         $hasMoreThanOneConstant = false;
         $index = $constantIndex;
-        while (!$tokens[$index]->equalsAny([';', [\T_CLOSE_TAG]])) {
+        while (!$tokens[$index]->isGivenKindV4([';', \T_CLOSE_TAG])) {
             ++$index;
 
             $isMultilineConstant = $isMultilineConstant || str_contains($tokens[$index]->getContent(), "\n");

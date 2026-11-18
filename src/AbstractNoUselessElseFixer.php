@@ -64,14 +64,14 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
                 ],
             );
 
-            if (null === $candidateIndex || $tokens[$candidateIndex]->equalsAny([';', [\T_CLOSE_TAG], [\T_IF]])) {
+            if (null === $candidateIndex || $tokens[$candidateIndex]->isGivenKindV4([';', \T_CLOSE_TAG, \T_IF])) {
                 return false;
             }
 
             if ($tokens[$candidateIndex]->isGivenKind(\T_THROW)) {
                 $previousIndex = $tokens->getPrevMeaningfulToken($candidateIndex);
 
-                if (!$tokens[$previousIndex]->equalsAny([';', '{'])) {
+                if (!$tokens[$previousIndex]->isGivenKindV4([';', '{'])) {
                     return false;
                 }
             }

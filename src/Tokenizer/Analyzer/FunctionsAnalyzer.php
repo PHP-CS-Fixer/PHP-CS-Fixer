@@ -165,12 +165,12 @@ final class FunctionsAnalyzer
         $functionName = strtolower($tokens[$index]->getContent());
 
         if ('set' === $functionName) {
-            if (!$tokens[$prevIndex]->equalsAny([[CT::T_PROPERTY_HOOK_BRACE_OPEN], ';', '}'])) {
+            if (!$tokens[$prevIndex]->isGivenKindV4([CT::T_PROPERTY_HOOK_BRACE_OPEN, ';', '}'])) {
                 return true;
             }
             $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openParenthesisIndex);
             $afterCloseParenthesisIndex = $tokens->getNextMeaningfulToken($closeParenthesisIndex);
-            if ($tokens[$afterCloseParenthesisIndex]->equalsAny(['{', [\T_DOUBLE_ARROW]])) {
+            if ($tokens[$afterCloseParenthesisIndex]->isGivenKindV4(['{', \T_DOUBLE_ARROW])) {
                 return false;
             }
         }

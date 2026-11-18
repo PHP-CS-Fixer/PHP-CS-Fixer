@@ -311,7 +311,7 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
                 \T_SL,                  // <<
                 \T_SR,                  // >>
             ])
-            || $token->equalsAny([
+            || $token->isGivenKindV4([
                 '!',
                 '%',
                 '*',

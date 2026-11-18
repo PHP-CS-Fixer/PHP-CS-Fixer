@@ -33,7 +33,7 @@ abstract class AbstractIncrementOperatorFixer extends AbstractFixer
                 $index = $tokens->findBlockStart($blockType['type'], $index);
                 $token = $tokens[$index];
             }
-        } while (!$token->equalsAny(['$', [\T_VARIABLE]]));
+        } while (!$token->isGivenKindV4(['$', \T_VARIABLE]));
 
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
         $prevToken = $tokens[$prevIndex];

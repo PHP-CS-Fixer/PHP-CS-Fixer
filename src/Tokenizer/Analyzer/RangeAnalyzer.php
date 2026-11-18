@@ -61,8 +61,8 @@ final class RangeAnalyzer
             $rightEnd = $tokens->getPrevMeaningfulToken($rightEnd);
         }
 
-        $arrayOpenTypes = ['[', [CT::T_ARRAY_INDEX_BRACE_OPEN]];
-        $arrayCloseTypes = [']', [CT::T_ARRAY_INDEX_BRACE_CLOSE]];
+        $arrayOpenTypes = ['[', CT::T_ARRAY_INDEX_BRACE_OPEN];
+        $arrayCloseTypes = [']', CT::T_ARRAY_INDEX_BRACE_CLOSE];
 
         while (true) {
             $leftToken = $tokens[$leftStart];
@@ -70,8 +70,8 @@ final class RangeAnalyzer
 
             if (
                 !$leftToken->equals($rightToken)
-                && !($leftToken->equalsAny($arrayOpenTypes) && $rightToken->equalsAny($arrayOpenTypes))
-                && !($leftToken->equalsAny($arrayCloseTypes) && $rightToken->equalsAny($arrayCloseTypes))
+                && !($leftToken->isGivenKindV4($arrayOpenTypes) && $rightToken->isGivenKindV4($arrayOpenTypes))
+                && !($leftToken->isGivenKindV4($arrayCloseTypes) && $rightToken->isGivenKindV4($arrayCloseTypes))
             ) {
                 return false;
             }

@@ -234,7 +234,7 @@ final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imple
         $isMultilineCall = false;
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-        while (!$tokens[$prevIndex]->equalsAny([';', ':', '{', '}', [\T_OPEN_TAG], [\T_OPEN_TAG_WITH_ECHO], [\T_ELSE]])) {
+        while (!$tokens[$prevIndex]->isGivenKindV4([';', ':', '{', '}', \T_OPEN_TAG, \T_OPEN_TAG_WITH_ECHO, \T_ELSE])) {
             $index = $prevIndex;
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
 

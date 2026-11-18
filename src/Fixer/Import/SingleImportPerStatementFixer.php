@@ -179,7 +179,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements Confi
                 continue;
             }
 
-            if ($token->equalsAny([',', [CT::T_GROUP_IMPORT_BRACE_CLOSE]])) {
+            if ($token->isGivenKindV4([',', CT::T_GROUP_IMPORT_BRACE_CLOSE])) {
                 $statements[] = 'use'.$statement.';';
                 $statement = $groupPrefix;
 

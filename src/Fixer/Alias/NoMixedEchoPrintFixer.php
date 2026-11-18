@@ -112,7 +112,7 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
         $canBeConverted = true;
 
         for ($i = $nextTokenIndex; $i < $endTokenIndex; ++$i) {
-            if ($tokens[$i]->equalsAny(['(', [CT::T_ARRAY_BRACKET_OPEN]])) {
+            if ($tokens[$i]->isGivenKindV4(['(', CT::T_ARRAY_BRACKET_OPEN])) {
                 $blockType = Tokens::detectBlockType($tokens[$i]);
                 $i = $tokens->findBlockEnd($blockType['type'], $i);
             }
@@ -135,7 +135,7 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
     {
         $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
 
-        if (!$prevToken->equalsAny([';', '{', '}', ')', [\T_OPEN_TAG], [\T_ELSE]])) {
+        if (!$prevToken->isGivenKindV4([';', '{', '}', ')', \T_OPEN_TAG, \T_ELSE])) {
             return;
         }
 

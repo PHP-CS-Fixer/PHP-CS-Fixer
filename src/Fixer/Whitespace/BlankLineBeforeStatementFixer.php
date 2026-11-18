@@ -377,11 +377,11 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
                     continue;
                 }
 
-                return $tokens[$j]->equalsAny([';', '}']);
+                return $tokens[$j]->isGivenKindV4([';', '}']);
             }
         }
 
-        return $prevNonWhitespaceToken->equalsAny([';', '}']);
+        return $prevNonWhitespaceToken->isGivenKindV4([';', '}']);
     }
 
     private function insertBlankLine(Tokens $tokens, int $index): void

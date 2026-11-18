@@ -57,7 +57,7 @@ final class SemicolonAfterInstructionFixer extends AbstractFixer
             }
 
             $prev = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$prev]->equalsAny([';', '{', '}', ':', [\T_OPEN_TAG]])) {
+            if ($tokens[$prev]->isGivenKindV4([';', '{', '}', ':', \T_OPEN_TAG])) {
                 continue;
             }
 

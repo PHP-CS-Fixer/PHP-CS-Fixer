@@ -458,7 +458,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
             $beforeIsStatementOpen = $beforeToken->equalsAny(self::BEFORE_TYPES) || $beforeToken->isGivenKind(\T_CASE);
         }
 
-        $afterIsStatementEnd = $afterToken->equalsAny([';', [\T_CLOSE_TAG]]);
+        $afterIsStatementEnd = $afterToken->isGivenKindV4([';', \T_CLOSE_TAG]);
 
         return
             ($beforeIsStatementOpen && $afterIsBinaryOperation) // `<?php (X) +`
@@ -481,10 +481,10 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     private function isSingleStatement(Tokens $tokens, int $beforeOpenIndex, int $afterCloseIndex): bool
     {
         if ($tokens[$beforeOpenIndex]->isGivenKind(\T_CASE)) {
-            return $tokens[$afterCloseIndex]->equalsAny([':', ';']); // `switch case`
+            return $tokens[$afterCloseIndex]->isGivenKindV4([':', ';']); // `switch case`
         }
 
-        if (!$tokens[$afterCloseIndex]->equalsAny([';', [\T_CLOSE_TAG]])) {
+        if (!$tokens[$afterCloseIndex]->isGivenKindV4([';', \T_CLOSE_TAG])) {
             return false;
         }
 
@@ -497,7 +497,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
 
     private function isSimpleAssignment(Tokens $tokens, int $beforeOpenIndex, int $afterCloseIndex): bool
     {
-        return $tokens[$beforeOpenIndex]->equals('=') && $tokens[$afterCloseIndex]->equalsAny([';', [\T_CLOSE_TAG]]); // `= (X) ;`
+        return $tokens[$beforeOpenIndex]->equals('=') && $tokens[$afterCloseIndex]->isGivenKindV4([';', \T_CLOSE_TAG]); // `= (X) ;`
     }
 
     private function isWrappedSequenceElement(Tokens $tokens, int $startIndex, int $endIndex): bool
@@ -573,7 +573,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
             return false;
         }
 
-        return $tokens[$afterCloseIndex]->equalsAny([';', ',', [\T_CLOSE_TAG]]);
+        return $tokens[$afterCloseIndex]->isGivenKindV4([';', ',', \T_CLOSE_TAG]);
     }
 
     private function isPreUnaryOperation(Tokens $tokens, int $index): bool
@@ -612,7 +612,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
 
             if (
                 $tokens[$index]->isObjectOperator()
-                || $tokens[$index]->equalsAny(['$', [\T_PAAMAYIM_NEKUDOTAYIM], [\T_STRING], [\T_VARIABLE]])
+                || $tokens[$index]->isGivenKindV4(['$', \T_PAAMAYIM_NEKUDOTAYIM, \T_STRING, \T_VARIABLE])
             ) {
                 $index = $tokens->getNextMeaningfulToken($index);
 
@@ -690,12 +690,12 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         }
 
         $needsSpaceAfter = !$this->isAccess($tokens, $afterCloseIndex)
-            && !$tokens[$afterCloseIndex]->equalsAny([';', ',', [\T_CLOSE_TAG]])
+            && !$tokens[$afterCloseIndex]->isGivenKindV4([';', ',', \T_CLOSE_TAG])
             && null === $this->getBlock($tokens, $afterCloseIndex, false)
-            && !($tokens[$afterCloseIndex]->equalsAny([':', ';']) && $tokens[$beforeOpenIndex]->isGivenKind(\T_CASE));
+            && !($tokens[$afterCloseIndex]->isGivenKindV4([':', ';']) && $tokens[$beforeOpenIndex]->isGivenKind(\T_CASE));
 
         $needsSpaceBefore = !$this->isPreUnaryOperation($tokens, $beforeOpenIndex)
-            && !$tokens[$beforeOpenIndex]->equalsAny(['}', [\T_EXIT], [\T_OPEN_TAG]])
+            && !$tokens[$beforeOpenIndex]->isGivenKindV4(['}', \T_EXIT, \T_OPEN_TAG])
             && null === $this->getBlock($tokens, $beforeOpenIndex, true);
 
         $this->removeBrace($tokens, $closeIndex, $needsSpaceAfter);

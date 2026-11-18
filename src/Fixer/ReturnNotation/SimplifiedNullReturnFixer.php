@@ -106,7 +106,7 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
      */
     private function clear(Tokens $tokens, int $index): void
     {
-        while (!$tokens[++$index]->equalsAny([';', [\T_CLOSE_TAG]])) {
+        while (!$tokens[++$index]->isGivenKindV4([';', \T_CLOSE_TAG])) {
             if ($this->shouldClearToken($tokens, $index)) {
                 $tokens->clearAt($index);
             }
@@ -123,7 +123,7 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
         }
 
         $content = '';
-        while (!$tokens[$index]->equalsAny([';', [\T_CLOSE_TAG]])) {
+        while (!$tokens[$index]->isGivenKindV4([';', \T_CLOSE_TAG])) {
             $index = $tokens->getNextMeaningfulToken($index);
             $content .= $tokens[$index]->getContent();
         }
