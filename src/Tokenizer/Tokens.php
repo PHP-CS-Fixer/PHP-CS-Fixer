@@ -1598,7 +1598,6 @@ class Tokens extends \SplFixedArray
      */
     private function unregisterFoundToken(Token $token): void
     {
-        // inlined extractTokenKind() call on the hot path
         $tokenKind = $token->getKind();
 
         \assert(($this->foundTokenKinds[$tokenKind] ?? 0) > 0);
