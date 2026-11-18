@@ -1646,6 +1646,81 @@ if ($foo) {
             [],
             new WhitespacesFixerConfig("\t"),
         ];
+
+        yield 'multi-line ternary with closure in true branch' => [
+            '<?php
+$handler = $useDefault
+    ? static function (int $value): int {
+        return $value * 2;
+    }
+    : null;
+',
+        ];
+
+        yield 'multi-line ternary with closures in both branches' => [
+            '<?php
+$handler = $useDefault
+    ? static function () {
+        return 1;
+    }
+    : static function () {
+        return 2;
+    };
+',
+        ];
+
+        yield 'multi-line ternary with closure in true branch in function body' => [
+            '<?php
+function foo($flag) {
+    return $flag
+        ? static function () {
+            return 1;
+        }
+        : null;
+}
+',
+        ];
+
+        yield 'binary operator after anonymous class' => [
+            '<?php
+$foo = new class {
+    public $bar;
+}
+    ?? null;
+',
+        ];
+
+        yield 'block followed by statement starting with unary operator' => [
+            '<?php
+if ($foo) {
+    bar();
+}
+-$baz;
+',
+            '<?php
+if ($foo) {
+    bar();
+}
+    -$baz;
+',
+        ];
+
+        yield 'braced block in brace-less if followed by statement starting with unary operator' => [
+            '<?php
+if ($a)
+    if ($b) {
+        foo();
+    }
+-$baz;
+',
+            '<?php
+if ($a)
+    if ($b) {
+        foo();
+    }
+    -$baz;
+',
+        ];
     }
 
     /**
@@ -1681,6 +1756,38 @@ return match ($bool) {
       1 => true,
    default => throw new Exception(),
 };',
+        ];
+
+        yield 'multi-line ternary with match expression in true branch' => [
+            '<?php
+$label = $isKnown
+    ? match ($code) {
+        1 => \'one\',
+        default => \'other\',
+    }
+    : \'unknown\';
+',
+        ];
+
+        yield 'multi-line ternary after match expression' => [
+            '<?php
+$label = match ($code) {
+    1 => true,
+    default => false,
+}
+    ? \'yes\'
+    : \'no\';
+',
+        ];
+
+        yield 'concatenation after match expression' => [
+            '<?php
+$label = match ($code) {
+    1 => \'one\',
+    default => \'other\',
+}
+    . \'suffix\';
+',
         ];
 
         yield 'attribute' => [
