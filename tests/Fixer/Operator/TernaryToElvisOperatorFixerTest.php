@@ -537,4 +537,39 @@ function test(#[TestAttribute] ?User $user) {}
 function test(#[TestAttribute] ?User $user = null) {}
 '];
     }
+
+    /**
+     * @dataProvider provideFix86Cases
+     *
+     * @requires PHP >= 8.6.0
+     */
+    #[DataProvider('provideFix86Cases')]
+    #[RequiresPhp('>= 8.6.0')]
+    public function testFix86(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix86Cases(): iterable
+    {
+        yield 'partial function application placeholder as named argument' => [
+            '<?php $f = foo(x: ?, y: 2);',
+        ];
+
+        yield 'partial function application placeholders as named arguments' => [
+            '<?php $f = foo(x: ?, y: ?);',
+        ];
+
+        yield 'partial function application placeholder as named argument in ternary' => [
+            '<?php $f = $c ? foo(x: ?) : 1;',
+        ];
+
+        yield 'partial function application placeholders in ternary' => [
+            '<?php $f = $a ?  : foo(?, 1);',
+            '<?php $f = $a ? $a : foo(?, 1);',
+        ];
+    }
 }
