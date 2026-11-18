@@ -93,7 +93,7 @@ final class NoMultipleStatementsPerLineFixer extends AbstractFixer implements Wh
                     continue;
                 }
 
-                if (!$token->equalsAny(['}', [\T_CLOSE_TAG], [\T_ENDIF], [\T_ENDFOR], [\T_ENDSWITCH], [\T_ENDWHILE], [\T_ENDFOREACH]])) {
+                if (!$token->isGivenKindV4(['}', \T_CLOSE_TAG, \T_ENDIF, \T_ENDFOR, \T_ENDSWITCH, \T_ENDWHILE, \T_ENDFOREACH])) {
                     $whitespaceIndex = $index;
                     do {
                         $token = $tokens[++$whitespaceIndex];

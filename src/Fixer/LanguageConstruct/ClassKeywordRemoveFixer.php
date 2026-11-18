@@ -101,7 +101,7 @@ final class ClassKeywordRemoveFixer extends AbstractFixer implements DeprecatedF
 
             $import = '';
             while (($index = $tokens->getNextMeaningfulToken($index)) !== null) {
-                if ($tokens[$index]->equalsAny([';', [CT::T_GROUP_IMPORT_BRACE_OPEN]]) || $tokens[$index]->isGivenKind(\T_AS)) {
+                if ($tokens[$index]->isGivenKindV4([';', CT::T_GROUP_IMPORT_BRACE_OPEN]) || $tokens[$index]->isGivenKind(\T_AS)) {
                     break;
                 }
 

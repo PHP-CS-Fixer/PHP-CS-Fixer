@@ -114,7 +114,7 @@ final class EregToPregFixer extends AbstractFixer
                 // ensure the first parameter is just a string (e.g. has nothing appended)
                 $next = $tokens->getNextMeaningfulToken($match[2]);
 
-                if (null === $next || !$tokens[$next]->equalsAny([',', ')'])) {
+                if (null === $next || !$tokens[$next]->isGivenKindV4([',', ')'])) {
                     continue;
                 }
 

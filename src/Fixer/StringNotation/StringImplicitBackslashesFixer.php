@@ -117,7 +117,7 @@ final class StringImplicitBackslashesFixer extends AbstractFixer implements Conf
 
         $doubleQuoteOpened = false;
         foreach ($tokens as $index => $token) {
-            if ($token->equalsAny(['"', 'b"', 'B"'])) {
+            if ($token->isGivenKindV4(['"', 'b"', 'B"'])) {
                 $doubleQuoteOpened = !$doubleQuoteOpened;
             }
 

@@ -307,7 +307,7 @@ final class BracesPositionFixer extends AbstractFixer implements ConfigurableFix
                 $positionOption = 'control_structures_opening_brace';
             } elseif ($token->isGivenKind(\T_STRING)) {
                 $prevIndex = $tokens->getPrevMeaningfulToken($index);
-                if (!$tokens[$prevIndex]->equalsAny(['}', ';']) && !$tokens[$prevIndex]->isGivenKind([CT::T_ATTRIBUTE_CLOSE, CT::T_PROPERTY_HOOK_BRACE_OPEN])) {
+                if (!$tokens[$prevIndex]->isGivenKindV4(['}', ';']) && !$tokens[$prevIndex]->isGivenKind([CT::T_ATTRIBUTE_CLOSE, CT::T_PROPERTY_HOOK_BRACE_OPEN])) {
                     continue;
                 }
 

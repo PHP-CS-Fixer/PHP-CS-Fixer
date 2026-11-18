@@ -171,7 +171,7 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
             if ($tokens[$i]->isGivenKind(\T_THROW)) {
                 $previousIndex = $tokens->getPrevMeaningfulToken($i);
 
-                if ($previousIndex === $casePosition || $tokens[$previousIndex]->equalsAny(['{', ';', '}', [\T_OPEN_TAG]])) {
+                if ($previousIndex === $casePosition || $tokens[$previousIndex]->isGivenKindV4(['{', ';', '}', \T_OPEN_TAG])) {
                     $fallThrough = false;
                 }
 

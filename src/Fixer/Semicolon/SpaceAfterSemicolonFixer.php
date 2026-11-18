@@ -125,7 +125,7 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer implements Configurab
 
             if (!$tokens[$index + 1]->isWhitespace()) {
                 if (
-                    !$tokens[$index + 1]->equalsAny([')', [\T_INLINE_HTML]]) && (
+                    !$tokens[$index + 1]->isGivenKindV4([')', \T_INLINE_HTML]) && (
                         false === $this->configuration['remove_in_empty_for_expressions']
                         || !$tokens[$index + 1]->equals(';')
                     )

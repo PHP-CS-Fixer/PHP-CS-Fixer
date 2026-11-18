@@ -309,7 +309,7 @@ final class ReturnAssignmentFixer extends AbstractFixer implements ConfigurableF
             }
 
             $endReturnVarIndex = $tokens->getNextMeaningfulToken($returnVarIndex);
-            if (!$tokens[$endReturnVarIndex]->equalsAny([';', [\T_CLOSE_TAG]])) {
+            if (!$tokens[$endReturnVarIndex]->isGivenKindV4([';', \T_CLOSE_TAG])) {
                 continue; // example: "return $a + 1;"
             }
 
@@ -357,7 +357,7 @@ final class ReturnAssignmentFixer extends AbstractFixer implements ConfigurableF
 
             // Note: here we are @ "$a = [^;{<? ? >] ; return $a;"
             $beforeAssignVarIndex = $tokens->getPrevMeaningfulToken($assignVarIndex);
-            if (!$tokens[$beforeAssignVarIndex]->equalsAny([';', '{', '}'])) {
+            if (!$tokens[$beforeAssignVarIndex]->isGivenKindV4([';', '{', '}'])) {
                 continue;
             }
 
@@ -490,7 +490,7 @@ final class ReturnAssignmentFixer extends AbstractFixer implements ConfigurableF
     {
         do {
             $index = $tokens->getPrevMeaningfulToken($index);
-        } while ($tokens[$index]->equalsAny([',', [\T_STRING], [\T_IMPLEMENTS], [\T_EXTENDS], [\T_NS_SEPARATOR]]));
+        } while ($tokens[$index]->isGivenKindV4([',', \T_STRING, \T_IMPLEMENTS, \T_EXTENDS, \T_NS_SEPARATOR]));
 
         if ($tokens[$index]->equals(')')) { // skip constructor braces and content within
             $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $index);

@@ -479,7 +479,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurableFixerInt
                 \T_INCLUDE,
                 \T_INCLUDE_ONCE,
             ])
-            || $token->equalsAny([
+            || $token->isGivenKindV4([
                 // bitwise and, or, xor
                 '&', '|', '^',
                 // ternary operators
@@ -684,7 +684,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurableFixerInt
             }
 
             if ($expectArrayOnly) {
-                if ($token->equalsAny(['(', ')', [CT::T_ARRAY_BRACKET_CLOSE]])) {
+                if ($token->isGivenKindV4(['(', ')', CT::T_ARRAY_BRACKET_CLOSE])) {
                     continue;
                 }
 

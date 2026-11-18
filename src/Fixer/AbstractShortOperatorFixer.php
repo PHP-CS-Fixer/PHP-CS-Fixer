@@ -57,7 +57,7 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
                 if (!$this->belongsToSwitchOrAlternativeSyntax($alternativeSyntaxAnalyzer, $tokens, $beforeAssignmentIndex)) {
                     continue;
                 }
-            } elseif (!$tokens[$beforeAssignmentIndex]->equalsAny([';', '{', '}', '(', ')', ',', [\T_OPEN_TAG], [\T_RETURN]])) {
+            } elseif (!$tokens[$beforeAssignmentIndex]->isGivenKindV4([';', '{', '}', '(', ')', ',', \T_OPEN_TAG, \T_RETURN])) {
                 continue;
             }
 
@@ -125,7 +125,7 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
         while (true) {
             $nextIndex = $tokens->getNextMeaningfulToken($index);
 
-            if (null === $nextIndex || $tokens[$nextIndex]->equalsAny([';', ',', [\T_CLOSE_TAG]])) {
+            if (null === $nextIndex || $tokens[$nextIndex]->isGivenKindV4([';', ',', \T_CLOSE_TAG])) {
                 break;
             }
 
@@ -176,16 +176,16 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
         $range = ['end' => $previousIndex];
         $index = $previousIndex;
 
-        while ($previousToken->equalsAny([
+        while ($previousToken->isGivenKindV4([
             '$',
             ']',
             ')',
-            [CT::T_ARRAY_INDEX_BRACE_CLOSE],
-            [CT::T_DYNAMIC_PROP_BRACE_CLOSE],
-            [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
-            [\T_NS_SEPARATOR],
-            [\T_STRING],
-            [\T_VARIABLE],
+            CT::T_ARRAY_INDEX_BRACE_CLOSE,
+            CT::T_DYNAMIC_PROP_BRACE_CLOSE,
+            CT::T_DYNAMIC_VAR_BRACE_CLOSE,
+            \T_NS_SEPARATOR,
+            \T_STRING,
+            \T_VARIABLE,
         ])) {
             $blockType = Tokens::detectBlockType($previousToken);
 
@@ -233,12 +233,12 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
         }
 
         // check for commutative kinds
-        if ($operatorToken->equalsAny(['*', '|', '&', '^'])) { // note that for arrays in PHP `+` is not commutative
+        if ($operatorToken->isGivenKindV4(['*', '|', '^']) || $operatorToken->equals('&')) { // note that for arrays in PHP `+` is not commutative
             return true;
         }
 
         // check for non-commutative kinds
-        if ($operatorToken->equalsAny(['-', '/', '.', '%', '+'])) {
+        if ($operatorToken->isGivenKindV4(['-', '/', '.', '%', '+'])) {
             return false;
         }
 

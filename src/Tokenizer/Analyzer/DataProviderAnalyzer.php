@@ -124,7 +124,7 @@ final class DataProviderAnalyzer
     {
         $attributeIndex = null;
         $docCommentIndex = null;
-        while (!$tokens[$index]->equalsAny([';', '{', '}', [\T_OPEN_TAG]])) {
+        while (!$tokens[$index]->isGivenKindV4([';', '{', '}', \T_OPEN_TAG])) {
             --$index;
 
             if ($tokens[$index]->isGivenKind(FCT::T_ATTRIBUTE)) {

@@ -60,7 +60,7 @@ final class NoUselessElseFixer extends AbstractNoUselessElseFixer
             }
 
             // `else if` vs. `else` and alternative syntax `else:` checks
-            if ($tokens[$tokens->getNextMeaningfulToken($index)]->equalsAny([':', [\T_IF]])) {
+            if ($tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKindV4([':', \T_IF])) {
                 continue;
             }
 

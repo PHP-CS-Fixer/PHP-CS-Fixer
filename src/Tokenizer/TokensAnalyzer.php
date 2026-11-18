@@ -372,7 +372,7 @@ final class TokensAnalyzer
         $nextIndex = $this->tokens->getNextMeaningfulToken($index);
 
         if (
-            $this->tokens[$nextIndex]->equalsAny(['(', '{'])
+            $this->tokens[$nextIndex]->isGivenKindV4(['(', '{'])
             || $this->tokens[$nextIndex]->isGivenKind([\T_DOUBLE_COLON, \T_ELLIPSIS, \T_NS_SEPARATOR, CT::T_RETURN_REF, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, \T_VARIABLE])
         ) {
             return false;
@@ -431,7 +431,7 @@ final class TokensAnalyzer
         if ($this->tokens[$prevIndex]->equals(',')) {
             $checkIndex = $prevIndex;
 
-            while ($this->tokens[$checkIndex]->equalsAny([',', [\T_AS], [CT::T_NAMESPACE_OPERATOR], [\T_NS_SEPARATOR], [\T_STRING]])) {
+            while ($this->tokens[$checkIndex]->isGivenKindV4([',', \T_AS, CT::T_NAMESPACE_OPERATOR, \T_NS_SEPARATOR, \T_STRING])) {
                 $checkIndex = $this->tokens->getPrevMeaningfulToken($checkIndex);
             }
 
@@ -492,13 +492,13 @@ final class TokensAnalyzer
 
         $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
 
-        return $prevToken->equalsAny([
+        return $prevToken->isGivenKindV4([
             ']',
-            [\T_STRING],
-            [\T_VARIABLE],
-            [CT::T_ARRAY_INDEX_BRACE_CLOSE],
-            [CT::T_DYNAMIC_PROP_BRACE_CLOSE],
-            [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
+            \T_STRING,
+            \T_VARIABLE,
+            CT::T_ARRAY_INDEX_BRACE_CLOSE,
+            CT::T_DYNAMIC_PROP_BRACE_CLOSE,
+            CT::T_DYNAMIC_VAR_BRACE_CLOSE,
         ]);
     }
 
@@ -516,7 +516,7 @@ final class TokensAnalyzer
         }
 
         // always unary predecessor operator
-        if ($token->equalsAny(['!', '~', '@', [\T_ELLIPSIS]])) {
+        if ($token->isGivenKindV4(['!', '~', '@', \T_ELLIPSIS])) {
             return true;
         }
 
@@ -527,31 +527,31 @@ final class TokensAnalyzer
 
         $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
 
-        if (!$prevToken->equalsAny([
+        if (!$prevToken->isGivenKindV4([
             ']',
             '}',
             ')',
             '"',
             '`',
-            [CT::T_ARRAY_BRACKET_CLOSE],
-            [CT::T_ARRAY_INDEX_BRACE_CLOSE],
-            [CT::T_DYNAMIC_PROP_BRACE_CLOSE],
-            [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
-            [\T_CLASS_C],
-            [\T_CONSTANT_ENCAPSED_STRING],
-            [\T_DEC],
-            [\T_DIR],
-            [\T_DNUMBER],
-            [\T_FILE],
-            [\T_FUNC_C],
-            [\T_INC],
-            [\T_LINE],
-            [\T_LNUMBER],
-            [\T_METHOD_C],
-            [\T_NS_C],
-            [\T_STRING],
-            [\T_TRAIT_C],
-            [\T_VARIABLE],
+            CT::T_ARRAY_BRACKET_CLOSE,
+            CT::T_ARRAY_INDEX_BRACE_CLOSE,
+            CT::T_DYNAMIC_PROP_BRACE_CLOSE,
+            CT::T_DYNAMIC_VAR_BRACE_CLOSE,
+            \T_CLASS_C,
+            \T_CONSTANT_ENCAPSED_STRING,
+            \T_DEC,
+            \T_DIR,
+            \T_DNUMBER,
+            \T_FILE,
+            \T_FUNC_C,
+            \T_INC,
+            \T_LINE,
+            \T_LNUMBER,
+            \T_METHOD_C,
+            \T_NS_C,
+            \T_STRING,
+            \T_TRAIT_C,
+            \T_VARIABLE,
         ])) {
             return true;
         }

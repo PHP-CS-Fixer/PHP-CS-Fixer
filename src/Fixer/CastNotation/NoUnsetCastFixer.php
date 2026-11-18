@@ -71,7 +71,7 @@ final class NoUnsetCastFixer extends AbstractFixer
         }
 
         $afterVar = $tokens->getNextMeaningfulToken($varIndex);
-        if (null === $afterVar || !$tokens[$afterVar]->equalsAny([';', [\T_CLOSE_TAG]])) {
+        if (null === $afterVar || !$tokens[$afterVar]->isGivenKindV4([';', \T_CLOSE_TAG])) {
             return;
         }
 

@@ -264,7 +264,7 @@ final class MultilinePromotedPropertiesFixer extends AbstractFixer implements Co
                 continue;
             }
 
-            if (!$tokens[$index]->equalsAny(['(', ','])) {
+            if (!$tokens[$index]->isGivenKindV4(['(', ','])) {
                 continue;
             }
 

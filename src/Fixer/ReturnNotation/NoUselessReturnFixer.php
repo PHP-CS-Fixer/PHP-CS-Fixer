@@ -97,7 +97,7 @@ final class NoUselessReturnFixer extends AbstractFixer
             }
 
             $previous = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$previous]->equalsAny([[\T_ELSE], ')'])) {
+            if ($tokens[$previous]->isGivenKindV4([\T_ELSE, ')'])) {
                 continue;
             }
 

@@ -130,7 +130,7 @@ final class NamespaceUsesAnalyzer
                 }
 
                 $index = $groupIndex;
-            } elseif ($token->equalsAny([',', ';', [\T_CLOSE_TAG]])) {
+            } elseif ($token->isGivenKindV4([',', ';', \T_CLOSE_TAG])) {
                 $previousToken = $tokens->getPrevMeaningfulToken($qualifiedName['afterIndex']);
 
                 if (!$tokens[$previousToken]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
@@ -196,12 +196,12 @@ final class NamespaceUsesAnalyzer
                 $fullName .= $token->getContent();
             } elseif ($token->isGivenKind(\T_AS)) {
                 $aliased = true;
-            } elseif ($token->equalsAny([
+            } elseif ($token->isGivenKindV4([
                 ',',
                 ';',
-                [CT::T_GROUP_IMPORT_BRACE_OPEN],
-                [CT::T_GROUP_IMPORT_BRACE_CLOSE],
-                [\T_CLOSE_TAG],
+                CT::T_GROUP_IMPORT_BRACE_OPEN,
+                CT::T_GROUP_IMPORT_BRACE_CLOSE,
+                \T_CLOSE_TAG,
             ])) {
                 break;
             }

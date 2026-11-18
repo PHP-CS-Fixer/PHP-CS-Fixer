@@ -194,7 +194,7 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
             $prevPrevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
 
             if ($fixArguments
-                && $tokens[$prevIndex]->equalsAny([']', [\T_CLASS], [\T_STRING], [\T_VARIABLE], [\T_STATIC], [\T_ISSET], [\T_UNSET], [\T_LIST]])
+                && $tokens[$prevIndex]->isGivenKindV4([']', \T_CLASS, \T_STRING, \T_VARIABLE, \T_STATIC, \T_ISSET, \T_UNSET, \T_LIST])
                 && !$tokens[$prevPrevIndex]->isGivenKind(\T_FUNCTION)
             ) {
                 $this->fixBlock($tokens, $index);
@@ -235,7 +235,7 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
         // if there is some item between braces then add `,` after it
         if (
             $startIndex !== $beforeEndIndex
-            && !$beforeEndToken->equalsAny([',', [CT::T_FIRST_CLASS_CALLABLE]])
+            && !$beforeEndToken->isGivenKindV4([',', CT::T_FIRST_CLASS_CALLABLE])
             && (true === $this->configuration['after_heredoc'] || !$beforeEndToken->isGivenKind(\T_END_HEREDOC))
         ) {
             $tokens->insertAt($beforeEndIndex + 1, new Token(','));

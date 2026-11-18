@@ -72,7 +72,7 @@ final class ArrayPushFixer extends AbstractFixer
                 $index = $tokens->getPrevMeaningfulToken($index);
             }
 
-            if (!$tokens[$index]->equalsAny([';', '{', '}', ')', [\T_OPEN_TAG]])) {
+            if (!$tokens[$index]->isGivenKindV4([';', '{', '}', ')', \T_OPEN_TAG])) {
                 continue;
             }
 
@@ -85,7 +85,7 @@ final class ArrayPushFixer extends AbstractFixer
             // meaningful after `)` must be `;`, `? >` or nothing
             $afterCloseBraceIndex = $tokens->getNextMeaningfulToken($closeBraceIndex);
 
-            if (null !== $afterCloseBraceIndex && !$tokens[$afterCloseBraceIndex]->equalsAny([';', [\T_CLOSE_TAG]])) {
+            if (null !== $afterCloseBraceIndex && !$tokens[$afterCloseBraceIndex]->isGivenKindV4([';', \T_CLOSE_TAG])) {
                 continue;
             }
 
@@ -139,18 +139,18 @@ final class ArrayPushFixer extends AbstractFixer
         $nextIndex = $tokens->getNextMeaningfulToken($index);
         $nextToken = $tokens[$nextIndex];
 
-        while ($nextToken->equalsAny([
+        while ($nextToken->isGivenKindV4([
             '$',
             '[',
             '(',
-            [CT::T_ARRAY_INDEX_BRACE_OPEN],
-            [CT::T_DYNAMIC_PROP_BRACE_OPEN],
-            [CT::T_DYNAMIC_VAR_BRACE_OPEN],
-            [CT::T_NAMESPACE_OPERATOR],
-            [\T_NS_SEPARATOR],
-            [\T_STATIC],
-            [\T_STRING],
-            [\T_VARIABLE],
+            CT::T_ARRAY_INDEX_BRACE_OPEN,
+            CT::T_DYNAMIC_PROP_BRACE_OPEN,
+            CT::T_DYNAMIC_VAR_BRACE_OPEN,
+            CT::T_NAMESPACE_OPERATOR,
+            \T_NS_SEPARATOR,
+            \T_STATIC,
+            \T_STRING,
+            \T_VARIABLE,
         ])) {
             $blockType = Tokens::detectBlockType($nextToken);
 

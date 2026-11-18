@@ -82,7 +82,7 @@ final class ClassyAnalyzer
 
         do {
             $prev = $tokens->getPrevMeaningfulToken($prev);
-        } while ($tokens[$prev]->equalsAny([',', [\T_NS_SEPARATOR], [\T_STRING], [CT::T_NAMESPACE_OPERATOR]]));
+        } while ($tokens[$prev]->isGivenKindV4([',', \T_NS_SEPARATOR, \T_STRING, CT::T_NAMESPACE_OPERATOR]));
 
         return $tokens[$prev]->isGivenKind([\T_IMPLEMENTS, CT::T_USE_TRAIT]);
     }

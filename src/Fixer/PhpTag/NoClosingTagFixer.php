@@ -54,7 +54,7 @@ final class NoClosingTagFixer extends AbstractFixer
         $tokens->clearAt($index);
 
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
-        if (!$tokens[$prevIndex]->equalsAny([';', '}', [\T_OPEN_TAG]])) {
+        if (!$tokens[$prevIndex]->isGivenKindV4([';', '}', \T_OPEN_TAG])) {
             $tokens->insertAt($prevIndex + 1, new Token(';'));
         }
     }

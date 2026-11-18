@@ -314,7 +314,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
         $testCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $testOpenIndex);
         $assertCallCloseIndex = $tokens->getNextMeaningfulToken($testCloseIndex);
 
-        if (!$tokens[$assertCallCloseIndex]->equalsAny([')', ','])) {
+        if (!$tokens[$assertCallCloseIndex]->isGivenKindV4([')', ','])) {
             return;
         }
 
@@ -420,7 +420,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
             $classEndIndex = $tokens->getNextMeaningfulToken($classEndIndex);
         } while ($tokens[$classEndIndex]->isGivenKind([\T_STRING, \T_NS_SEPARATOR, \T_VARIABLE]));
 
-        if ($tokens[$classEndIndex]->equalsAny([',', ')'])) { // do the fixing
+        if ($tokens[$classEndIndex]->isGivenKindV4([',', ')'])) { // do the fixing
             $isInstanceOfVar = $classPartTokens[0]->isGivenKind(\T_VARIABLE);
             $insertIndex = $testIndex - 1;
             $newTokens = [];
@@ -517,7 +517,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
         $countCallCloseBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $countCallOpenBraceIndex);
         $afterCountCallCloseBraceIndex = $tokens->getNextMeaningfulToken($countCallCloseBraceIndex);
 
-        if (!$tokens[$afterCountCallCloseBraceIndex]->equalsAny([')', ','])) {
+        if (!$tokens[$afterCountCallCloseBraceIndex]->isGivenKindV4([')', ','])) {
             return;
         }
 

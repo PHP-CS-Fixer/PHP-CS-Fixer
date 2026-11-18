@@ -153,7 +153,7 @@ final class NoTrailingCommaInSinglelineFixer extends AbstractFixer implements Co
             return !AttributeAnalyzer::isAttribute($tokens, $beforeOpen) && \in_array('arguments', $elements, true);
         }
 
-        if ($tokens[$beforeOpen]->equalsAny([')', ']', [CT::T_DYNAMIC_VAR_BRACE_CLOSE], [CT::T_ARRAY_INDEX_BRACE_CLOSE]])) {
+        if ($tokens[$beforeOpen]->isGivenKindV4([')', ']', CT::T_DYNAMIC_VAR_BRACE_CLOSE, CT::T_ARRAY_INDEX_BRACE_CLOSE])) {
             $block = Tokens::detectBlockType($tokens[$beforeOpen]);
 
             return

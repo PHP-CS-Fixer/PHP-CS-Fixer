@@ -163,7 +163,7 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
             // eg: `function foo()   {}` => `function foo() {}`
             // eg: `fn()   =>` => `fn() =>`
             if (
-                $tokens[$startBraceIndex]->equalsAny(['{', [\T_DOUBLE_ARROW]])
+                $tokens[$startBraceIndex]->isGivenKindV4(['{', \T_DOUBLE_ARROW])
                 && (
                     !$tokens[$startBraceIndex - 1]->isWhitespace()
                     || $tokens[$startBraceIndex - 1]->isWhitespace($this->singleLineWhitespaceOptions)

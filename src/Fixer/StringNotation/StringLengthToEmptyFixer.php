@@ -258,7 +258,7 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
 
     private function isOfHigherPrecedence(Token $token): bool
     {
-        return $token->isGivenKind([\T_INSTANCEOF, \T_POW, \T_SL, \T_SR]) || $token->equalsAny([
+        return $token->isGivenKind([\T_INSTANCEOF, \T_POW, \T_SL, \T_SR]) || $token->isGivenKindV4([
             '!',
             '%',
             '*',

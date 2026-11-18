@@ -110,7 +110,7 @@ final class ControlStructureBracesFixer extends AbstractFixer
             $nextAfterParenthesisEndIndex = $tokens->getNextMeaningfulToken($parenthesisEndIndex);
             $tokenAfterParenthesis = $tokens[$nextAfterParenthesisEndIndex];
 
-            if ($tokenAfterParenthesis->equalsAny([';', '{', ':', [\T_CLOSE_TAG]])) {
+            if ($tokenAfterParenthesis->isGivenKindV4([';', '{', ':', \T_CLOSE_TAG])) {
                 continue;
             }
 
@@ -141,7 +141,7 @@ final class ControlStructureBracesFixer extends AbstractFixer
                 new Token('}'),
             ];
 
-            if (!$tokens[$statementEndIndex]->equalsAny([';', '}'])) {
+            if (!$tokens[$statementEndIndex]->isGivenKindV4([';', '}'])) {
                 array_unshift($tokensToInsertAfterStatement, new Token(';'));
             }
 

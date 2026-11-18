@@ -454,7 +454,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
                             $namespacePart = '';
                             for ($k2 = $k1;; ++$k2) {
                                 \assert(isset($namespaceTokens[$k2]));
-                                if ($namespaceTokens[$k2]->equalsAny([',', [CT::T_GROUP_IMPORT_BRACE_CLOSE]])) {
+                                if ($namespaceTokens[$k2]->isGivenKindV4([',', CT::T_GROUP_IMPORT_BRACE_CLOSE])) {
                                     break;
                                 }
 

@@ -147,7 +147,7 @@ final class SingleClassElementPerStatementFixer extends AbstractFixer implements
                 continue;
             }
 
-            if ($repeatToken->equalsAny([';', [CT::T_PROPERTY_HOOK_BRACE_OPEN]])) {
+            if ($repeatToken->isGivenKindV4([';', CT::T_PROPERTY_HOOK_BRACE_OPEN])) {
                 return; // no repeating found, no fixing needed
             }
 

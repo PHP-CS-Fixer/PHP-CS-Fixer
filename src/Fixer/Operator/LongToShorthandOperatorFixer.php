@@ -102,7 +102,7 @@ final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer
             $index = $tokens->getNextMeaningfulToken($index);
             $otherToken = $tokens[$index];
 
-            if ($otherToken->equalsAny([';', [\T_CLOSE_TAG]])) {
+            if ($otherToken->isGivenKindV4([';', \T_CLOSE_TAG])) {
                 return true;
             }
 

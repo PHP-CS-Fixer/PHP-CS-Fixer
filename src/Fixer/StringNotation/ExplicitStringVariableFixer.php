@@ -115,7 +115,7 @@ final class ExplicitStringVariableFixer extends AbstractFixer
                     $variableTokens[$distinctVariableIndex]['tokens'][$nextIndex] = $tokens[$nextIndex];
                     $variableTokens[$distinctVariableIndex]['lastVariableTokenIndex'] = $nextIndex;
 
-                    if ($tokens[$nextIndex]->equalsAny(['[', ']'])) {
+                    if ($tokens[$nextIndex]->isGivenKindV4(['[', ']'])) {
                         ++$squareBracketCount;
                     }
                 }

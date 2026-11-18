@@ -145,7 +145,7 @@ final class StaticLambdaFixer extends AbstractFixer
 
         $beforeWrapIndex = $tokens->getPrevMeaningfulToken($wrapStartIndex);
 
-        if (null !== $beforeWrapIndex && $tokens[$beforeWrapIndex]->equalsAny([')', ']', [\T_STRING], [\T_VARIABLE], [CT::T_ARRAY_INDEX_BRACE_CLOSE]])) {
+        if (null !== $beforeWrapIndex && $tokens[$beforeWrapIndex]->isGivenKindV4([')', ']', \T_STRING, \T_VARIABLE, CT::T_ARRAY_INDEX_BRACE_CLOSE])) {
             return false; // the lambda is an argument of a call, whose return value is the subject instead
         }
 

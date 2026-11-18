@@ -55,7 +55,7 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
 
         for ($index = 1; $index < $tokenCount; ++$index) {
             if (!$tokens[$index]->isGivenKind(\T_ISSET)
-                || !$tokens[$tokens->getPrevMeaningfulToken($index)]->equalsAny(['(', '{', ';', '=', [\T_OPEN_TAG], [\T_BOOLEAN_AND], [\T_BOOLEAN_OR]])) {
+                || !$tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKindV4(['(', '{', ';', '=', \T_OPEN_TAG, \T_BOOLEAN_AND, \T_BOOLEAN_OR])) {
                 continue;
             }
 
@@ -79,7 +79,7 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
                 $nextMeaningfulTokenIndex = $tokens->getNextMeaningfulToken(end($nextIssetInfo));
                 $nextMeaningfulToken = $tokens[$nextMeaningfulTokenIndex];
 
-                if (!$nextMeaningfulToken->equalsAny([')', '}', ';', [\T_CLOSE_TAG], [\T_BOOLEAN_AND], [\T_BOOLEAN_OR]])) {
+                if (!$nextMeaningfulToken->isGivenKindV4([')', '}', ';', \T_CLOSE_TAG, \T_BOOLEAN_AND, \T_BOOLEAN_OR])) {
                     $index = $nextMeaningfulTokenIndex;
 
                     break;

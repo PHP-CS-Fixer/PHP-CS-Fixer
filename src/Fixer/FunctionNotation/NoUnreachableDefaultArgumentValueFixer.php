@@ -130,7 +130,7 @@ final class NoUnreachableDefaultArgumentValueFixer extends AbstractFixer
     private function getDefaultValueEnd(Tokens $tokens, int $index): int
     {
         while (null !== $index = $tokens->getNextMeaningfulToken($index)) {
-            if ($tokens[$index]->equalsAny([',', [CT::T_PROPERTY_HOOK_BRACE_OPEN]])) {
+            if ($tokens[$index]->isGivenKindV4([',', CT::T_PROPERTY_HOOK_BRACE_OPEN])) {
                 break;
             }
 

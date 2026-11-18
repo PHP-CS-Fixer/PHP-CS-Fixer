@@ -118,7 +118,7 @@ final class SpacesInsideParenthesesFixer extends AbstractFixer implements Config
     {
         if ('none' === $this->configuration['space']) {
             foreach ($tokens as $index => $token) {
-                if (!$token->equalsAny(['(', [CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN]])) {
+                if (!$token->isGivenKindV4(['(', CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN])) {
                     continue;
                 }
 
@@ -146,7 +146,7 @@ final class SpacesInsideParenthesesFixer extends AbstractFixer implements Config
 
         if ('single' === $this->configuration['space']) {
             foreach ($tokens as $index => $token) {
-                if (!$token->equalsAny(['(', [CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN]])) {
+                if (!$token->isGivenKindV4(['(', CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN])) {
                     continue;
                 }
 

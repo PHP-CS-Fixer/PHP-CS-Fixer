@@ -111,28 +111,28 @@ final class IncrementStyleFixer extends AbstractIncrementOperatorFixer implement
             if (self::STYLE_PRE === $this->configuration['style'] && $tokensAnalyzer->isUnarySuccessorOperator($index)) {
                 $nextToken = $tokens[$tokens->getNextMeaningfulToken($index)];
 
-                if (!$nextToken->equalsAny([';', ')'])) {
+                if (!$nextToken->isGivenKindV4([';', ')'])) {
                     continue;
                 }
 
                 $startIndex = $this->findStart($tokens, $index);
                 $prevToken = $tokens[$tokens->getPrevMeaningfulToken($startIndex)];
 
-                if ($prevToken->equalsAny([';', '{', '}', [\T_OPEN_TAG], ')'])) {
+                if ($prevToken->isGivenKindV4([';', '{', '}', \T_OPEN_TAG, ')'])) {
                     $tokens->clearAt($index);
                     $tokens->insertAt($startIndex, clone $token);
                 }
             } elseif (self::STYLE_POST === $this->configuration['style'] && $tokensAnalyzer->isUnaryPredecessorOperator($index)) {
                 $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
 
-                if (!$prevToken->equalsAny([';', '{', '}', [\T_OPEN_TAG], ')'])) {
+                if (!$prevToken->isGivenKindV4([';', '{', '}', \T_OPEN_TAG, ')'])) {
                     continue;
                 }
 
                 $endIndex = $this->findEnd($tokens, $index);
                 $nextToken = $tokens[$tokens->getNextMeaningfulToken($endIndex)];
 
-                if ($nextToken->equalsAny([';', ')'])) {
+                if ($nextToken->isGivenKindV4([';', ')'])) {
                     $tokens->clearAt($index);
                     $tokens->insertAt($tokens->getNextNonWhitespace($endIndex), clone $token);
                 }
@@ -145,17 +145,17 @@ final class IncrementStyleFixer extends AbstractIncrementOperatorFixer implement
         $nextIndex = $tokens->getNextMeaningfulToken($index);
         $nextToken = $tokens[$nextIndex];
 
-        while ($nextToken->equalsAny([
+        while ($nextToken->isGivenKindV4([
             '$',
             '(',
             '[',
-            [CT::T_DYNAMIC_PROP_BRACE_OPEN],
-            [CT::T_DYNAMIC_VAR_BRACE_OPEN],
-            [CT::T_ARRAY_INDEX_BRACE_OPEN],
-            [\T_NS_SEPARATOR],
-            [\T_STATIC],
-            [\T_STRING],
-            [\T_VARIABLE],
+            CT::T_DYNAMIC_PROP_BRACE_OPEN,
+            CT::T_DYNAMIC_VAR_BRACE_OPEN,
+            CT::T_ARRAY_INDEX_BRACE_OPEN,
+            \T_NS_SEPARATOR,
+            \T_STATIC,
+            \T_STRING,
+            \T_VARIABLE,
         ])) {
             $blockType = Tokens::detectBlockType($nextToken);
 
