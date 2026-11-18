@@ -1,0 +1,15 @@
+src/Tokenizer/Token.php
+  h_44235ea8856697 263
+  h_44235ea8856697 45
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "8abdef2254226fd79fa11212bd42a5bae26274d4",
+  "prompts": {},
+  "humans": {
+    "h_44235ea8856697": {
+      "author": "Dariusz Ruminski <dariusz.ruminski@gmail.com>"
+    }
+  }
+}
