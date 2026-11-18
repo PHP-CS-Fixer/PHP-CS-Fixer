@@ -101,6 +101,14 @@ final class TernaryToNullCoalescingFixerTest extends AbstractFixerTestCase
 
         yield ['<?php $x = function(){isset($a[yield from $a]) ? $a[yield from $a] : null;};'];
 
+        yield ['<?php $x = foo(isset($a)) ? $a : null;'];
+
+        yield ['<?php $x = !(isset($a)) ? $a : null;'];
+
+        yield ['<?php $x = (isset($a) && $b) ? $a : null;'];
+
+        yield ['<?php $x = (isset($a)) ? $b : null;'];
+
         // Fix cases.
         yield 'Common fix case (I).' => [
             '<?php $x = $a ?? null;',
@@ -110,6 +118,21 @@ final class TernaryToNullCoalescingFixerTest extends AbstractFixerTestCase
         yield 'Common fix case (II).' => [
             '<?php $x = $a[0] ?? 1;',
             '<?php $x = isset($a[0]) ? $a[0] : 1;',
+        ];
+
+        yield 'isset() in parentheses' => [
+            '<?php $x = $a ?? null;',
+            '<?php $x = (isset($a)) ? $a : null;',
+        ];
+
+        yield 'isset() in nested parentheses' => [
+            '<?php $x = $a[0] ?? \'\';',
+            '<?php $x = ((isset($a[0]))) ? $a[0] : \'\';',
+        ];
+
+        yield 'isset() in parentheses with comments' => [
+            '<?php $x = /* foo */ $a ?? null;',
+            '<?php $x = ( /* foo */ isset($a)) ? $a : null;',
         ];
 
         yield 'Minimal number of tokens case.' => [
