@@ -30,22 +30,8 @@ parameters:
         -
             message: '/^For loop initial assignment overwrites variable \$(i|index|endIndex)+\.$/'
             paths:
-                - src/Fixer/Comment/CommentToPhpdocFixer.php
-                - src/Fixer/ControlStructure/YodaStyleFixer.php
                 - src/Fixer/Import/GlobalNamespaceImportFixer.php
-                - src/Fixer/Import/OrderedImportsFixer.php
-                - src/Fixer/LanguageConstruct/SingleSpaceAroundConstructFixer.php
-                - src/Fixer/Operator/NoUselessConcatOperatorFixer.php
-                - src/Fixer/PhpUnit/PhpUnitDedicateAssertInternalTypeFixer.php
-                - src/Fixer/ReturnNotation/ReturnAssignmentFixer.php
                 - src/Fixer/Whitespace/StatementIndentationFixer.php
-                - tests/DocBlock/TypeExpressionTest.php
-        -
-            message: '/^Foreach overwrites \$index with its key variable.$/'
-            paths:
-                - src/Fixer/DoctrineAnnotation/DoctrineAnnotationIndentationFixer.php
-                - src/Fixer/Import/GlobalNamespaceImportFixer.php
-                - src/Fixer/LanguageConstruct/GetClassToClassKeywordFixer.php
 
         # We allow own config to eat internal rules/sets
         -

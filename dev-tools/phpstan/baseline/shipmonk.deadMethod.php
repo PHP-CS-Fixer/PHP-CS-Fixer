@@ -2,9 +2,9 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
-    'rawMessage' => 'Unused PhpCsFixer\\Tests\\Benchmark\\FixersBench::benchSingleRule',
+    'rawMessage' => 'Unused PhpCsFixer\\UnsupportedPhpVersionAllowedConfigInterface::setUnsupportedPhpVersionAllowed',
     'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Benchmark/FixersBench.php',
+    'path' => __DIR__ . '/../../../src/UnsupportedPhpVersionAllowedConfigInterface.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Unused PhpCsFixer\\Tests\\Benchmark\\FixersBench::provideFixerNames',
@@ -15,11 +15,6 @@ $ignoreErrors[] = [
     'rawMessage' => 'Unused PhpCsFixer\\Tests\\Benchmark\\FixersBench::setUp',
     'count' => 1,
     'path' => __DIR__ . '/../../../tests/Benchmark/FixersBench.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Unused PhpCsFixer\\Tests\\Benchmark\\TokenizerBench::benchTokenization',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Benchmark/TokenizerBench.php',
 ];
 
 return ['parameters' => ['ignoreErrors' => $ignoreErrors]];

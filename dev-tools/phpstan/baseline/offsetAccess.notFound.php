@@ -22,7 +22,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/NoUnneededFinalMethodFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset int might not exist on array<int, PhpCsFixer\\Tokenizer\\Tokens>.',
+    'rawMessage' => 'Offset mixed might not exist on array<int, PhpCsFixer\\Tokenizer\\Tokens>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedTraitsFixer.php',
 ];
@@ -47,7 +47,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Internal/ConfigurableFixerTemplateFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset int might not exist on list<non-empty-string>.',
+    'rawMessage' => 'Offset int might not exist on list<string>.',
     'count' => 4,
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php',
 ];

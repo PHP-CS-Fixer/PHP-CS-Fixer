@@ -2733,7 +2733,6 @@ class TestClass {
         $cases[] = [\sprintf($template, 'protected'), 10, $attributes];
 
         $attributes = $defaultAttributes;
-        $attributes['visibility'] = null;
         $attributes['static'] = true;
         $cases[] = [\sprintf($template, 'static'), 10, $attributes];
 
@@ -2744,7 +2743,6 @@ class TestClass {
         $cases[] = [\sprintf($template, 'final public static'), 14, $attributes];
 
         $attributes = $defaultAttributes;
-        $attributes['visibility'] = null;
         $attributes['abstract'] = true;
         $cases[] = [\sprintf($template, 'abstract'), 10, $attributes];
 
