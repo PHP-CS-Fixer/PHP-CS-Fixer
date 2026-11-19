@@ -26,6 +26,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Future;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\CommentsAnalyzer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -176,7 +177,7 @@ final class PhpdocToCommentFixer extends AbstractFixer implements ConfigurableFi
                 continue;
             }
 
-            if ($commentsAnalyzer->isBeforeStructuralElement($tokens, $index)) {
+            if ($commentsAnalyzer->isBeforeStructuralElement($tokens, $index) || $this->isInParameterList($tokens, $index)) {
                 continue;
             }
 
@@ -190,5 +191,47 @@ final class PhpdocToCommentFixer extends AbstractFixer implements ConfigurableFi
 
             $tokens[$index] = new Token([\T_COMMENT, '/*'.ltrim($token->getContent(), '/*')]);
         }
+    }
+
+    /**
+     * Since PHP 8.6 a docblock anywhere in a parameter list documents a parameter.
+     */
+    private function isInParameterList(Tokens $tokens, int $index): bool
+    {
+        while (null !== $index = $tokens->getPrevMeaningfulToken($index)) {
+            $blockType = Tokens::detectBlockType($tokens[$index]);
+
+            if (null === $blockType) {
+                // neither can appear directly in a parameter list
+                if ($tokens[$index]->equalsAny([';', [\T_DOUBLE_ARROW]])) {
+                    return false;
+                }
+
+                continue;
+            }
+
+            if ($blockType['isStart']) {
+                return $tokens[$index]->equals('(') && $this->isFunctionDeclarationParenthesis($tokens, $index);
+            }
+
+            $index = $tokens->findBlockStart($blockType['type'], $index);
+        }
+
+        return false;
+    }
+
+    private function isFunctionDeclarationParenthesis(Tokens $tokens, int $index): bool
+    {
+        $index = $tokens->getPrevMeaningfulToken($index);
+
+        if ($tokens[$index]->isGivenKind(\T_STRING)) {
+            $index = $tokens->getPrevMeaningfulToken($index);
+        }
+
+        if ($tokens[$index]->isGivenKind(CT::T_RETURN_REF)) {
+            $index = $tokens->getPrevMeaningfulToken($index);
+        }
+
+        return $tokens[$index]->isGivenKind([\T_FUNCTION, \T_FN]);
     }
 }
