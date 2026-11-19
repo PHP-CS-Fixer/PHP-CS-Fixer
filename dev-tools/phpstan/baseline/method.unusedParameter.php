@@ -11,15 +11,5 @@ $ignoreErrors[] = [
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Operator/BinaryOperatorSpacesFixer.php',
 ];
-$ignoreErrors[] = [
-    'rawMessage' => 'Method PhpCsFixer\\Tests\\DocBlock\\TypeExpressionTest::parseTypeExpression() has an unused parameter $namespace.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/DocBlock/TypeExpressionTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Method PhpCsFixer\\Tests\\DocBlock\\TypeExpressionTest::parseTypeExpression() has an unused parameter $namespaceUses.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/DocBlock/TypeExpressionTest.php',
-];
 
 return ['parameters' => ['ignoreErrors' => $ignoreErrors]];

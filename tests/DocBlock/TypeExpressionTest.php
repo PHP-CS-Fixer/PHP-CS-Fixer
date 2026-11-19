@@ -46,14 +46,12 @@ final class TypeExpressionTest extends TestCase
             $expectedTypes = [$typesExpression];
         }
 
-        $expression = $this->parseTypeExpression($typesExpression, null, []);
+        $expression = $this->parseTypeExpression($typesExpression);
         self::assertSame($expectedTypes, $expression->getTypes());
 
         $unionTestNs = '__UnionTest__';
         $unionExpression = $this->parseTypeExpression(
             $unionTestNs.'\A|'.$typesExpression.'|'.$unionTestNs.'\Z',
-            null,
-            [],
         );
         if (!$expression->isCompositeType() || $expression->isUnionType()) {
             self::assertSame(
@@ -899,7 +897,7 @@ final class TypeExpressionTest extends TestCase
         $sortCaseFx = static fn (TypeExpression $a, TypeExpression $b): int => strcasecmp($a->toString(), $b->toString());
         $sortCrc32Fx = static fn (TypeExpression $a, TypeExpression $b): int => crc32($a->toString()) <=> crc32($b->toString());
 
-        $expression = $this->parseTypeExpression($typesExpression, null, []);
+        $expression = $this->parseTypeExpression($typesExpression);
 
         $expression = $expression->sortTypes($sortCaseFx);
         $this->checkInnerTypeExpressionsStartIndex($expression);
@@ -1243,10 +1241,8 @@ final class TypeExpressionTest extends TestCase
 
     /**
      * Parse type expression with and without PCRE JIT.
-     *
-     * @param list<NamespaceUseAnalysis> $namespaceUses
      */
-    private function parseTypeExpression(string $value, ?NamespaceAnalysis $namespace, array $namespaceUses): TypeExpression
+    private function parseTypeExpression(string $value): TypeExpression
     {
         $pcreJitBackup = \ini_get('pcre.jit');
 
