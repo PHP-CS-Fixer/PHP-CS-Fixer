@@ -71,7 +71,7 @@ final class AutoPHPUnitMigrationRiskySetTest extends AbstractSetTestCase
             return;
         }
 
-        foreach ($rulesWithTarget as $rule => $configuration) {
+        foreach ($rulesWithTarget as $configuration) {
             if (!\is_array($configuration) || !isset($configuration['target'])) {
                 continue;
             }

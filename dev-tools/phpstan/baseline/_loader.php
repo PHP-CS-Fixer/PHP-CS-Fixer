@@ -8,7 +8,6 @@ return ['includes' => [
     __DIR__ . '/assign.unused.php',
     __DIR__ . '/booleanNot.exprNotBoolean.php',
     __DIR__ . '/foreach.nonIterable.php',
-    __DIR__ . '/foreach.unusedKey.php',
     __DIR__ . '/method.childReturnType.php',
     __DIR__ . '/method.unusedParameter.php',
     __DIR__ . '/offsetAccess.notFound.php',
