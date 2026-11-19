@@ -5,7 +5,6 @@ return ['includes' => [
     __DIR__ . '/assign.overwritten.php',
     __DIR__ . '/assign.propertyType.php',
     __DIR__ . '/assign.redundant.php',
-    __DIR__ . '/assign.unused.php',
     __DIR__ . '/booleanNot.exprNotBoolean.php',
     __DIR__ . '/foreach.nonIterable.php',
     __DIR__ . '/method.childReturnType.php',

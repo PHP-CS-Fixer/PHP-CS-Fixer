@@ -47,7 +47,7 @@ final class BinEntryFileTest extends TestCase
             }
         }
         // Unset the file to call __destruct(), closing the file handle.
-        $file = null;
+        unset($file);
 
         self::assertEqualsCanonicalizing([
             '    if (\PHP_VERSION_ID === (int) \'80000\') { // TODO use 8_00_00 once only PHP 7.4+ is supported by this entry file'."\n",
