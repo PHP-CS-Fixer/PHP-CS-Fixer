@@ -3,6 +3,13 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.32
+----------------------
+
+* docs: fix the dead Doctrine Annotations link in `@DoctrineAnnotation` (#9938)
+* fix: `SimplifiedIfReturnFixer` - do not merge the `return` after an `elseif` chain into the last branch (#9905)
+* fix: `UseArrowFunctionsFixer` - do not convert closures that are operands of the pipe operator (#9881)
+
 Changelog for v3.95.31
 ----------------------
 
