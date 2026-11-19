@@ -2,6 +2,11 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
+    'rawMessage' => 'Parameter #3 $overrides of method PhpCsFixer\\Console\\Command\\DescribeCommand::createRuleSetDefinition() expects array{getDescription?: string, getName?: string, getRules?: array<string, array<string, mixed>|bool>, isRisky?: bool}, array{getDescription: \'Rules that are not…\', getName: \'@- - rules without…\', getRules: array<non-empty-string, true>|false, isRisky: bool} given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../src/Console/Command/DescribeCommand.php',
+];
+$ignoreErrors[] = [
     'rawMessage' => 'Parameter #2 of function sprintf is expected to be int by placeholder #1 ("%%d"), string given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Console/Command/WorkerCommand.php',
@@ -32,9 +37,19 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
 $ignoreErrors[] = [
+    'rawMessage' => 'Parameter #1 $array of function array_reverse expects array, array<int, PhpCsFixer\\Tokenizer\\Tokens>|false given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedTraitsFixer.php',
+];
+$ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $possibleKind of method PhpCsFixer\\Tokenizer\\Token::isGivenKind() expects int|list<int>, list<int|string> given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ControlStructure/YodaStyleFixer.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Parameter #1 $slices of method PhpCsFixer\\Tokenizer\\Tokens::insertSlices() expects array<int, list<PhpCsFixer\\Tokenizer\\Token>|PhpCsFixer\\Tokenizer\\Token|PhpCsFixer\\Tokenizer\\Tokens>, non-empty-array<int<1, max>, array{PhpCsFixer\\Tokenizer\\Token, PhpCsFixer\\Tokenizer\\Token}>|false given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../src/Fixer/FunctionNotation/NoUselessPrintfFixer.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Parameter #2 $offset of function substr expects int, int|false given.',
@@ -50,6 +65,11 @@ $ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $lines of method PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitTestAnnotationFixer::splitUpDocBlock() expects non-empty-list<PhpCsFixer\\DocBlock\\Line>, list<PhpCsFixer\\DocBlock\\Line> given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Parameter #3 $functionParams of method PhpCsFixer\\Fixer\\Strict\\StrictParamFixer::fixFunction() expects list<PhpCsFixer\\Tokenizer\\Token|null>, array{null, array{PhpCsFixer\\Tokenizer\\Token, PhpCsFixer\\Tokenizer\\Token, PhpCsFixer\\Tokenizer\\Token}|null, PhpCsFixer\\Tokenizer\\Token}|array{null, PhpCsFixer\\Tokenizer\\Token} given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../src/Fixer/Strict/StrictParamFixer.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $code of static method PhpCsFixer\\Hasher::calculate() expects string, string|false given.',
@@ -92,6 +112,16 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../tests/Console/Output/Progress/ProgressOutputFactoryTest.php',
 ];
 $ignoreErrors[] = [
+    'rawMessage' => 'Parameter #1 $array of function array_keys expects array, list<true>|false given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../tests/Fixer/FunctionNotation/VoidReturnFixerTest.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Parameter #3 of function sprintf is expected to be string by placeholder #2 ("%%s"), string|false given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../tests/Fixer/PhpUnit/PhpUnitStrictFixerTest.php',
+];
+$ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $minimum of method PhpCsFixer\\Tests\\FixerDefinition\\VersionSpecificationTest::testConstructorRejectsInvalidValues() expects int<1, max>|null, -1 given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../tests/FixerDefinition/VersionSpecificationTest.php',
@@ -120,6 +150,11 @@ $ignoreErrors[] = [
     'rawMessage' => 'Parameter #3 of function sprintf is expected to be int by placeholder #2 ("%%d"), string given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../tests/RuleSet/Sets/AbstractSetTestCase.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Parameter #1 $array of class ArrayIterator constructor expects array<int<0, max>, SplFileInfo>, list<SplFileInfo>|false given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../tests/Runner/FileFilterIteratorTest.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $input of method PhpCsFixer\\Tests\\Runner\\Parallel\\ProcessFactoryTest::testCreate() expects array<string, string>, array<string, string|true> given.',
