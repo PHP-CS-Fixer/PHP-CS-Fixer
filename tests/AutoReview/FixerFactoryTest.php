@@ -796,6 +796,10 @@ final class FixerFactoryTest extends TestCase
                 'php_unit_assert_new_names',
                 'php_unit_dedicate_assert_internal_type',
             ],
+            'php_unit_does_not_perform_assertions_annotation' => [
+                'no_empty_phpdoc',
+                'php_unit_attributes',
+            ],
             'php_unit_fqcn_annotation' => [
                 'no_unused_imports',
                 'phpdoc_order_by_value',
