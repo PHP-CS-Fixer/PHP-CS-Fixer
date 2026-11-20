@@ -304,6 +304,15 @@ Custom values:
                 $this->sortTokens($tokens, $i, $endIndex, $sorted);
             }
 
+            // Consider any anonymous classes embedded within the current class.
+            $nextClass = $tokens->getNextTokenOfKind($i, [[\T_CLASS]]);
+
+            if (null !== $nextClass && $nextClass < $endIndex) {
+                $i = $nextClass - 1;
+
+                continue;
+            }
+
             $i = $endIndex;
         }
     }

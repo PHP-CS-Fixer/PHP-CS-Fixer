@@ -404,6 +404,257 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
             <<<'EOT'
                 <?php
 
+                class BeforeClass
+                {
+                    public const BAR = 1;
+                    public array $foo;
+                }
+
+                trait TraitContainingAnonymousClass
+                {
+                    public static string $some = 'THING';
+                    public function test1(): object
+                    {
+                        return new class () {
+                            public const FOO = 1;
+                            private const BAR = 2;
+                        };
+                    }
+                }
+
+                class EndClass
+                {
+                    public int $foo;
+                    private bool $bar;
+                }
+                EOT,
+            <<<'EOT'
+                <?php
+
+                class BeforeClass
+                {
+                    public array $foo;
+                    public const BAR = 1;
+                }
+
+                trait TraitContainingAnonymousClass
+                {
+                    public function test1(): object
+                    {
+                        return new class () {
+                            private const BAR = 2;
+                            public const FOO = 1;
+                        };
+                    }
+                    public static string $some = 'THING';
+                }
+
+                class EndClass
+                {
+                    private bool $bar;
+                    public int $foo;
+                }
+                EOT,
+        ];
+
+        yield [
+            <<<'EOT'
+                <?php
+
+                interface Bar
+                {
+                    public const C = 1;
+                    public function pub(): object;
+                }
+
+                class Foo implements Bar
+                {
+                    public function pub(): object
+                    {
+                        return new class() {
+                            public static int $y = 2;
+                            private static int $x = 1;
+                        };
+                    }
+                    private function priv(): object
+                    {
+                        return new class() {
+                            public static int $y = 2;
+                            private static int $x = 1;
+                        };
+                    }
+                }
+
+                interface Another
+                {
+                    public const XYZ = 3;
+                    public function another(): object;
+                }
+
+                class SecondFoo implements Bar, Another
+                {
+                    public function pub(): object
+                    {
+                        return new class() {
+                            public static int $y = 2;
+                            private static int $x = 1;
+                        };
+                    }
+                    private function priv(): object
+                    {
+                        return new class() {
+                            public static int $y = 2;
+                            private static int $x = 1;
+                        };
+                    }
+                }
+                EOT,
+            <<<'EOT'
+                <?php
+
+                interface Bar
+                {
+                    public const C = 1;
+                    public function pub(): object;
+                }
+
+                class Foo implements Bar
+                {
+                    private function priv(): object
+                    {
+                        return new class() {
+                            private static int $x = 1;
+                            public static int $y = 2;
+                        };
+                    }
+                    public function pub(): object
+                    {
+                        return new class() {
+                            private static int $x = 1;
+                            public static int $y = 2;
+                        };
+                    }
+                }
+
+                interface Another
+                {
+                    public function another(): object;
+                    public const XYZ = 3;
+                }
+
+                class SecondFoo implements Bar, Another
+                {
+                    private function priv(): object
+                    {
+                        return new class() {
+                            private static int $x = 1;
+                            public static int $y = 2;
+                        };
+                    }
+                    public function pub(): object
+                    {
+                        return new class() {
+                            private static int $x = 1;
+                            public static int $y = 2;
+                        };
+                    }
+                }
+                EOT,
+        ];
+
+        yield [
+            <<<'EOT'
+                <?php
+
+                return new class() {
+
+                    public function pub(): object
+                    {
+                        return new class() {
+                            use Trait1;
+                            public function __construct() {}
+                            public function __destruct() {}
+                            public function m1(): void {}
+                            protected function m2(): object
+                            {
+                                return new class() {
+                                    public const BAR = 2;
+                                    private const FOO = 1;
+                                };
+                            }
+                            private function m3(): void {}
+                        };
+                    }
+
+                    private function priv(): object
+                    {
+                        return new class() {
+                            use Trait1;
+                            public function __construct() {}
+                            public function __destruct() {}
+                            public function m1(): void {}
+                            protected function m2(): object
+                            {
+                                return new class() {
+                                    public const BAR = 2;
+                                    private const FOO = 1;
+                                };
+                            }
+                            private function m3(): void {}
+                        };
+                    }
+
+                };
+                EOT,
+            <<<'EOT'
+                <?php
+
+                return new class() {
+
+                    private function priv(): object
+                    {
+                        return new class() {
+                            private function m3(): void {}
+                            protected function m2(): object
+                            {
+                                return new class() {
+                                    private const FOO = 1;
+                                    public const BAR = 2;
+                                };
+                            }
+                            public function m1(): void {}
+                            use Trait1;
+                            public function __destruct() {}
+                            public function __construct() {}
+                        };
+                    }
+
+                    public function pub(): object
+                    {
+                        return new class() {
+                            private function m3(): void {}
+                            protected function m2(): object
+                            {
+                                return new class() {
+                                    private const FOO = 1;
+                                    public const BAR = 2;
+                                };
+                            }
+                            public function m1(): void {}
+                            use Trait1;
+                            public function __destruct() {}
+                            public function __construct() {}
+                        };
+                    }
+
+                };
+                EOT,
+        ];
+
+        yield [
+            <<<'EOT'
+                <?php
+
                 class Foo
                 {
                     use BarTrait;
