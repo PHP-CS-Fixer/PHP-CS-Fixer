@@ -29,7 +29,6 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Future;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
-use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\FCT;
@@ -202,6 +201,9 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
             $shortNames[strtolower($namespaceUseAnalysis->getShortName())] = strtolower($namespaceUseAnalysis->getFullName());
         }
 
+        // only T_DOC_COMMENT tokens are replaced below, in place, so namespace scopes stay valid for the whole loop
+        $namespaceDeclarations = $tokens->getNamespaceDeclarations();
+
         foreach ($tokens as $index => $token) {
             if ($index === $currentSymbolEndIndex) {
                 $currentSymbol = null;
@@ -240,7 +242,17 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
                 $content = $this->removeSuperfluousInheritDoc($content);
             }
 
-            $namespace = (new NamespacesAnalyzer())->getNamespaceAt($tokens, $index)->getFullName();
+            $namespace = null;
+            foreach ($namespaceDeclarations as $namespaceDeclaration) {
+                if ($namespaceDeclaration->getScopeStartIndex() <= $index && $namespaceDeclaration->getScopeEndIndex() >= $index) {
+                    $namespace = $namespaceDeclaration->getFullName();
+
+                    break;
+                }
+            }
+            if (null === $namespace) {
+                throw new \LogicException(\sprintf('Unable to get the namespace at index %d.', $index));
+            }
             if ('' === $namespace) {
                 $namespace = null;
             }
