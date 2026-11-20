@@ -105,3 +105,12 @@ jobs:
         run: |
           git archive -o /dev/null HEAD -v 2>&1 | grep tests | grep \.php \
           && (echo "Test files detected in archive" && exit 1) || echo "No test files detected in archive"
+
+      - name: Check - regex \R
+        run: |
+          if git grep -F "'/\R/'" src/ tests/; then
+            echo "::error::Non-UTF regex for '/\R/' found. Replace with 'false !== strpbrk(\$content, '\\r\\n')'"
+            exit 1
+          else
+            echo "No UTF \R regex found"
+          fi
