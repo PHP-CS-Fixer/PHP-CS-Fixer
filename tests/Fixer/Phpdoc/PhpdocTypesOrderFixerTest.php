@@ -80,6 +80,31 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
             '<?php /** @method Foo|\Bar foo(Foo|\Bar $foo, Foo|\Bar $bar) */',
         ];
 
+        yield 'static method with a nullable intersection return type' => [
+            '<?php /** @method static null|(Bar&Foo) foo(null|int $value) description */',
+            '<?php /** @method static (Foo&Bar)|null foo(int|null $value) description */',
+        ];
+
+        yield 'static method with a default parameter value' => [
+            '<?php /** @method static null|string foo(int $value = 1) */',
+            '<?php /** @method static string|null foo(int $value = 1) */',
+        ];
+
+        yield 'static method with a static return type' => [
+            '<?php /** @method static null|static foo() */',
+            '<?php /** @method static static|null foo() */',
+        ];
+
+        yield 'static return type with a method call in the description' => [
+            '<?php /** @method static foo(null|int $value) description(int|null) */',
+            '<?php /** @method static foo(int|null $value) description(int|null) */',
+        ];
+
+        yield 'static method with a callable return type and parameters' => [
+            '<?php /** @method static callable(null|int): void foo(null|string $value) */',
+            '<?php /** @method static callable(int|null): void foo(string|null $value) */',
+        ];
+
         yield [
             '<?php /** @var null|array|Bar\Baz|bool[]|false|Foo|int|object|resource|string|string[] */',
             '<?php /** @var string[]|resource|false|object|null|Foo|Bar\Baz|bool[]|string|array|int */',
