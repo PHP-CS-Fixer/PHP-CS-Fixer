@@ -707,7 +707,7 @@ final class ConfigurationResolver
             $rules = $this->parseRules();
             $this->validateRules($rules);
 
-            $this->ruleSet = new RuleSet($rules);
+            $this->ruleSet = new RuleSet($this->expandDisabledDeprecatedFixers($rules));
         }
 
         return $this->ruleSet;
@@ -765,6 +765,47 @@ final class ConfigurationResolver
         }
 
         $this->configRulesAreOverridden = true;
+
+        return $rules;
+    }
+
+    /**
+     * Explicitly disabling a deprecated fixer also disables its successors: rule sets
+     * reference the new names, so once a set migrated (e.g. `@PER-CS` referencing
+     * `modifier_keywords`), disabling the old name (`visibility_required`) would
+     * otherwise no longer have any effect. A successor configured explicitly is
+     * left untouched.
+     *
+     * @param array<string, array<string, mixed>|bool> $rules
+     *
+     * @return array<string, array<string, mixed>|bool>
+     */
+    private function expandDisabledDeprecatedFixers(array $rules): array
+    {
+        $deprecatedFixers = [];
+
+        foreach ($this->createFixerFactory()->getFixers() as $fixer) {
+            if ($fixer instanceof DeprecatedFixerInterface) {
+                $deprecatedFixers[$fixer->getName()] = $fixer->getSuccessorsNames();
+            }
+        }
+
+        do {
+            $changed = false;
+
+            foreach ($deprecatedFixers as $name => $successors) {
+                if (false !== ($rules[$name] ?? null)) {
+                    continue;
+                }
+
+                foreach ($successors as $successor) {
+                    if (!\array_key_exists($successor, $rules)) {
+                        $rules[$successor] = false;
+                        $changed = true;
+                    }
+                }
+            }
+        } while ($changed);
 
         return $rules;
     }
