@@ -25,11 +25,28 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NamespacesAnalyzer
 {
+    /** @var array<non-empty-string, list<NamespaceAnalysis>> */
+    private static array $cache = [];
+
+    public static function clearCache(?string $collectionHash = null): void
+    {
+        if (null !== $collectionHash) {
+            unset(self::$cache[$collectionHash]);
+        } else {
+            self::$cache = [];
+        }
+    }
+
     /**
      * @return list<NamespaceAnalysis>
      */
     public function getDeclarations(Tokens $tokens): array
     {
+        $collectionHash = $tokens->getCollectionHash();
+        if (isset(self::$cache[$collectionHash])) {
+            return self::$cache[$collectionHash];
+        }
+
         $namespaces = [];
 
         for ($index = 1, $count = \count($tokens); $index < $count; ++$index) {
@@ -77,6 +94,8 @@ final class NamespacesAnalyzer
                 \count($tokens) - 1,
             );
         }
+
+        self::$cache[$collectionHash] = $namespaces;
 
         return $namespaces;
     }

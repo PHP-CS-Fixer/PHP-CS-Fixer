@@ -20,6 +20,7 @@ use PhpCsFixer\Hasher;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\SwitchAnalyzer;
 
 /**
  * Collection of code tokens.
@@ -153,11 +154,6 @@ class Tokens extends \SplFixedArray
     private array $foundTokenKinds = [];
 
     /**
-     * @var null|list<NamespaceAnalysis>
-     */
-    private ?array $namespaceDeclarations = null;
-
-    /**
      * Clone tokens collection.
      */
     public function __clone()
@@ -181,6 +177,15 @@ class Tokens extends \SplFixedArray
         }
 
         unset(self::$cache[$key]);
+    }
+
+    /**
+     * @internal
+     */
+    public function clearAnalyzerCache(?string $collectionHash = null): void
+    {
+        NamespacesAnalyzer::clearCache($collectionHash);
+        SwitchAnalyzer::clearCache($collectionHash);
     }
 
     /**
@@ -377,10 +382,10 @@ class Tokens extends \SplFixedArray
             $this->unregisterFoundToken($this[$index]);
 
             $this->changed = true;
-            $this->collectionHash = null;
             self::clearCache($this->codeHash);
+            self::clearAnalyzerCache($this->collectionHash);
             $this->codeHash = null;
-            $this->namespaceDeclarations = null;
+            $this->collectionHash = null;
         }
 
         parent::offsetUnset($index);
@@ -425,10 +430,10 @@ class Tokens extends \SplFixedArray
             }
 
             $this->changed = true;
-            $this->collectionHash = null;
             self::clearCache($this->codeHash);
+            self::clearAnalyzerCache($this->collectionHash);
             $this->codeHash = null;
-            $this->namespaceDeclarations = null;
+            $this->collectionHash = null;
 
             $this->registerFoundToken($newval);
         }
@@ -490,9 +495,9 @@ class Tokens extends \SplFixedArray
         }
 
         // we are moving the tokens, we need to clear the index-based Cache
-        $this->namespaceDeclarations = null;
         $this->foundTokenKinds[''] = 0;
 
+        self::clearAnalyzerCache($this->collectionHash);
         $this->collectionHash = null;
 
         $this->updateSizeByTrimmingTrailingEmptyTokens();
@@ -1023,10 +1028,10 @@ class Tokens extends \SplFixedArray
         }
 
         $this->changed = true;
-        $this->collectionHash = null;
         self::clearCache($this->codeHash);
+        self::clearAnalyzerCache($this->collectionHash);
         $this->codeHash = null;
-        $this->namespaceDeclarations = null;
+        $this->collectionHash = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
 
@@ -1189,10 +1194,10 @@ class Tokens extends \SplFixedArray
         }
 
         $this->changed = true;
-        $this->collectionHash = null;
         self::clearCache($this->codeHash);
+        self::clearAnalyzerCache($this->collectionHash);
         $this->codeHash = null;
-        $this->namespaceDeclarations = null;
+        $this->collectionHash = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
 
@@ -1347,14 +1352,12 @@ class Tokens extends \SplFixedArray
      * @internal This is performance-related workaround for lack of proper DI, may be removed at some point
      *
      * @return list<NamespaceAnalysis>
+     *
+     * @TODO deprecate me: use `NamespacesAnalyzer` directly
      */
     public function getNamespaceDeclarations(): array
     {
-        if (null === $this->namespaceDeclarations) {
-            $this->namespaceDeclarations = (new NamespacesAnalyzer())->getDeclarations($this);
-        }
-
-        return $this->namespaceDeclarations;
+        return (new NamespacesAnalyzer())->getDeclarations($this);
     }
 
     /**
@@ -1383,10 +1386,10 @@ class Tokens extends \SplFixedArray
         }
 
         $this->changed = true;
-        $this->collectionHash = null;
         self::clearCache($this->codeHash);
+        self::clearAnalyzerCache($this->collectionHash);
         $this->codeHash = null;
-        $this->namespaceDeclarations = null;
+        $this->collectionHash = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
 
