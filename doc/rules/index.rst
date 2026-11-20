@@ -982,7 +982,7 @@ Whitespace
 - `no_extra_blank_lines <./whitespace/no_extra_blank_lines.rst>`_ *(configurable)*
 
   Removes extra blank lines and/or blank lines following configuration.
-- `no_spaces_around_offset <./whitespace/no_spaces_around_offset.rst>`_ *(configurable)*
+- `no_spaces_around_offset <./whitespace/no_spaces_around_offset.rst>`_ *(deprecated, configurable)*
 
   There MUST NOT be spaces around offset braces.
 - `no_spaces_inside_parenthesis <./whitespace/no_spaces_inside_parenthesis.rst>`_ *(deprecated)*
@@ -997,6 +997,9 @@ Whitespace
 - `single_blank_line_at_eof <./whitespace/single_blank_line_at_eof.rst>`_
 
   A PHP file without end tag must always end with a single empty line feed.
+- `spaces_around_offset <./whitespace/spaces_around_offset.rst>`_ *(configurable)*
+
+  There must be no space, or a single space, inside and outside of offset braces, as configured.
 - `spaces_inside_parentheses <./whitespace/spaces_inside_parentheses.rst>`_ *(configurable)*
 
   Parentheses must be declared using the configured whitespace.

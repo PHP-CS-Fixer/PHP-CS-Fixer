@@ -4,8 +4,13 @@ Rule ``no_spaces_around_offset``
 
 There MUST NOT be spaces around offset braces.
 
-Warning
--------
+Warnings
+--------
+
+This rule is DEPRECATED and will be removed in the next major version 4.0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You should use ``spaces_around_offset`` instead.
 
 This rule is CONFIGURABLE
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -65,14 +70,6 @@ With configuration: ``['positions' => ['outside']]``.
     <?php
    -$sample = $b [ 'a' ] [ 'b' ];
    +$sample = $b[ 'a' ][ 'b' ];
-
-Rule sets
----------
-
-The rule is part of the following rule sets:
-
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
-- `@Symfony <./../../ruleSets/Symfony.rst>`_
 
 References
 ----------

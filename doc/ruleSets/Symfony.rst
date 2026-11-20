@@ -80,7 +80,6 @@ Rules
 - `no_null_property_initialization <./../rules/class_notation/no_null_property_initialization.rst>`_
 - `no_short_bool_cast <./../rules/cast_notation/no_short_bool_cast.rst>`_
 - `no_singleline_whitespace_before_semicolons <./../rules/semicolon/no_singleline_whitespace_before_semicolons.rst>`_
-- `no_spaces_around_offset <./../rules/whitespace/no_spaces_around_offset.rst>`_
 - `no_superfluous_phpdoc_tags <./../rules/phpdoc/no_superfluous_phpdoc_tags.rst>`_ with config:
 
   ``['allow_hidden_params' => true, 'remove_inheritdoc' => true]``
@@ -177,6 +176,7 @@ Rules
 
   ``['remove_in_empty_for_expressions' => true]``
 
+- `spaces_around_offset <./../rules/whitespace/spaces_around_offset.rst>`_
 - `standardize_increment <./../rules/operator/standardize_increment.rst>`_
 - `standardize_not_equals <./../rules/operator/standardize_not_equals.rst>`_
 - `statement_indentation <./../rules/whitespace/statement_indentation.rst>`_ with config:
