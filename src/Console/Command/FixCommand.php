@@ -96,7 +96,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
         return <<<'EOF'
             The <info>%command.name%</info> command executes a %command.name% of coding standards problems:
 
-                <info>$ php %command.full_name</info>
+                <info>$ php %command.full_name%</info>
 
             You can also specify a path to execute a command only over a nested directory or a file.
             By default <comment>--path-mode</comment> is set to `override`, which means, that if you specify the path to a directory or a file via
