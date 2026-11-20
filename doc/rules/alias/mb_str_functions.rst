@@ -4,8 +4,8 @@ Rule ``mb_str_functions``
 
 Replace non multibyte-safe functions with corresponding mb function.
 
-Warning
--------
+Warnings
+--------
 
 This rule is RISKY
 ~~~~~~~~~~~~~~~~~~
@@ -13,11 +13,31 @@ This rule is RISKY
 Risky when any of the functions are overridden, or when relying on the string
 byte size rather than its length in characters.
 
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``functions``.
+
+Configuration
+-------------
+
+``functions``
+~~~~~~~~~~~~~
+
+List of function names to fix; a function is only fixed when its ``mb_*``
+alternative is available in the PHP runtime.
+
+Allowed values: a subset of ``['ltrim', 'rtrim', 'str_pad', 'str_split', 'stripos', 'stristr', 'strlen', 'strpos', 'strrchr', 'strripos', 'strrpos', 'strstr', 'strtolower', 'strtoupper', 'substr', 'substr_count', 'trim']``
+
+Default value: ``['ltrim', 'rtrim', 'str_pad', 'str_split', 'stripos', 'stristr', 'strlen', 'strpos', 'strrchr', 'strripos', 'strrpos', 'strstr', 'strtolower', 'strtoupper', 'substr', 'substr_count', 'trim']``
+
 Examples
 --------
 
 Example #1
 ~~~~~~~~~~
+
+*Default* configuration.
 
 .. code-block:: diff
 
@@ -48,6 +68,22 @@ Example #1
    +$a = mb_stristr($a, $b);
    +$a = mb_strrchr($a, $b);
    +$a = mb_substr_count($a, $b);
+
+Example #2
+~~~~~~~~~~
+
+With configuration: ``['functions' => ['strlen', 'strpos']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -$a = strlen($a);
+   -$a = strpos($a, $b);
+   +$a = mb_strlen($a);
+   +$a = mb_strpos($a, $b);
+    $a = str_split($a);
 
 References
 ----------

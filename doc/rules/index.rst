@@ -14,7 +14,7 @@ Alias
 - `ereg_to_preg <./alias/ereg_to_preg.rst>`_ *(risky)*
 
   Replace deprecated ``ereg`` regular expression functions with ``preg``.
-- `mb_str_functions <./alias/mb_str_functions.rst>`_ *(risky)*
+- `mb_str_functions <./alias/mb_str_functions.rst>`_ *(risky, configurable)*
 
   Replace non multibyte-safe functions with corresponding mb function.
 - `modernize_strpos <./alias/modernize_strpos.rst>`_ *(risky, configurable)*
