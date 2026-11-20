@@ -90,6 +90,12 @@ To integrate PHP CS Fixer as check into Gitlab-CI, you can use a configuration l
         php-cs-fixer check # --format=gitlab ## specify format if not using PHP_CS_FIXER_FUTURE_MODE or v4+
         # use `check .` if your repository not having paths configured in .php-cs-fixer[.dist].php
 
+MegaLinter (CI)
+---------------
+
+`MegaLinter <https://megalinter.io/>`_ is an open-source linters aggregator for CI that runs PHP CS Fixer out of the box,
+among many other linters. See its `PHP CS Fixer descriptor <https://megalinter.io/latest/descriptors/php_php_cs_fixer/>`_ for details.
+
 Homebrew (globally)
 -------------------
 
