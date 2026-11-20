@@ -6,11 +6,63 @@ Empty body of class, interface, trait, enum or function must be abbreviated as
 ``{}`` and placed on the same line as the previous symbol, separated by a single
 space.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``classy``,
+``constructors_multi_line``, ``constructors_single_line``, ``functions``.
+
+Configuration
+-------------
+
+``classy``
+~~~~~~~~~~
+
+Whether to fix empty bodies of classes, interfaces, traits and enums.
+
+Allowed types: ``bool``
+
+Default value: ``true``
+
+``constructors_multi_line``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether to fix empty bodies of constructors whose parameters span multiple
+lines.
+
+Allowed types: ``bool``
+
+Default value: ``true``
+
+``constructors_single_line``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether to fix empty bodies of constructors whose parameters are on a single
+line.
+
+Allowed types: ``bool``
+
+Default value: ``true``
+
+``functions``
+~~~~~~~~~~~~~
+
+Whether to fix empty bodies of functions and methods other than constructors.
+
+Allowed types: ``bool``
+
+Default value: ``true``
+
 Examples
 --------
 
 Example #1
 ~~~~~~~~~~
+
+*Default* configuration.
 
 .. code-block:: diff
 
@@ -22,6 +74,43 @@ Example #1
    -{
    -}
    +) {}
+
+Example #2
+~~~~~~~~~~
+
+With configuration: ``['classy' => false]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    class Foo
+    {
+    }
+
+   -function foo()
+   -{
+   -}
+   +function foo() {}
+
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['constructors_single_line' => true, 'constructors_multi_line' => false, 'classy' => false]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    class Foo
+    {
+   -    public function __construct(private int $x)
+   -    {
+   -    }
+   +    public function __construct(private int $x) {}
+    }
 
 Rule sets
 ---------
