@@ -18,10 +18,12 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\TypeExpression;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -30,7 +32,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PhpdocParamOrderFixer extends AbstractFixer
+final class PhpdocParamOrderFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
     private const PARAM_TAG = 'param';
 
@@ -93,6 +95,11 @@ final class PhpdocParamOrderFixer extends AbstractFixer
             }
 
             $doc = new DocBlock($token->getContent());
+            $doc->separateAnnotationsFromBoundaries(
+                WhitespacesAnalyzer::detectIndent($tokens, $index),
+                $this->whitespacesConfig->getLineEnding(),
+            );
+            $normalizedContent = $doc->getContent();
             $paramAnnotations = $doc->getAnnotationsOfType(self::PARAM_TAG);
 
             if ([] === $paramAnnotations) {
@@ -102,7 +109,9 @@ final class PhpdocParamOrderFixer extends AbstractFixer
             $paramNames = $this->getFunctionParamNames($tokens, $paramBlockStart);
             $doc = $this->rewriteDocBlock($doc, $paramNames, $paramAnnotations);
 
-            $tokens[$index] = new Token([\T_DOC_COMMENT, $doc->getContent()]);
+            if ($doc->getContent() !== $normalizedContent) {
+                $tokens[$index] = new Token([\T_DOC_COMMENT, $doc->getContent()]);
+            }
         }
     }
 
