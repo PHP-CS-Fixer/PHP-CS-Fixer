@@ -236,7 +236,7 @@ final class SpacesInsideParenthesesFixer extends AbstractFixer implements Config
     {
         // + 1 for (
         $contents = [];
-        for ($i = ($startIndex + 1); $i < $endIndex; ++$i) {
+        for ($i = $startIndex + 1; $i < $endIndex; ++$i) {
             $contents[] = $tokens[$i]->getContent();
         }
 
