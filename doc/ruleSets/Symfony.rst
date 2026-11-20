@@ -75,8 +75,11 @@ Rules
   ``['tokens' => ['attribute', 'case', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'square_brace_block', 'switch', 'throw', 'use']]``
 
 - `no_leading_namespace_whitespace <./../rules/namespace_notation/no_leading_namespace_whitespace.rst>`_
+- `no_line_break_near_binary_operator <./../rules/operator/no_line_break_near_binary_operator.rst>`_ with config:
+
+  ``['operators' => ['=>' => 'around']]``
+
 - `no_mixed_echo_print <./../rules/alias/no_mixed_echo_print.rst>`_
-- `no_multiline_whitespace_around_double_arrow <./../rules/array_notation/no_multiline_whitespace_around_double_arrow.rst>`_
 - `no_null_property_initialization <./../rules/class_notation/no_null_property_initialization.rst>`_
 - `no_short_bool_cast <./../rules/cast_notation/no_short_bool_cast.rst>`_
 - `no_singleline_whitespace_before_semicolons <./../rules/semicolon/no_singleline_whitespace_before_semicolons.rst>`_

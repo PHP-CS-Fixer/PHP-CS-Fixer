@@ -148,7 +148,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
      * {@inheritdoc}
      *
      * Must run before ArrayIndentationFixer, NoTrailingCommaInSinglelineFixer, StatementIndentationFixer.
-     * Must run after CombineNestedDirnameFixer, FunctionDeclarationFixer, ImplodeCallFixer, LambdaNotUsedImportFixer, NoMultilineWhitespaceAroundDoubleArrowFixer, NoUselessSprintfFixer, PowToExponentiationFixer, StrictParamFixer.
+     * Must run after CombineNestedDirnameFixer, FunctionDeclarationFixer, ImplodeCallFixer, LambdaNotUsedImportFixer, NoLineBreakNearBinaryOperatorFixer, NoMultilineWhitespaceAroundDoubleArrowFixer, NoUselessSprintfFixer, PowToExponentiationFixer, StrictParamFixer.
      */
     public function getPriority(): int
     {
