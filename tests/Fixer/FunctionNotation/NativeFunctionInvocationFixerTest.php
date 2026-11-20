@@ -496,6 +496,91 @@ namespace {
             ],
         ];
 
+        yield 'strict enabled and function with same name declared in same namespace' => [
+            '<?php
+                    namespace Foo;
+                    function reset(array $list) {}
+                    $a = \reset($b);
+                    $c = array_pop($d);
+                ',
+            '<?php
+                    namespace Foo;
+                    function reset(array $list) {}
+                    $a = \reset($b);
+                    $c = \array_pop($d);
+                ',
+            ['strict' => true],
+        ];
+
+        yield 'strict enabled, scope namespaced, and function with same name declared in same namespace' => [
+            '<?php
+                    namespace Foo;
+                    function reset(array $list) {}
+                    $a = \reset($b);
+                    $c = array_pop($d);
+                ',
+            '<?php
+                    namespace Foo;
+                    function reset(array $list) {}
+                    $a = \reset($b);
+                    $c = \array_pop($d);
+                ',
+            [
+                'scope' => 'namespaced',
+                'strict' => true,
+            ],
+        ];
+
+        yield 'strict enabled and function with same name declared in other namespace' => [
+            '<?php
+                    namespace Foo {
+                        function reset(array $list) {}
+                    }
+                    namespace Bar {
+                        $a = reset($b);
+                    }
+                ',
+            '<?php
+                    namespace Foo {
+                        function reset(array $list) {}
+                    }
+                    namespace Bar {
+                        $a = \reset($b);
+                    }
+                ',
+            ['strict' => true],
+        ];
+
+        yield 'strict enabled and function with same name imported from other namespace' => [
+            '<?php
+                    namespace Foo;
+                    use function Bar\reset;
+                    $a = \reset($b);
+                    $c = array_pop($d);
+                ',
+            '<?php
+                    namespace Foo;
+                    use function Bar\reset;
+                    $a = \reset($b);
+                    $c = \array_pop($d);
+                ',
+            ['strict' => true],
+        ];
+
+        yield 'strict enabled and function with same name imported from global namespace' => [
+            '<?php
+                    namespace Foo;
+                    use function reset;
+                    $a = reset($b);
+                ',
+            '<?php
+                    namespace Foo;
+                    use function reset;
+                    $a = \reset($b);
+                ',
+            ['strict' => true],
+        ];
+
         yield [
             '<?php
                     use function foo\json_decode;

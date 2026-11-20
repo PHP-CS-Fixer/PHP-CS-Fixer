@@ -809,6 +809,53 @@ class(){};
         yield ['<?php fn($a): \Foo/** TODO: change to something else */\Bar => null;', 1, new TypeAnalysis('\Foo\Bar', 7, 11)];
     }
 
+    /**
+     * @param list<int> $expectedIndices
+     *
+     * @dataProvider provideIsNamespacedFunctionInScopeCases
+     */
+    #[DataProvider('provideIsNamespacedFunctionInScopeCases')]
+    public function testIsNamespacedFunctionInScope(string $code, array $expectedIndices): void
+    {
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new FunctionsAnalyzer();
+
+        $calculatedIndices = [];
+        foreach ($tokens as $index => $token) {
+            if (!$analyzer->isGlobalFunctionCall($tokens, $index)) {
+                continue;
+            }
+
+            if ($analyzer->isNamespacedFunctionInScope($tokens, $index)) {
+                $calculatedIndices[] = $index;
+            }
+        }
+
+        self::assertSame($expectedIndices, $calculatedIndices);
+    }
+
+    /**
+     * @return iterable<string, array{string, list<int>}>
+     */
+    public static function provideIsNamespacedFunctionInScopeCases(): iterable
+    {
+        yield 'global namespace' => ['<?php function reset() {} \reset($a);', []];
+
+        yield 'no declaration and no import' => ['<?php namespace Foo; \reset($a);', []];
+
+        yield 'declaration in same namespace' => ['<?php namespace Foo; function reset() {} \reset($a);', [16]];
+
+        yield 'declaration in same namespace, case insensitive' => ['<?php namespace Foo; function RESET() {} \reset($a);', [16]];
+
+        yield 'declaration in other namespace' => ['<?php namespace Foo { function reset() {} } namespace Bar { \reset($a); }', []];
+
+        yield 'import from other namespace' => ['<?php namespace Foo; use function Bar\reset; \reset($a);', [16]];
+
+        yield 'import from global namespace' => ['<?php namespace Foo; use function reset; \reset($a);', []];
+
+        yield 'import of other function' => ['<?php namespace Foo; use function Bar\end; \reset($a);', []];
+    }
+
     public function testIsTheSameClassCallInvalidIndex(): void
     {
         $tokens = Tokens::fromCode('<?php 1;2;');

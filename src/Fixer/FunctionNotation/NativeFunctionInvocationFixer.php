@@ -304,9 +304,15 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
                     continue;
                 }
 
-                if ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
-                    $tokens->clearTokenAndMergeSurroundingWhitespace($prevIndex);
+                if (!$tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+                    continue;
                 }
+
+                if ($functionsAnalyzer->isNamespacedFunctionInScope($tokens, $index)) {
+                    continue; // without the leading namespace separator, the call would resolve to another function
+                }
+
+                $tokens->clearTokenAndMergeSurroundingWhitespace($prevIndex);
 
                 continue;
             }
