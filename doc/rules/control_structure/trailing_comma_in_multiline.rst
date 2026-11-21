@@ -2,8 +2,8 @@
 Rule ``trailing_comma_in_multiline``
 ====================================
 
-Arguments lists, array destructuring lists, arrays that are multi-line,
-``match``-lines and parameters lists must have a trailing comma.
+Arguments lists, array destructuring lists, arrays that are multi-line, closure
+``use`` lists, ``match``-lines and parameters lists must have a trailing comma.
 
 Warning
 -------
@@ -31,10 +31,10 @@ Default value (future-mode): ``true``
 ``elements``
 ~~~~~~~~~~~~
 
-Where to fix multiline trailing comma (PHP >= 8.0 for ``parameters`` and
-``match``).
+Where to fix multiline trailing comma (PHP >= 8.0 for ``closure_use``,
+``parameters`` and ``match``).
 
-Allowed values: a subset of ``['arguments', 'array_destructuring', 'arrays', 'match', 'parameters']``
+Allowed values: a subset of ``['arguments', 'array_destructuring', 'arrays', 'closure_use', 'match', 'parameters']``
 
 Default value: ``['arrays']``
 
@@ -109,6 +109,23 @@ With configuration: ``['elements' => ['parameters']]``.
     {
     }
 
+Example #5
+~~~~~~~~~~
+
+With configuration: ``['elements' => ['closure_use']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    $foo = function () use (
+        $x,
+   -    $y
+   +    $y,
+    ) {
+    };
+
 Rule sets
 ---------
 
@@ -116,27 +133,27 @@ The rule is part of the following rule sets:
 
 - `@PER <./../../ruleSets/PER.rst>`_ *(deprecated)* with config:
 
-  ``['after_heredoc' => true, 'elements' => ['arguments', 'array_destructuring', 'arrays', 'match', 'parameters']]``
+  ``['after_heredoc' => true, 'elements' => ['arguments', 'array_destructuring', 'arrays', 'closure_use', 'match', 'parameters']]``
 
 - `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
 
-  ``['after_heredoc' => true, 'elements' => ['arguments', 'array_destructuring', 'arrays', 'match', 'parameters']]``
+  ``['after_heredoc' => true, 'elements' => ['arguments', 'array_destructuring', 'arrays', 'closure_use', 'match', 'parameters']]``
 
 - `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ *(deprecated)* with config:
 
-  ``['after_heredoc' => true, 'elements' => ['arguments', 'array_destructuring', 'arrays', 'match', 'parameters']]``
+  ``['after_heredoc' => true, 'elements' => ['arguments', 'array_destructuring', 'arrays', 'closure_use', 'match', 'parameters']]``
 
 - `@PER-CS2x0 <./../../ruleSets/PER-CS2x0.rst>`_ with config:
 
-  ``['after_heredoc' => true, 'elements' => ['arguments', 'array_destructuring', 'arrays', 'match', 'parameters']]``
+  ``['after_heredoc' => true, 'elements' => ['arguments', 'array_destructuring', 'arrays', 'closure_use', 'match', 'parameters']]``
 
 - `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ *(deprecated)* with config:
 
-  ``['after_heredoc' => true, 'elements' => ['arguments', 'array_destructuring', 'arrays', 'match', 'parameters']]``
+  ``['after_heredoc' => true, 'elements' => ['arguments', 'array_destructuring', 'arrays', 'closure_use', 'match', 'parameters']]``
 
 - `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_ with config:
 
-  ``['after_heredoc' => true, 'elements' => ['arguments', 'array_destructuring', 'arrays', 'match', 'parameters']]``
+  ``['after_heredoc' => true, 'elements' => ['arguments', 'array_destructuring', 'arrays', 'closure_use', 'match', 'parameters']]``
 
 - `@PHP7x3Migration <./../../ruleSets/PHP7x3Migration.rst>`_ with config:
 

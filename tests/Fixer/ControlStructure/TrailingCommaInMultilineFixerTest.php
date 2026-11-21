@@ -654,15 +654,17 @@ $a = [11,2,3];
     public function testFixPre80(): void
     {
         $this->fixer->configure([
-            'elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARRAYS, TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS],
+            'elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARRAYS, TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS, 'closure_use'],
         ]);
 
-        // ELEMENTS_PARAMETERS got unconfigured, as not valid <8.0
+        // ELEMENTS_PARAMETERS and closure_use got unconfigured, as not valid <8.0
 
         $this->doTest(
             "<?php function foo(\$a\n) { return [1,\n]; }",
             "<?php function foo(\$a\n) { return [1\n]; }",
         );
+
+        $this->doTest("<?php \$f = function () use (\n\$a\n) {};");
     }
 
     /**
@@ -823,6 +825,64 @@ $x = match ($a) { 1 => 0,
                 };
                 PHP,
             ['elements' => ['match']],
+        ];
+
+        yield 'closure use' => [
+            <<<'PHP'
+                <?php
+                $a = function () use (
+                    $x,
+                    $y,
+                ) {};
+                $b = static function ($p) use (
+                    &$x,
+                    $y, // comment
+                ): int {
+                    return $p;
+                };
+                $c = function () use ($x, $y) {};
+                $d = function (
+                    $p
+                ) use ($x) {};
+                PHP,
+            <<<'PHP'
+                <?php
+                $a = function () use (
+                    $x,
+                    $y
+                ) {};
+                $b = static function ($p) use (
+                    &$x,
+                    $y // comment
+                ): int {
+                    return $p;
+                };
+                $c = function () use ($x, $y) {};
+                $d = function (
+                    $p
+                ) use ($x) {};
+                PHP,
+            ['elements' => ['closure_use']],
+        ];
+
+        yield 'closure use not fixed when not configured' => [
+            <<<'PHP'
+                <?php
+                $a = function (
+                    $p,
+                ) use (
+                    $x
+                ) {};
+                PHP,
+            <<<'PHP'
+                <?php
+                $a = function (
+                    $p
+                ) use (
+                    $x
+                ) {};
+                PHP,
+            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS, TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS]],
         ];
     }
 
