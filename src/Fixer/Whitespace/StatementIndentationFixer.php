@@ -529,15 +529,6 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                                         $indent = true;
                                     }
                                 }
-                            } elseif (
-                                true === $this->configuration['stick_comment_to_next_continuous_control_statement']
-                                && null !== $afterCommentIndex
-                                // ...and afterwards, the next `case`/`default` closes the current case block,
-                                // so the comment is a dedicated comment for that next case
-                                && $scopes[$currentScope]['end_index'] === $afterCommentIndex
-                                && $tokens[$scopes[$currentScope]['end_index']]->isGivenKind([\T_CASE, \T_DEFAULT])
-                            ) {
-                                $indent = false;
                             } else {
                                 $indent = true;
                             }
