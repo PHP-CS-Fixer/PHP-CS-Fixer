@@ -18,6 +18,7 @@ use PhpCsFixer\Tests\Test\Assert\AssertTokensTrait;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -512,6 +513,24 @@ final class TokensTest extends TestCase
         self::assertTrue($tokens->isAnyTokenKindsFound([\T_CLASS, \T_RETURN]));
         self::assertTrue($tokens->isAnyTokenKindsFound([\T_CLASS, \T_INTERFACE]));
         self::assertFalse($tokens->isAnyTokenKindsFound([\T_INTERFACE, \T_ARRAY]));
+    }
+
+    public function testFindGivenKindAfterReplacingLiteralAmpersand(): void
+    {
+        $ampersand = new Token([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, '&']);
+        $tokens = Tokens::fromArray([new Token('&'), $ampersand]);
+        $tokens[0] = $ampersand;
+
+        self::assertSame([0 => $ampersand, 1 => $ampersand], $tokens->findGivenKind(FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG));
+    }
+
+    public function testTokenKindCountsAfterReplacingCode(): void
+    {
+        $tokens = Tokens::fromCode('<?php echo 1;');
+        $tokens->setCode('<?php return 1;');
+
+        self::assertSame(0, $tokens->countTokenKind(\T_ECHO));
+        self::assertSame(1, $tokens->countTokenKind(\T_OPEN_TAG));
     }
 
     public function testFindGivenKind(): void

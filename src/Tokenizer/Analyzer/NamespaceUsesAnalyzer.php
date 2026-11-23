@@ -90,8 +90,7 @@ final class NamespaceUsesAnalyzer
     private function parseDeclarations(int $startIndex, int $endIndex, Tokens $tokens): array
     {
         $type = $this->determineImportType($tokens, $startIndex);
-        $potentialMulti = $tokens->getNextTokenOfKind($startIndex, [',', [CT::T_GROUP_IMPORT_BRACE_OPEN]]);
-        $multi = null !== $potentialMulti && $potentialMulti < $endIndex;
+        $multi = false;
         $index = $tokens->getNextTokenOfKind($startIndex, [[\T_STRING], [\T_NS_SEPARATOR]]);
         $imports = [];
 
@@ -131,6 +130,7 @@ final class NamespaceUsesAnalyzer
 
                 $index = $groupIndex;
             } elseif ($token->equalsAny([',', ';', [\T_CLOSE_TAG]])) {
+                $multi = $multi || $token->equals(',');
                 $previousToken = $tokens->getPrevMeaningfulToken($qualifiedName['afterIndex']);
 
                 if (!$tokens[$previousToken]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
