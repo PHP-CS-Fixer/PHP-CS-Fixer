@@ -101,7 +101,7 @@ final class Line implements \Stringable
     /**
      * Remove this line by clearing its contents.
      *
-     * Note that this method technically brakes the internal state of the
+     * Note that this method technically breaks the internal state of the
      * docblock, but is useful when we need to retain the indices of lines
      * during the execution of an algorithm.
      */
@@ -113,7 +113,7 @@ final class Line implements \Stringable
     /**
      * Append a blank docblock line to this line's contents.
      *
-     * Note that this method technically brakes the internal state of the
+     * Note that this method technically breaks the internal state of the
      * docblock, but is useful when we need to retain the indices of lines
      * during the execution of an algorithm.
      */
