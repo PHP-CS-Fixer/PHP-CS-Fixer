@@ -699,6 +699,37 @@ foreach($connections as $key => $sqlite) {
             ',
         ];
 
+        yield 'do not convert in parameter list' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public function bar(
+                        /** Before parameter */
+                        $a,
+                        $b /** After parameter */,
+                        $c = [1] /** After default value */
+                    ) {}
+                }
+                function &baz(/** By-reference function */ $a) {}
+                $closure = function (/** Closure */ $a) {};
+                $arrowFunction = fn (/** Arrow function */ $a) => $a;
+                PHP,
+        ];
+
+        yield 'convert in call arguments and closure use list' => [
+            <<<'PHP'
+                <?php
+                foo(/* Argument */ $a);
+                $closure = function () use (/* Use list */ $a) {};
+                PHP,
+            <<<'PHP'
+                <?php
+                foo(/** Argument */ $a);
+                $closure = function () use (/** Use list */ $a) {};
+                PHP,
+        ];
+
         yield 'convert before return without option' => [
             '<?php
 function doSomething()
@@ -988,6 +1019,22 @@ enum Foo: int
                     protected(set) int $b;
                     /** @var int */
                     private(set) int $c;
+                }
+                PHP,
+        ];
+
+        yield 'do not convert in parameter list with attribute, DNF type and property hook' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public function __construct(
+                        /** Before attribute */
+                        #[Bar] (A&B)|null $a,
+                        public string $b { get => $this->b; },
+                        /** After property hook */
+                        int $c,
+                    ) {}
                 }
                 PHP,
         ];
