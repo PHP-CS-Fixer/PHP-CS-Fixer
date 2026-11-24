@@ -874,6 +874,36 @@ class Foo {
 }',
         ];
 
+        yield 'multiline group import' => [
+            '<?php
+use Foo\{
+    Bar,
+    Baz
+};',
+            '<?php
+use Foo\{
+        Bar,
+  Baz
+   };',
+        ];
+
+        yield 'multiline group import inside a namespace block' => [
+            '<?php
+namespace Foo {
+    use Bar\{
+        Baz,
+        Qux as Quux
+    };
+}',
+            '<?php
+namespace Foo {
+  use Bar\{
+ Baz,
+          Qux as Quux
+      };
+}',
+        ];
+
         yield 'multiline class definition' => [
             '<?php
 class Foo
