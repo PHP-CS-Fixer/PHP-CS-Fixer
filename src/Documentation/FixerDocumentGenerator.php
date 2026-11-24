@@ -90,7 +90,7 @@ final class FixerDocumentGenerator
         };
 
         $tags = DocumentationTagGenerator::analyseRule($fixer);
-        $warnings = array_map(
+        $warnings = \array_map(
             static function (DocumentationTag $tag): string {
                 $titleLine = str_repeat('~', \strlen($tag->title));
 
@@ -143,14 +143,14 @@ final class FixerDocumentGenerator
                     $allowedKind = 'Allowed types';
                     $allowedTypes = $option->getAllowedTypes();
                     if (null !== $allowedTypes) {
-                        $allowed = array_map(
+                        $allowed = \array_map(
                             static fn (string $value): string => '``'.Utils::convertArrayTypeToList($value).'``',
                             $allowedTypes,
                         );
                     }
                 } else {
                     $allowedKind = 'Allowed values';
-                    $allowed = array_map(static fn ($value): string => $value instanceof AllowedValueSubset
+                    $allowed = \array_map(static fn ($value): string => $value instanceof AllowedValueSubset
                         ? 'a subset of ``'.Utils::toString($value->getAllowedValues()).'``'
                         : '``'.Utils::toString($value).'``', $allowed);
                 }
@@ -295,7 +295,7 @@ final class FixerDocumentGenerator
             );
             $ruleSetCache = array_combine(
                 $definitionNames,
-                array_map(
+                \array_map(
                     static fn (string $name): RuleSet => new RuleSet([$name => true]),
                     $definitionNames,
                 ),
@@ -347,7 +347,7 @@ final class FixerDocumentGenerator
 
             $path = './'.$this->locator->getFixerDocumentationFileRelativePath($fixer);
 
-            $tags = array_map(
+            $tags = \array_map(
                 static fn (DocumentationTag $tag): string => $tag->type,
                 DocumentationTagGenerator::analyseRule($fixer),
             );

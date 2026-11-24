@@ -194,7 +194,7 @@ final class OrderedTypesFixer extends AbstractFixer implements ConfigurableFixer
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        $elements = array_map(
+        $elements = \array_map(
             static fn (array $element): string => $element['type'],
             array_filter(
                 $tokensAnalyzer->getClassyElements(),
@@ -307,7 +307,7 @@ final class OrderedTypesFixer extends AbstractFixer implements ConfigurableFixer
         // If the $types array is coming from a DNF type, then we have parts
         // which are also array. If so, we sort those sub-types first before
         // running the sorting algorithm to the entire $types array.
-        $sortedTypes = array_map(function ($subType) {
+        $sortedTypes = \array_map(function ($subType) {
             if (\is_array($subType)) {
                 return $this->runTypesThroughSortingAlgorithm($subType);
             }
@@ -338,7 +338,7 @@ final class OrderedTypesFixer extends AbstractFixer implements ConfigurableFixer
      */
     private function collectDisjunctiveNormalFormTypes(string $type): array
     {
-        $types = array_map(static function (string $subType) {
+        $types = \array_map(static function (string $subType) {
             if (str_starts_with($subType, '(')) {
                 return explode('&', trim($subType, '()'));
             }

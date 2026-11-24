@@ -273,7 +273,7 @@ final class TypeExpression
     public function getTypes(): array
     {
         if ($this->isCompositeType) {
-            return array_map(
+            return \array_map(
                 static fn (array $type) => $type['expression']->toString(),
                 $this->innerTypeExpressions,
             );
@@ -376,7 +376,7 @@ final class TypeExpression
             if ($innerTypeExpressions !== $type->innerTypeExpressions) {
                 $value = implode(
                     $type->getTypesGlue(),
-                    array_map(static fn (array $v): string => $v['expression']->toString(), $innerTypeExpressions),
+                    \array_map(static fn (array $v): string => $v['expression']->toString(), $innerTypeExpressions),
                 );
 
                 return $this->inner($value);
@@ -410,7 +410,7 @@ final class TypeExpression
 
             $value = implode(
                 $type->getTypesGlue(),
-                array_map(static fn (self $expr): string => $expr->toString(), $uniqueTypeExpressions),
+                \array_map(static fn (self $expr): string => $expr->toString(), $uniqueTypeExpressions),
             );
 
             return $this->inner($value);

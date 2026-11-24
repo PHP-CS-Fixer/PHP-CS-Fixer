@@ -46,7 +46,7 @@ final class CiReader
 
         $phpVersions = []
             + ($yaml['jobs']['tests']['strategy']['matrix']['php-version'] ?? [])
-            + array_map(
+            + \array_map(
                 static fn (array $job) => $job['php-version'] ?? null,
                 $yaml['jobs']['tests']['strategy']['matrix']['include'],
             );

@@ -100,7 +100,7 @@ final class LineEndingFixerTest extends AbstractFixerTestCase
      */
     public static function provideWithWhitespacesConfigCases(): iterable
     {
-        yield from array_map(static fn (array $case): array => array_reverse($case), self::provideCommonCases());
+        yield from \array_map(static fn (array $case): array => array_reverse($case), self::provideCommonCases());
 
         yield [
             "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\r\nAAAAA \r\n |\r\nTEST;\r\n",

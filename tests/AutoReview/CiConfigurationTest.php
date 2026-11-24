@@ -100,7 +100,7 @@ final class CiConfigurationTest extends TestCase
         sort($composeServices);
 
         $ci = Yaml::parseFile(__DIR__.'/../../.github/workflows/docker.yml');
-        $ciServices = array_map(
+        $ciServices = \array_map(
             static fn ($item) => $item['docker-service'],
             $ci['jobs']['docker-compose-build']['strategy']['matrix']['include'],
         );
@@ -318,7 +318,7 @@ final class CiConfigurationTest extends TestCase
     {
         $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/release.yml');
 
-        return array_map(
+        return \array_map(
             static fn ($item) => $item['php-version'],
             $yaml['jobs']['docker-images']['strategy']['matrix']['include'],
         );
@@ -331,10 +331,10 @@ final class CiConfigurationTest extends TestCase
     {
         $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/docker.yml');
 
-        return array_map(
+        return \array_map(
             static fn ($item) => substr($item, 4),
             array_filter(
-                array_map(
+                \array_map(
                     static fn ($item) => $item['docker-service'],
                     $yaml['jobs']['docker-compose-build']['strategy']['matrix']['include'],
                 ),

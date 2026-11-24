@@ -410,7 +410,7 @@ $a#
 
         foreach (self::provideTestAssertCountCases() as $index => $case) {
             foreach (['count', 'sizeof'] as $function) {
-                yield $function.' - '.$index => array_map(
+                yield $function.' - '.$index => \array_map(
                     static fn (string $code): string => \sprintf($code, $function),
                     $case,
                 );

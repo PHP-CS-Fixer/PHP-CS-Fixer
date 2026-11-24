@@ -213,7 +213,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'List of rules that should be run against configured paths.', null, static function () {
                     $fixerFactory = new FixerFactory();
                     $fixerFactory->registerBuiltInFixers();
-                    $fixers = array_map(static fn (FixerInterface $fixer) => $fixer->getName(), $fixerFactory->getFixers());
+                    $fixers = \array_map(static fn (FixerInterface $fixer) => $fixer->getName(), $fixerFactory->getFixers());
 
                     return array_merge(RuleSets::getSetDefinitionNames(), $fixers);
                 }),

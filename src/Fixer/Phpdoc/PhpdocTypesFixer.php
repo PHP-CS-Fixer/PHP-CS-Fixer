@@ -152,7 +152,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
 
     protected function configurePostNormalisation(): void
     {
-        $typesToFix = array_merge(...array_map(static fn (string $group): array => self::POSSIBLE_TYPES[$group], $this->configuration['groups']));
+        $typesToFix = array_merge(...\array_map(static fn (string $group): array => self::POSSIBLE_TYPES[$group], $this->configuration['groups']));
         $this->typesSetToFix = array_combine($typesToFix, array_fill(0, \count($typesToFix), true));
 
         foreach ($this->configuration['exclude'] as $type) {

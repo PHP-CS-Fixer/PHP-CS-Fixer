@@ -659,7 +659,7 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
             ];
         }
 
-        $normalized = array_map(
+        $normalized = \array_map(
             function (string $type) use ($namespace, $currentSymbol, $symbolShortNames): string {
                 if (str_contains($type, '&')) {
                     $intersects = explode('&', $type);

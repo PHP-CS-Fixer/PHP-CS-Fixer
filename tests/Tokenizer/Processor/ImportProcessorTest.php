@@ -44,7 +44,7 @@ final class ImportProcessorTest extends TestCase
             $symbol,
             implode(
                 '',
-                array_map(
+                \array_map(
                     static fn (Token $token): string => $token->getContent(),
                     ImportProcessor::tokenizeName($symbol),
                 ),

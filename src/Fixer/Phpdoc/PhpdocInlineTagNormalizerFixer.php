@@ -93,7 +93,7 @@ final class PhpdocInlineTagNormalizerFixer extends AbstractFixer implements Conf
             $content = Preg::replaceCallback(
                 \sprintf(
                     '#(?:@{+|{+\h*@)\h*(%s)\b([^}]*)(?:}+)#i',
-                    implode('|', array_map(static fn (string $tag): string => preg_quote($tag, '/'), $this->configuration['tags'])),
+                    implode('|', \array_map(static fn (string $tag): string => preg_quote($tag, '/'), $this->configuration['tags'])),
                 ),
                 static function (array $matches): string {
                     \assert(isset($matches[1], $matches[2]));

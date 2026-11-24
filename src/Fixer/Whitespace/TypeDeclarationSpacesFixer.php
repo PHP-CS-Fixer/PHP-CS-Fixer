@@ -171,7 +171,7 @@ final class TypeDeclarationSpacesFixer extends AbstractFixer implements Configur
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        $elements = array_map(
+        $elements = \array_map(
             static fn (array $element): string => $element['type'],
             array_filter(
                 $tokensAnalyzer->getClassyElements(),

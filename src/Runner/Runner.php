@@ -252,7 +252,7 @@ final class Runner
         }
 
         /** @TODO v3.999 check if rule is deprecated and show the replacement rules as well */
-        $missingRulesDesc = implode("\n", array_map(
+        $missingRulesDesc = implode("\n", \array_map(
             static function (string $name) use ($fixersByName): string {
                 $extra = '';
                 if ('' === $name) {

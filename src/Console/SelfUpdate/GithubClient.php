@@ -64,7 +64,7 @@ final class GithubClient implements GithubClientInterface
             ));
         }
 
-        return array_map(
+        return \array_map(
             static fn (array $tagData): string => $tagData['name'],
             $result,
         );

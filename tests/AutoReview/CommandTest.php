@@ -62,6 +62,6 @@ final class CommandTest extends TestCase
         );
 
         // @phpstan-ignore-next-line offsetAccess.notFound
-        return array_map(static fn (string $name): array => [$commands[$name]], $names);
+        return \array_map(static fn (string $name): array => [$commands[$name]], $names);
     }
 }

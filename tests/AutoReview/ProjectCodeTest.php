@@ -144,7 +144,7 @@ final class ProjectCodeTest extends TestCase
      */
     public static function provideThatSrcClassHaveTestClassCases(): iterable
     {
-        return array_map(
+        return \array_map(
             static fn (string $item): array => [$item],
             array_filter(
                 self::getSrcClasses(),
@@ -232,7 +232,7 @@ final class ProjectCodeTest extends TestCase
         }
 
         $tokensContent = $tokens->generateCode();
-        $propertyNames = array_map(static fn (\ReflectionProperty $item) => $item->getName(), $rcProperties);
+        $propertyNames = \array_map(static fn (\ReflectionProperty $item) => $item->getName(), $rcProperties);
 
         $overrideFound = Preg::match(
             '/(?:self::\$|static::\$|\$this->)(?:'.implode('|', $propertyNames).')(?:\[[^=]*\])?\s*(?:=|(?:\?\?=))/',
@@ -260,7 +260,7 @@ final class ProjectCodeTest extends TestCase
     {
         $rc = new \ReflectionClass($className);
 
-        $allowedMethods = array_map(
+        $allowedMethods = \array_map(
             fn (\ReflectionClass $interface): array => $this->getPublicMethodNames($interface),
             $rc->getInterfaces(),
         );
@@ -297,7 +297,7 @@ final class ProjectCodeTest extends TestCase
             \sprintf(
                 "Class '%s' should not have public methods that are not part of implemented interfaces.\nViolations:\n%s",
                 $className,
-                implode("\n", array_map(static fn (string $item): string => " * {$item}", $extraMethods)),
+                implode("\n", \array_map(static fn (string $item): string => " * {$item}", $extraMethods)),
             ),
         );
     }
@@ -307,7 +307,7 @@ final class ProjectCodeTest extends TestCase
      */
     public static function provideThatSrcClassesNotAbuseInterfacesCases(): iterable
     {
-        return array_map(
+        return \array_map(
             static fn (string $item): array => [$item],
             array_filter(self::getSrcClasses(), static function (string $className): bool {
                 $rc = new \ReflectionClass($className);
@@ -382,9 +382,9 @@ final class ProjectCodeTest extends TestCase
             $allowedProps = $rc->getParentClass()->getProperties(\ReflectionProperty::IS_PROTECTED);
         }
 
-        $allowedProps = array_map(static fn (\ReflectionProperty $item): string => $item->getName(), $allowedProps);
+        $allowedProps = \array_map(static fn (\ReflectionProperty $item): string => $item->getName(), $allowedProps);
 
-        $definedProps = array_map(static fn (\ReflectionProperty $item): string => $item->getName(), $definedProps);
+        $definedProps = \array_map(static fn (\ReflectionProperty $item): string => $item->getName(), $definedProps);
 
         $exceptionPropsPerClass = [
             AbstractFixer::class => ['configuration', 'configurationDefinition', 'whitespacesConfig'],
@@ -409,7 +409,7 @@ final class ProjectCodeTest extends TestCase
             \sprintf(
                 "Class '%s' should not have protected properties.\nViolations:\n%s",
                 $className,
-                implode("\n", array_map(static fn (string $item): string => " * {$item}", $extraProps)),
+                implode("\n", \array_map(static fn (string $item): string => " * {$item}", $extraProps)),
             ),
         );
     }
@@ -746,7 +746,7 @@ final class ProjectCodeTest extends TestCase
                 continue;
             }
 
-            $parameterNames = array_map(
+            $parameterNames = \array_map(
                 static fn (\ReflectionParameter $item): string => $item->getName(),
                 $parameters,
             );
@@ -957,7 +957,7 @@ final class ProjectCodeTest extends TestCase
     {
         $rc = new \ReflectionClass($className);
 
-        $allowedMethods = array_map(
+        $allowedMethods = \array_map(
             fn (\ReflectionClass $interface): array => $this->getPublicMethodNames($interface),
             $rc->getInterfaces(),
         );
@@ -980,7 +980,7 @@ final class ProjectCodeTest extends TestCase
             static fn (\ReflectionMethod $rm): bool => false !== $rm->getDocComment() && str_contains(strtolower($rm->getDocComment()), '@inheritdoc'),
         );
 
-        $methodsWithInheritdoc = array_map(
+        $methodsWithInheritdoc = \array_map(
             static fn (\ReflectionMethod $rm): string => $rm->getName(),
             $methodsWithInheritdoc,
         );
@@ -993,7 +993,7 @@ final class ProjectCodeTest extends TestCase
             \sprintf(
                 "Class '%s' should not have methods with '@inheritdoc' in PHPDoc that are not inheriting PHPDoc.\nViolations:\n%s",
                 $className,
-                implode("\n", array_map(static fn ($item): string => " * {$item}", $extraMethods)),
+                implode("\n", \array_map(static fn ($item): string => " * {$item}", $extraMethods)),
             ),
         );
     }
@@ -1004,7 +1004,7 @@ final class ProjectCodeTest extends TestCase
             self::getTestsDirectoryClasses('*Test.php'),
             fn (string $className): bool => str_contains($this->getFileContentForClass($className), 'short_open_tag') && self::class !== $className,
         );
-        $testFilesWithShortOpenTag = array_map(
+        $testFilesWithShortOpenTag = \array_map(
             fn (string $className): string => './'.$this->getFilePathForClass($className),
             $testClassesWithShortOpenTag,
         );
@@ -1309,7 +1309,7 @@ final class ProjectCodeTest extends TestCase
 
             self::$srcClassCases = array_combine(
                 $cases,
-                array_map(static fn (string $case): array => [$case], $cases),
+                \array_map(static fn (string $case): array => [$case], $cases),
             );
         }
 
@@ -1326,7 +1326,7 @@ final class ProjectCodeTest extends TestCase
 
             self::$testClassCases = array_combine(
                 $cases,
-                array_map(static fn (string $case): array => [$case], $cases),
+                \array_map(static fn (string $case): array => [$case], $cases),
             );
         }
 
@@ -1381,7 +1381,7 @@ final class ProjectCodeTest extends TestCase
             static fn (Token $token): bool => $token->isGivenKind(\T_STRING),
         );
 
-        $strings = array_map(
+        $strings = \array_map(
             static fn (Token $token): string => $token->getContent(),
             $stringTokens,
         );
@@ -1481,7 +1481,7 @@ final class ProjectCodeTest extends TestCase
         ;
 
         /** @var list<class-string> $classes */
-        $classes = array_map(
+        $classes = \array_map(
             static fn (SplFileInfo $file): string => \sprintf(
                 '%s\%s%s%s',
                 'PhpCsFixer',
@@ -1519,7 +1519,7 @@ final class ProjectCodeTest extends TestCase
         ;
 
         /** @var ($pattern is '*Test.php' ? list<class-string<TestCase>> : list<class-string>) $foundClasses */
-        $foundClasses = array_map(
+        $foundClasses = \array_map(
             static fn (SplFileInfo $file): string => \sprintf(
                 'PhpCsFixer\Tests\%s%s%s',
                 strtr($file->getRelativePath(), \DIRECTORY_SEPARATOR, '\\'),
@@ -1541,7 +1541,7 @@ final class ProjectCodeTest extends TestCase
      */
     private function getPublicMethodNames(\ReflectionClass $rc): array
     {
-        return array_map(
+        return \array_map(
             static fn (\ReflectionMethod $rm): string => $rm->getName(),
             $rc->getMethods(\ReflectionMethod::IS_PUBLIC),
         );

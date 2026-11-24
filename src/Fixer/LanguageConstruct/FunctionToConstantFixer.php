@@ -299,7 +299,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
     private function getReplacementTokenClones(string $lowerContent, int $braceOpenIndex, int $braceCloseIndex): array
     {
         \assert(isset($this->functionsFixMap[$lowerContent]));
-        $clones = array_map(
+        $clones = \array_map(
             static fn (Token $token): Token => clone $token,
             $this->functionsFixMap[$lowerContent],
         );

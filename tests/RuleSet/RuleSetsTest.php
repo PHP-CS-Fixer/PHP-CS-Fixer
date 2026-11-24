@@ -208,7 +208,7 @@ Integration of %s.
     {
         $setDefinitionNames = RuleSets::getSetDefinitionNames();
 
-        return array_map(static fn (string $setDefinitionName): array => [$setDefinitionName], $setDefinitionNames);
+        return \array_map(static fn (string $setDefinitionName): array => [$setDefinitionName], $setDefinitionNames);
     }
 
     public function testSetDefinitionsItselfIsSorted(): void
@@ -251,7 +251,7 @@ Integration of %s.
 
         $setDefinitionPHPUnitMigrationNames = array_filter($setDefinitionNames, static fn (string $setDefinitionName): bool => Preg::match('/^@PHPUnit\d+Migration:risky$/', $setDefinitionName));
 
-        return array_map(static fn (string $setDefinitionName): array => [$setDefinitionName], $setDefinitionPHPUnitMigrationNames);
+        return \array_map(static fn (string $setDefinitionName): array => [$setDefinitionName], $setDefinitionPHPUnitMigrationNames);
     }
 
     public function testRegisteringRulesetMultipleTimesCausesAnException(): void

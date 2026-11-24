@@ -366,7 +366,7 @@ class PsrAutoloadingFixer {}
             $cases[] = strtolower($magicConstant).'.php';
         }
 
-        yield from array_map(static fn ($case): array => [
+        yield from \array_map(static fn ($case): array => [
             '<?php
 namespace Aaa;
 class Bar {}',

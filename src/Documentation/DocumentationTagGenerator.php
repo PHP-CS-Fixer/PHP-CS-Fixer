@@ -142,7 +142,7 @@ final class DocumentationTagGenerator
         }
 
         if ($fixer instanceof ConfigurableFixerInterface) {
-            $options = array_map(
+            $options = \array_map(
                 static fn (FixerOptionInterface $option): string => '`'.$option->getName().'`',
                 $fixer->getConfigurationDefinition()->getOptions(),
             );

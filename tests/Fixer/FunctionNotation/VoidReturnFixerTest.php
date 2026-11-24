@@ -349,7 +349,7 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
                 '<?php class Test { public%s function %s(%s)%%s {} }',
                 $isStatic ? ' static' : '',
                 $name,
-                implode(',', array_map(
+                implode(',', \array_map(
                     static fn (int $n): string => \sprintf('$x%d', $n),
                     array_keys(array_fill(0, $arguments, true)),
                 )),

@@ -98,7 +98,7 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
 
             $allowedTypes = $option->getAllowedTypes();
             if (null !== $allowedTypes) {
-                $allowedTypesNormalised = array_map(
+                $allowedTypesNormalised = \array_map(
                     static function (string $type): string {
                         // Symfony OptionsResolver doesn't support `array<foo, bar>` natively, let's simplify the type
                         $matches = [];
