@@ -47,6 +47,7 @@ The rule is part of the following rule sets:
 - `@PHP8x3Migration <./../../ruleSets/PHP8x3Migration.rst>`_
 - `@PHP8x4Migration <./../../ruleSets/PHP8x4Migration.rst>`_
 - `@PHP8x5Migration <./../../ruleSets/PHP8x5Migration.rst>`_
+- `@PHP8x6Migration <./../../ruleSets/PHP8x6Migration.rst>`_
 - `@PHP74Migration <./../../ruleSets/PHP74Migration.rst>`_ *(deprecated)*
 - `@PHP80Migration <./../../ruleSets/PHP80Migration.rst>`_ *(deprecated)*
 - `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_ *(deprecated)*

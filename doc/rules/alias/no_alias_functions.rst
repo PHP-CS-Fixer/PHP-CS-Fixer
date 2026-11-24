@@ -146,6 +146,10 @@ The rule is part of the following rule sets:
 
   ``['sets' => ['@all']]``
 
+- `@PHP8x6Migration:risky <./../../ruleSets/PHP8x6MigrationRisky.rst>`_ with config:
+
+  ``['sets' => ['@all']]``
+
 - `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_ *(deprecated)*
 - `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ *(deprecated)* with config:
 

@@ -27,3 +27,4 @@ Rules candidates
 - `@PHP8x3Migration <./PHP8x3Migration.rst>`_
 - `@PHP8x4Migration <./PHP8x4Migration.rst>`_
 - `@PHP8x5Migration <./PHP8x5Migration.rst>`_
+- `@PHP8x6Migration <./PHP8x6Migration.rst>`_

@@ -37,6 +37,7 @@ Rule sets
 The rule is part of the following rule sets:
 
 - `@PHP8x5Migration:risky <./../../ruleSets/PHP8x5MigrationRisky.rst>`_
+- `@PHP8x6Migration:risky <./../../ruleSets/PHP8x6MigrationRisky.rst>`_
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 - `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 

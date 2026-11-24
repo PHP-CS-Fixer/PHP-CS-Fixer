@@ -123,6 +123,7 @@ The rule is part of the following rule sets:
 
 - `@PHP8x4Migration <./../../ruleSets/PHP8x4Migration.rst>`_
 - `@PHP8x5Migration <./../../ruleSets/PHP8x5Migration.rst>`_
+- `@PHP8x6Migration <./../../ruleSets/PHP8x6Migration.rst>`_
 - `@PHP84Migration <./../../ruleSets/PHP84Migration.rst>`_ *(deprecated)*
 - `@PHP85Migration <./../../ruleSets/PHP85Migration.rst>`_ *(deprecated)*
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
