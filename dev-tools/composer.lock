@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b005e38005768743ec0ecdc6c6c299d5",
+    "content-hash": "2eb8224e6ac43186a82dc9f0eb0c2285",
     "packages": [
         {
             "name": "composer/pcre",
@@ -106,16 +106,16 @@
         },
         {
             "name": "ergebnis/composer-normalize",
-            "version": "2.57.0",
+            "version": "2.58.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ergebnis/composer-normalize.git",
-                "reference": "fe0f69429cf61be9099155d5a63a2816016d5446"
+                "reference": "74ed2dad07f772e686a7f3498f2a507190640ee5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ergebnis/composer-normalize/zipball/fe0f69429cf61be9099155d5a63a2816016d5446",
-                "reference": "fe0f69429cf61be9099155d5a63a2816016d5446"
+                "url": "https://api.github.com/repos/ergebnis/composer-normalize/zipball/74ed2dad07f772e686a7f3498f2a507190640ee5",
+                "reference": "74ed2dad07f772e686a7f3498f2a507190640ee5"
             },
             "require": {
                 "composer-plugin-api": "^2.0.0",
@@ -132,7 +132,7 @@
             "extra": {
                 "class": "Ergebnis\\Composer\\Normalize\\NormalizePlugin",
                 "branch-alias": {
-                    "dev-main": "2.57-dev"
+                    "dev-main": "2.58-dev"
                 },
                 "plugin-optional": true,
                 "composer-normalize": {
