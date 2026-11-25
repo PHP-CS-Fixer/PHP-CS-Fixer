@@ -445,7 +445,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
                 $method = null;
                 $nameSuffix = '' === $nameSuffix ? 'OnClass' : ('OnClass'.$nameSuffix);
             } else {
-                $nameSuffix = ('External'.$nameSuffix);
+                $nameSuffix = 'External'.$nameSuffix;
             }
         }
 

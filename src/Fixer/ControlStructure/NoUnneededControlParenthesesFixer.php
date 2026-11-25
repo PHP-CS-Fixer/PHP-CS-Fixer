@@ -118,6 +118,32 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         \T_INCLUDE,
         \T_INCLUDE_ONCE,
     ];
+
+    private const ASSIGNED_VALUE_KEEP_TYPES = [
+        '=',
+        [\T_AND_EQUAL],
+        [\T_CLASS],
+        [\T_COALESCE_EQUAL],
+        [\T_CONCAT_EQUAL],
+        [\T_DEC],
+        [\T_DIV_EQUAL],
+        [\T_INC],
+        [\T_LOGICAL_AND],
+        [\T_LOGICAL_OR],
+        [\T_LOGICAL_XOR],
+        [\T_MINUS_EQUAL],
+        [\T_MOD_EQUAL],
+        [\T_MUL_EQUAL],
+        [\T_OR_EQUAL],
+        [\T_PLUS_EQUAL],
+        [\T_POW_EQUAL],
+        [\T_SL_EQUAL],
+        [\T_SR_EQUAL],
+        [\T_XOR_EQUAL],
+        [\T_YIELD],
+        [\T_YIELD_FROM],
+    ];
+
     private const KNOWN_NEGATIVE_PRE_TYPES = [
         [CT::T_CLASS_CONSTANT],
         [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
@@ -277,6 +303,12 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
 
             if ($this->isUselessWrapped($tokens, $beforeOpenIndex, $afterCloseIndex)) {
                 $this->removeUselessParenthesisPair($tokens, $beforeOpenIndex, $afterCloseIndex, $openIndex, $closeIndex, $this->getConfigType($tokens, $beforeOpenIndex));
+
+                continue;
+            }
+
+            if ($this->isWrappedAssignedValue($tokens, $beforeOpenIndex, $openIndex, $closeIndex, $afterCloseIndex)) {
+                $this->removeUselessParenthesisPair($tokens, $beforeOpenIndex, $afterCloseIndex, $openIndex, $closeIndex, 'others');
 
                 continue;
             }
@@ -498,6 +530,30 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     private function isSimpleAssignment(Tokens $tokens, int $beforeOpenIndex, int $afterCloseIndex): bool
     {
         return $tokens[$beforeOpenIndex]->equals('=') && $tokens[$afterCloseIndex]->equalsAny([';', [\T_CLOSE_TAG]]); // `= (X) ;`
+    }
+
+    // `= (X) ;` where X has no assignment, increment, decrement, yield, anonymous class or low precedence logical operator
+    private function isWrappedAssignedValue(Tokens $tokens, int $beforeOpenIndex, int $openIndex, int $closeIndex, int $afterCloseIndex): bool
+    {
+        if (!$this->isSimpleAssignment($tokens, $beforeOpenIndex, $afterCloseIndex)) {
+            return false;
+        }
+
+        for ($index = $tokens->getNextMeaningfulToken($openIndex); $index < $closeIndex; $index = $tokens->getNextMeaningfulToken($index)) {
+            $block = Tokens::detectBlockType($tokens[$index]);
+
+            if (null !== $block && $block['isStart']) {
+                $index = $tokens->findBlockEnd($block['type'], $index);
+
+                continue;
+            }
+
+            if ($tokens[$index]->equalsAny(self::ASSIGNED_VALUE_KEEP_TYPES)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private function isWrappedSequenceElement(Tokens $tokens, int $startIndex, int $endIndex): bool
