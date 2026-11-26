@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b005e38005768743ec0ecdc6c6c299d5",
+    "content-hash": "2eb8224e6ac43186a82dc9f0eb0c2285",
     "packages": [
         {
             "name": "composer/pcre",
@@ -106,16 +106,16 @@
         },
         {
             "name": "ergebnis/composer-normalize",
-            "version": "2.57.0",
+            "version": "2.58.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ergebnis/composer-normalize.git",
-                "reference": "fe0f69429cf61be9099155d5a63a2816016d5446"
+                "reference": "74ed2dad07f772e686a7f3498f2a507190640ee5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ergebnis/composer-normalize/zipball/fe0f69429cf61be9099155d5a63a2816016d5446",
-                "reference": "fe0f69429cf61be9099155d5a63a2816016d5446"
+                "url": "https://api.github.com/repos/ergebnis/composer-normalize/zipball/74ed2dad07f772e686a7f3498f2a507190640ee5",
+                "reference": "74ed2dad07f772e686a7f3498f2a507190640ee5"
             },
             "require": {
                 "composer-plugin-api": "^2.0.0",
@@ -132,7 +132,7 @@
             "extra": {
                 "class": "Ergebnis\\Composer\\Normalize\\NormalizePlugin",
                 "branch-alias": {
-                    "dev-main": "2.57-dev"
+                    "dev-main": "2.58-dev"
                 },
                 "plugin-optional": true,
                 "composer-normalize": {
@@ -622,21 +622,21 @@
         },
         {
             "name": "phpcompatibility/php-compatibility",
-            "version": "10.0.0-alpha2",
+            "version": "10.0.0-alpha3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCompatibility/PHPCompatibility.git",
-                "reference": "e0f0e5a3dc819a4a0f8d679a0f2453d941976e18"
+                "reference": "e426e8096e909163f545753e769f65e1401fbd92"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibility/zipball/e0f0e5a3dc819a4a0f8d679a0f2453d941976e18",
-                "reference": "e0f0e5a3dc819a4a0f8d679a0f2453d941976e18"
+                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibility/zipball/e426e8096e909163f545753e769f65e1401fbd92",
+                "reference": "e426e8096e909163f545753e769f65e1401fbd92"
             },
             "require": {
-                "php": ">=5.4",
+                "php": ">=7.2",
                 "phpcsstandards/phpcsutils": "^1.1.2",
-                "squizlabs/php_codesniffer": "^3.13.3 || ^4.0"
+                "squizlabs/php_codesniffer": "^4.0.2"
             },
             "replace": {
                 "wimg/php-compatibility": "*"
@@ -655,16 +655,16 @@
         },
         {
             "name": "phpcompatibility/phpcompatibility-paragonie",
-            "version": "2.0.0-alpha2",
+            "version": "2.0.0-alpha3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCompatibility/PHPCompatibilityParagonie.git",
-                "reference": "7a979711c87d8202b52f56c56bd719d09d8ed7f5"
+                "reference": "aa2baa7027d2491732420d0cffc12a749e89e97c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilityParagonie/zipball/7a979711c87d8202b52f56c56bd719d09d8ed7f5",
-                "reference": "7a979711c87d8202b52f56c56bd719d09d8ed7f5"
+                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilityParagonie/zipball/aa2baa7027d2491732420d0cffc12a749e89e97c",
+                "reference": "aa2baa7027d2491732420d0cffc12a749e89e97c"
             },
             "require": {
                 "phpcompatibility/php-compatibility": "^10.0@dev"
@@ -677,16 +677,16 @@
         },
         {
             "name": "phpcompatibility/phpcompatibility-passwordcompat",
-            "version": "2.0.0-alpha1",
+            "version": "2.0.0-alpha2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCompatibility/PHPCompatibilityPasswordCompat.git",
-                "reference": "8e67bd0a47a987d4b507e5cf019042d95758db13"
+                "reference": "32951e89eec62a38440805f94746c3bc9e555bbd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilityPasswordCompat/zipball/8e67bd0a47a987d4b507e5cf019042d95758db13",
-                "reference": "8e67bd0a47a987d4b507e5cf019042d95758db13"
+                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilityPasswordCompat/zipball/32951e89eec62a38440805f94746c3bc9e555bbd",
+                "reference": "32951e89eec62a38440805f94746c3bc9e555bbd"
             },
             "require": {
                 "phpcompatibility/php-compatibility": "^10.0@dev"
@@ -699,16 +699,16 @@
         },
         {
             "name": "phpcompatibility/phpcompatibility-symfony",
-            "version": "2.0.0-alpha3",
+            "version": "2.0.0-alpha4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCompatibility/PHPCompatibilitySymfony.git",
-                "reference": "e91a96a930a0c6f02515cd98ed6894d5e7886397"
+                "reference": "5b05c4e4d7b5b7ede86c605b84ecdaa56afbbce0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilitySymfony/zipball/e91a96a930a0c6f02515cd98ed6894d5e7886397",
-                "reference": "e91a96a930a0c6f02515cd98ed6894d5e7886397"
+                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilitySymfony/zipball/5b05c4e4d7b5b7ede86c605b84ecdaa56afbbce0",
+                "reference": "5b05c4e4d7b5b7ede86c605b84ecdaa56afbbce0"
             },
             "require": {
                 "phpcompatibility/php-compatibility": "^10.0@dev",
