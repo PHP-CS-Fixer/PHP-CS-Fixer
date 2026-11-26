@@ -73,6 +73,7 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
     array("hello");
     list($a, $b) = $c;
     eval("a");
+    clone($a);
     foo();
     $foo = &ref();
     ',
@@ -90,6 +91,7 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
     array ("hello");
     list ($a, $b) = $c;
     eval ("a");
+    clone ($a);
     foo ();
     $foo = &ref ();
     ',
