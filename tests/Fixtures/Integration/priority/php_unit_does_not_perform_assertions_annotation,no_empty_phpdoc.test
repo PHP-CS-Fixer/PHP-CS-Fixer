@@ -1,0 +1,28 @@
+--TEST--
+Integration of fixers: php_unit_does_not_perform_assertions_annotation,no_empty_phpdoc.
+--RULESET--
+{"php_unit_does_not_perform_assertions_annotation": true, "no_empty_phpdoc": true}
+--EXPECT--
+<?php
+class FooTest extends \PHPUnit\Framework\TestCase
+{
+    public function testFoo()
+    {
+        $this->expectNotToPerformAssertions();
+
+        foo();
+    }
+}
+
+--INPUT--
+<?php
+class FooTest extends \PHPUnit\Framework\TestCase
+{
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testFoo()
+    {
+        foo();
+    }
+}

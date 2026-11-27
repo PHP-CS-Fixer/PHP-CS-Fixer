@@ -103,6 +103,10 @@ The rule is part of the following rule sets:
 
   ``['target' => '5.5']``
 
+- `@PHPUnit7x2Migration:risky <./../../ruleSets/PHPUnit7x2MigrationRisky.rst>`_ with config:
+
+  ``['target' => '5.5']``
+
 - `@PHPUnit7x5Migration:risky <./../../ruleSets/PHPUnit7x5MigrationRisky.rst>`_ with config:
 
   ``['target' => '5.5']``

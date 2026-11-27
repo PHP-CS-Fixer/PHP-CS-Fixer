@@ -35,6 +35,7 @@ Rules candidates
 - `@PHPUnit5x6Migration:risky <./PHPUnit5x6MigrationRisky.rst>`_
 - `@PHPUnit5x7Migration:risky <./PHPUnit5x7MigrationRisky.rst>`_
 - `@PHPUnit6x0Migration:risky <./PHPUnit6x0MigrationRisky.rst>`_
+- `@PHPUnit7x2Migration:risky <./PHPUnit7x2MigrationRisky.rst>`_
 - `@PHPUnit7x5Migration:risky <./PHPUnit7x5MigrationRisky.rst>`_
 - `@PHPUnit8x4Migration:risky <./PHPUnit8x4MigrationRisky.rst>`_
 - `@PHPUnit9x1Migration:risky <./PHPUnit9x1MigrationRisky.rst>`_
