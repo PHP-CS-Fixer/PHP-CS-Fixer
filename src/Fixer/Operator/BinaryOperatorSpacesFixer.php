@@ -417,7 +417,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                                 \sprintf(
                                     'Unexpected value for operator "%s", expected any of %s, got "%s".',
                                     $operator,
-                                    Utils::naturalLanguageJoin(array_map(
+                                    Utils::naturalLanguageJoin(\array_map(
                                         static fn ($value): string => Utils::toString($value),
                                         self::ALLOWED_VALUES,
                                     )),

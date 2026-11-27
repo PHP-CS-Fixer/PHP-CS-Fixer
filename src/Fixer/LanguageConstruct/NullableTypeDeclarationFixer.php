@@ -157,7 +157,7 @@ final class NullableTypeDeclarationFixer extends AbstractFixer implements Config
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        $elements = array_map(
+        $elements = \array_map(
             static fn (array $element): string => 'method' === $element['type'] ? 'function' : $element['type'],
             array_filter(
                 $tokensAnalyzer->getClassyElements(),

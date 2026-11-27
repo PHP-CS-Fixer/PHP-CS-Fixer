@@ -407,6 +407,9 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
             'function_exists',
             'is_callable',
             'ini_get',
+            // @see https://github.com/php/php-src/blob/PHP-8.6/Zend/zend_compile.c "zend_try_compile_special_func"
+            'array_map',
+            'printf',
         ]);
     }
 

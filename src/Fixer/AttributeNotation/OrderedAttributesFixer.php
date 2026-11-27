@@ -156,7 +156,7 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
                     }
 
                     return array_flip(array_values(
-                        array_map(static fn (string $attribute): string => ltrim($attribute, '\\'), $value),
+                        \array_map(static fn (string $attribute): string => ltrim($attribute, '\\'), $value),
                     ));
                 })
                 ->getOption(),
@@ -171,7 +171,7 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
 
         while (null !== $index = $tokens->getNextTokenOfKind($index, [[\T_ATTRIBUTE]])) {
             /** @var _AttributeItems $elements */
-            $elements = array_map(fn (AttributeAnalysis $attributeAnalysis): array => [
+            $elements = \array_map(fn (AttributeAnalysis $attributeAnalysis): array => [
                 'name' => $this->sortAttributes($fullyQualifiedNameAnalyzer, $tokens, $attributeAnalysis->getStartIndex(), $attributeAnalysis->getAttributes()),
                 'start' => $attributeAnalysis->getStartIndex(),
                 'end' => $attributeAnalysis->getEndIndex(),

@@ -414,7 +414,7 @@ final class RunnerTest extends TestCase
         $fixedFiles = self::runRunnerWithPolicy($path, [$arraySyntaxFixer], $policy, $errorsManager);
         self::assertSame($expectedFixedFiles, $fixedFiles);
 
-        $actualErrors = array_map(
+        $actualErrors = \array_map(
             static fn (Error $error): array => [
                 'type' => $error->getType(),
                 'filePath' => $error->getFilePath(),

@@ -103,7 +103,7 @@ final class Utils
             return $a[1] <=> $b[1];
         });
 
-        return array_map(static fn (array $item) => $item[0], $sortItems);
+        return \array_map(static fn (array $item) => $item[0], $sortItems);
     }
 
     /**
@@ -145,7 +145,7 @@ final class Utils
             throw new \InvalidArgumentException('Wrapper should be a single-char string or empty.');
         }
 
-        $names = array_map(static fn (string $name): string => \sprintf('%2$s%1$s%2$s', $name, $wrapper), $names);
+        $names = \array_map(static fn (string $name): string => \sprintf('%2$s%1$s%2$s', $name, $wrapper), $names);
 
         $last = array_pop($names);
 

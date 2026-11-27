@@ -333,7 +333,7 @@ class FooTest extends TestCase {
     private static function mapToTemplate(string ...$types): array
     {
         // @phpstan-ignore-next-line return.type
-        return array_map(
+        return \array_map(
             static fn (string $type): string => \sprintf(
                 <<<'PHP'
                     <?php

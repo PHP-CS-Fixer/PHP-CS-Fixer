@@ -121,7 +121,7 @@ abstract class AbstractTransformerTestCase extends TestCase
         $tokens = new TokensWithObservedTransformers();
         $tokens->setCode($source);
 
-        $prototypes = array_map(
+        $prototypes = \array_map(
             static fn ($kindOrPrototype) => \is_int($kindOrPrototype) ? [$kindOrPrototype] : $kindOrPrototype,
             array_unique([...$observedKindsOrPrototypes, ...$expectedTokens]),
         );
@@ -144,7 +144,7 @@ abstract class AbstractTransformerTestCase extends TestCase
             self::assertStringStartsWith('CT::', CT::getName($customTokenOfTransformer));
         }
 
-        $customTokensOfTransformerList = implode(', ', array_map(
+        $customTokensOfTransformerList = implode(', ', \array_map(
             static fn (int $ct): string => CT::getName($ct),
             $customTokensOfTransformer,
         ));

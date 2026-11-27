@@ -458,6 +458,8 @@ namespace {
                     // fix
                     $c = \get_class($d);
                     $e = \intval($f);
+                    $g = \array_map($h, $i);
+                    \printf($j, $k);
                 ',
             '<?php
                     // do not fix
@@ -467,6 +469,8 @@ namespace {
                     // fix
                     $c = get_class($d);
                     $e = intval($f);
+                    $g = array_map($h, $i);
+                    printf($j, $k);
                 ',
             [
                 'include' => [NativeFunctionInvocationFixer::SET_COMPILER_OPTIMIZED],

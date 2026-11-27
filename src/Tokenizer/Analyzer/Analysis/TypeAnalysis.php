@@ -73,7 +73,7 @@ final class TypeAnalysis
             $this->nullable = true;
         } elseif (\PHP_VERSION_ID >= 8_00_00) {
             $this->name = $name;
-            $this->nullable = \in_array('null', array_map('trim', explode('|', strtolower($name))), true);
+            $this->nullable = \in_array('null', \array_map('trim', explode('|', strtolower($name))), true);
         } else {
             $this->name = $name;
             $this->nullable = false;

@@ -50,7 +50,7 @@ final class DiffConsoleFormatter
             $template,
             implode(
                 \PHP_EOL,
-                array_map(
+                \array_map(
                     static function (string $line) use ($isDecorated, $lineTemplate): string {
                         if ($isDecorated) {
                             $count = 0;

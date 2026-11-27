@@ -39,7 +39,7 @@ trait AssertJsonSchemaTrait
             $validator->isValid(),
             implode(
                 "\n",
-                array_map(
+                \array_map(
                     static fn (array $item): string => \sprintf('Property `%s`: %s.', $item['property'], $item['message']),
                     $errors,
                 ),

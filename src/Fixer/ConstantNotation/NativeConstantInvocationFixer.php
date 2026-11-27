@@ -170,7 +170,7 @@ final class NativeConstantInvocationFixer extends AbstractFixer implements Confi
 
         $caseInsensitiveConstantsToEscape = array_diff(
             array_unique($caseInsensitiveConstantsToEscape),
-            array_map(
+            \array_map(
                 static fn (string $function): string => strtolower($function),
                 $uniqueConfiguredExclude,
             ),

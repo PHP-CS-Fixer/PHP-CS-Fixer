@@ -144,7 +144,7 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
             throw new \RuntimeException('Non-multiline docblock not expected, please convert it manually!');
         }
 
-        $covers = array_map(
+        $covers = \array_map(
             static function ($annotation): string {
                 $parts = explode(' ', $annotation->getContent());
 
@@ -268,7 +268,7 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                     $allowedAfterNormalization = 'array{'
                         .implode(
                             ', ',
-                            array_map(
+                            \array_map(
                                 static fn ($value): string => \sprintf("'%s'?: '%s'", $value, strtolower($value)),
                                 $allowed[0]->getAllowedValues(),
                             ),
@@ -305,15 +305,15 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
 
             if (\is_array($allowed)) {
                 // $allowed are allowed values
-                $allowed = array_map(
+                $allowed = \array_map(
                     static fn ($value): string => $value instanceof AllowedValueSubset
-                        ? \sprintf('list<%s>', implode('|', array_map(static fn ($val) => "'".$val."'", $value->getAllowedValues())))
+                        ? \sprintf('list<%s>', implode('|', \array_map(static fn ($val) => "'".$val."'", $value->getAllowedValues())))
                         : Utils::toString($value),
                     $allowed,
                 );
             } else {
                 // $allowed will be allowed types
-                $allowed = array_map(
+                $allowed = \array_map(
                     static fn ($value): string => Utils::convertArrayTypeToList($value),
                     $option->getAllowedTypes(),
                 );
@@ -324,7 +324,7 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
 
             if ('array' === $allowed) {
                 $default = $option->getDefault();
-                $getTypes = static fn ($values): array => array_unique(array_map(
+                $getTypes = static fn ($values): array => array_unique(\array_map(
                     static fn ($val) => \gettype($val),
                     $values,
                 ));

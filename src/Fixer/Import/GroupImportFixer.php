@@ -162,7 +162,7 @@ final class GroupImportFixer extends AbstractFixer implements ConfigurableFixerI
             return [];
         }
 
-        $allNamespaceAndType = array_map(
+        $allNamespaceAndType = \array_map(
             fn (NamespaceUseAnalysis $useDeclaration): string => $this->getNamespaceNameWithSlash($useDeclaration).$useDeclaration->getType(),
             $useDeclarations,
         );

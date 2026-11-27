@@ -137,7 +137,7 @@ final class PhpdocToCommentFixer extends AbstractFixer implements ConfigurableFi
 
     protected function configurePostNormalisation(): void
     {
-        $this->ignoredTags = array_map(
+        $this->ignoredTags = \array_map(
             static fn (string $tag): string => strtolower($tag),
             $this->configuration['ignored_tags'],
         );

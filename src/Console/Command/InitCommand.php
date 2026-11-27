@@ -147,13 +147,13 @@ final class InitCommand extends Command
 
         $io->outlineNote("We recommend usage of {$setAutoWithOptionalRiskySetNamesTextual} rulesets. They take insights from your existing `composer.json` to configure your project the best. For your current setup, that would mean:");
         $io->listing(
-            array_map(
+            \array_map(
                 static fn (RuleSetDefinitionInterface $item): string => \sprintf(
                     '<fg=blue>`%s`</> - %s',
                     $item->getName(),
                     self::formatReference($item->getDescription()),
                 ),
-                array_map(
+                \array_map(
                     static fn (string $name): RuleSetDefinitionInterface => $setsByName[$name], // @phpstan-ignore-line offsetAccess.notFound
                     $setsBehindAutoSet,
                 ),
@@ -214,7 +214,7 @@ final class InitCommand extends Command
             'Do you want to use any of the other recommended rulesets? (multi-choice)',
             array_combine(
                 $extraSets,
-                array_map(
+                \array_map(
                     static fn (string $item): string => self::formatReference($setsByName[$item]->getDescription()), // @phpstan-ignore-line offsetAccess.notFound
                     $extraSets,
                 ),
@@ -267,7 +267,7 @@ final class InitCommand extends Command
                 $isRiskyAllowed ? 'true' : 'false',
                 "[\n".implode(
                     ",\n",
-                    array_map(
+                    \array_map(
                         static fn (string $name, $configuration): string => \sprintf("        '%s' => %s", $name, Utils::toString($configuration)),
                         array_keys($rules),
                         $rules,
@@ -320,7 +320,7 @@ final class InitCommand extends Command
         }
 
         $io->listing(
-            array_map(
+            \array_map(
                 static fn (array $entry): string => \sprintf(
                     '<fg=blue>`%s`</> - %s %s',
                     $entry['name'],

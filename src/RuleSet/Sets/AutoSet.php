@@ -39,7 +39,7 @@ final class AutoSet extends AbstractRuleSetDefinition implements AutomaticRuleSe
             $this->getCandidates(),
             fn (RuleSetDefinitionInterface $set): bool => $this->isSetDiscoverable($set),
         );
-        $sets = array_map(
+        $sets = \array_map(
             static fn (RuleSetDefinitionInterface $set): string => $set->getName(),
             $sets,
         );
@@ -54,7 +54,7 @@ final class AutoSet extends AbstractRuleSetDefinition implements AutomaticRuleSe
 
     public function getRulesCandidates(): array
     {
-        $sets = array_map(
+        $sets = \array_map(
             static fn (RuleSetDefinitionInterface $set): string => $set->getName(),
             $this->getCandidates(),
         );

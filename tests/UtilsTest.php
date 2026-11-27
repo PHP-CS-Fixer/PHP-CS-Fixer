@@ -238,7 +238,7 @@ final class UtilsTest extends TestCase
                 'fx',
                 'fy',
             ],
-            array_map(
+            \array_map(
                 static fn (FixerInterface $fixer): string => $fixer->getName(),
                 Utils::sortFixers($fixers),
             ),

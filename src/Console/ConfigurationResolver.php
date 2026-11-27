@@ -353,7 +353,7 @@ final class ConfigurationResolver
             ;
 
             if (false === $this->getRiskyAllowed()) {
-                $riskyFixers = array_map(
+                $riskyFixers = \array_map(
                     static fn (FixerInterface $fixer): string => $fixer->getName(),
                     array_values(array_filter(
                         $this->fixers,
@@ -393,7 +393,7 @@ final class ConfigurationResolver
             if (1 === \count($this->options['path']) && '-' === $this->options['path'][0]) {
                 $this->path = $this->options['path'];
             } else {
-                $this->path = array_map(
+                $this->path = \array_map(
                     static function (string $rawPath) use ($cwd, $filesystem): string {
                         $path = trim($rawPath);
 
@@ -797,7 +797,7 @@ final class ConfigurationResolver
 
         $fixers = $this->createFixerFactory()->getFixers();
 
-        $availableFixers = array_map(static fn (FixerInterface $fixer): string => $fixer->getName(), $fixers);
+        $availableFixers = \array_map(static fn (FixerInterface $fixer): string => $fixer->getName(), $fixers);
 
         $unknownFixers = array_diff($configuredFixers, $availableFixers);
 
@@ -931,7 +931,7 @@ final class ConfigurationResolver
 
         $isIntersectionPathMode = self::PATH_MODE_INTERSECTION === $this->options['path-mode'];
 
-        $paths = array_map(
+        $paths = \array_map(
             static fn (string $path): string => realpath($path), // @phpstan-ignore return.type
             $this->getPath(),
         );

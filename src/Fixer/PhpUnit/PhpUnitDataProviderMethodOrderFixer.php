@@ -285,7 +285,7 @@ final class PhpUnitDataProviderMethodOrderFixer extends AbstractPhpUnitFixer imp
         });
 
         $origUsageDataProviderOrderPairs = [];
-        foreach (array_map(static fn (array $v): array => [$v[0][1], $v[1]], $origUsagesOrderPairs) as [$usageName, $providerName]) {
+        foreach (\array_map(static fn (array $v): array => [$v[0][1], $v[1]], $origUsagesOrderPairs) as [$usageName, $providerName]) {
             $origUsageDataProviderOrderPairs[] = [$usageName, $providerName];
         }
 

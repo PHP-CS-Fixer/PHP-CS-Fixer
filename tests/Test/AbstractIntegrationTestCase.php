@@ -343,7 +343,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         if ($fixedInputCode !== $fixedInputCodeWithReversedFixers) {
             self::assertGreaterThan(
                 1,
-                \count(array_unique(array_map(
+                \count(array_unique(\array_map(
                     static fn (FixerInterface $fixer): int => $fixer->getPriority(),
                     self::createFixers($case),
                 ))),

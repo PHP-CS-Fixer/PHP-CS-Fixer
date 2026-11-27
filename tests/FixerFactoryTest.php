@@ -117,7 +117,7 @@ final class FixerFactoryTest extends TestCase
 
         sort($fixerClasses);
 
-        $fixers = array_map(
+        $fixers = \array_map(
             static fn (FixerInterface $fixer): string => \get_class($fixer),
             $factory->getFixers(),
         );

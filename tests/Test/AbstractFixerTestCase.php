@@ -305,7 +305,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
         $sequences = $this->findAllTokenSequences($tokens, [[\T_VARIABLE, '$tokens'], [\T_OBJECT_OPERATOR], [\T_STRING]]);
 
-        $usedMethods = array_unique(array_map(static function (array $sequence): string {
+        $usedMethods = array_unique(\array_map(static function (array $sequence): string {
             $last = end($sequence);
 
             return $last->getContent();
@@ -412,7 +412,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
         $reflectionClass = new \ReflectionObject($this);
 
-        $extraMethods = array_map(
+        $extraMethods = \array_map(
             static fn (\ReflectionMethod $method): string => $method->getName(),
             array_values(array_filter(
                 $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC),
@@ -524,7 +524,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
             self::assertSameSize(
                 $tokens,
-                array_unique(array_map(static fn (Token $token): int => spl_object_id($token), $tokens->toArray())),
+                array_unique(\array_map(static fn (Token $token): int => spl_object_id($token), $tokens->toArray())),
                 'Token items inside Tokens collection must be unique.',
             );
 

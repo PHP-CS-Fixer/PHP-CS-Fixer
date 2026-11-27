@@ -59,7 +59,7 @@ final class RuleSetDocumentationGenerator
         };
 
         $tags = DocumentationTagGenerator::analyseRuleSet($definition);
-        $warnings = array_map(
+        $warnings = \array_map(
             static function (DocumentationTag $tag): string {
                 $titleLine = str_repeat('~', \strlen($tag->title));
 

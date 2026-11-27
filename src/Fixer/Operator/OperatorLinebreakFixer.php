@@ -267,7 +267,7 @@ final class OperatorLinebreakFixer extends AbstractFixer implements Configurable
      */
     private function getReplacementsAndClear(Tokens $tokens, array $indices, int $direction): array
     {
-        return array_map(
+        return \array_map(
             static function (int $index) use ($tokens, $direction): Token {
                 $clone = $tokens[$index];
 
@@ -308,7 +308,7 @@ final class OperatorLinebreakFixer extends AbstractFixer implements Configurable
                 [\T_POW_EQUAL], [\T_SL], [\T_SL_EQUAL], [\T_SR], [\T_SR_EQUAL], [\T_XOR_EQUAL],
                 [\T_COALESCE], [\T_SPACESHIP], [FCT::T_PIPE],
             ],
-            array_map(static fn (int $id): array => [$id], Token::getObjectOperatorKinds()),
+            \array_map(static fn (int $id): array => [$id], Token::getObjectOperatorKinds()),
         );
     }
 }

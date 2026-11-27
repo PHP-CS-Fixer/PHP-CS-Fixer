@@ -727,7 +727,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
                 return $type;
             }
 
-            $newTypeValue = implode('', array_map(
+            $newTypeValue = implode('', \array_map(
                 static fn (Token $token) => $token->getContent(),
                 $shortTokens,
             ));

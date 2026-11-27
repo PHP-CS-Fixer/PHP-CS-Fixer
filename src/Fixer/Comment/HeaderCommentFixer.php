@@ -313,7 +313,7 @@ final class HeaderCommentFixer extends AbstractFixer implements ConfigurableFixe
         }
         $currentHeaderComment = $token->getContent();
 
-        $lines = implode("\n", array_map(
+        $lines = implode("\n", \array_map(
             static fn (string $line): string => ' *' === $line ? '' : (str_starts_with($line, ' * ') ? substr($line, 3) : $line),
             \array_slice(explode("\n", $currentHeaderComment), 1, -1),
         ));

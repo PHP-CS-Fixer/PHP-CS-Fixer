@@ -100,7 +100,7 @@ final class ComposerJsonReader
         /** @var non-empty-list<string> $arr */
         $arr = Preg::split('/\s*\|\|?\s*/', trim($version));
 
-        $arr = array_map(static function ($v) {
+        $arr = \array_map(static function ($v) {
             $v = ltrim($v, 'v^~>= ');
 
             $v = substr($v, 0, strcspn($v, ' ,-'));

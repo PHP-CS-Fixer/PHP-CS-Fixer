@@ -37,7 +37,7 @@ final class AutoRiskySet extends AbstractRuleSetDefinition implements AutomaticR
             $this->getCandidates(),
             fn (RuleSetDefinitionInterface $set): bool => $this->isSetDiscoverable($set),
         );
-        $sets = array_map(
+        $sets = \array_map(
             static fn (RuleSetDefinitionInterface $set): string => $set->getName(),
             $sets,
         );
@@ -52,7 +52,7 @@ final class AutoRiskySet extends AbstractRuleSetDefinition implements AutomaticR
 
     public function getRulesCandidates(): array
     {
-        $sets = array_map(
+        $sets = \array_map(
             static fn (RuleSetDefinitionInterface $set): string => $set->getName(),
             $this->getCandidates(),
         );

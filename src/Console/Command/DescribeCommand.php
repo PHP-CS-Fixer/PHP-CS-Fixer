@@ -268,13 +268,13 @@ final class DescribeCommand extends Command
                 if (null === $allowed) {
                     $allowedTypes = $option->getAllowedTypes();
                     if (null !== $allowedTypes) {
-                        $allowed = array_map(
+                        $allowed = \array_map(
                             static fn (string $type): string => '<comment>'.$type.'</comment>',
                             $allowedTypes,
                         );
                     }
                 } else {
-                    $allowed = array_map(static fn ($value): string => $value instanceof AllowedValueSubset
+                    $allowed = \array_map(static fn ($value): string => $value instanceof AllowedValueSubset
                         ? 'a subset of <comment>'.Utils::toString($value->getAllowedValues()).'</comment>'
                         : '<comment>'.Utils::toString($value).'</comment>', $allowed);
                 }
@@ -438,7 +438,7 @@ final class DescribeCommand extends Command
                     'getDescription' => 'Rules that are not part of any set.',
                     'getName' => '@- - rules without set',
                     'getRules' => array_combine(
-                        array_map(
+                        \array_map(
                             static fn (FixerInterface $fixer): string => $fixer->getName(),
                             $rulesWithoutSet,
                         ),
@@ -509,7 +509,7 @@ final class DescribeCommand extends Command
     {
         $tags = DocumentationTagGenerator::analyseRuleSet($ruleSetDefinition);
         $extra = [] !== $tags
-            ? ' '.implode(' ', array_map(
+            ? ' '.implode(' ', \array_map(
                 static fn (DocumentationTag $tag): string => "<error>{$tag->type}</error>",
                 $tags,
             ))
@@ -532,7 +532,7 @@ final class DescribeCommand extends Command
                 $fixer = $fixers[$rule];
                 $tags = DocumentationTagGenerator::analyseRule($fixer);
                 $extra = [] !== $tags
-                    ? ' '.implode(' ', array_map(
+                    ? ' '.implode(' ', \array_map(
                         static fn (DocumentationTag $tag): string => "<error>{$tag->type}</error>",
                         $tags,
                     ))
@@ -583,7 +583,7 @@ final class DescribeCommand extends Command
                     " * <info>%s</info>%s%s\n   | %s\n\n",
                     $rule,
                     [] !== $tags ? ' ' : '',
-                    implode(' ', array_map(
+                    implode(' ', \array_map(
                         static fn (DocumentationTag $tag): string => "<error>{$tag->type}</error>",
                         $tags,
                     )),
@@ -602,7 +602,7 @@ final class DescribeCommand extends Command
                 " * <info>%s</info>%s%s\n   | %s\n%s\n",
                 $rule,
                 [] !== $tags ? ' ' : '',
-                implode(' ', array_map(
+                implode(' ', \array_map(
                     static fn (DocumentationTag $tag): string => "<error>{$tag->type}</error>",
                     $tags,
                 )),
