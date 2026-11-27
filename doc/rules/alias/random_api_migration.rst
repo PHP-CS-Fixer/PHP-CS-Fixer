@@ -121,6 +121,10 @@ The rule is part of the following rule sets:
 
   ``['replacements' => ['mt_getrandmax' => 'getrandmax', 'mt_rand' => 'random_int', 'mt_srand' => 'srand', 'rand' => 'random_int']]``
 
+- `@PHP8x6Migration:risky <./../../ruleSets/PHP8x6MigrationRisky.rst>`_ with config:
+
+  ``['replacements' => ['mt_getrandmax' => 'getrandmax', 'mt_rand' => 'random_int', 'mt_srand' => 'srand', 'rand' => 'random_int']]``
+
 - `@PHP70Migration:risky <./../../ruleSets/PHP70MigrationRisky.rst>`_ *(deprecated)* with config:
 
   ``['replacements' => ['mt_getrandmax' => 'getrandmax', 'mt_rand' => 'random_int', 'mt_srand' => 'srand', 'rand' => 'random_int']]``

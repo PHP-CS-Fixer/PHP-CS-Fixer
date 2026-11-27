@@ -33,3 +33,4 @@ Rules candidates
 - `@PHP8x3Migration:risky <./PHP8x3MigrationRisky.rst>`_
 - `@PHP8x4Migration:risky <./PHP8x4MigrationRisky.rst>`_
 - `@PHP8x5Migration:risky <./PHP8x5MigrationRisky.rst>`_
+- `@PHP8x6Migration:risky <./PHP8x6MigrationRisky.rst>`_

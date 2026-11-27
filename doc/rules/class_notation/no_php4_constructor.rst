@@ -43,6 +43,7 @@ The rule is part of the following rule sets:
 - `@PHP8x3Migration:risky <./../../ruleSets/PHP8x3MigrationRisky.rst>`_
 - `@PHP8x4Migration:risky <./../../ruleSets/PHP8x4MigrationRisky.rst>`_
 - `@PHP8x5Migration:risky <./../../ruleSets/PHP8x5MigrationRisky.rst>`_
+- `@PHP8x6Migration:risky <./../../ruleSets/PHP8x6MigrationRisky.rst>`_
 - `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ *(deprecated)*
 - `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_ *(deprecated)*
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_

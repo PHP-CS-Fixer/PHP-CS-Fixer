@@ -385,6 +385,10 @@ The rule is part of the following rule sets:
 
   ``['after_heredoc' => true]``
 
+- `@PHP8x6Migration <./../../ruleSets/PHP8x6Migration.rst>`_ with config:
+
+  ``['after_heredoc' => true]``
+
 - `@PHP73Migration <./../../ruleSets/PHP73Migration.rst>`_ *(deprecated)* with config:
 
   ``['after_heredoc' => true]``

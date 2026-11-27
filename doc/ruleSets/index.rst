@@ -44,6 +44,8 @@ List of Available Rule sets
 - `@PHP8x4Migration:risky <./PHP8x4MigrationRisky.rst>`_
 - `@PHP8x5Migration <./PHP8x5Migration.rst>`_
 - `@PHP8x5Migration:risky <./PHP8x5MigrationRisky.rst>`_
+- `@PHP8x6Migration <./PHP8x6Migration.rst>`_
+- `@PHP8x6Migration:risky <./PHP8x6MigrationRisky.rst>`_
 - `@PHP54Migration <./PHP54Migration.rst>`_ *(deprecated)*
 - `@PHP56Migration:risky <./PHP56MigrationRisky.rst>`_ *(deprecated)*
 - `@PHP70Migration <./PHP70Migration.rst>`_ *(deprecated)*

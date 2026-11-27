@@ -75,6 +75,7 @@ The rule is part of the following rule sets:
 - `@PHP8x3Migration <./../../ruleSets/PHP8x3Migration.rst>`_
 - `@PHP8x4Migration <./../../ruleSets/PHP8x4Migration.rst>`_
 - `@PHP8x5Migration <./../../ruleSets/PHP8x5Migration.rst>`_
+- `@PHP8x6Migration <./../../ruleSets/PHP8x6Migration.rst>`_
 - `@PHP54Migration <./../../ruleSets/PHP54Migration.rst>`_ *(deprecated)*
 - `@PHP70Migration <./../../ruleSets/PHP70Migration.rst>`_ *(deprecated)*
 - `@PHP71Migration <./../../ruleSets/PHP71Migration.rst>`_ *(deprecated)*

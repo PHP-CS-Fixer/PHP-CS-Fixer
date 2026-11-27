@@ -38,6 +38,7 @@ The rule is part of the following rule sets:
 - `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ *(deprecated)*
 - `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_
 - `@PHP8x5Migration <./../../ruleSets/PHP8x5Migration.rst>`_
+- `@PHP8x6Migration <./../../ruleSets/PHP8x6Migration.rst>`_
 - `@PHP85Migration <./../../ruleSets/PHP85Migration.rst>`_ *(deprecated)*
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@PSR2 <./../../ruleSets/PSR2.rst>`_
