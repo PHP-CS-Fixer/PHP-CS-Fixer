@@ -34,7 +34,7 @@ final class PhpUnitTestCaseAnalyzer
      */
     public function findPhpUnitClasses(Tokens $tokens): iterable
     {
-        for ($index = $tokens->count() - 1; $index > 0; --$index) {
+        foreach (array_reverse(array_keys($tokens->findGivenKind(\T_CLASS))) as $index) {
             if (!$this->isPhpUnitClass($tokens, $index)) {
                 continue;
             }
@@ -50,10 +50,6 @@ final class PhpUnitTestCaseAnalyzer
 
     private function isPhpUnitClass(Tokens $tokens, int $index): bool
     {
-        if (!$tokens[$index]->isGivenKind(\T_CLASS)) {
-            return false;
-        }
-
         $extendsIndex = $tokens->getNextTokenOfKind($index, ['{', [\T_EXTENDS]]);
 
         if (!$tokens[$extendsIndex]->isGivenKind(\T_EXTENDS)) {

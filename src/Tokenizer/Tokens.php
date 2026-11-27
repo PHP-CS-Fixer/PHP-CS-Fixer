@@ -419,7 +419,9 @@ class Tokens extends \SplFixedArray
             }
         }
 
-        if (!isset($this[$index]) || !$this[$index]->equals($newval)) {
+        // Token::equals() also matches a literal ampersand to an id-based one.
+        // The collection tracks these as distinct token kinds.
+        if (!isset($this[$index]) || $this[$index]->getId() !== $newval->getId() || $this[$index]->getContent() !== $newval->getContent()) {
             if (isset($this[$index])) {
                 $this->unregisterFoundToken($this[$index]);
             }
@@ -595,21 +597,18 @@ class Tokens extends \SplFixedArray
             $end = \count($this);
         }
 
-        $elements = [];
-        $possibleKinds = (array) $possibleKind;
-
-        foreach ($possibleKinds as $kind) {
-            $elements[$kind] = [];
+        $elements = array_fill_keys((array) $possibleKind, []);
+        $remaining = 0;
+        foreach ($elements as $kind => $_) {
+            $remaining += $this->countTokenKind($kind);
         }
 
-        $possibleKinds = array_values(array_filter($possibleKinds, fn ($kind): bool => $this->isTokenKindFound($kind)));
-
-        if (\count($possibleKinds) > 0) {
-            for ($i = $start; $i < $end; ++$i) {
-                $token = $this[$i];
-                if ($token->isGivenKind($possibleKinds)) {
-                    $elements[$token->getId()][$i] = $token;
-                }
+        for ($i = $start; $remaining > 0 && $i < $end; ++$i) {
+            $token = $this[$i];
+            $id = $token->getId();
+            if (null !== $id && isset($elements[$id])) {
+                $elements[$id][$i] = $token;
+                --$remaining;
             }
         }
 
@@ -826,11 +825,14 @@ class Tokens extends \SplFixedArray
      */
     public function getMeaningfulTokenSibling(int $index, int $direction): ?int
     {
-        return $this->getTokenNotOfKindsSibling(
-            $index,
-            $direction,
-            [\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT],
-        );
+        while ($this->offsetExists($index += $direction)) {
+            $token = $this[$index];
+            if ('' !== $token->getContent() && !$token->isGivenKind([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT])) {
+                return $index;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -1389,6 +1391,7 @@ class Tokens extends \SplFixedArray
         $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
+        $this->foundTokenKinds = [];
 
         parent::setSize(0);
     }

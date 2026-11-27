@@ -34,7 +34,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAllTokenKindsFound([\T_CLASS, \T_STRING]);
+        return $tokens->isAllTokenKindsFound([\T_EXTENDS, \T_CLASS, \T_STRING]);
     }
 
     final protected function applyFix(\SplFileInfo $file, Tokens $tokens): void

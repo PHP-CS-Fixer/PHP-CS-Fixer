@@ -115,6 +115,10 @@ final class TokensAnalyzer
     {
         $tokens = $this->tokens;
 
+        if (!$perNamespace) {
+            return array_keys($tokens->findGivenKind(\T_USE));
+        }
+
         $uses = [];
         $namespaceIndex = 0;
 
@@ -129,9 +133,7 @@ final class TokensAnalyzer
                     $index = $nextTokenIndex;
                 }
 
-                if ($perNamespace) {
-                    ++$namespaceIndex;
-                }
+                ++$namespaceIndex;
 
                 continue;
             }
@@ -139,10 +141,6 @@ final class TokensAnalyzer
             if ($token->isGivenKind(\T_USE)) {
                 $uses[$namespaceIndex][] = $index;
             }
-        }
-
-        if (!$perNamespace && isset($uses[$namespaceIndex])) {
-            return $uses[$namespaceIndex];
         }
 
         return $uses;
