@@ -93,6 +93,10 @@ final class ParallelConfigFactoryTest extends TestCase
     #[RequiresPhp('>= 8.0.0')]
     public function testDetectConfigurationWithNamedArgs(): void
     {
+        if (\PHP_VERSION_ID < 8_00_00) {
+            self::markTestSkipped('Named arguments are supported only on PHP 8.0 and later.');
+        }
+
         $this->mockCpuCount(7);
 
         // First argument omitted, second one provided via named argument

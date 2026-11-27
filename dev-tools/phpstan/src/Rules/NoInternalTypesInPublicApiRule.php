@@ -34,9 +34,12 @@ use PHPStan\Type\Type;
  */
 final class NoInternalTypesInPublicApiRule implements Rule
 {
-    public function __construct(
-        private ReflectionProvider $reflectionProvider,
-    ) {}
+    private ReflectionProvider $reflectionProvider;
+
+    public function __construct(ReflectionProvider $reflectionProvider)
+    {
+        $this->reflectionProvider = $reflectionProvider;
+    }
 
     /**
      * For quick debug.
