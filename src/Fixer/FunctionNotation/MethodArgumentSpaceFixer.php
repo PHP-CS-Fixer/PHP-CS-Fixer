@@ -577,6 +577,12 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
             return;
         }
 
+        $lastMeaningfulTokenIndex = $tokens->getPrevMeaningfulToken($closeParenthesis);
+
+        if ($tokens[$lastMeaningfulTokenIndex]->equals(',')) {
+            $tokens->clearTokenAndMergeSurroundingWhitespace($lastMeaningfulTokenIndex);
+        }
+
         for ($index = $closeParenthesis - 1; $index > $openParenthesis; --$index) {
             if ($tokens[$index]->equals(')')) {
                 $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
