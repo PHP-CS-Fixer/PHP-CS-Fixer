@@ -295,4 +295,51 @@ class Foo
                 PHP,
         ];
     }
+
+    /**
+     * @dataProvider provideFix86Cases
+     *
+     * @requires PHP >= 8.6.0
+     */
+    #[DataProvider('provideFix86Cases')]
+    #[RequiresPhp('>= 8.6.0')]
+    public function testFix86(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix86Cases(): iterable
+    {
+        yield 'partial function application placeholder as named argument' => [
+            <<<'PHP'
+                <?php
+                $f = foo(x: ?, y: 2);
+                PHP,
+        ];
+
+        yield 'partial function application placeholder as named argument in ternary' => [
+            <<<'PHP'
+                <?php
+                $f = $c ? foo(x: ?) : 1;
+                PHP,
+            <<<'PHP'
+                <?php
+                $f = $c?foo(x: ?):1;
+                PHP,
+        ];
+
+        yield 'partial function application placeholders in ternary' => [
+            <<<'PHP'
+                <?php
+                $f = $c ? foo(?, 1) : bar(1, ?);
+                PHP,
+            <<<'PHP'
+                <?php
+                $f = $c?foo(?, 1):bar(1, ?);
+                PHP,
+        ];
+    }
 }
