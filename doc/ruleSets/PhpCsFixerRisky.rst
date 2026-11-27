@@ -22,6 +22,7 @@ Rules
 - `comment_to_phpdoc <./../rules/comment/comment_to_phpdoc.rst>`_
 - `declare_strict_types <./../rules/strict/declare_strict_types.rst>`_
 - `final_internal_class <./../rules/class_notation/final_internal_class.rst>`_
+- `long_to_shorthand_operator_for_complex_targets <./../rules/operator/long_to_shorthand_operator_for_complex_targets.rst>`_
 - `native_constant_invocation <./../rules/constant_notation/native_constant_invocation.rst>`_ with config:
 
   ``['fix_built_in' => false, 'include' => ['DIRECTORY_SEPARATOR', 'PHP_INT_SIZE', 'PHP_SAPI', 'PHP_VERSION_ID'], 'scope' => 'namespaced', 'strict' => true]``

@@ -543,6 +543,12 @@ final class FixerFactoryTest extends TestCase
                 'no_singleline_whitespace_before_semicolons',
                 'standardize_increment',
             ],
+            'long_to_shorthand_operator_for_complex_targets' => [
+                'binary_operator_spaces',
+                'no_extra_blank_lines',
+                'no_singleline_whitespace_before_semicolons',
+                'standardize_increment',
+            ],
             'mb_str_functions' => [
                 'native_function_invocation',
             ],
