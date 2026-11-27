@@ -686,7 +686,11 @@ final class ConfigurationResolver
                     return $this->format;
                 }
 
-                $agentDetector = new AgentDetector\Detector();
+                if (class_exists(AgentDetector\EnvironmentDetector::class)) {
+                    $agentDetector = new AgentDetector\EnvironmentDetector();
+                } else {
+                    $agentDetector = new AgentDetector\Detector();
+                }
 
                 if ($agentDetector->isAgentPresent()) {
                     $this->format = 'json';
