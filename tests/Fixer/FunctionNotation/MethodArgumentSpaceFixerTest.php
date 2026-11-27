@@ -1808,5 +1808,13 @@ foo(
                 ?>
             </div>
             PHP];
+
+        yield 'multiline call in short echo tag on a line that starts after a closing tag' => [<<<'PHP'
+            <?php
+            ?>
+                <?= f(
+                    1
+                ) ?>
+            PHP];
     }
 }
