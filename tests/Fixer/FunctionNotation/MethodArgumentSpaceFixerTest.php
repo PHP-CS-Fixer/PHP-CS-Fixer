@@ -1419,6 +1419,62 @@ f(1,2,
             ['on_multiline' => 'ensure_single_line_for_single_argument'],
         ];
 
+        yield 'ensure_single_line_for_single_argument: removes trailing comma when collapsing single argument' => [
+            <<<'EXPECTED'
+                <?php
+                foo($a);
+                EXPECTED,
+            <<<'INPUT'
+                <?php
+                foo(
+                    $a,
+                );
+                INPUT,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: removes trailing comma when collapsing around nested multiline call as single argument' => [
+            <<<'EXPECTED'
+                <?php
+                foo(bar(
+                    $a,
+                    $b,
+                ));
+                EXPECTED,
+            <<<'INPUT'
+                <?php
+                foo(
+                    bar(
+                        $a,
+                        $b,
+                    ),
+                );
+                INPUT,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: removes trailing comma when collapsing around nested multiline array as single argument' => [
+            <<<'EXPECTED'
+                <?php
+                foo([
+                        'a',
+                        'b',
+                        'c',
+                    ]);
+                EXPECTED,
+            <<<'INPUT'
+                <?php
+                foo(
+                    [
+                        'a',
+                        'b',
+                        'c',
+                    ],
+                );
+                INPUT,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
         yield 'ensure_single_line_for_single_argument: collapses single-line method chain as single argument' => [
             <<<'EXPECTED'
                 <?php
