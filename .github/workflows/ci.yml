@@ -135,6 +135,18 @@ jobs:
             PHP_CS_FIXER_FAST_LINT_TEST_CASES: 0 # run full linting on highest supported PHP version to be sure that all cases are valid
 
           - operating-system: ubuntu-24.04
+            php-version: '8.6'
+            job-description: Fixer
+            run-fixer: 'yes'
+            PHP_CS_FIXER_IGNORE_ENV: 1
+
+          - operating-system: ubuntu-24.04
+            php-version: '8.6'
+            job-description: tests
+            run-tests: 'yes'
+            PHP_CS_FIXER_IGNORE_ENV: 1
+
+          - operating-system: ubuntu-24.04
             php-version: nightly
             job-description: Fixer
             run-fixer: 'yes'
