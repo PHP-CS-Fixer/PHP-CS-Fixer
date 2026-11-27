@@ -37,6 +37,7 @@ use PhpCsFixer\Fixer\Phpdoc\PhpdocOrderByValueFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocReturnSelfReferenceFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocTagTypeFixer;
 use PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer;
+use PhpCsFixer\Fixer\Whitespace\SpacesAroundOffsetFixer;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSample;
@@ -298,6 +299,8 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                     // nothing to do
                 } elseif ($fixer instanceof DeclareStrictTypesFixer && 'preserve_existing_declaration' === $optionName) {
                     $optionExistsAfterNormalization = false;
+                } elseif ($fixer instanceof SpacesAroundOffsetFixer && 'spacing' === $optionName) {
+                    $allowedAfterNormalization = "array{inside: 'ignore'|'none'|'single', outside: 'ignore'|'none'|'single'}";
                 } else {
                     throw new \LogicException(\sprintf('How to handle normalized types of "%s.%s" [`%s`]? Explicit instructions needed!', $fixer->getName(), $optionName, \get_class($fixer)));
                 }

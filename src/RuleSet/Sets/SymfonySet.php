@@ -110,7 +110,6 @@ final class SymfonySet extends AbstractRuleSetDefinition
             'no_null_property_initialization' => true,
             'no_short_bool_cast' => true,
             'no_singleline_whitespace_before_semicolons' => true,
-            'no_spaces_around_offset' => true,
             'no_superfluous_phpdoc_tags' => [
                 'allow_hidden_params' => true,
                 'remove_inheritdoc' => true,
@@ -237,6 +236,7 @@ final class SymfonySet extends AbstractRuleSetDefinition
             'space_after_semicolon' => [
                 'remove_in_empty_for_expressions' => true,
             ],
+            'spaces_around_offset' => true,
             'standardize_increment' => true,
             'standardize_not_equals' => true,
             'statement_indentation' => [
