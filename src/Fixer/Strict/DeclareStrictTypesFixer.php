@@ -90,7 +90,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Configurabl
     /**
      * {@inheritdoc}
      *
-     * Must run before BlankLineAfterOpeningTagFixer, DeclareEqualNormalizeFixer, HeaderCommentFixer.
+     * Must run before BlankLineAfterOpeningTagFixer, BlankLineAfterStatementFixer, DeclareEqualNormalizeFixer, HeaderCommentFixer.
      */
     public function getPriority(): int
     {
