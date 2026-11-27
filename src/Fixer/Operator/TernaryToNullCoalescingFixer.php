@@ -18,6 +18,8 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -69,16 +71,37 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
      */
     private function fixIsset(Tokens $tokens, int $index): void
     {
-        $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
+        $startBraceIndex = $tokens->getNextTokenOfKind($index, ['(']);
+        $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $startBraceIndex);
+
+        // expand to parentheses that only group the `isset()`, as in `(isset($a)) ? $a : null`
+        $groupStartIndex = $index;
+        $groupEndIndex = $endBraceIndex;
+
+        while (true) {
+            $prevIndex = $tokens->getPrevMeaningfulToken($groupStartIndex);
+            $nextIndex = $tokens->getNextMeaningfulToken($groupEndIndex);
+
+            if (
+                !$tokens[$prevIndex]->equals('(')
+                || !$tokens[$nextIndex]->equals(')')
+                || $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $prevIndex) !== $nextIndex
+                || !$this->isGroupingParenthesis($tokens, $prevIndex)
+            ) {
+                break;
+            }
+
+            $groupStartIndex = $prevIndex;
+            $groupEndIndex = $nextIndex;
+        }
+
+        $prevTokenIndex = $tokens->getPrevMeaningfulToken($groupStartIndex);
 
         if ($this->isHigherPrecedenceAssociativityOperator($tokens[$prevTokenIndex])) {
             return;
         }
 
-        $startBraceIndex = $tokens->getNextTokenOfKind($index, ['(']);
-        $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $startBraceIndex);
-
-        $ternaryQuestionMarkIndex = $tokens->getNextMeaningfulToken($endBraceIndex);
+        $ternaryQuestionMarkIndex = $tokens->getNextMeaningfulToken($groupEndIndex);
 
         if (!$tokens[$ternaryQuestionMarkIndex]->equals('?')) {
             return; // we are not in a ternary operator
@@ -111,7 +134,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
         $comments = [];
         $commentStarted = false;
 
-        for ($loopIndex = $index; $loopIndex < $ternaryFirstOperandIndex; ++$loopIndex) {
+        for ($loopIndex = $groupStartIndex; $loopIndex < $ternaryFirstOperandIndex; ++$loopIndex) {
             if ($tokens[$loopIndex]->isComment()) {
                 $comments[] = $tokens[$loopIndex];
                 $commentStarted = true;
@@ -125,7 +148,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
         }
 
         $tokens[$ternaryColonIndex] = new Token([\T_COALESCE, '??']);
-        $tokens->overrideRange($index, $ternaryFirstOperandIndex - 1, $comments);
+        $tokens->overrideRange($groupStartIndex, $ternaryFirstOperandIndex - 1, $comments);
     }
 
     /**
@@ -150,6 +173,44 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
         }
 
         return Tokens::fromArray($sequence);
+    }
+
+    /**
+     * Check if the opening parenthesis at the given index groups an expression,
+     * rather than starting the arguments of a call or the condition of a language construct.
+     */
+    private function isGroupingParenthesis(Tokens $tokens, int $index): bool
+    {
+        $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
+
+        return !$prevToken->equalsAny([
+            ')',
+            ']',
+            '}',
+            [\T_ARRAY],
+            [\T_CATCH],
+            [\T_CLASS],
+            [\T_DECLARE],
+            [\T_ELSEIF],
+            [\T_EMPTY],
+            [\T_EVAL],
+            [\T_EXIT],
+            [\T_FN],
+            [\T_FOR],
+            [\T_FOREACH],
+            [\T_FUNCTION],
+            [\T_IF],
+            [\T_ISSET],
+            [\T_LIST],
+            [\T_STATIC],
+            [\T_STRING],
+            [\T_SWITCH],
+            [\T_UNSET],
+            [\T_VARIABLE],
+            [\T_WHILE],
+            [CT::T_USE_LAMBDA],
+            [FCT::T_MATCH],
+        ]);
     }
 
     /**
