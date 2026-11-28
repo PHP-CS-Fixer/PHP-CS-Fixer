@@ -15,8 +15,11 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Console;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Cache\FileCacheManager;
+use PhpCsFixer\Cache\FileHandler;
 use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Config;
+use PhpCsFixer\Config\FixerAnnotationMode;
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Command\FixCommand;
@@ -63,6 +66,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[CoversClass(ConfigurationResolver::class)]
 final class ConfigurationResolverTest extends TestCase
 {
+    private const CACHE_FILE_PREFIX = 'php-cs-fixer-cache-';
+    private const LEGACY_FIXER_ANNOTATION_ENV_VAR = 'PHP_CS_FIXER_IGNORE_MISMATCHED_RULES_EXCEPTIONS';
+    private const TEST_TOOL_VERSION = 'test-version';
+
     public function testResolveParallelConfig(): void
     {
         $parallelConfig = new ParallelConfig();
@@ -70,6 +77,51 @@ final class ConfigurationResolverTest extends TestCase
         $resolver = $this->createConfigurationResolver([], $config);
 
         self::assertSame($parallelConfig, $resolver->getParallelConfig());
+    }
+
+    public function testResolveFixerAnnotationModeFromConfig(): void
+    {
+        $config = (new Config())->setFixerAnnotationMode(FixerAnnotationMode::FORBIDDEN);
+
+        self::assertSame(
+            FixerAnnotationMode::FORBIDDEN,
+            $this->createConfigurationResolver([], $config)->getFixerAnnotationMode(),
+        );
+    }
+
+    public function testResolveDefaultFixerAnnotationModeForLegacyConfig(): void
+    {
+        $previousValue = getenv(self::LEGACY_FIXER_ANNOTATION_ENV_VAR);
+        putenv(self::LEGACY_FIXER_ANNOTATION_ENV_VAR);
+
+        try {
+            self::assertSame(
+                FixerAnnotationMode::MATCHING,
+                $this->createConfigurationResolver([], self::createStub(ConfigInterface::class))->getFixerAnnotationMode(),
+            );
+        } finally {
+            putenv(false === $previousValue ? self::LEGACY_FIXER_ANNOTATION_ENV_VAR : self::LEGACY_FIXER_ANNOTATION_ENV_VAR.'='.$previousValue);
+        }
+    }
+
+    public function testCliFixerAnnotationModeOverridesConfig(): void
+    {
+        $config = (new Config())->setFixerAnnotationMode(FixerAnnotationMode::FORBIDDEN);
+
+        self::assertSame(
+            FixerAnnotationMode::ALL,
+            $this->createConfigurationResolver(['fixer-annotation-mode' => FixerAnnotationMode::ALL], $config)->getFixerAnnotationMode(),
+        );
+    }
+
+    public function testInvalidCliFixerAnnotationMode(): void
+    {
+        $resolver = $this->createConfigurationResolver(['fixer-annotation-mode' => 'invalid']);
+
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('The fixer annotation mode "invalid" is not defined, supported are "forbidden", "matching" and "all".');
+
+        $resolver->getFixerAnnotationMode();
     }
 
     public function testDefaultParallelConfigFallbacksToAutoDetect(): void
@@ -1042,6 +1094,46 @@ final class ConfigurationResolverTest extends TestCase
         self::assertFalse($resolver->getLinter()->isAsync());
     }
 
+    public function testCacheManagerSignatureIncludesFixerAnnotationMode(): void
+    {
+        $cacheFile = tempnam(sys_get_temp_dir(), self::CACHE_FILE_PREFIX);
+        if (false === $cacheFile) {
+            throw new \RuntimeException('Unable to create a temporary cache file.');
+        }
+
+        $toolInfo = self::createStub(ToolInfoInterface::class);
+        $toolInfo->method('getVersion')->willReturn(self::TEST_TOOL_VERSION);
+        $toolInfo->method('isInstalledAsPhar')->willReturn(true);
+
+        $config = (new Config())
+            ->setCacheFile($cacheFile)
+            ->setFixerAnnotationMode(FixerAnnotationMode::FORBIDDEN)
+        ;
+
+        try {
+            $resolver = $this->createConfigurationResolver(['dry-run' => false], $config, '', $toolInfo);
+
+            $cacheManager = $resolver->getCacheManager();
+            self::assertInstanceOf(FileCacheManager::class, $cacheManager);
+
+            for ($i = 0; $i < FileCacheManager::WRITE_FREQUENCY; ++$i) {
+                $cacheManager->setFileHash(__FILE__, self::TEST_TOOL_VERSION);
+            }
+
+            clearstatcache(true, $cacheFile);
+
+            $cache = (new FileHandler($cacheFile))->read();
+            self::assertNotNull($cache);
+            self::assertSame(FixerAnnotationMode::FORBIDDEN, $cache->getSignature()->getFixerAnnotationMode());
+        } finally {
+            unset($resolver, $cacheManager);
+
+            if (file_exists($cacheFile) && !unlink($cacheFile)) {
+                throw new \RuntimeException(\sprintf('Unable to remove temporary cache file "%s".', $cacheFile));
+            }
+        }
+    }
+
     public function testResolveCacheFileWithOption(): void
     {
         $cacheFile = 'bar.baz';
@@ -1260,7 +1352,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
         $options = $definition->getOptions();
         self::assertSame(
-            ['path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'allow-unsupported-php-version', 'cache-file', 'diff', 'format', 'stop-on-violation', 'show-progress', 'sequential'],
+            ['path-mode', 'allow-risky', 'fixer-annotation-mode', 'config', 'dry-run', 'rules', 'using-cache', 'allow-unsupported-php-version', 'cache-file', 'diff', 'format', 'stop-on-violation', 'show-progress', 'sequential'],
             array_keys($options),
             'Expected options mismatch, possibly test needs updating.',
         );

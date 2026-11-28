@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Console\Command;
 
+use PhpCsFixer\Config\FixerAnnotationMode;
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Application;
@@ -107,6 +108,21 @@ final class FixCommandTest extends TestCase
 
         self::assertStringContainsString('Running analysis on 1 core sequentially.', $cmdTester->getDisplay());
         self::assertStringContainsString('(header_comment)', $cmdTester->getDisplay());
+        self::assertSame(8, $cmdTester->getStatusCode());
+    }
+
+    /**
+     * @covers \PhpCsFixer\Runner\Runner::fixSequential
+     */
+    public function testSequentialRunAllowsMismatchedFixerAnnotationWhenConfigured(): void
+    {
+        $cmdTester = $this->doTestExecute([
+            'path' => [__DIR__.'/../../Fixtures/FixerTest/rule-ignored-by-tag/B-with-ignore-tag.php'],
+            '--rules' => 'native_function_invocation',
+            '--fixer-annotation-mode' => FixerAnnotationMode::ALL,
+        ]);
+
+        self::assertStringNotContainsString('@php-cs-fixer-ignore annotation(s) used for rules', $cmdTester->getDisplay());
         self::assertSame(8, $cmdTester->getStatusCode());
     }
 

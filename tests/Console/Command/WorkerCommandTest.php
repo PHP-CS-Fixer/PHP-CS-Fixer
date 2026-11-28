@@ -16,9 +16,11 @@ namespace PhpCsFixer\Tests\Console\Command;
 
 use Clue\React\NDJson\Decoder;
 use Clue\React\NDJson\Encoder;
+use PhpCsFixer\Config\FixerAnnotationMode;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\Command\WorkerCommand;
+use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Runner\Event\FileProcessed;
 use PhpCsFixer\Runner\Parallel\ParallelAction;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
@@ -100,7 +102,10 @@ final class WorkerCommandTest extends TestCase
             $processIdentifier,
             new ArrayInput(
                 [
-                    '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.parallel.php',
+                    '--allow-risky' => 'yes',
+                    '--config' => ConfigurationResolver::IGNORE_CONFIG_FILE,
+                    '--rules' => 'native_function_invocation',
+                    '--fixer-annotation-mode' => FixerAnnotationMode::ALL,
                 ],
                 (new FixCommand(new ToolInfo()))->getDefinition(),
             ),
@@ -139,7 +144,7 @@ final class WorkerCommandTest extends TestCase
                         \assert(\array_key_exists('action', $data));
                         if (ParallelAction::WORKER_HELLO === $data['action']) {
                             $encoder->write(['action' => ParallelAction::RUNNER_REQUEST_ANALYSIS, 'files' => [
-                                realpath(__DIR__.$ds.'..'.$ds.'..').$ds.'Fixtures'.$ds.'FixerTest'.$ds.'fix'.$ds.'somefile.php',
+                                realpath(__DIR__.$ds.'..'.$ds.'..').$ds.'Fixtures'.$ds.'FixerTest'.$ds.'rule-ignored-by-tag'.$ds.'B-with-ignore-tag.php',
                             ]]);
 
                             return;
@@ -158,9 +163,16 @@ final class WorkerCommandTest extends TestCase
 
         // Start worker in the async process, handle communication with server and wait for it to exit
         $process->start($streamSelectLoop);
+        $processOutput = '';
+        $process->stdout->on('data', static function (string $chunk) use (&$processOutput): void {
+            $processOutput .= $chunk;
+        });
+        $process->stderr->on('data', static function (string $chunk) use (&$processOutput): void {
+            $processOutput .= $chunk;
+        });
         $streamSelectLoop->run();
 
-        self::assertSame(Command::SUCCESS, $process->getExitCode());
+        self::assertSame(Command::SUCCESS, $process->getExitCode(), $processOutput);
         self::assertCount(3, $workerScope['messages']);
 
         self::assertArrayHasKey('action', $workerScope['messages'][0]);
