@@ -50,27 +50,27 @@ final class BraceClassInstantiationTransformer extends AbstractTransformer
     public function process(Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$tokens[$index]->equals('(') || !$tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind(\T_NEW)) {
+            if (!$tokens[$index]->equals('(') || !$tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKindV4(\T_NEW)) {
                 continue;
             }
 
-            if ($tokens[$tokens->getPrevMeaningfulToken($index)]->equalsAny([
+            if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKindV4([
                 ')',
                 ']',
-                [CT::T_ARRAY_INDEX_BRACE_CLOSE],
-                [CT::T_ARRAY_BRACKET_CLOSE],
-                [CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE],
-                [\T_ARRAY],
-                [\T_CLASS],
-                [\T_ELSEIF],
-                [\T_FOR],
-                [\T_FOREACH],
-                [\T_IF],
-                [\T_STATIC],
-                [\T_STRING],
-                [\T_SWITCH],
-                [\T_VARIABLE],
-                [\T_WHILE],
+                CT::T_ARRAY_INDEX_BRACE_CLOSE,
+                CT::T_ARRAY_BRACKET_CLOSE,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
+                \T_ARRAY,
+                \T_CLASS,
+                \T_ELSEIF,
+                \T_FOR,
+                \T_FOREACH,
+                \T_IF,
+                \T_STATIC,
+                \T_STRING,
+                \T_SWITCH,
+                \T_VARIABLE,
+                \T_WHILE,
             ])) {
                 continue;
             }

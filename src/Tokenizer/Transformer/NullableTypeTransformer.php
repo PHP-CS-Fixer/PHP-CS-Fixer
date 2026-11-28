@@ -34,23 +34,23 @@ final class NullableTypeTransformer extends AbstractTransformer
     private const TYPES = [
         '(',
         ',',
-        [CT::T_TYPE_COLON],
-        [CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC],
-        [CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED],
-        [CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE],
-        [CT::T_ATTRIBUTE_CLOSE],
-        [\T_PRIVATE],
-        [\T_PROTECTED],
-        [\T_PUBLIC],
-        [\T_VAR],
-        [\T_STATIC],
-        [\T_CONST],
-        [\T_ABSTRACT],
-        [\T_FINAL],
-        [FCT::T_READONLY],
-        [FCT::T_PRIVATE_SET],
-        [FCT::T_PROTECTED_SET],
-        [FCT::T_PUBLIC_SET],
+        CT::T_TYPE_COLON,
+        CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
+        CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
+        CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE,
+        CT::T_ATTRIBUTE_CLOSE,
+        \T_PRIVATE,
+        \T_PROTECTED,
+        \T_PUBLIC,
+        \T_VAR,
+        \T_STATIC,
+        \T_CONST,
+        \T_ABSTRACT,
+        \T_FINAL,
+        FCT::T_READONLY,
+        FCT::T_PRIVATE_SET,
+        FCT::T_PROTECTED_SET,
+        FCT::T_PUBLIC_SET,
     ];
 
     public function getPriority(): int
@@ -78,7 +78,7 @@ final class NullableTypeTransformer extends AbstractTransformer
 
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-            if (!$tokens[$prevIndex]->equalsAny(self::TYPES)) {
+            if (!$tokens[$prevIndex]->isGivenKindV4(self::TYPES)) {
                 continue;
             }
 
