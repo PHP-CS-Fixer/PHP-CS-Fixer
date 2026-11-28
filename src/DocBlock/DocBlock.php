@@ -51,10 +51,7 @@ final class DocBlock implements \Stringable
      */
     public function __construct(string $content, ?NamespaceAnalysis $namespace = null, array $namespaceUses = [])
     {
-        foreach (Preg::split('/([^\n\r]+\R*)/', $content, -1, \PREG_SPLIT_NO_EMPTY | \PREG_SPLIT_DELIM_CAPTURE) as $line) {
-            $this->lines[] = new Line($line);
-        }
-
+        $this->setContent($content);
         $this->namespace = $namespace;
         $this->namespaceUses = $namespaceUses;
     }
@@ -172,6 +169,30 @@ final class DocBlock implements \Stringable
         $this->lines = [new Line('/** '.$lineContent.' */')];
     }
 
+    /**
+     * Put annotations sharing the first or last line with a DocBlock delimiter on standalone lines.
+     */
+    public function separateAnnotationsFromBoundaries(string $indent, string $lineEnd): void
+    {
+        $content = $initialContent = $this->getContent();
+        $firstLine = $this->getLine(0);
+        $annotations = $this->getAnnotations();
+        $lastAnnotation = end($annotations);
+
+        if (null !== $firstLine && $firstLine->containsATag()) {
+            $content = Preg::replace('/\A\/\*\*/', '/**'.$lineEnd.$indent.' *', $content);
+        }
+        if (false !== $lastAnnotation && $lastAnnotation->getEnd() === \count($this->lines) - 1) {
+            $content = Preg::replace('/\h*\*\/\z/', $lineEnd.$indent.' */', $content);
+        }
+
+        if ($content === $initialContent) {
+            return;
+        }
+
+        $this->setContent($content);
+    }
+
     public function getAnnotation(int $pos): ?Annotation
     {
         $annotations = $this->getAnnotations();
@@ -231,6 +252,16 @@ final class DocBlock implements \Stringable
         }
 
         return $index - $start;
+    }
+
+    private function setContent(string $content): void
+    {
+        $this->lines = [];
+        foreach (Preg::split('/([^\n\r]+\R*)/', $content, -1, \PREG_SPLIT_NO_EMPTY | \PREG_SPLIT_DELIM_CAPTURE) as $line) {
+            $this->lines[] = new Line($line);
+        }
+
+        $this->annotations = null;
     }
 
     private function getSingleLineDocBlockEntry(Line $line): string

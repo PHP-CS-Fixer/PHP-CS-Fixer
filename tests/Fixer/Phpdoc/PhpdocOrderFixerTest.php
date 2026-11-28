@@ -224,6 +224,55 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                 EOF,
         ];
 
+        yield 'annotations on DocBlock boundary lines' => [
+            <<<'EOF'
+                <?php
+                    /**
+                     * @throws RuntimeException
+                     * @return array<string, mixed>
+                     */
+                    function reproduce(): array {}
+
+                EOF,
+            <<<'EOF'
+                <?php
+                    /** @return array<string, mixed>
+                     * @throws RuntimeException */
+                    function reproduce(): array {}
+
+                EOF,
+        ];
+
+        yield 'closing boundary on annotation continuation' => [
+            <<<'EOF'
+                <?php
+                /**
+                 * @throws RuntimeException
+                 * description
+                 * @return int
+                 */
+                function example(): int {}
+                EOF,
+            <<<'EOF'
+                <?php
+                /**
+                 * @return int
+                 * @throws RuntimeException
+                 * description */
+                function example(): int {}
+                EOF,
+        ];
+
+        yield 'ordered annotations with continuation stay compact' => [
+            <<<'EOF'
+                <?php
+                /** @throws RuntimeException
+                 * @return int
+                 * description */
+                function example(): int {}
+                EOF,
+        ];
+
         yield 'complete case' => [
             <<<'EOF'
                 <?php
